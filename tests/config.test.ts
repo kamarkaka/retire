@@ -331,9 +331,9 @@ it('rejects a previous recurring-spending config instead of migrating it', () =>
 
 it.each<[string, (d: DraftScenario) => void]>([
   [
-    'accounts.1.cost_basis',
+    'accounts.0.cost_basis',
     (d) => {
-      const a = d.accounts![1];
+      const a = d.accounts![0];
       if (a.type !== 'brokerage') throw new Error('Expected taxable fixture');
       Object.assign(a, { cost_basis: -1 });
     },

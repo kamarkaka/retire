@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { validateScenario } from '../src/config/config';
-import { createControlDraft } from '../src/config/constructors';
+import {
+  createControlDraft,
+  createExampleDraft,
+} from '../src/config/constructors';
 import {
   initialAccount,
   withdrawAccount,
@@ -16,7 +19,6 @@ import type {
   ScenarioConfig,
   BrokerageAccountConfig,
   RetirementAccountConfig,
-  DraftScenario,
 } from '../src/model/types';
 
 function control(): ScenarioConfig {
@@ -28,59 +30,35 @@ function ledgers() {
   return { A: emptyIncome(), B: emptyIncome() };
 }
 
-describe('simplified accounts: Cash USD and fixed asset treatment', () => {
-  it('pays Cash USD interest at the configured rate as ordinary income', () => {
-    const s = control(),
-      m = generateMarketPath(s, references, 0),
-      income = ledgers();
+describe('fixed three accounts with derived ownership', () => {
+  it('derives even ownership for two people and full A for one', () => {
     const config = {
-      name: 'save',
-      type: 'cash_usd',
-      owner: 'A',
-      share_A: 1,
+      name: 'brokerage',
+      type: 'brokerage',
       balance: 100000,
-      interest_rate: 0.04,
-    } as const;
-    const state = initialAccount(config),
-      r = growAccount(config, state, s, 0, m, income);
-    expect(r).toEqual({ opening: 100000, growth: 4000 });
-    expect(state.values.deposit).toBe(104000);
-    expect(income.A.interest_us).toBe(4000);
-    expect(income.A.nra_exempt_interest).toBe(4000);
-    expect(income.A.qualified_dividends).toBe(0);
-    expect(income.A.cap_gain).toBe(0);
-    expect(income.B.interest_us).toBe(0);
+      allocation: { us_stocks: 1 },
+    } as BrokerageAccountConfig;
+    expect(initialAccount(config, true).shares).toEqual({ A: 0.5, B: 0.5 });
+    expect(initialAccount(config, false).shares).toEqual({ A: 1, B: 0 });
   });
-  it('defaults Cash USD interest to the observed T-bill return', () => {
-    const s = control(),
-      m = generateMarketPath(s, references, 0),
-      income = ledgers();
-    const config = {
-      name: 'save',
-      type: 'cash_usd',
-      owner: 'A',
-      share_A: 1,
-      balance: 100000,
-    } as const;
-    const state = initialAccount(config),
-      r = growAccount(config, state, s, 0, m, income);
-    expect(r.growth).toBeCloseTo(100000 * m.usd_cash[0], 8);
-    expect(income.A.interest_us).toBeCloseTo(100000 * m.usd_cash[0], 8);
-  });
-  it('withdraws Cash USD with no gain and no income attribution', () => {
-    const s = control(),
-      income = ledgers();
-    const config = {
-      name: 'save',
-      type: 'cash_usd',
-      owner: 'A',
-      share_A: 1,
-      balance: 100000,
-    } as const;
-    const state = initialAccount(config);
-    expect(withdrawAccount(config, state, 30000, s, 2026, income)).toBe(30000);
-    expect(state.values.deposit).toBe(70000);
-    expect(income.A).toEqual(emptyIncome());
+  it('rejects retired cash account types and ownership keys', () => {
+    const refs = arithmeticReferences(0.03, 0);
+    for (const type of ['cash_cny', 'cash_usd']) {
+      const d = createControlDraft();
+      Object.assign(d.accounts![0], { type });
+      expect(validateScenario(d, refs).ok).toBe(false);
+    }
+    for (const key of ['owner', 'share_A', 'interest_rate']) {
+      const d = createControlDraft();
+      (d.accounts![0] as Record<string, unknown>)[key] = 0;
+      const v = validateScenario(d, refs);
+      if (v.ok) throw new Error(`${key} should fail`);
+      expect(
+        v.issues.some(
+          (i) => i.code === 'unknown_key' && i.path === `accounts.0.${key}`,
+        ),
+      ).toBe(true);
+    }
   });
   it('fixes brokerage income treatment by asset class', () => {
     const s = control();
@@ -92,12 +70,10 @@ describe('simplified accounts: Cash USD and fixed asset treatment', () => {
       const config = {
         name: 'b',
         type: 'brokerage',
-        owner: 'A',
-        share_A: 1,
         balance: 100000,
         allocation,
       } as BrokerageAccountConfig;
-      growAccount(config, initialAccount(config), s, 0, m, income);
+      growAccount(config, initialAccount(config, false), s, 0, m, income);
       return income.A;
     };
     const stocks = run({ us_stocks: 1 });
@@ -123,12 +99,10 @@ describe('simplified accounts: Cash USD and fixed asset treatment', () => {
     const bonds = {
       name: 'b',
       type: 'brokerage',
-      owner: 'A',
-      share_A: 1,
       balance: 100000,
       allocation: { us_bonds: 1 },
     } as BrokerageAccountConfig;
-    const bState = initialAccount(bonds);
+    const bState = initialAccount(bonds, false);
     // Seasoned holdings: value exceeds basis before the sale.
     bState.bases.us_bonds = 60000;
     expect(withdrawAccount(bonds, bState, 10000, s, 2026, income)).toBe(10000);
@@ -137,12 +111,10 @@ describe('simplified accounts: Cash USD and fixed asset treatment', () => {
     const stocks = {
       name: 's',
       type: 'brokerage',
-      owner: 'A',
-      share_A: 1,
       balance: 100000,
       allocation: { us_stocks: 1 },
     } as BrokerageAccountConfig;
-    const sState = initialAccount(stocks);
+    const sState = initialAccount(stocks, false);
     sState.bases.us_stocks = 60000;
     expect(withdrawAccount(stocks, sState, 10000, s, 2026, income)).toBe(10000);
     expect(income.A.cap_gain).toBe(4000);
@@ -153,12 +125,10 @@ describe('simplified accounts: Cash USD and fixed asset treatment', () => {
     const config = {
       name: 'b',
       type: 'brokerage',
-      owner: 'A',
-      share_A: 1,
       balance: 100000,
       allocation: { us_bonds: 0.5, usd_cash: 0.5 },
     } as BrokerageAccountConfig;
-    const state = initialAccount(config);
+    const state = initialAccount(config, false);
     state.values.us_bonds = 80000;
     state.values.usd_cash = 20000;
     expect(rebalance(config, state, income)).toBe(0);
@@ -170,64 +140,41 @@ describe('simplified accounts: Cash USD and fixed asset treatment', () => {
     expect('interest_cny_usd' in emptyIncome()).toBe(false);
     expect('ordinary_distributions' in emptyIncome()).toBe(false);
   });
-  it('validates Cash-USD-only and forbidden account keys', () => {
+  it('enforces the fixed three accounts in order', () => {
     const refs = arithmeticReferences(0.03, 0);
-    const base = createControlDraft();
-    base.accounts = [
-      { name: 'save', type: 'cash_usd', owner: 'A', share_A: 1, balance: 1000 },
+    expect(validateScenario(createControlDraft(), refs).ok).toBe(true);
+    const short = createControlDraft();
+    short.accounts = short.accounts!.slice(0, 2);
+    const vShort = validateScenario(short, refs);
+    if (vShort.ok) throw new Error('two accounts should fail');
+    expect(vShort.issues.some((i) => i.path === 'accounts')).toBe(true);
+    const renamed = createControlDraft();
+    renamed.accounts![0].name = 'save';
+    expect(validateScenario(renamed, refs).ok).toBe(false);
+    const reordered = createControlDraft();
+    reordered.accounts = [
+      reordered.accounts![1]!,
+      reordered.accounts![0]!,
+      reordered.accounts![2]!,
     ];
-    base.withdrawals = {
-      ...base.withdrawals,
-      surplus_account: 'save',
-    };
-    const surplus = validateScenario(base, refs);
-    if (surplus.ok) throw new Error('Cash USD surplus should fail');
+    expect(validateScenario(reordered, refs).ok).toBe(false);
+    const badProceeds = createExampleDraft();
+    badProceeds.properties![0]!.proceeds_account = 'save';
+    const vProceeds = validateScenario(badProceeds, refs);
+    if (vProceeds.ok) throw new Error('unknown proceeds account should fail');
     expect(
-      surplus.issues.some((i) => i.path === 'withdrawals.surplus_account'),
+      vProceeds.issues.some((i) => i.path === 'properties[0].proceeds_account'),
     ).toBe(true);
-    const brokerage = createControlDraft();
-    brokerage.accounts = [{ ...brokerage.accounts![0], interest_rate: 0.03 }];
-    expect(validateScenario(brokerage, refs).ok).toBe(false);
-    const misbuilt = createControlDraft();
-    const badAccount = {
-      name: 'save',
-      type: 'cash_usd',
-      owner: 'A',
-      share_A: 1,
-      balance: 1000,
-      allocation: { usd_cash: 1 },
-      interest_rate: -0.01,
-    };
-    misbuilt.accounts = [badAccount] as DraftScenario['accounts'];
-    const v = validateScenario(misbuilt, refs);
-    if (v.ok) throw new Error('misbuilt Cash USD should fail');
-    expect(v.issues.some((i) => i.path === 'accounts[0].allocation')).toBe(
-      true,
-    );
-    expect(v.issues.some((i) => i.path === 'accounts[0].interest_rate')).toBe(
-      true,
-    );
   });
-  it('grants pre-tax early access per account and rejects the flag elsewhere', () => {
+  it('grants pre-tax early access and rejects the flag elsewhere', () => {
     const refs = arithmeticReferences(0.03, 0);
     const d = createControlDraft();
-    d.accounts = [
-      ...d.accounts!,
-      {
-        name: 'early_trad',
-        type: 'pre_tax',
-        owner: 'A',
-        share_A: 1,
-        balance: 1000,
-        allocation: { us_stocks: 1 },
-        allow_early_trad: true,
-      },
-    ];
+    Object.assign(d.accounts![2], { allow_early_trad: true });
     const v = validateScenario(d, refs);
     if (!v.ok) throw new Error(JSON.stringify(v.issues));
     const s = v.value.scenario,
-      trad = s.accounts[1] as RetirementAccountConfig,
-      state = initialAccount(trad);
+      trad = s.accounts[2] as RetirementAccountConfig,
+      state = initialAccount(trad, true);
     expect(access(trad, state, s, 2026)).toBe(true);
     expect(access({ ...trad, allow_early_trad: false }, state, s, 2026)).toBe(
       false,
@@ -239,5 +186,8 @@ describe('simplified accounts: Cash USD and fixed asset treatment', () => {
     expect(
       r.issues.some((i) => i.path === 'accounts[0].allow_early_trad'),
     ).toBe(true);
+    const roth = createControlDraft();
+    Object.assign(roth.accounts![1], { rule_of_55: true });
+    expect(validateScenario(roth, refs).ok).toBe(false);
   });
 });

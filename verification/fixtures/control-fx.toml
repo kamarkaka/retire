@@ -63,11 +63,28 @@ annual = 37369.20777279521
 included_health = 5680.119581464873
 
 [[accounts]]
-name = "control_cash"
+name = "brokerage"
 type = "brokerage"
-owner = "A"
-share_A = 1
 balance = 1868460.3886397605
+
+[accounts.allocation]
+usd_cash = 1
+us_stocks = 0
+us_bonds = 0
+
+[[accounts]]
+name = "after_tax"
+type = "after_tax"
+balance = 0
+
+[accounts.allocation]
+usd_cash = 1
+us_stocks = 0
+us_bonds = 0
+[[accounts]]
+name = "pre_tax"
+type = "pre_tax"
+balance = 0
 
 [accounts.allocation]
 usd_cash = 1
@@ -76,4 +93,3 @@ us_bonds = 0
 
 [withdrawals]
 last_resort_property_sale = false
-surplus_account = "control_cash"

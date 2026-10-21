@@ -5,10 +5,30 @@ schema_version = 1
 
 [[accounts]]
 balance = 2390572.9770677146
-name = "control_cash"
-owner = "A"
-share_A = 1
+name = "brokerage"
 type = "brokerage"
+
+[accounts.allocation]
+us_bonds = 0
+us_stocks = 0
+usd_cash = 1
+
+[[accounts]]
+balance = 0
+name = "after_tax"
+type = "after_tax"
+
+[accounts.allocation]
+us_bonds = 0
+us_stocks = 0
+usd_cash = 1
+
+[[accounts]]
+allow_early_trad = false
+balance = 0
+name = "pre_tax"
+rule_of_55 = false
+type = "pre_tax"
 
 [accounts.allocation]
 us_bonds = 0
@@ -42,15 +62,12 @@ sample_start = 1928
 
 [medical]
 age_growth = 0
-shock_budget_scope = "additional"
 shock_enabled = false
 shock_median = 0
 shock_prob_at_60 = 0
 shock_prob_doubling_years = 8
-shock_sigma_log = 0
 
 [medical.late_life_care]
-age_of = "A"
 enabled = false
 monthly = 0
 real_growth = 0
@@ -79,4 +96,3 @@ start_year = 2026
 
 [withdrawals]
 last_resort_property_sale = false
-surplus_account = "control_cash"

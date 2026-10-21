@@ -407,16 +407,17 @@ export function runProductCase(c: VerificationCase): {
       };
     }
     case 'ACCOUNT-BASIS': {
+      // Synthetic single-owner account; household attribution is out of scope.
       const s = control(),
         config = {
           ...s.accounts[0],
           balance: i.opening_value,
           allocation: { us_stocks: 1 },
         } as BrokerageAccountConfig,
-        a = initialAccount(config),
+        a = initialAccount(config, false),
         income = { A: emptyIncome(), B: emptyIncome() };
       withdrawAccount(config, a, i.withdrawal, s, 2026, income);
-      const b = initialAccount(config),
+      const b = initialAccount(config, false),
         p = generateMarketPath(s, references, 0);
       p.us_stocks[0] = i.separate_return_case.total_return;
       s.market.income_yield_us_stocks = i.separate_return_case.yield;
@@ -432,6 +433,7 @@ export function runProductCase(c: VerificationCase): {
       };
     }
     case 'ACCOUNT-REBALANCE': {
+      // Synthetic single-owner account; household attribution is out of scope.
       const s = control(),
         config = {
           ...s.accounts[0],
@@ -440,7 +442,7 @@ export function runProductCase(c: VerificationCase): {
             us_bonds: 1 - i.target_stock,
           },
         } as BrokerageAccountConfig,
-        a = initialAccount(config),
+        a = initialAccount(config, false),
         income = { A: emptyIncome(), B: emptyIncome() };
       a.values = { us_stocks: i.stock_value, us_bonds: i.bond_value };
       a.bases = { us_stocks: i.stock_basis, us_bonds: i.bond_basis };
@@ -541,18 +543,25 @@ export function runProductCase(c: VerificationCase): {
       s.budget.included_health = 0;
       s.accounts = [
         {
-          name: 'sequence_roth',
+          name: 'brokerage',
+          type: 'brokerage',
+          balance: 0,
+          allocation: { us_stocks: 1 },
+        },
+        {
+          name: 'after_tax',
           type: 'after_tax',
-          owner: 'A',
-          share_A: 1,
           balance: i.initial,
           allocation: { us_stocks: 1 },
         },
         {
-          ...s.accounts[0],
+          name: 'pre_tax',
+          type: 'pre_tax',
           balance: 0,
-        } as BrokerageAccountConfig,
+          allocation: { us_stocks: 1 },
+        },
       ];
+      for (const p of s.properties) p.proceeds_account = 'brokerage';
 
       const calculate = (returns: number[], w: number) => {
         s.budget.annual = w;

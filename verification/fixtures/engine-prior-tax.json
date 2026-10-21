@@ -70,10 +70,8 @@
   ],
   "accounts": [
     {
-      "name": "control_cash",
+      "name": "brokerage",
       "type": "brokerage",
-      "owner": "A",
-      "share_A": 1,
       "balance": 0,
       "allocation": {
         "usd_cash": 1,
@@ -82,10 +80,18 @@
       }
     },
     {
-      "name": "A_trad",
+      "name": "after_tax",
+      "type": "after_tax",
+      "balance": 0,
+      "allocation": {
+        "usd_cash": 1,
+        "us_stocks": 0,
+        "us_bonds": 0
+      }
+    },
+    {
+      "name": "pre_tax",
       "type": "pre_tax",
-      "owner": "A",
-      "share_A": 1,
       "balance": 650000,
       "rule_of_55": false,
       "allocation": {
@@ -96,7 +102,6 @@
     }
   ],
   "withdrawals": {
-    "last_resort_property_sale": false,
-    "surplus_account": "control_cash"
+    "last_resort_property_sale": false
   }
 }

@@ -17,24 +17,18 @@ export const INCOME_FIELDS =
 export function emptyIncome(): IncomeLedger {
   return Object.fromEntries(INCOME_FIELDS.map((k) => [k, 0])) as IncomeLedger;
 }
-export function initialAccount(config: AccountConfig): AccountState {
-  const shares =
-    config.owner === 'joint'
-      ? { A: config.share_A, B: 1 - config.share_A }
-      : { A: config.owner === 'A' ? 1 : 0, B: config.owner === 'B' ? 1 : 0 };
+export function initialAccount(
+  config: AccountConfig,
+  twoPeople: boolean,
+): AccountState {
+  // Ownership is derived: even split with two people, full A with one.
+  const shares = twoPeople ? { A: 0.5, B: 0.5 } : { A: 1, B: 0 };
   return {
     name: config.name,
-    original_owner: config.owner,
     shares,
-    values:
-      config.type === 'cash_cny' || config.type === 'cash_usd'
-        ? { deposit: config.balance }
-        : Object.fromEntries(
-            ASSETS.map((k) => [
-              k,
-              config.balance * (config.allocation[k] ?? 0),
-            ]),
-          ),
+    values: Object.fromEntries(
+      ASSETS.map((k) => [k, config.balance * (config.allocation[k] ?? 0)]),
+    ),
     bases:
       config.type === 'brokerage'
         ? Object.fromEntries(
@@ -64,19 +58,19 @@ export function access(
   s: ScenarioConfig,
   year: number,
 ) {
-  if (
-    config.type === 'brokerage' ||
-    config.type === 'cash_cny' ||
-    config.type === 'cash_usd'
-  )
-    return true;
-  const owner = state.shares.A > 0 ? 'A' : 'B',
-    age = year - s.people[owner]!.birth_year;
-  return (
-    age >= 60 ||
-    (config.type === 'pre_tax' &&
-      ((config.rule_of_55 && age >= 55) || config.allow_early_trad))
-  );
+  if (config.type === 'brokerage') return true;
+  // Jointly owned retirement accounts open once either owner reaches the
+  // access age.
+  return (['A', 'B'] as const).some((id) => {
+    const person = s.people[id];
+    if (!person || !(state.shares[id] > 0)) return false;
+    const age = year - person.birth_year;
+    return (
+      age >= 60 ||
+      (config.type === 'pre_tax' &&
+        ((config.rule_of_55 && age >= 55) || config.allow_early_trad))
+    );
+  });
 }
 export function sellAsset(
   state: AccountState,
@@ -104,10 +98,6 @@ export function withdrawAccount(
   const balance = accountBalance(state),
     amount = Math.min(Math.max(requested, 0), balance);
   if (!amount || !balance) return 0;
-  if (config.type === 'cash_cny' || config.type === 'cash_usd') {
-    state.values.deposit = cleanResidual(balance - amount);
-    return amount;
-  }
   let gain = 0;
   for (const key of ASSETS)
     gain += sellAsset(
@@ -125,14 +115,16 @@ export function withdrawAccount(
       config.type === 'after_tax' ? 'roth' : 'trad_own',
       amount,
     );
-    const owner = state.shares.A > 0 ? 'A' : 'B',
-      age = year - s.people[owner]!.birth_year;
-    if (
-      config.type === 'pre_tax' &&
-      age < 60 &&
-      !(config.rule_of_55 && age >= 55)
-    )
-      attribute(income, state.shares, 'early_trad', amount);
+    // The early-withdrawal penalty applies per owner, on each underage
+    // owner's share.
+    if (config.type === 'pre_tax')
+      for (const id of ['A', 'B'] as const) {
+        const person = s.people[id];
+        if (!person || !(state.shares[id] > 0)) continue;
+        const age = year - person.birth_year;
+        if (age < 60 && !(config.rule_of_55 && age >= 55))
+          income[id].early_trad += amount * state.shares[id];
+      }
   }
   return amount;
 }
@@ -141,10 +133,6 @@ export function depositAccount(
   state: AccountState,
   amount: number,
 ) {
-  if (config.type === 'cash_cny' || config.type === 'cash_usd') {
-    state.values.deposit = (state.values.deposit ?? 0) + amount;
-    return;
-  }
   for (const key of ASSETS) {
     const part = amount * (config.allocation[key] ?? 0);
     state.values[key] = (state.values[key] ?? 0) + part;
@@ -160,17 +148,6 @@ export function growAccount(
   market: MarketPath,
   income: Record<PersonId, IncomeLedger>,
 ) {
-  // CNY cash interest is intentionally omitted; it may be restored in a future model.
-  if (config.type === 'cash_cny') return { opening: 0, growth: 0 };
-  if (config.type === 'cash_usd') {
-    const balance = state.values.deposit ?? 0,
-      rate = config.interest_rate ?? market.usd_cash[t],
-      interest = balance * rate;
-    state.values.deposit = balance + interest;
-    attribute(income, state.shares, 'interest_us', interest);
-    attribute(income, state.shares, 'nra_exempt_interest', interest);
-    return { opening: balance, growth: interest };
-  }
   let opening = 0,
     growth = 0;
   for (const key of ASSETS) {
@@ -204,7 +181,6 @@ export function rebalance(
   state: AccountState,
   income: Record<PersonId, IncomeLedger>,
 ) {
-  if (config.type === 'cash_cny' || config.type === 'cash_usd') return 0;
   const total = accountBalance(state);
   let cash = 0,
     gain = 0;

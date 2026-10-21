@@ -282,16 +282,7 @@ test('M08 M09 M10: native worker stops at zero net assets and ledger/CSV contain
     fx_fair_value: 1,
   });
   d.budget = { annual: 250000, included_health: 0 };
-  d.accounts = [
-    { ...d.accounts![0], balance: 0 },
-    {
-      name: 'cny',
-      type: 'cash_cny',
-      owner: 'joint',
-      share_A: 0.5,
-      balance: 500000,
-    },
-  ];
+  d.accounts![0].balance = 500000;
 
   await page.goto('/');
   await uploadDraft(page, d);

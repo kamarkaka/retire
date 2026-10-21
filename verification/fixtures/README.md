@@ -2,7 +2,7 @@
 
 The original80-case [oracles.json](oracles.json) and [tax-table snapshot](tax-tables.spec.json) remain unchanged. Their original NOT IMPLEMENTED/manual metadata describes M00 preparation time; current app execution is in [product cases](../records/product-cases.json), [unit results](../records/unit-results.json) and [browser results](../records/browser-results.json). Human execution/sign-offs are retired.
 
-Independent reference arithmetic still recomputes all55 original numeric answers. Current product comparison passes33, explicitly retires23 obsolete cases, reports6 broader cases OPEN and labels18 structural cases SUITE. Replacement fixed-horizon/budget/medical/care/SS/zero-CNY-interest/decimal requirements use separate current unit/browser assertions. MARKET-TIMING keeps its FX/CPI/medical oracle and explicitly excludes only the removed deposit-rate subfield.
+Independent reference arithmetic still recomputes all55 original numeric answers. Current product comparison passes33, explicitly retires23 obsolete cases, reports6 broader cases OPEN and labels18 structural cases SUITE. Replacement fixed-horizon/budget/medical/care/SS/retired-cash-accounts/decimal requirements use separate current unit/browser assertions. MARKET-TIMING keeps its FX/CPI/medical oracle and explicitly excludes only the removed deposit-rate subfield.
 
 ## Original case IDs, current applicability
 

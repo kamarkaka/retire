@@ -104,7 +104,8 @@ function runPath(
     charts = new Float32Array(T * CHART_FIELDS.length).fill(NaN),
     summary = createBuffers(),
     years: DetailedYear[] = [];
-  const accounts = s.accounts.map(initialAccount),
+  const twoPeople = s.people.B !== undefined;
+  const accounts = s.accounts.map((a) => initialAccount(a, twoPeople)),
     properties = s.properties.map(initialProperty);
   const capitalLoss = { A: 0, B: 0 };
   let priorReturn = NaN,
@@ -121,21 +122,17 @@ function runPath(
     unpaidCny = 0,
     terminal: TerminalMemo | undefined,
     stop: ReplayResult['stop'] | undefined;
-  const surplusIndex = s.accounts.findIndex(
-      (a) => a.name === s.withdrawals.surplus_account,
-    ),
+  // Surplus cash always lands in Non-retirement liquid assets, index 0.
+  const surplusIndex = 0,
     byName = new Map(s.accounts.map((a, i) => [a.name, i]));
   const valueWealth = (fx: number) => {
-    let usd = 0,
-      cny = 0;
-    accounts.forEach((a, i) => {
-      if (s.accounts[i].type === 'cash_cny') cny += accountBalance(a);
-      else usd += accountBalance(a);
-    });
+    // All three fixed accounts are USD denominated; cny stays for layout
+    // compatibility and is always zero.
+    const usd = accounts.reduce((n, a) => n + accountBalance(a), 0);
     const equity = properties
       .filter((p) => p.held)
       .reduce((n, p) => n + p.value - p.mortgage_balance, 0);
-    return { usd, cny, equity, net: (usd + equity) * fx + cny };
+    return { usd, cny: 0, equity, net: (usd + equity) * fx };
   };
   const suspended = (id: PersonId) =>
     properties
@@ -235,18 +232,13 @@ function runPath(
       shortfall = 0;
     const billUs: Record<PersonId, number> = { A: 0, B: 0 },
       billCn: Record<PersonId, number> = { A: 0, B: 0 };
-    const usdForCny = market.fx[t] * (1 - s.market.fx_spread),
-      cnyForUsd = market.fx[t] * (1 + s.market.fx_spread);
+    const usdForCny = market.fx[t] * (1 - s.market.fx_spread);
     const depositUsd = (amount: number, index = surplusIndex) =>
       depositAccount(s.accounts[index], accounts[index], amount);
     const availableUsd = () =>
       accounts.reduce(
         (n, a, i) =>
-          n +
-          (access(s.accounts[i], a, s, year)
-            ? accountBalance(a) /
-              (s.accounts[i].type === 'cash_cny' ? cnyForUsd : 1)
-            : 0),
+          n + (access(s.accounts[i], a, s, year) ? accountBalance(a) : 0),
         cashUsd,
       );
     let fund: (
@@ -304,43 +296,16 @@ function runPath(
           const a = accounts[i],
             config = s.accounts[i];
           if (!access(config, a, s, year)) continue;
-          if (config.type === 'cash_cny') {
-            const direct = Math.min(needCny, accountBalance(a));
-            if (direct > 0) {
-              withdrawCny += withdrawAccount(
-                config,
-                a,
-                direct,
-                s,
-                year,
-                income,
-              );
-              needCny -= direct;
-            }
-            const converted = Math.min(needUsd, accountBalance(a) / cnyForUsd);
-            if (converted > 0) {
-              withdrawCny += withdrawAccount(
-                config,
-                a,
-                converted * cnyForUsd,
-                s,
-                year,
-                income,
-              );
-              needUsd -= converted;
-            }
-          } else {
-            const amount = withdrawAccount(
-              config,
-              a,
-              needUsd + needCny / usdForCny,
-              s,
-              year,
-              income,
-            );
-            withdrawUsd += amount;
-            useUsd(amount);
-          }
+          const amount = withdrawAccount(
+            config,
+            a,
+            needUsd + needCny / usdForCny,
+            s,
+            year,
+            income,
+          );
+          withdrawUsd += amount;
+          useUsd(amount);
         }
       };
       drawAccounts();
@@ -395,14 +360,22 @@ function runPath(
       }
     for (let i = 0; i < accounts.length; i++)
       if (s.accounts[i].type === 'pre_tax') {
-        const owner = accounts[i].shares.A > 0 ? 'A' : 'B',
-          age = year - s.people[owner]!.birth_year,
-          amount = rmdAmount(
-            accounts[i].prior_year_end_balance,
-            age,
-            s.people[owner]!.birth_year,
-            tables,
-          );
+        // Jointly owned: each owner's share follows that owner's RMD schedule.
+        const balance = accounts[i].prior_year_end_balance,
+          amount = (['A', 'B'] as const).reduce((n, id) => {
+            const person = s.people[id];
+            if (!person || !(accounts[i].shares[id] > 0)) return n;
+            const age = year - person.birth_year;
+            return (
+              n +
+              rmdAmount(
+                balance * accounts[i].shares[id],
+                age,
+                person.birth_year,
+                tables,
+              )
+            );
+          }, 0);
         const actual = withdrawAccount(
           s.accounts[i],
           accounts[i],
@@ -441,14 +414,12 @@ function runPath(
       reportInvested = 0,
       reportGrowth = 0;
     for (let i = 0; i < accounts.length; i++) {
-      const cnyCash = s.accounts[i].type === 'cash_cny',
-        cnyOpening = trace && cnyCash ? accountBalance(accounts[i]) : 0;
       const r = growAccount(s.accounts[i], accounts[i], s, t, market, income);
       invested += r.opening;
       growth += r.growth;
       if (trace) {
-        reportInvested += cnyCash ? cnyOpening / market.fx[t] : r.opening;
-        reportGrowth += cnyCash ? 0 : r.growth;
+        reportInvested += r.opening;
+        reportGrowth += r.growth;
       }
     }
     priorReturn = invested > 0 ? growth / invested : NaN;

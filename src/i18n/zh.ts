@@ -126,8 +126,18 @@ const zhUI1 = {
   'market.stablePrices': '稳定价格',
   'market.presetsHint':
     '示例默认值恢复示例自带的市场假设。稳定价格关闭通胀与汇率波动，但保留历史回报抽样。',
-  'market.cnyCashNote':
-    '在本模型中，人民币现金不计利息。有意省略，未来可能加回。',
+  'accounts.brokerage': '非退休流动资产',
+  'accounts.preTax': '税前退休储蓄',
+  'accounts.afterTax': '税后退休储蓄',
+  'accounts.order': '第 {index}/3 顺位支取',
+  'accounts.jointOwnership': '两人平均拥有',
+  'accounts.soleOwnership': '由成员 A 全部拥有',
+  'accounts.repairNotice': '该配置未使用三个固定账户。请重置后继续。',
+  'accounts.repair': '重置为三个固定账户',
+  'accounts.stocks': '股票',
+  'accounts.bonds': '债券',
+  'accounts.cash': '现金',
+  'accounts.allocation': '资产配置',
   'field.bracket': '第 {index} 档{part}',
   'field.bracketLower': '起征点',
   'field.bracketRate': '税率',
@@ -183,14 +193,14 @@ const zhUI1 = {
   'tutorial.investmentSavings': '非退休投资，美元',
   'tutorial.investmentSavingsAria': '非退休投资 美元',
   'tutorial.savingsNote':
-    '我们将其放入一个证券账户（60% 股票、30% 债券、10% 现金），按账户顺序支取。之后可在构建器中拆分账户或调整配比。',
+    '我们将其放入非退休流动资产（60% 股票、30% 债券、10% 现金），最先支取。之后可在构建器中调整配比。',
   'tutorial.q4': '退休账户中有多少钱？',
   'tutorial.preTax': '税前退休账户（401k、传统 IRA），美元',
   'tutorial.preTaxAria': '税前退休账户 美元',
   'tutorial.afterTax': '税后退休账户（Roth），美元',
   'tutorial.afterTaxAria': '税后退休账户 美元',
   'tutorial.retirementNote':
-    '退休账户归成员 A 所有；之后可在构建器中在两人之间拆分。支取顺序为：先证券账户，再税前，最后税后。',
+    '两人时每个账户平均拥有；一人时由该人全部拥有。支取顺序为：先非退休资产，再税后，最后税前。',
   'tutorial.q5': '方案从哪一年开始，规划到多少岁？',
   'tutorial.startYear': '方案起始年份',
   'tutorial.throughAge': '规划至年龄',
@@ -270,7 +280,7 @@ const zhUI2 = {
   'ledger.stopBefore': '因起始净资产为零或负，在第一年开始前即停止。',
   'ledger.stopDepleted': '在 {year} 年因净资产降至零或以下而停止。',
   'ledger.explainer':
-    '期初余额先于本年现金流。流动美元包括美元金融账户（含退休账户）；期初净资产包括人民币现金和按开盘汇率计的房产净值。医疗包括基础预算、冲击和晚年护理。投资回报覆盖美元金融账户和人民币现金，按开盘年现金流后加权，税前且不计汇率变动。此处金额四舍五入到整数；下载保留完整精度。',
+    '期初余额先于本年现金流。流动美元包括美元金融账户（含退休账户）；期初净资产包括按开盘汇率计的房产净值。医疗包括基础预算、冲击和晚年护理。投资回报覆盖美元金融账户，按开盘年现金流后加权，税前且不计汇率变动。此处金额四舍五入到整数；下载保留完整精度。',
   'ledger.table': '年度账本',
   'ledger.prevRows': '上一页',
   'ledger.rowsOf': '第 {a}–{b} 行，共 {c} 行',
@@ -404,7 +414,6 @@ const zhLabels: Record<string, string> = {
   income_yield_us_bonds: '美债收益率',
   income_yield_us_stocks: '美股收益率',
   insurance_annual: '保险（年）',
-  interest_rate: '利率',
   land_share: '土地占比',
   last_resort_property_sale: '兜底房产出售',
   maintenance_annual: '维护费（年）',
@@ -416,7 +425,6 @@ const zhLabels: Record<string, string> = {
   mortgage_years_left: '房贷剩余年限',
   n_paths: '路径数',
   name: '名称',
-  owner: '所有人',
   proceeds_account: '收款账户',
   property_tax_annual: '房产税（年）',
   real_growth: '实际增长',
@@ -439,7 +447,6 @@ const zhLabels: Record<string, string> = {
   start_age: '起始年龄',
   start_year: '起始年份',
   strategy: '策略',
-  surplus_account: '盈余账户',
   type: '类型',
   us_bonds: '美债',
   us_citizen: '美国公民',
@@ -498,9 +505,6 @@ const zhLabels: Record<string, string> = {
 };
 
 const zhEnums: Record<string, string> = {
-  A: 'A',
-  B: 'B',
-  joint: '联名',
   CNY: 'CNY',
   USD: 'USD',
   US: '美国',
@@ -510,8 +514,6 @@ const zhEnums: Record<string, string> = {
   brokerage: '证券账户',
   pre_tax: '税前退休',
   after_tax: '税后退休',
-  cash_cny: '人民币现金',
-  cash_usd: '美元现金',
   hold: '持有',
   sell_year: '按年出售',
   sell_when_liquid_below: '低流动性出售',
@@ -524,8 +526,7 @@ const zhEnums: Record<string, string> = {
 
 const zhUnits: Record<string, string> = {
   'CNY/USD': '人民币/美元',
-  'USD (CNY for Cash CNY), current nominal':
-    '美元（人民币现金则为人民币），当前名义',
+  'USD, current nominal': '美元，当前名义',
   'USD current nominal': '美元，当前名义',
   'USD/month today': '美元/月，今日价格',
   'USD/person/year': '美元/人/年',
@@ -551,8 +552,6 @@ const zhUnits: Record<string, string> = {
   label: '标签',
   'label/reference/provenance': '标签/引用/溯源',
   mode: '模式',
-  ownership: '所有权',
-  'ownership fraction': '所有权比例',
   paths: '路径数',
   'persistence factor': '持续性系数',
   'sale policy': '出售政策',
@@ -866,57 +865,40 @@ const zhFields: Record<string, FieldText> = {
   },
   'accounts[].name': {
     description:
-      '账户的唯一名称。支取顺序、盈余去向与房产出售去向都引用该名称。改名后请同步更新这些引用。',
+      '该账户的固定标识：非退休流动资产用 brokerage，税后退休储蓄用 after_tax，税前退休储蓄用 pre_tax。支取顺序与房产出售去向使用该标识。盈余现金恒入非退休流动资产。',
     omission: REQUIRED,
-    constraints: '名称唯一非空；支取、盈余与房产引用须匹配。',
+    constraints:
+      '固定标识：brokerage、after_tax 或 pre_tax；三个账户缺一不可且按此顺序。',
   },
   'accounts[].type': {
     description:
-      '证券账户为美元账户，对投资收益与已实现利得征税。税前为税前退休账户，支取征税并有支取规则。税后支取免美国税，但所选中国养老金待遇仍适用。两者都有年龄限制。人民币现金持有人民币且无利息；美元现金在本模型中计息。',
+      '固定的账户类型，与标识一致。证券账户为美元账户，对投资收益与已实现利得征税。税前为税前退休账户，支取征税并有支取规则。税后支取免美国税，但所选中国养老金待遇仍适用。两个退休账户都有年龄限制。',
     omission: REQUIRED,
-    constraints: STRICT,
-  },
-  'accounts[].owner': {
-    description:
-      '选择 A、B 或联名，将账户收益与支取归属到正确的纳税人。退休账户须为单人所有。联名证券、储蓄与人民币账户用 A 占比拆分所有权。',
-    omission: REQUIRED,
-    constraints: '仅证券与现金账户可联名。',
-  },
-  'accounts[].share_A': {
-    description:
-      '联名账户中成员 A 的所有权比例，其余归 B。均分填 0.5。单人所有账户由所有人设置决定归属，此比例忽略。',
-    omission: OPTIONAL,
-    constraints: '0 至 1；仅联名有效；单人所有决定归属。',
+    constraints: '按位置固定：先证券，再税前，再税后；与标识一致。',
   },
   'accounts[].balance': {
     description:
-      '账户起始市值：证券与退休账户为美元，人民币现金为人民币。是未来缴税前的全额余额。美元余额按所选资产配置分配。证券账户的税务成本基础恒等于该余额。',
+      '账户起始市值，美元。是未来缴税前的全额余额，按所选资产配置分配。证券账户的税务成本基础恒等于该余额。两人时余额平均拥有；一人时由该人全部拥有。',
     omission: REQUIRED,
     constraints: STRICT,
   },
   'accounts[].allocation.us_stocks': {
     description:
       '该证券或退休账户投资美股的比例。60% 填 0.60，不要填 60。三个配置比例之和须为 1。决定起始余额、新存入与年度再平衡目标。各资产收益处理固定：股票付合格股息，债券付票息且出售零利得，现金赚货币市场利息。',
-    omission: '单个资产键缺省为 0；证券/税前/税后须配资产，现金账户禁配',
+    omission: '单个资产键缺省为 0；三个账户均须配资产',
     constraints: '≥0；为三键子集；和为 1（±1e-6）。',
   },
   'accounts[].allocation.us_bonds': {
     description:
       '该证券或退休账户投资美债的比例。60% 填 0.60，不要填 60。三个配置比例之和须为 1。决定起始余额、新存入与年度再平衡目标。各资产收益处理固定：股票付合格股息，债券付票息且出售零利得，现金赚货币市场利息。',
-    omission: '单个资产键缺省为 0；证券/税前/税后须配资产，现金账户禁配',
+    omission: '单个资产键缺省为 0；三个账户均须配资产',
     constraints: '≥0；为三键子集；和为 1（±1e-6）。',
   },
   'accounts[].allocation.usd_cash': {
     description:
       '该证券或退休账户持有美元现金的比例。60% 填 0.60，不要填 60。三个配置比例之和须为 1。决定起始余额、新存入与年度再平衡目标。各资产收益处理固定：股票付合格股息，债券付票息且出售零利得，现金赚货币市场利息。',
-    omission: '单个资产键缺省为 0；证券/税前/税后须配资产，现金账户禁配',
+    omission: '单个资产键缺省为 0；三个账户均须配资产',
     constraints: '≥0；为三键子集；和为 1（±1e-6）。',
-  },
-  'accounts[].interest_rate': {
-    description:
-      '美元现金账户年利率，以小数输入：0.04 表示 4%。利息每年为普通所得。缺省则每年赚取观测的 3 个月国库券回报。非居民待遇适用支持的银行存款利息豁免。',
-    omission: '仅美元现金；缺省 = 每年观测的 3 个月国库券回报',
-    constraints: '≥0；固定普通利息；NRA 豁免。',
   },
   'accounts[].rule_of_55': {
     description:
@@ -935,12 +917,6 @@ const zhFields: Record<string, FieldText> = {
       '当账户支取无法满足现金需求时，允许模型尝试出售房产，包括标记为持有的房产。关闭则不会仅为弥补缺口而出售房产。若过户成本、房贷与预扣税需要无法负担的额外现金，出售可能失败。',
     omission: REQUIRED,
     constraints: '家庭不出售 = 否，即使房产策略为持有。',
-  },
-  'withdrawals.surplus_account': {
-    description:
-      '接收盈余收入与其他剩余美元现金的证券美元账户。填写已存在的账户名。新存入按该账户配置分配并增加其税务成本基础。',
-    omission: REQUIRED,
-    constraints: '须为已存在的证券美元账户。',
   },
   'properties[].id': {
     description:
@@ -1058,9 +1034,9 @@ const zhFields: Record<string, FieldText> = {
   },
   'properties[].proceeds_account': {
     description:
-      '接收房产成功出售现金的已存在证券美元账户（扣除过户成本与房贷偿还后）。后续税款结算可能需要进一步支取。',
-    omission: REQUIRED,
-    constraints: '须为已存在的证券美元账户。',
+      '接收房产成功出售现金的账户（扣除过户成本与房贷偿还后），默认为非退休流动资产。后续税款结算可能需要进一步支取。',
+    omission: OPTIONAL,
+    constraints: '须为已存在的固定账户名。',
   },
 };
 

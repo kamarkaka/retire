@@ -80,7 +80,6 @@ export default function Tutorial({
   const { t, lang, intlLocale } = useI18n();
   const [confirmExit, setConfirmExit] = useState(false);
   const size = draft.people?.B === undefined ? 1 : 2;
-  const owner = (size === 1 ? 'A' : 'joint') as 'A' | 'joint';
   const upsertAccount = (
     base: DraftScenario,
     account: Record<string, unknown>,
@@ -94,29 +93,17 @@ export default function Tutorial({
       accounts,
       withdrawals: {
         ...base.withdrawals,
-        surplus_account: 'main_brokerage',
         last_resort_property_sale: false,
       },
     };
   };
   const setSize = (n: number) => {
-    let next =
+    // Ownership is derived from the household size; nothing per-account to fix.
+    onChange(
       n === 1
         ? assign(draft, ['people', 'B'], undefined)
-        : assign(draft, ['people', 'B'], draft.people?.B ?? {});
-    next = {
-      ...next,
-      accounts: next.accounts?.map((a) =>
-        a.name === 'main_brokerage' && a.type === 'brokerage'
-          ? {
-              ...a,
-              owner: (n === 1 ? 'A' : 'joint') as 'A' | 'joint',
-              share_A: n === 1 ? 1 : 0.5,
-            }
-          : a,
-      ),
-    };
-    onChange(next);
+        : assign(draft, ['people', 'B'], draft.people?.B ?? {}),
+    );
   };
   const setCitizen = (id: 'A' | 'B', citizen: boolean) =>
     onChange(
@@ -129,10 +116,8 @@ export default function Tutorial({
   const setBalance = (balance: number | undefined) =>
     onChange(
       upsertAccount(draft, {
-        name: 'main_brokerage',
+        name: 'brokerage',
         type: 'brokerage',
-        owner,
-        share_A: size === 1 ? 1 : 0.5,
         balance,
         allocation: { ...MIX },
       }),
@@ -143,10 +128,8 @@ export default function Tutorial({
   ) =>
     onChange(
       upsertAccount(draft, {
-        name: kind === 'pre_tax' ? 'main_pre_tax' : 'main_after_tax',
+        name: kind,
         type: kind,
-        owner: 'A',
-        share_A: 1,
         balance: amount,
         allocation: { ...MIX },
         ...(kind === 'pre_tax' ? { rule_of_55: false } : {}),
@@ -175,9 +158,9 @@ export default function Tutorial({
     medical = draft.budget?.included_health;
   const balanceOf = (name: string) =>
     draft.accounts?.find((a) => a.name === name)?.balance;
-  const balance = balanceOf('main_brokerage'),
-    preTax = balanceOf('main_pre_tax'),
-    afterTax = balanceOf('main_after_tax');
+  const balance = balanceOf('brokerage'),
+    preTax = balanceOf('pre_tax'),
+    afterTax = balanceOf('after_tax');
   const amountOk = (v: number | undefined) =>
     typeof v === 'number' && Number.isFinite(v) && v >= 0;
   const maxAge = draft.simulation?.max_age;

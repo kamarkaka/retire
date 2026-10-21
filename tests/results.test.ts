@@ -27,10 +27,7 @@ import {
 } from '../src/model/layout';
 import { replayPathLedger } from '../src/model/engine';
 import { generateMarketPath } from '../src/model/market';
-import type {
-  ScenarioConfig,
-  BrokerageAccountConfig,
-} from '../src/model/types';
+import type { ScenarioConfig } from '../src/model/types';
 function request(paths = 12) {
   const d = createExampleDraft();
   d.simulation!.n_paths = paths;
@@ -130,15 +127,14 @@ it('M11 withdrawal sequencing uses the actual loop: bad-first 77,500; good-first
   d.market.home_cpi_mean = d.market.home_cpi_start = 0;
   d.market.fx_spot = d.market.fx_fair_value = 1;
   d.accounts = [
+    { ...d.accounts[0], balance: 0 },
     {
-      name: 'sequence_roth',
+      name: 'after_tax',
       type: 'after_tax',
-      owner: 'A',
-      share_A: 1,
       balance: 100000,
       allocation: { us_stocks: 1 },
     },
-    { ...d.accounts[0], balance: 0 } as BrokerageAccountConfig,
+    { ...d.accounts[2], balance: 0 },
   ];
   const v = validateScenario(d, ZERO_RETURN_TAPE);
   if (!v.ok) throw new Error(JSON.stringify(v.issues));

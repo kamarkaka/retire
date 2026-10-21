@@ -3,10 +3,7 @@ export function scenarioSummary(
   s: ScenarioConfig,
   refs: PublicReferenceBundle,
 ) {
-  const financialUsd = s.accounts.reduce(
-      (n, a) => n + a.balance / (a.type === 'cash_cny' ? s.market.fx_spot : 1),
-      0,
-    ),
+  const financialUsd = s.accounts.reduce((n, a) => n + a.balance, 0),
     propertyEquity = s.properties.reduce(
       (n, p) => n + p.value - p.mortgage_balance,
       0,

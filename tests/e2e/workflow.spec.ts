@@ -32,20 +32,15 @@ test('M03 M04 M10: production worker and ledger use observed NYU/FRED returns', 
   });
   d.budget = { annual: 10000, included_health: 0 };
   d.accounts = [
+    { ...d.accounts![0], balance: 0 },
     {
-      name: 'history_roth',
+      name: 'after_tax',
       type: 'after_tax',
-      owner: 'A',
-      share_A: 1,
       balance: 100000,
       allocation: { us_stocks: 0.4, us_bonds: 0.6, usd_cash: 0 },
     },
-    { ...d.accounts![0], balance: 0 },
+    { ...d.accounts![2], balance: 0 },
   ];
-  d.withdrawals = {
-    ...d.withdrawals,
-    surplus_account: 'control_cash',
-  };
   await page.goto('/');
   await expect(page.locator('.market-data')).toContainText(
     'NYU/FRED historical US market data',
@@ -789,9 +784,7 @@ test('M02 M10: decimal rate typing survives edits, export and a run', async ({
     await expect(page.getByLabel(`market.${key}`, { exact: true })).toHaveCount(
       0,
     );
-  await expect(page.getByTestId('cny-cash-interest-note')).toContainText(
-    'Interest is intentionally omitted',
-  );
+  await expect(page.getByTestId('cny-cash-interest-note')).toHaveCount(0);
   for (const key of keys) {
     const field = page.getByLabel(`market.${key}`, { exact: true });
     await field.fill('');

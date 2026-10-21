@@ -13,7 +13,7 @@ function run(opts: {
   domicile: 'US' | 'China';
   aStatus: 'resident' | 'nonresident';
   bStatus: 'resident' | 'nonresident';
-  owner: 'A' | 'joint';
+  balance?: number;
 }) {
   const d = createControlDraft();
   d.simulation!.max_age = 42;
@@ -28,9 +28,7 @@ function run(opts: {
   const account = d.accounts![0];
   if (account.type !== 'brokerage')
     throw new Error('Expected brokerage control');
-  account.balance = 5000000;
-  account.owner = opts.owner;
-  account.share_A = opts.owner === 'joint' ? 0.5 : 1;
+  account.balance = opts.balance ?? 5000000;
   d.budget!.annual = d.budget!.included_health = 0;
   d.market!.fx_spot = d.market!.fx_fair_value = 1;
   d.market!.home_cpi_mean = d.market!.home_cpi_start = 0;
@@ -64,7 +62,6 @@ describe('one-or-two-person households with one domicile country', () => {
       domicile: 'US',
       aStatus: 'resident',
       bStatus: 'nonresident',
-      owner: 'A',
     });
     expect(r.years).toBe(3);
     expect(r.req.manifest.start_age_B).toBe(-1);
@@ -81,18 +78,20 @@ describe('one-or-two-person households with one domicile country', () => {
       domicile: 'US',
       aStatus: 'resident',
       bStatus: 'nonresident',
-      owner: 'A',
     });
+    // The couple holds twice the balance so A's even half earns the same
+    // income the single filer earns in full.
     const couple = run({
       couple: true,
       domicile: 'US',
       aStatus: 'resident',
       bStatus: 'nonresident',
-      owner: 'A',
+      balance: 10000000,
     });
-    // Same income; the couple pays more because the MFS NIIT threshold ($125k) bites while single ($200k) does not.
+    // Same starting income; the couple pays more because the MFS NIIT threshold ($125k) bites while single ($200k) does not.
+    // The joint pool also funds A's tax from shared capital, so A's year-1 base runs slightly above the single trajectory.
     expect(single.bill.usA).toBeCloseTo(25635.9152, 4);
-    expect(couple.bill.usA).toBeCloseTo(26720.79544, 4);
+    expect(couple.bill.usA).toBeCloseTo(26827.89772, 4);
     expect(couple.bill.usA).toBeGreaterThan(single.bill.usA);
   });
   it('routes China tax by household domicile for every member', () => {
@@ -101,7 +100,6 @@ describe('one-or-two-person households with one domicile country', () => {
       domicile: 'China',
       aStatus: 'resident',
       bStatus: 'nonresident',
-      owner: 'joint',
     });
     // Shared $5M pool: each earns $76,800 in year 1. A pays MFS $8,066 with $7,294 China due after the same-year credit;
     // NRA B pays no US tax and the full $15,360 China bill.
@@ -114,7 +112,6 @@ describe('one-or-two-person households with one domicile country', () => {
       domicile: 'US',
       aStatus: 'resident',
       bStatus: 'nonresident',
-      owner: 'joint',
     });
     expect(us.bill.cnA).toBe(0);
     expect(us.bill.cnB).toBe(0);
@@ -126,7 +123,6 @@ describe('one-or-two-person households with one domicile country', () => {
       domicile: 'China',
       aStatus: 'resident',
       bStatus: 'resident',
-      owner: 'joint',
     });
     expect(bResident.bill.usA).toBeCloseTo(8066, 4);
     expect(bResident.bill.usB).toBeCloseTo(8066, 4);
@@ -137,7 +133,6 @@ describe('one-or-two-person households with one domicile country', () => {
       domicile: 'China',
       aStatus: 'resident',
       bStatus: 'nonresident',
-      owner: 'A',
     });
     expect(aResident.bill.usA).toBeCloseTo(25598, 4);
     expect(aResident.bill.usB).toBe(0);
@@ -148,7 +143,6 @@ describe('one-or-two-person households with one domicile country', () => {
       domicile: 'China',
       aStatus: 'nonresident',
       bStatus: 'nonresident',
-      owner: 'A',
     });
     expect(aNra.bill.usA).toBe(0);
     expect(aNra.bill.usB).toBe(0);
@@ -159,7 +153,6 @@ describe('one-or-two-person households with one domicile country', () => {
       domicile: 'US',
       aStatus: 'resident',
       bStatus: 'nonresident',
-      owner: 'joint',
     });
     expect(bNraUS.bill.usB).toBe(0);
     expect(bNraUS.bill.usA).toBeGreaterThan(0);
@@ -170,17 +163,20 @@ describe('one-or-two-person households with one domicile country', () => {
     expect(validateScenario(owned, arithmeticReferences(0.03, 0)).ok).toBe(
       true,
     );
+    // Ownership keys are retired; any per-account owner is an unknown key.
     const joint = createControlDraft();
     delete joint.people!.B;
-    joint.accounts![0].owner = 'joint';
+    (joint.accounts![0] as Record<string, unknown>).owner = 'joint';
     const vJoint = validateScenario(joint, arithmeticReferences(0.03, 0));
-    if (vJoint.ok) throw new Error('joint owner should fail');
-    expect(vJoint.issues.some((i) => i.path === 'accounts[0].owner')).toBe(
-      true,
-    );
+    if (vJoint.ok) throw new Error('retired owner key should fail');
+    expect(
+      vJoint.issues.some(
+        (i) => i.code === 'unknown_key' && i.path === 'accounts.0.owner',
+      ),
+    ).toBe(true);
     const soleB = createControlDraft();
     delete soleB.people!.B;
-    soleB.accounts![0].owner = 'B';
+    (soleB.accounts![0] as Record<string, unknown>).owner = 'B';
     expect(validateScenario(soleB, arithmeticReferences(0.03, 0)).ok).toBe(
       false,
     );
@@ -209,11 +205,6 @@ describe('one-or-two-person households with one domicile country', () => {
       throw new Error('example second-person holdings should fail');
     expect(
       vExample.issues.some((i) => i.path === 'properties[0].share_A'),
-    ).toBe(true);
-    expect(
-      vExample.issues.some(
-        (i) => i.path.startsWith('accounts[') && i.path.endsWith('.owner'),
-      ),
     ).toBe(true);
     const emptyB = createControlDraft();
     emptyB.people!.B = {};

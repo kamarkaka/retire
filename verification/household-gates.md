@@ -12,7 +12,7 @@ These are financial/factual requirements, not a Simulation checklist or legal-ve
 | FX | User-selected6.69 CNY/USD, not a live-quote claim |
 | Budget | RMB250k including38k base medical/social-insurance; ordinary212k. The Budget health amount is aggregate and counted once. |
 | Care | If enabled, always additional, from selected person's start age through final simulation year; no end age/scope. |
-| SS / CNY deposits | Social Security is not modeled and no benefits are ever paid; Cash CNY interest intentionally omitted and potentially restored later. |
+| SS / cash accounts | Social Security is not modeled and no benefits are ever paid; cash account types are retired. |
 | Independent control | Start2026/birth1986/Max89 gives50 rows, both alive; nominal3%/China CPI4%/US CPI3%, zero taxes/spread and disabled shocks/care/property randomness. |
 
 ## Required actual facts

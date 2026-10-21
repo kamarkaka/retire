@@ -79,23 +79,17 @@ const descriptions = {
   'one_time[].currency':
     'The currency of the entered amount. CNY expenses follow China inflation; USD expenses follow US inflation and use that year’s exchange rate when reported in CNY. New costs default to the domicile currency.',
   'accounts[].name':
-    'A unique name for this account. Withdrawal order, the surplus destination and property-sale destinations refer to this name. If you rename it, update those references as well.',
+    'The fixed identifier for this account: brokerage for Non-retirement liquid assets, after_tax for After-tax retirement savings, or pre_tax for Pre-tax retirement savings. Withdrawal order and property-sale destinations use this identifier. Surplus cash always goes to Non-retirement liquid assets.',
   'accounts[].type':
-    'Brokerage is a USD account with taxes on investment income and realized gains. Pre-tax is a pre-tax retirement account with withdrawal taxes and access rules. After-tax withdrawals are US tax free, but the chosen China pension treatment still applies. Both have age-based access. Cash CNY holds yuan and earns no interest; Cash USD earns interest in this model.',
-  'accounts[].owner':
-    'Choose A, B or Joint to assign account income and withdrawals to the correct taxpayer. Retirement accounts must have a sole owner. Joint brokerage, savings and CNY accounts use Share A to split ownership.',
-  'accounts[].share_A':
-    'Person A’s ownership fraction for a joint account; the rest belongs to B. Enter 0.5 for equal ownership. For a solely owned account, the Owner setting determines attribution and this fraction is ignored.',
+    'The fixed account type, matching its identifier. Brokerage is a USD account with taxes on investment income and realized gains. Pre-tax is a pre-tax retirement account with withdrawal taxes and access rules. After-tax withdrawals are US tax free, but the chosen China pension treatment still applies. Both retirement accounts have age-based access.',
   'accounts[].balance':
-    'The account’s starting market value: USD for brokerage and retirement accounts, or CNY for Cash CNY. This is the full balance before future withdrawal taxes. USD balances are divided among the selected asset allocations. A brokerage account’s tax cost basis always equals this balance.',
+    'The account’s starting market value in USD. This is the full balance before future withdrawal taxes. It is divided among the selected asset allocations. A brokerage account’s tax cost basis always equals this balance. With two people the balance is owned evenly; with one person that person owns it fully.',
   'accounts[].rule_of_55':
     'Declare that this pre-tax retirement account qualifies for the model’s Rule of 55 exception. It permits access from age 55 without the early-withdrawal penalty. Ordinary withdrawal income tax still applies. This is not a general exception for every IRA or former employer account.',
   'accounts[].allow_early_trad':
     'Allow withdrawals from this pre-tax retirement account before the model’s normal access age of 60. Such withdrawals can incur ordinary income tax and the early-withdrawal penalty unless the configured Rule of 55 exception applies. This does not unlock early after-tax withdrawals.',
   'withdrawals.last_resort_property_sale':
     'Allow the model to attempt a property sale when account withdrawals cannot meet a cash need, including properties otherwise marked Hold. Turning this off keeps property from being sold solely to cover a shortage. A sale may fail if closing costs, the mortgage and withholding require unaffordable extra cash.',
-  'withdrawals.surplus_account':
-    'The brokerage USD account that receives surplus income and other remaining USD cash. Enter an existing account name. New deposits follow that account’s allocation and increase its tax cost basis.',
   'properties[].id':
     'A unique, persistent identifier for this US property. All owners use citizen tax treatment; there is no foreign-owner withholding.',
   'properties[].share_A':
@@ -135,7 +129,7 @@ const descriptions = {
   'properties[].sell_liquid_years':
     'For Sell when liquid below, the liquid-asset threshold expressed as years of the China-inflation-adjusted base annual budget. A value of 3 triggers below three times that year’s base budget. Extra medical growth, care and one-time expenses do not raise this threshold.',
   'properties[].proceeds_account':
-    'The existing brokerage USD account that receives cash from a successful property sale after closing costs and mortgage payoff. Later tax settlement may require further withdrawals.',
+    'The account that receives cash from a successful property sale after closing costs and mortgage payoff. Defaults to Non-retirement liquid assets. Later tax settlement may require further withdrawals.',
 };
 
 for (const person of ['A', 'B']) {
@@ -163,9 +157,6 @@ for (const [asset, label] of Object.entries(assets)) {
     descriptions[`accounts[].allocation.${asset}`] =
       `The fraction of this brokerage or retirement account invested in ${label}. Enter 0.60 for 60%, not 60. The three allocation fractions must add to 1. This sets starting balances, new deposits and annual rebalancing targets. Income treatment is fixed by asset: stocks pay qualified dividends, bonds pay coupon interest with zero-gain sales, and cash earns money-market interest.`;
 }
-descriptions['accounts[].interest_rate'] =
-  'The annual interest rate for a Cash USD account as a decimal; enter 0.04 for 4%. Interest is ordinary income each year. When omitted, the account earns the observed 3-month Treasury bill return each year. Nonresident treatment uses the supported bank-deposit interest exemption.';
-
 export function descriptionFor(path) {
   const description = descriptions[path];
   if (!description)

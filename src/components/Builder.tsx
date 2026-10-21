@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { fieldTree, type SchemaNode } from '../config/schema';
-import { accountTemplate, createExampleDraft } from '../config/constructors';
+import { createExampleDraft, fixedAccounts } from '../config/constructors';
 import type { DraftScenario } from '../model/types';
+import { FIXED_ACCOUNT_ORDER } from '../model/types';
 import RandomSeedButton from './RandomSeedButton';
 import NumberInput from './NumberInput';
 import ConfigField from './ConfigField';
@@ -81,9 +82,19 @@ function pathText(keys: Key[]): string {
     .map((k, i) => (typeof k === 'number' ? `[${k}]` : `${i ? '.' : ''}${k}`))
     .join('');
 }
+const ACCOUNT_TITLES = {
+  brokerage: 'accounts.brokerage',
+  pre_tax: 'accounts.preTax',
+  after_tax: 'accounts.afterTax',
+} as const;
+const ALLOC_KEYS = ['us_stocks', 'us_bonds', 'usd_cash'] as const;
+const ALLOC_LABELS = {
+  us_stocks: 'accounts.stocks',
+  us_bonds: 'accounts.bonds',
+  usd_cash: 'accounts.cash',
+} as const;
 function itemTemplate(keys: Key[], draft: DraftScenario): unknown {
   const kind = keys[0];
-  if (kind === 'accounts') return accountTemplate();
   if (kind === 'one_time')
     return {
       name: 'new_cost',
@@ -116,38 +127,7 @@ function Editor({
     terminal = String(keys.at(-1) ?? ''),
     label = labelFor(lang, terminal, pretty(terminal));
   const update = (v: unknown) => {
-    if (keys[0] === 'accounts' && keys.at(-1) === 'type' && v !== undefined) {
-      const accountKeys = keys.slice(0, -1),
-        old = read(draft, accountKeys) as Record<string, unknown>;
-      const template = accountTemplate(
-        v as Parameters<typeof accountTemplate>[0],
-      );
-      const keepAllocation =
-        old.type !== 'cash_cny' &&
-        old.type !== 'cash_usd' &&
-        v !== 'cash_cny' &&
-        v !== 'cash_usd';
-      onChange(
-        assign(draft, accountKeys, {
-          ...template,
-          ...(keepAllocation
-            ? {
-                allocation:
-                  old.allocation ??
-                  (template as { allocation?: unknown }).allocation,
-              }
-            : {}),
-          name: old.name,
-          balance: old.balance,
-          share_A: old.share_A,
-          interest_rate: v === 'cash_usd' ? old.interest_rate : undefined,
-          owner:
-            old.owner === 'joint' && (v === 'pre_tax' || v === 'after_tax')
-              ? 'A'
-              : old.owner,
-        }),
-      );
-    } else onChange(assign(draft, keys, v));
+    onChange(assign(draft, keys, v));
   };
   if (node.item) {
     const items = Array.isArray(value) ? value : [];
@@ -213,13 +193,6 @@ function Editor({
     );
   }
   if (Object.keys(node.children).length) {
-    const account =
-      keys[0] === 'accounts'
-        ? (read(draft, keys.slice(0, 2)) as {
-            type?: string;
-            allocation?: Record<string, number>;
-          })
-        : undefined;
     const children = Object.entries(node.children).filter(([k]) => {
       if (
         keys[0] === 'medical' &&
@@ -228,13 +201,6 @@ function Editor({
         draft.medical?.late_life_care?.enabled !== true
       )
         return false;
-      if (keys[0] === 'accounts' && keys.length === 2) {
-        if (k === 'allocation')
-          return account?.type !== 'cash_cny' && account?.type !== 'cash_usd';
-        if (k === 'interest_rate') return account?.type === 'cash_usd';
-        if (k === 'rule_of_55') return account?.type === 'pre_tax';
-        if (k === 'allow_early_trad') return account?.type === 'pre_tax';
-      }
       if (
         keys[0] === 'people' &&
         keys.length === 1 &&
@@ -462,18 +428,23 @@ function Editor({
                       ? v === 'F'
                         ? 'Female'
                         : 'Male'
-                      : keys[0] === 'accounts' && keys.at(-1) === 'type'
-                        ? ({
-                            brokerage: 'Brokerage',
-                            pre_tax: 'Pre-tax',
-                            after_tax: 'After-tax',
-                            cash_cny: 'Cash CNY',
-                            cash_usd: 'Cash USD',
-                          }[v] ?? pretty(v))
-                        : pretty(v),
+                      : pretty(v),
                   )}
                 </option>
               ))}
+          </select>
+        ) : terminal === 'proceeds_account' ? (
+          <select
+            {...attributes}
+            aria-label={path}
+            value={String(value ?? 'brokerage')}
+            onChange={(e) => update(e.target.value || undefined)}
+          >
+            {FIXED_ACCOUNT_ORDER.map((name) => (
+              <option key={name} value={name}>
+                {t(ACCOUNT_TITLES[name])}
+              </option>
+            ))}
           </select>
         ) : path === 'simulation.seed' ? (
           <span className="seed-control">
@@ -760,11 +731,6 @@ function MarketEditor({
             aria-labelledby={`market-group-${group.id}`}
           >
             <h3 id={`market-group-${group.id}`}>{group.label}</h3>
-            {group.id === 'markets' && (
-              <p className="muted" data-testid="cny-cash-interest-note">
-                {t('market.cnyCashNote')}
-              </p>
-            )}
             <Editor
               node={{ ...market, children: core }}
               keys={['market']}
@@ -788,6 +754,107 @@ function MarketEditor({
     </div>
   );
 }
+function FixedAccountsEditor({
+  draft,
+  onChange,
+}: {
+  draft: DraftScenario;
+  onChange: (d: DraftScenario) => void;
+}) {
+  const { t } = useI18n();
+  const accounts = draft.accounts ?? [];
+  const ok =
+    accounts.length === FIXED_ACCOUNT_ORDER.length &&
+    FIXED_ACCOUNT_ORDER.every(
+      (name, i) => accounts[i]?.name === name && accounts[i]?.type === name,
+    );
+  if (!ok)
+    return (
+      <div className="config-groups">
+        <p className="muted">{t('accounts.repairNotice')}</p>
+        <button
+          type="button"
+          className="secondary"
+          onClick={() => onChange({ ...draft, accounts: fixedAccounts() })}
+        >
+          {t('accounts.repair')}
+        </button>
+      </div>
+    );
+  const twoPeople = draft.people?.B !== undefined,
+    item = fieldTree.children.accounts.item!;
+  return (
+    <div className="config-groups">
+      {FIXED_ACCOUNT_ORDER.map((name, i) => {
+        const allocation = (draft.accounts?.[i]?.allocation ?? {}) as Partial<
+          Record<(typeof ALLOC_KEYS)[number], number>
+        >;
+        return (
+          <section
+            className="config-group"
+            key={name}
+            aria-labelledby={`account-group-${name}`}
+          >
+            <h3 id={`account-group-${name}`}>{t(ACCOUNT_TITLES[name])}</h3>
+            <p className="muted">
+              {t('accounts.order', { index: i + 1 })} ·{' '}
+              {t(
+                twoPeople
+                  ? 'accounts.jointOwnership'
+                  : 'accounts.soleOwnership',
+              )}
+            </p>
+            <div className="account-balance-row">
+              <Editor
+                node={item.children.balance}
+                keys={['accounts', i, 'balance']}
+                draft={draft}
+                onChange={onChange}
+              />
+              <div
+                className="allocation-inline"
+                role="group"
+                aria-label={t('accounts.allocation')}
+              >
+                {ALLOC_KEYS.map((k) => (
+                  <label key={k}>
+                    {t(ALLOC_LABELS[k])}
+                    <NumberInput
+                      aria-label={`accounts[${i}].allocation.${k}`}
+                      step="any"
+                      value={allocation[k]}
+                      onChange={(v) =>
+                        onChange(
+                          assign(draft, ['accounts', i, 'allocation', k], v),
+                        )
+                      }
+                    />
+                  </label>
+                ))}
+              </div>
+            </div>
+            {name === 'pre_tax' && (
+              <div className="field-grid">
+                <Editor
+                  node={item.children.rule_of_55}
+                  keys={['accounts', i, 'rule_of_55']}
+                  draft={draft}
+                  onChange={onChange}
+                />
+                <Editor
+                  node={item.children.allow_early_trad}
+                  keys={['accounts', i, 'allow_early_trad']}
+                  draft={draft}
+                  onChange={onChange}
+                />
+              </div>
+            )}
+          </section>
+        );
+      })}
+    </div>
+  );
+}
 function AccountsEditor({
   draft,
   onChange,
@@ -795,24 +862,8 @@ function AccountsEditor({
   draft: DraftScenario;
   onChange: (d: DraftScenario) => void;
 }) {
-  return (
-    <div className="config-groups">
-      <div className="field-grid">
-        <Editor
-          node={fieldTree.children.withdrawals.children.surplus_account}
-          keys={['withdrawals', 'surplus_account']}
-          draft={draft}
-          onChange={onChange}
-        />
-      </div>
-      <Editor
-        node={fieldTree.children.accounts}
-        keys={['accounts']}
-        draft={draft}
-        onChange={onChange}
-      />
-    </div>
-  );
+  // Surplus cash always lands in Non-retirement liquid assets; no control needed.
+  return <FixedAccountsEditor draft={draft} onChange={onChange} />;
 }
 function PropertiesEditor({
   draft,

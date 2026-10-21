@@ -50,3 +50,8 @@
 .lang-switch button{padding:6px 10px;font-size:11px;white-space:nowrap}
 .lang-switch button.selected{background:#e8efe3;color:#2e5e3f;border-color:#cfdcc8}
 .toolbar .push-right{margin-left:auto}
+.account-balance-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:20px 24px;align-items:start}
+.allocation-inline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.allocation-inline label{display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:500;min-width:0}
+.allocation-inline input{width:100%;min-width:0;border:1px solid #dfe6dc;border-radius:6px;padding:8px 10px;background:#fbfcf9;color:#435941;font-size:12px}
+@media(max-width:1000px){.account-balance-row{grid-template-columns:1fr}}

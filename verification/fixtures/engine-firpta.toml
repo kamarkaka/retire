@@ -62,10 +62,27 @@ annual = 0
 included_health = 0
 
 [[accounts]]
-name = "B_cash"
+name = "brokerage"
 type = "brokerage"
-owner = "B"
-share_A = 0
+balance = 0
+
+[accounts.allocation]
+usd_cash = 1
+us_stocks = 0
+us_bonds = 0
+
+[[accounts]]
+name = "after_tax"
+type = "after_tax"
+balance = 0
+
+[accounts.allocation]
+usd_cash = 1
+us_stocks = 0
+us_bonds = 0
+[[accounts]]
+name = "pre_tax"
+type = "pre_tax"
 balance = 0
 
 [accounts.allocation]
@@ -75,7 +92,6 @@ us_bonds = 0
 
 [withdrawals]
 last_resort_property_sale = false
-surplus_account = "B_cash"
 
 [[properties]]
 id = "synthetic_sale"
@@ -96,5 +112,5 @@ selling_cost = 0.06
 strategy = "sell_year"
 sell_year = 2026
 sell_liquid_years = 0
-proceeds_account = "B_cash"
+proceeds_account = "brokerage"
 maintenance_annual = 0

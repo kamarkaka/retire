@@ -40,7 +40,7 @@ function property(d: DraftScenario, value: number, mortgage = 0) {
       insurance_annual: 0,
       hoa_monthly: 0,
       strategy: 'hold',
-      proceeds_account: 'control_cash',
+      proceeds_account: 'brokerage',
     },
   ];
 }

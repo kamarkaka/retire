@@ -351,51 +351,23 @@ field('one_time[].amount', 'number', 'currency today', '5.2');
 field('one_time[].currency', 'enum CNY|USD', 'currency', '5.2');
 field('accounts[].name', 'string', 'account reference', '5.5', {
   constraints:
-    'Unique nonempty name; withdrawal, surplus and property references must match.',
+    'Fixed identifier: brokerage, after_tax or pre_tax; all three accounts required in that order.',
 });
-field(
-  'accounts[].type',
-  'enum brokerage|pre_tax|after_tax|cash_cny|cash_usd',
-  'wrapper',
-  '5.5',
-  { gates: ['H-HOLDINGS', 'H-RETIREMENT'] },
-);
-field('accounts[].owner', 'enum A|B|joint', 'ownership', '5.5', {
-  gates: ['H-OWNERSHIP'],
-  constraints: 'joint only brokerage and cash accounts.',
+field('accounts[].type', 'enum brokerage|pre_tax|after_tax', 'wrapper', '5.5', {
+  gates: ['H-HOLDINGS', 'H-RETIREMENT'],
+  constraints:
+    'Fixed per position: brokerage, then after_tax, then pre_tax; matches name.',
 });
-optional('accounts[].share_A', 'number', 'ownership fraction', '5.5', 0.5, {
-  gates: ['H-OWNERSHIP'],
-  constraints: '0...1; used only for joint; sole owner controls attribution.',
+field('accounts[].balance', 'number', 'USD, current nominal', '5.5', {
+  gates: ['H-HOLDINGS'],
 });
-field(
-  'accounts[].balance',
-  'number',
-  'USD (CNY for Cash CNY), current nominal',
-  '5.5',
-  { gates: ['H-HOLDINGS'] },
-);
 for (const k of ['us_stocks', 'us_bonds', 'usd_cash']) {
   optional(`accounts[].allocation.${k}`, 'number', 'fraction', '5.5', 0, {
     omission:
-      'optional asset key=0; allocation required for brokerage/pre-tax/after-tax and forbidden for cash accounts',
+      'optional asset key=0; allocation required for all three accounts',
     constraints: '>=0; subset of three keys; sum=1 +/-1e-6.',
   });
 }
-optional(
-  'accounts[].interest_rate',
-  'number',
-  'annual decimal rate',
-  '5.5',
-  null,
-  {
-    omission:
-      'optional Cash USD only; omitted = observed 3-month T-bill return each year',
-    default_kind: 'none',
-    gates: ['H-HOLDINGS'],
-    constraints: '>=0; fixed ordinary interest; NRA exempt.',
-  },
-);
 optional('accounts[].rule_of_55', 'boolean', 'access exception', '5.6', false, {
   omission: 'optional pre-tax only; forbidden for other types',
   gates: ['H-RETIREMENT', 'L-RMD'],
@@ -425,9 +397,6 @@ field(
     constraints: 'Household no-sale=false, even when property strategy=hold.',
   },
 );
-field('withdrawals.surplus_account', 'string', 'account reference', '5.7', {
-  constraints: 'Existing brokerage USD account.',
-});
 
 const propertyDefault = {
   share_A: 0.5,
@@ -436,6 +405,7 @@ const propertyDefault = {
   selling_cost: 0.06,
   sell_year: 0,
   sell_liquid_years: 0,
+  proceeds_account: 'brokerage',
 };
 for (const k of [
   'id',
@@ -497,7 +467,7 @@ for (const k of [
       k === 'id'
         ? 'Unique persisted nonempty ID; US real property only, citizen treatment for all owners.'
         : k === 'proceeds_account'
-          ? 'Existing brokerage USD account.'
+          ? 'Existing fixed account name.'
           : 'See spec §§5.8/9.2; money>=0, valid factors, fractions in[0,1].',
   };
   if (k === 'strategy') opts.unit = 'sale strategy';
@@ -525,7 +495,7 @@ export const containers = {
   one_time: 'Optional empty list.',
   properties: 'Optional empty list.',
   accounts:
-    'Required list; withdrawals/surplus reference validation still applies.',
+    'Fixed three in withdraw order: brokerage, after_tax, pre_tax; property proceeds reference validation still applies.',
 };
 
 export const ledgerFields =

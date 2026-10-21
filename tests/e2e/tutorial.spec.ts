@@ -92,15 +92,15 @@ test('M02 M10: question-based guided setup builds a runnable configuration in a 
     expect(parsed.value.people!.B!.us_income_tax_status).toBe('nonresident');
     expect(parsed.value.accounts!.map((a) => a.type)).toEqual([
       'brokerage',
-      'pre_tax',
       'after_tax',
+      'pre_tax',
     ]);
     expect(parsed.value.accounts!.map((a) => a.name)).toEqual([
-      'main_brokerage',
-      'main_pre_tax',
-      'main_after_tax',
+      'brokerage',
+      'after_tax',
+      'pre_tax',
     ]);
-    expect(parsed.value.withdrawals!.surplus_account).toBe('main_brokerage');
+    expect(parsed.value.withdrawals).not.toHaveProperty('surplus_account');
   }
   await page.reload();
   await page

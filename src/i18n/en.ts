@@ -130,8 +130,19 @@ const enUI = {
   'market.stablePrices': 'Stable prices',
   'market.presetsHint':
     "Sample defaults restore the shipped example's market assumptions. Stable prices turns off inflation and FX volatility while keeping historical return sampling.",
-  'market.cnyCashNote':
-    'Cash CNY earns no interest in this model. Interest is intentionally omitted and may be added back in the future.',
+  'accounts.brokerage': 'Non-retirement liquid assets',
+  'accounts.preTax': 'Pre-tax retirement savings',
+  'accounts.afterTax': 'After-tax retirement savings',
+  'accounts.order': 'Withdrawn {index} of 3',
+  'accounts.jointOwnership': 'Owned evenly by both people',
+  'accounts.soleOwnership': 'Owned fully by Person A',
+  'accounts.repairNotice':
+    'This configuration does not use the fixed three accounts. Reset to continue.',
+  'accounts.repair': 'Reset to the three fixed accounts',
+  'accounts.stocks': 'Stocks',
+  'accounts.bonds': 'Bonds',
+  'accounts.cash': 'Cash',
+  'accounts.allocation': 'Allocation',
   'field.bracket': 'Bracket {index} {part}',
   'field.bracketLower': 'lower threshold',
   'field.bracketRate': 'rate',
@@ -189,14 +200,14 @@ const enUI = {
   'tutorial.investmentSavings': 'Non-retirement investments, USD',
   'tutorial.investmentSavingsAria': 'Non-retirement investments USD',
   'tutorial.savingsNote':
-    'We put it in one brokerage account (60% stocks, 30% bonds, 10% cash) with withdrawals in account order. Split accounts or change the mix later in the builder.',
+    'We put it in Non-retirement liquid assets (60% stocks, 30% bonds, 10% cash), which is withdrawn first. Change the mix later in the builder.',
   'tutorial.q4': 'How much is in retirement accounts?',
   'tutorial.preTax': 'Pre-tax retirement (401k, traditional IRA), USD',
   'tutorial.preTaxAria': 'Pre-tax retirement USD',
   'tutorial.afterTax': 'After-tax retirement (Roth), USD',
   'tutorial.afterTaxAria': 'After-tax retirement USD',
   'tutorial.retirementNote':
-    'Retirement accounts belong to Person A; split them between people later in the builder. Withdrawals spend the brokerage account first, then pre-tax, then after-tax.',
+    'With two people each account is owned evenly; with one person that person owns everything. Withdrawals spend non-retirement assets first, then after-tax, then pre-tax.',
   'tutorial.q5':
     'When does the plan start, and through what age should it run?',
   'tutorial.startYear': 'Plan start year',
@@ -281,7 +292,7 @@ const enUI = {
   'ledger.stopDepleted':
     'Stopped in {year} because net assets reached zero or below.',
   'ledger.explainer':
-    'Starting balances precede this year’s cash flows. Liquid USD includes USD financial accounts, including retirement; starting net worth includes Cash CNY and property equity at opening FX. Medical includes the base budget, shocks and late-life care. Investment return covers USD financial accounts and Cash CNY, weighted after opening-year cash flows, before tax and FX changes. Money is rounded to whole numbers here; downloads retain full precision.',
+    'Starting balances precede this year’s cash flows. Liquid USD includes USD financial accounts, including retirement; starting net worth includes property equity at opening FX. Medical includes the base budget, shocks and late-life care. Investment return covers USD financial accounts, weighted after opening-year cash flows, before tax and FX changes. Money is rounded to whole numbers here; downloads retain full precision.',
   'ledger.table': 'Year ledger',
   'ledger.prevRows': 'Previous rows',
   'ledger.rowsOf': 'Rows {a}–{b} of {c}',

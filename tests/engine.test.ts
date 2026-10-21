@@ -86,24 +86,27 @@ describe('M07–M08 real model year loop', () => {
     expect(r.ledger[10 * LEDGER_FIELDS.length + LI.year]).toBeNaN();
     expect(() => hashObject(r.years)).not.toThrow();
   });
-  it('final-year tax is computed and paid the same year, ending at 467455.28 heirs', () => {
+  it('final-year tax is computed and paid the same year, ending at 491382.02 heirs', () => {
     const refs = fixtureReferences('engine-final-tax'),
       req = request('engine-final-tax'),
       r = replayPathLedger(req, refs, 0),
       c = simulatePath(req, refs, 0);
     const bill = r.ledger[LI.tax_us_A],
       paid = c.summary.floats[FI.lifetime_income_tax_cash_cny_real];
-    expect(bill).toBeCloseTo(32544.716207641777, 6);
-    expect(paid).toBeCloseTo(32544.65086517408, 6);
+    // The joint pre-tax account splits the $150k distribution: resident A is
+    // taxed on half under MFS while NRA B owes nothing on the other half.
+    expect(r.ledger[LI.tax_us_B]).toBe(0);
+    expect(bill).toBeCloseTo(8617.97584868987, 6);
+    expect(paid).toBeCloseTo(8617.962260817, 6);
     expect(bill - paid).toBeLessThan(1); // fixpoint converges: leftover is sub-dollar.
     expect(r.ledger[LI.withdraw_usd]).toBeCloseTo(150000 + paid, 6);
-    expect(r.ledger[LI.liquid_usd]).toBeCloseTo(467455.3491348259, 6);
+    expect(r.ledger[LI.liquid_usd]).toBeCloseTo(491382.037739183, 6);
     expect(c.summary.floats[FI.terminal_income_due_cny_real]).toBeCloseTo(
-      0.06534246769660967,
+      0.013587872870630235,
       6,
     );
     expect(c.summary.floats[FI.terminal_net_heirs_cny_real]).toBeCloseTo(
-      467455.28379235824,
+      491382.02415131015,
       6,
     );
   });
@@ -113,20 +116,20 @@ describe('M07–M08 real model year loop', () => {
       r = replayPathLedger(req, refs, 0),
       c = simulatePath(req, refs, 0);
     const i = LEDGER_FIELDS.length;
-    expect(r.ledger[i + LI.withdraw_usd]).toBeCloseTo(0.06534246769660967, 6);
+    expect(r.ledger[i + LI.withdraw_usd]).toBeCloseTo(0.013587872870630235, 6);
     expect(r.ledger[i + LI.tax_us_A]).toBe(0);
-    expect(r.ledger[i + LI.liquid_usd]).toBeCloseTo(467455.28379235824, 6);
+    expect(r.ledger[i + LI.liquid_usd]).toBeCloseTo(491382.02415131015, 6);
     expect(c.summary.floats[FI.terminal_net_heirs_cny_real]).toBeCloseTo(
-      467455.28379235824,
+      491382.02415131015,
       6,
     );
     expect(c.summary.floats[FI.terminal_income_due_cny_real]).toBe(0);
     expect(r.years[1].report.starting_liquid_usd).toBeCloseTo(
-      467455.3491348259,
+      491382.037739183,
       6,
     );
     expect(r.years[1].report.starting_net_worth_cny).toBeCloseTo(
-      467455.3491348259,
+      491382.037739183,
       6,
     );
   });
@@ -195,20 +198,9 @@ it('annual ledger reports opening wealth, complete medical costs and a financial
     shock_prob_at_60: 1,
     shock_median: 200,
   });
-  d.accounts = [
-    {
-      name: 'cny',
-      type: 'cash_cny',
-      owner: 'joint',
-      share_A: 0.5,
-      balance: 40000,
-    },
-    { ...d.accounts![0], name: 'usd', balance: 100000 },
-  ];
-  d.withdrawals = {
-    ...d.withdrawals,
-    surplus_account: 'usd',
-  };
+  // The retired 40,000 CNY cash holding is folded into brokerage at the
+  // opening FX of 2: 100,000 + 20,000 = 120,000 USD.
+  d.accounts![0].balance = 120000;
   d.one_time = [
     { name: 'ordinary_one_time', year: 2026, amount: 500, currency: 'CNY' },
   ];
@@ -228,7 +220,7 @@ it('annual ledger reports opening wealth, complete medical costs and a financial
       insurance_annual: 0,
       hoa_monthly: 0,
       strategy: 'hold',
-      proceeds_account: 'usd',
+      proceeds_account: 'brokerage',
     },
   ];
   const v = validateScenario(d, references);
@@ -240,14 +232,14 @@ it('annual ledger reports opening wealth, complete medical costs and a financial
   market.us_home[0] = 0;
   const replay = replayPathLedger(req, references, 0, market),
     report = replay.years[0].report;
-  expect(report.starting_liquid_usd).toBe(100000);
+  expect(report.starting_liquid_usd).toBe(120000);
   expect(report.starting_net_worth_cny).toBe(340000);
   expect(report.spend_excluding_medical_cny).toBe(1700);
   expect(report.medical_total_cny).toBe(2480);
-  expect(report.annual_investment_return).toBeCloseTo(3000 / 116910, 12);
-  expect(replay.ledger[LI.liquid_usd]).toBe(103000);
-  expect(replay.ledger[LI.cny_cash_cny]).toBe(32620);
-  expect(replay.ledger[LI.net_worth_cny]).toBe(494620);
+  expect(report.annual_investment_return).toBeCloseTo(0.03, 12);
+  expect(replay.ledger[LI.liquid_usd]).toBeCloseTo(119715.84, 8);
+  expect(replay.ledger[LI.cny_cash_cny]).toBe(0);
+  expect(replay.ledger[LI.net_worth_cny]).toBeCloseTo(512147.52, 8);
   expect(replay.years[0].properties[0].owners.A.basis_usd).toBe(40000);
   expect(
     replay.years[0].properties[0].owners.A.depreciation_taken,
@@ -282,25 +274,12 @@ it('both people live through the younger person’s Max age for every seed and p
     }
   }
 });
-it('Cash CNY earns no interest or taxable income while inflation and FX still change its value', () => {
+it('retired CNY cash columns stay zero for layout compatibility', () => {
   const d = createControlDraft();
   d.simulation!.max_age = 41;
   d.budget = { annual: 0, included_health: 0 };
   d.market!.fx_drift = Math.log(1.1);
-  d.accounts = [
-    { ...d.accounts![0], name: 'usd', balance: 0 },
-    {
-      name: 'cny',
-      type: 'cash_cny',
-      owner: 'joint',
-      share_A: 0.5,
-      balance: 100000,
-    },
-  ];
-  d.withdrawals = {
-    ...d.withdrawals,
-    surplus_account: 'usd',
-  };
+  d.accounts![0].balance = 100000;
   const v = validateScenario(d, references);
   if (!v.ok) throw new Error(JSON.stringify(v.issues));
   const req = makeRunRequest(v.value.scenario, references),
@@ -309,21 +288,9 @@ it('Cash CNY earns no interest or taxable income while inflation and FX still ch
   expect(r.years).toHaveLength(2);
   for (let t = 0; t < 2; t++) {
     const offset = t * LEDGER_FIELDS.length;
-    expect(r.ledger[offset + LI.cny_cash_cny]).toBe(100000);
-    expect(r.ledger[offset + LI.net_worth_cny]).toBeCloseTo(100000, 6);
-    expect(r.years[t].report.annual_investment_return).toBe(0);
-    for (const id of ['A', 'B'] as const) {
-      expect(r.years[t].income[id].interest_us).toBe(0);
-      expect(r.years[t].income[id].nra_exempt_interest).toBe(0);
-      expect(r.ledger[offset + LI[id === 'A' ? 'tax_us_A' : 'tax_us_B']]).toBe(
-        0,
-      );
-    }
+    expect(r.ledger[offset + LI.cny_cash_cny]).toBe(0);
+    expect(r.ledger[offset + LI.withdraw_cny]).toBe(0);
   }
-  expect(r.ledger[LEDGER_FIELDS.length + LI.net_worth_cny_real]).toBeCloseTo(
-    100000 / 1.04 ** 2,
-    6,
-  );
   expect(r.ledger[LEDGER_FIELDS.length + LI.fx]).toBeCloseTo(
     6.69 * 1.1 ** 2,
     12,
@@ -337,7 +304,8 @@ it('M08 China credit applies to same-year settled US tax', () => {
   const account = d.accounts![0];
   if (account.type !== 'brokerage')
     throw new Error('Expected brokerage control');
-  account.balance = 1000000;
+  // $2M joint: A's even half earns the $30k the derivation below taxes.
+  account.balance = 2000000;
   d.budget!.annual = d.budget!.included_health = 0;
   d.market!.fx_spot = d.market!.fx_fair_value = 1;
   d.market!.home_cpi_mean = d.market!.home_cpi_start = 0;
@@ -345,13 +313,18 @@ it('M08 China credit applies to same-year settled US tax', () => {
   const v = validateScenario(d, refs);
   if (!v.ok) throw new Error(JSON.stringify(v.issues));
   const r = replayPathLedger(makeRunRequest(v.value.scenario, refs), refs, 0);
-  // Year 0: $30k interest, MFS standard deduction $16,100, brackets tax $13,900 at $1,240 + $180.
+  // Year 0: A's $30k half of the joint interest, MFS standard deduction $16,100, brackets tax $13,900 at $1,240 + $180.
   // China raw is $6,000 at 20%; less the $1,420 same-year US credit, $4,580 is due immediately.
+  // NRA B's half is US-exempt and pays the full China bill with no credit.
   expect(r.ledger[LI.tax_us_A]).toBeCloseTo(1420, 4);
   expect(r.ledger[LI.tax_cn_A]).toBeCloseTo(4580, 4);
+  expect(r.ledger[LI.tax_us_B]).toBe(0);
+  expect(r.ledger[LI.tax_cn_B]).toBeCloseTo(6000, 4);
   const i = LEDGER_FIELDS.length;
   expect(r.ledger[i + LI.tax_us_A]).toBeCloseTo(1506.4, 4);
   expect(r.ledger[i + LI.tax_cn_A]).toBeCloseTo(4637.6, 4);
+  expect(r.ledger[i + LI.tax_us_B]).toBe(0);
+  expect(r.ledger[i + LI.tax_cn_B]).toBeCloseTo(6144, 4);
 });
 
 function lastResortReplay(firstValue: number, secondValue: number) {
@@ -367,7 +340,7 @@ function lastResortReplay(firstValue: number, secondValue: number) {
     land_share: 0,
     depreciation_taken: 0,
     rent_monthly: 0,
-    proceeds_account: 'control_cash',
+    proceeds_account: 'brokerage',
   });
   d.properties = [
     home('first_home', firstValue),

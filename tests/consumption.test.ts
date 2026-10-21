@@ -150,7 +150,7 @@ it('M05 average basis, reinvested income, taxable rebalancing and FX funding rec
       balance: 100000,
       allocation: { us_stocks: 1 },
     } as BrokerageAccountConfig;
-  const a = initialAccount(config),
+  const a = initialAccount(config, false),
     income = { A: emptyIncome(), B: emptyIncome() };
   // Seasoned holdings: value exceeds basis before the sale.
   a.bases.us_stocks = 60000;
@@ -158,7 +158,7 @@ it('M05 average basis, reinvested income, taxable rebalancing and FX funding rec
   expect(income.A.cap_gain).toBe(20000);
   expect(a.bases.us_stocks).toBe(30000);
   expect(a.values.us_stocks).toBe(50000);
-  const b = initialAccount(config),
+  const b = initialAccount(config, false),
     p = generateMarketPath(s, references, 0);
   b.bases.us_stocks = 60000;
   p.us_stocks[0] = 0.1;
@@ -166,10 +166,13 @@ it('M05 average basis, reinvested income, taxable rebalancing and FX funding rec
   growAccount(config, b, s, 0, p, income);
   expect(b.values.us_stocks).toBeCloseTo(110000, 8);
   expect(b.bases.us_stocks).toBe(61300);
-  const c = initialAccount({
-    ...config,
-    allocation: { us_stocks: 0.5, us_bonds: 0.5 },
-  });
+  const c = initialAccount(
+    {
+      ...config,
+      allocation: { us_stocks: 0.5, us_bonds: 0.5 },
+    },
+    false,
+  );
   c.values = { us_stocks: 60000, us_bonds: 50000 };
   c.bases = { us_stocks: 30000, us_bonds: 30000 };
   expect(

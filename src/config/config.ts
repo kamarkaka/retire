@@ -11,6 +11,7 @@ import type {
   RunnableScenario,
   RunRequest,
 } from '../model/types';
+import { FIXED_ACCOUNT_ORDER } from '../model/types';
 import defaultTables from '../reference/tax-tables.json' with { type: 'json' };
 import { BUILD_VERSION } from '../build-info';
 import { LEDGER_REPORT_VERSION } from '../model/layout';
@@ -36,12 +37,6 @@ function defaultNode(node: SchemaNode, value: unknown, path: string): unknown {
       if (path.startsWith('accounts[')) {
         if (k === 'rule_of_55' && obj.type !== 'pre_tax') continue;
         if (k === 'allow_early_trad' && obj.type !== 'pre_tax') continue;
-        if (
-          k === 'allocation' &&
-          (obj.type === 'cash_cny' || obj.type === 'cash_usd')
-        )
-          continue;
-        if (k === 'interest_rate' && obj.type !== 'cash_usd') continue;
       }
       const next = defaultNode(n, obj[k], path ? `${path}.${k}` : k);
       if (
@@ -117,7 +112,6 @@ function walkRequired(
   value: unknown,
   path: string,
   issues: FieldIssue[],
-  parent?: ObjectValue,
 ): void {
   const required = node.field?.omission.startsWith('required');
   if (node.item) {
@@ -144,18 +138,9 @@ function walkRequired(
   if (Object.keys(node.children).length) {
     const obj = (value ?? {}) as ObjectValue;
     for (const [k, n] of Object.entries(node.children)) {
-      if (path.startsWith('accounts[')) {
-        if (['allocation', 'rule_of_55'].includes(k)) {
-          if (
-            k === 'allocation' &&
-            (obj.type === 'cash_cny' || obj.type === 'cash_usd')
-          )
-            continue;
-          if (k === 'rule_of_55') continue;
-        }
-      }
+      if (path.startsWith('accounts[') && k === 'rule_of_55') continue;
       if (path === 'people' && k === 'B' && obj.B === undefined) continue; // B absent = one-person household.
-      walkRequired(n, obj[k], path ? `${path}.${k}` : k, issues, obj);
+      walkRequired(n, obj[k], path ? `${path}.${k}` : k, issues);
     }
     return;
   }
@@ -165,7 +150,6 @@ function walkRequired(
       path,
       message: 'Required value is missing',
     });
-  if (parent?.type === 'cash_cny' && path.includes('allocation')) return;
 }
 export function validateScenario(
   draft: DraftScenario,
@@ -279,85 +263,51 @@ export function validateScenario(
         ? 'Must cover the younger person’s starting age'
         : 'Must cover the person’s starting age',
     );
-  const unique = (items: { name?: string }[] | undefined, path: string) => {
-    const names = items?.map((x) => x.name);
-    if (
-      names &&
-      (names.some((x) => !x?.trim()) || new Set(names).size !== names.length)
-    )
-      add(path, 'Use unique nonempty names', 'reference');
-  };
-  unique(d.accounts, 'accounts');
   const ids = d.properties?.map((x) => x.id);
   if (ids && (ids.some((x) => !x?.trim()) || new Set(ids).size !== ids.length))
     add('properties', 'Property IDs must be unique and nonempty', 'reference');
   const accounts = d.accounts ?? [];
-  const brokerage = (name: string | undefined) =>
-    accounts.some((a) => a.name === name && a.type === 'brokerage');
+  const fixedOk =
+    accounts.length === FIXED_ACCOUNT_ORDER.length &&
+    FIXED_ACCOUNT_ORDER.every(
+      (name, i) => accounts[i].name === name && accounts[i].type === name,
+    );
+  if (!fixedOk)
+    add(
+      'accounts',
+      'Accounts must be the fixed three in order: brokerage, after_tax, pre_tax',
+      'reference',
+    );
+  const existingAccount = (name: string | undefined) =>
+    (accounts.map((a) => a.name) as string[]).includes(name ?? '');
   accounts.forEach((a, i) => {
     const path = `accounts[${i}]`;
     range(a.balance, 0, Number.MAX_VALUE, `${path}.balance`);
-    range(a.share_A, 0, 1, `${path}.share_A`);
-    if (
-      (a.type === 'pre_tax' || a.type === 'after_tax') &&
-      (a.owner as string) === 'joint'
-    )
-      add(`${path}.owner`, 'Retirement account requires a sole owner');
-    if (!hasB && a.owner !== undefined && a.owner !== 'A')
-      add(
-        `${path}.owner`,
-        'A one-person household owns every account as Person A',
-        'reference',
-      );
     const ao = a as ObjectValue;
     const forbidden =
-      a.type === 'cash_cny'
-        ? ['allocation', 'rule_of_55', 'allow_early_trad', 'interest_rate']
-        : a.type === 'brokerage'
-          ? ['rule_of_55', 'allow_early_trad', 'interest_rate']
-          : a.type === 'after_tax'
-            ? ['rule_of_55', 'allow_early_trad', 'interest_rate']
-            : a.type === 'cash_usd'
-              ? ['allocation', 'rule_of_55', 'allow_early_trad']
-              : ['interest_rate'];
+      a.type === 'pre_tax' ? [] : ['rule_of_55', 'allow_early_trad'];
     forbidden.forEach((k) => {
       if (ao[k] !== undefined)
         add(`${path}.${k}`, 'Key is forbidden for this account type');
     });
-    if (a.type === 'cash_usd')
-      range(
-        (a as { interest_rate?: number }).interest_rate,
-        0,
-        Number.MAX_VALUE,
-        `${path}.interest_rate`,
-      );
-    if (a.type !== 'cash_cny' && a.type !== 'cash_usd') {
-      if (!(a as { allocation?: unknown }).allocation)
-        add(`${path}.allocation`, 'Required allocation is missing', 'missing');
-      const allocation =
-        (a as { allocation?: Record<string, number> }).allocation ?? {};
-      if (
-        Math.abs(
-          Object.values(allocation).reduce<number>((n, v) => n + (v ?? 0), 0) -
-            1,
-        ) > 1e-6 ||
-        Object.values(allocation).some((v) => v! < 0)
-      )
-        add(`${path}.allocation`, 'Nonnegative allocation must sum to 1');
-    }
+    if (!(a as { allocation?: unknown }).allocation)
+      add(`${path}.allocation`, 'Required allocation is missing', 'missing');
+    const allocation =
+      (a as { allocation?: Record<string, number> }).allocation ?? {};
+    if (
+      Math.abs(
+        Object.values(allocation).reduce<number>((n, v) => n + (v ?? 0), 0) - 1,
+      ) > 1e-6 ||
+      Object.values(allocation).some((v) => v! < 0)
+    )
+      add(`${path}.allocation`, 'Nonnegative allocation must sum to 1');
   });
-  if (!brokerage(d.withdrawals?.surplus_account))
-    add(
-      'withdrawals.surplus_account',
-      'Select an existing brokerage USD account',
-      'reference',
-    );
   d.properties?.forEach((p, i) => {
     const path = `properties[${i}]`;
-    if (!brokerage(p.proceeds_account))
+    if (!existingAccount(p.proceeds_account))
       add(
         `${path}.proceeds_account`,
-        'Select an existing brokerage USD account',
+        'Select one of the three fixed accounts',
         'reference',
       );
     for (const k of ['share_A', 'land_share', 'selling_cost'] as const)

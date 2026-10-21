@@ -23,14 +23,14 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
       currency: 'CNY',
     },
   ];
-  draft.accounts!.push({
-    name: 'help_savings',
-    type: 'cash_usd',
-    owner: 'A',
-    share_A: 1,
-    balance: 1000,
-    interest_rate: 0.03,
-  });
+  // Fixed account identities are not rendered; allocation cells are concise
+  // inputs without hover help.
+  const hidden = new Set(['accounts[].name', 'accounts[].type']),
+    concise = new Set([
+      'accounts[].allocation.us_stocks',
+      'accounts[].allocation.us_bonds',
+      'accounts[].allocation.usd_cash',
+    ]);
   await page.goto('/');
   await uploadDraft(page, draft);
   await expect(
@@ -87,20 +87,22 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
     counts[section] = controls.length;
     for (const control of controls) {
       expect(control.path).toBeTruthy();
-      expect(control.info).toBe(`About ${control.path}`);
-      expect(control.label).toBe(control.id);
       let path = control.path!.replace(/\[\d+\]/g, '[]');
       if (!inventory.fields.some((f) => f.path === path))
         path = path.replace(/(?:\[\])+$/, '');
       const field = inventory.fields.find((f) => f.path === path);
       expect(field, `Unmapped input ${control.path}`).toBeDefined();
-      expect(control.description).toContain(field!.description);
+      if (!concise.has(path)) {
+        expect(control.info).toBe(`About ${control.path}`);
+        expect(control.label).toBe(control.id);
+        expect(control.description).toContain(field!.description);
+      }
       paths.add(path);
     }
   }
   expect([...paths].sort()).toEqual(
     inventory.fields
-      .filter((f) => f.type !== 'object[]')
+      .filter((f) => f.type !== 'object[]' && !hidden.has(f.path))
       .map((f) => f.path)
       .sort(),
   );
@@ -207,7 +209,7 @@ test('M02 M10: wheel cannot step focused decimal inputs, including account alloc
   });
 });
 
-test('M02 M05 M09 M10: add brokerage and savings accounts, export/run/reload, and legacy holdings are rejected', async ({
+test('M02 M05 M09 M10: fixed three accounts, export/run/reload, and legacy holdings are rejected', async ({
   page,
 }, info) => {
   const errors: string[] = [];
@@ -218,45 +220,43 @@ test('M02 M05 M09 M10: add brokerage and savings accounts, export/run/reload, an
   await page.goto('/');
   await uploadDraft(page, draft);
   await page.getByRole('button', { name: 'Accounts', exact: true }).click();
-  await page.getByRole('button', { name: 'Add accounts', exact: true }).click();
-  for (const [field, value] of [
-    ['name', 'extra_brokerage'],
-    ['balance', '100000'],
+  // No free editing: no add/remove/reorder controls and no name/type inputs.
+  await expect(
+    page.getByRole('button', { name: 'Add accounts', exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Remove', exact: true }),
+  ).toHaveCount(0);
+  for (const index of [0, 1, 2])
+    for (const field of ['name', 'type', 'owner', 'share_A', 'interest_rate'])
+      await expect(
+        page.getByLabel(`accounts[${index}].${field}`, { exact: true }),
+      ).toHaveCount(0);
+  await expect(page.getByText('Withdrawn 1 of 3')).toBeVisible();
+  await expect(page.getByText('Withdrawn 2 of 3')).toBeVisible();
+  await expect(page.getByText('Withdrawn 3 of 3')).toBeVisible();
+  await expect(
+    page.getByText('Owned evenly by both people').first(),
+  ).toBeVisible();
+  const balance = page.getByLabel('accounts[0].balance', { exact: true });
+  await balance.fill('1300000');
+  await expect(balance).toHaveValue('1300000');
+  for (const [key, value] of [
+    ['us_stocks', '0.5'],
+    ['us_bonds', '0.3'],
+    ['usd_cash', '0.2'],
   ]) {
-    const input = page.getByLabel(`accounts[5].${field}`, { exact: true });
-    await input.fill(value);
-    await expect(input).toHaveValue(value);
+    const cell = page.getByLabel(`accounts[0].allocation.${key}`, {
+      exact: true,
+    });
+    await cell.fill(value);
+    await expect(cell).toHaveValue(value);
   }
-  await page
-    .getByLabel('accounts[5].allocation.us_stocks', { exact: true })
-    .fill('0.6');
-  await page
-    .getByLabel('accounts[5].allocation.us_bonds', { exact: true })
-    .fill('0.4');
-  await page
-    .getByLabel('accounts[5].allocation.usd_cash', { exact: true })
-    .fill('0');
   await expect(
     page.locator('.builder-section [aria-label*="holdings"]'),
   ).toHaveCount(0);
-  await page.getByRole('button', { name: 'Add accounts', exact: true }).click();
-  await page
-    .getByLabel('accounts[6].type', { exact: true })
-    .selectOption('cash_usd');
-  for (const [field, value] of [
-    ['name', 'extra_savings'],
-    ['balance', '50000'],
-    ['interest_rate', '0.04'],
-  ]) {
-    const input = page.getByLabel(`accounts[6].${field}`, { exact: true });
-    await input.fill(value);
-    await expect(input).toHaveValue(value);
-  }
   await expect(
-    page.getByLabel('accounts[6].allocation.us_stocks', { exact: true }),
-  ).toHaveCount(0);
-  await expect(
-    page.getByLabel('accounts[5].cost_basis', { exact: true }),
+    page.getByLabel('accounts[0].cost_basis', { exact: true }),
   ).toHaveCount(0);
   const validation = (await page.locator('.validation').allTextContents()).join(
     '\n',
@@ -272,20 +272,21 @@ test('M02 M05 M09 M10: add brokerage and savings accounts, export/run/reload, an
   );
   expect(config.text).not.toContain('holdings');
   expect(config.text).not.toContain('holding_profiles');
+  expect(config.text).not.toContain('surplus_account');
+  expect(config.text).not.toContain('owner =');
   const parsed = parseScenario(config.text);
   if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues));
-  const newAccount = parsed.value.accounts![5];
-  if (newAccount.type !== 'brokerage')
-    throw new Error('Expected added brokerage account');
-  expect(newAccount.allocation).toEqual({
-    us_stocks: 0.6,
-    us_bonds: 0.4,
-    usd_cash: 0,
+  expect(parsed.value.accounts!.map((a) => a.name)).toEqual([
+    'brokerage',
+    'after_tax',
+    'pre_tax',
+  ]);
+  expect(parsed.value.accounts![0].balance).toBe(1300000);
+  expect(parsed.value.accounts![0].allocation).toEqual({
+    us_stocks: 0.5,
+    us_bonds: 0.3,
+    usd_cash: 0.2,
   });
-  const savings = parsed.value.accounts![6];
-  if (savings.type !== 'cash_usd')
-    throw new Error('Expected added savings account');
-  expect(savings.interest_rate).toBe(0.04);
   await complete(page, 3);
   const first = JSON.parse(
     (
@@ -342,8 +343,7 @@ test('M02 M05 M09 M10: add brokerage and savings accounts, export/run/reload, an
   expect(errors).toEqual([]);
   await record(`${info.project.name}-simplified-accounts.json`, {
     status: 'PASS',
-    added_account: newAccount,
-    added_savings: savings,
+    fixed_accounts: parsed.value.accounts!.map((a) => a.name),
     holdings_removed: true,
     legacy_rejected: true,
     ledger_columns: firstCsv[0].split(',').length,

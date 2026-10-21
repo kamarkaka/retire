@@ -97,20 +97,15 @@ for (const name of ['dotcom', 'gfc', 'stocks_and_bonds_down'])
         included_health: 0,
       };
       d.accounts = [
+        { ...d.accounts![0], balance: 0 },
         {
-          name: 'history_roth',
+          name: 'after_tax',
           type: 'after_tax',
-          owner: 'A',
-          share_A: 1,
           balance: 100000,
           allocation: { us_stocks: 0.4, us_bonds: 0.6, usd_cash: 0 },
         },
-        { ...d.accounts![0], balance: 0 },
+        { ...d.accounts![2], balance: 0 },
       ];
-      d.withdrawals = {
-        ...d.withdrawals,
-        surplus_account: 'control_cash',
-      };
       const request = makeRunRequest(validated(d), references),
         rows = prepareMarket(request.scenario, references);
       const ids = new Int32Array(

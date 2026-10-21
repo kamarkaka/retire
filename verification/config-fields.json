@@ -7,7 +7,7 @@
     "market": "Optional documented algorithm defaults; US series use historical rows directly.",
     "one_time": "Optional empty list.",
     "properties": "Optional empty list.",
-    "accounts": "Required list; withdrawals/surplus reference validation still applies."
+    "accounts": "Fixed three in withdraw order: brokerage, after_tax, pre_tax; property proceeds reference validation still applies."
   },
   "fields": [
     {
@@ -831,13 +831,13 @@
       "omission": "required; blank stays omitted and blocks Run",
       "default": null,
       "default_kind": "none",
-      "constraints": "Unique nonempty name; withdrawal, surplus and property references must match.",
+      "constraints": "Fixed identifier: brokerage, after_tax or pre_tax; all three accounts required in that order.",
       "gates": [],
-      "description": "A unique name for this account. Withdrawal order, the surplus destination and property-sale destinations refer to this name. If you rename it, update those references as well."
+      "description": "The fixed identifier for this account: brokerage for Non-retirement liquid assets, after_tax for After-tax retirement savings, or pre_tax for Pre-tax retirement savings. Withdrawal order and property-sale destinations use this identifier. Surplus cash always goes to Non-retirement liquid assets."
     },
     {
       "path": "accounts[].type",
-      "type": "enum brokerage|pre_tax|after_tax|cash_cny|cash_usd",
+      "type": "enum brokerage|pre_tax|after_tax",
       "unit": "wrapper",
       "spec_section": "5.5",
       "builder_section": "Schema",
@@ -847,53 +847,17 @@
       "omission": "required; blank stays omitted and blocks Run",
       "default": null,
       "default_kind": "none",
-      "constraints": "Strict known key; finite numbers; integers must be safe integers; see spec §9.2.",
+      "constraints": "Fixed per position: brokerage, then after_tax, then pre_tax; matches name.",
       "gates": [
         "H-HOLDINGS",
         "H-RETIREMENT"
       ],
-      "description": "Brokerage is a USD account with taxes on investment income and realized gains. Pre-tax is a pre-tax retirement account with withdrawal taxes and access rules. After-tax withdrawals are US tax free, but the chosen China pension treatment still applies. Both have age-based access. Cash CNY holds yuan and earns no interest; Cash USD earns interest in this model."
-    },
-    {
-      "path": "accounts[].owner",
-      "type": "enum A|B|joint",
-      "unit": "ownership",
-      "spec_section": "5.5",
-      "builder_section": "Schema",
-      "builder_control": "select",
-      "internal_path": "accounts[].owner",
-      "serialize_path": "accounts[].owner",
-      "omission": "required; blank stays omitted and blocks Run",
-      "default": null,
-      "default_kind": "none",
-      "constraints": "joint only brokerage and cash accounts.",
-      "gates": [
-        "H-OWNERSHIP"
-      ],
-      "description": "Choose A, B or Joint to assign account income and withdrawals to the correct taxpayer. Retirement accounts must have a sole owner. Joint brokerage, savings and CNY accounts use Share A to split ownership."
-    },
-    {
-      "path": "accounts[].share_A",
-      "type": "number",
-      "unit": "ownership fraction",
-      "spec_section": "5.5",
-      "builder_section": "Schema",
-      "builder_control": "numeric",
-      "internal_path": "accounts[].share_A",
-      "serialize_path": "accounts[].share_A",
-      "omission": "optional; omission uses declared default",
-      "default": 0.5,
-      "default_kind": "documented",
-      "constraints": "0...1; used only for joint; sole owner controls attribution.",
-      "gates": [
-        "H-OWNERSHIP"
-      ],
-      "description": "Person A’s ownership fraction for a joint account; the rest belongs to B. Enter 0.5 for equal ownership. For a solely owned account, the Owner setting determines attribution and this fraction is ignored."
+      "description": "The fixed account type, matching its identifier. Brokerage is a USD account with taxes on investment income and realized gains. Pre-tax is a pre-tax retirement account with withdrawal taxes and access rules. After-tax withdrawals are US tax free, but the chosen China pension treatment still applies. Both retirement accounts have age-based access."
     },
     {
       "path": "accounts[].balance",
       "type": "number",
-      "unit": "USD (CNY for Cash CNY), current nominal",
+      "unit": "USD, current nominal",
       "spec_section": "5.5",
       "builder_section": "Schema",
       "builder_control": "numeric",
@@ -906,7 +870,7 @@
       "gates": [
         "H-HOLDINGS"
       ],
-      "description": "The account’s starting market value: USD for brokerage and retirement accounts, or CNY for Cash CNY. This is the full balance before future withdrawal taxes. USD balances are divided among the selected asset allocations. A brokerage account’s tax cost basis always equals this balance."
+      "description": "The account’s starting market value in USD. This is the full balance before future withdrawal taxes. It is divided among the selected asset allocations. A brokerage account’s tax cost basis always equals this balance. With two people the balance is owned evenly; with one person that person owns it fully."
     },
     {
       "path": "accounts[].allocation.us_stocks",
@@ -917,7 +881,7 @@
       "builder_control": "numeric",
       "internal_path": "accounts[].allocation.us_stocks",
       "serialize_path": "accounts[].allocation.us_stocks",
-      "omission": "optional asset key=0; allocation required for brokerage/pre-tax/after-tax and forbidden for cash accounts",
+      "omission": "optional asset key=0; allocation required for all three accounts",
       "default": 0,
       "default_kind": "documented",
       "constraints": ">=0; subset of three keys; sum=1 +/-1e-6.",
@@ -933,7 +897,7 @@
       "builder_control": "numeric",
       "internal_path": "accounts[].allocation.us_bonds",
       "serialize_path": "accounts[].allocation.us_bonds",
-      "omission": "optional asset key=0; allocation required for brokerage/pre-tax/after-tax and forbidden for cash accounts",
+      "omission": "optional asset key=0; allocation required for all three accounts",
       "default": 0,
       "default_kind": "documented",
       "constraints": ">=0; subset of three keys; sum=1 +/-1e-6.",
@@ -949,30 +913,12 @@
       "builder_control": "numeric",
       "internal_path": "accounts[].allocation.usd_cash",
       "serialize_path": "accounts[].allocation.usd_cash",
-      "omission": "optional asset key=0; allocation required for brokerage/pre-tax/after-tax and forbidden for cash accounts",
+      "omission": "optional asset key=0; allocation required for all three accounts",
       "default": 0,
       "default_kind": "documented",
       "constraints": ">=0; subset of three keys; sum=1 +/-1e-6.",
       "gates": [],
       "description": "The fraction of this brokerage or retirement account invested in USD cash. Enter 0.60 for 60%, not 60. The three allocation fractions must add to 1. This sets starting balances, new deposits and annual rebalancing targets. Income treatment is fixed by asset: stocks pay qualified dividends, bonds pay coupon interest with zero-gain sales, and cash earns money-market interest."
-    },
-    {
-      "path": "accounts[].interest_rate",
-      "type": "number",
-      "unit": "annual decimal rate",
-      "spec_section": "5.5",
-      "builder_section": "Schema",
-      "builder_control": "numeric",
-      "internal_path": "accounts[].interest_rate",
-      "serialize_path": "accounts[].interest_rate",
-      "omission": "optional Cash USD only; omitted = observed 3-month T-bill return each year",
-      "default": null,
-      "default_kind": "none",
-      "constraints": ">=0; fixed ordinary interest; NRA exempt.",
-      "gates": [
-        "H-HOLDINGS"
-      ],
-      "description": "The annual interest rate for a Cash USD account as a decimal; enter 0.04 for 4%. Interest is ordinary income each year. When omitted, the account earns the observed 3-month Treasury bill return each year. Nonresident treatment uses the supported bank-deposit interest exemption."
     },
     {
       "path": "accounts[].rule_of_55",
@@ -1028,22 +974,6 @@
         "H-PROPERTY"
       ],
       "description": "Allow the model to attempt a property sale when account withdrawals cannot meet a cash need, including properties otherwise marked Hold. Turning this off keeps property from being sold solely to cover a shortage. A sale may fail if closing costs, the mortgage and withholding require unaffordable extra cash."
-    },
-    {
-      "path": "withdrawals.surplus_account",
-      "type": "string",
-      "unit": "account reference",
-      "spec_section": "5.7",
-      "builder_section": "Withdrawals",
-      "builder_control": "text",
-      "internal_path": "withdrawals.surplus_account",
-      "serialize_path": "withdrawals.surplus_account",
-      "omission": "required; blank stays omitted and blocks Run",
-      "default": null,
-      "default_kind": "none",
-      "constraints": "Existing brokerage USD account.",
-      "gates": [],
-      "description": "The brokerage USD account that receives surplus income and other remaining USD cash. Enter an existing account name. New deposits follow that account’s allocation and increase its tax cost basis."
     },
     {
       "path": "properties[].id",
@@ -1396,14 +1326,14 @@
       "builder_control": "text",
       "internal_path": "properties[].proceeds_account",
       "serialize_path": "properties[].proceeds_account",
-      "omission": "required; blank stays omitted and blocks Run",
-      "default": null,
-      "default_kind": "none",
-      "constraints": "Existing brokerage USD account.",
+      "omission": "optional; omission uses declared default",
+      "default": "brokerage",
+      "default_kind": "documented",
+      "constraints": "Existing fixed account name.",
       "gates": [
         "H-PROPERTY"
       ],
-      "description": "The existing brokerage USD account that receives cash from a successful property sale after closing costs and mortgage payoff. Later tax settlement may require further withdrawals."
+      "description": "The account that receives cash from a successful property sale after closing costs and mortgage payoff. Defaults to Non-retirement liquid assets. Later tax settlement may require further withdrawals."
     }
   ]
 }

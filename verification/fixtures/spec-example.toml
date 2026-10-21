@@ -2,17 +2,8 @@
 schema_version = 1
 
 [[accounts]]
-balance = 300000
-name = "cny_bank"
-owner = "joint"
-share_A = 0.5
-type = "cash_cny"
-
-[[accounts]]
-balance = 1200000
-name = "joint_brokerage"
-owner = "joint"
-share_A = 0.5
+balance = 1244829.6473401076
+name = "brokerage"
 type = "brokerage"
 
 [accounts.allocation]
@@ -21,36 +12,8 @@ us_stocks = 0.6
 usd_cash = 0.1
 
 [[accounts]]
-balance = 900000
-name = "A_401k"
-owner = "A"
-rule_of_55 = false
-share_A = 0.5
-type = "pre_tax"
-
-[accounts.allocation]
-us_bonds = 0.4
-us_stocks = 0.6
-usd_cash = 0
-
-[[accounts]]
-balance = 300000
-name = "B_401k"
-owner = "B"
-rule_of_55 = false
-share_A = 0.5
-type = "pre_tax"
-
-[accounts.allocation]
-us_bonds = 0.4
-us_stocks = 0.6
-usd_cash = 0
-
-[[accounts]]
 balance = 150000
-name = "A_roth"
-owner = "A"
-share_A = 0.5
+name = "after_tax"
 type = "after_tax"
 
 [accounts.allocation]
@@ -122,7 +85,7 @@ maintenance_annual = 12465.6
 mortgage_balance = 0
 mortgage_rate = 0
 mortgage_years_left = 0
-proceeds_account = "joint_brokerage"
+proceeds_account = "brokerage"
 property_tax_annual = 9000
 rent_monthly = 3800
 rent_real_growth = 0
@@ -139,6 +102,15 @@ n_paths = 200
 seed = 42
 start_year = 2027
 
+[[accounts]]
+balance = 1200000
+name = "pre_tax"
+type = "pre_tax"
+
+[accounts.allocation]
+us_bonds = 0.4
+us_stocks = 0.6
+usd_cash = 0
+
 [withdrawals]
 last_resort_property_sale = true
-surplus_account = "joint_brokerage"

@@ -183,14 +183,11 @@ it('M05 M06: sourced stock/bond income is taxed as income and reinvested, withou
   if (!v.ok) throw new Error(JSON.stringify(v.issues));
   const s = v.value.scenario;
   const account = {
-    ...s.accounts[1],
-    type: 'brokerage',
-    owner: 'A',
-    share_A: 1,
+    ...s.accounts[0],
     balance: 100000,
     allocation: { us_stocks: 0.4, us_bonds: 0.6, usd_cash: 0 },
   } as BrokerageAccountConfig;
-  const state = initialAccount(account),
+  const state = initialAccount(account, false),
     income = { A: emptyIncome(), B: emptyIncome() },
     market = generateMarketPath(s, references, 0);
   const expectedReturn = 0.4 * market.us_stocks[0] + 0.6 * market.us_bonds[0];

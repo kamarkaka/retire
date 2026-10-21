@@ -52,10 +52,6 @@ export interface HouseholdPeople {
   A: PersonConfig;
   B?: PersonConfig; // Absent = one-person household.
 }
-export interface SavingsAccountConfig extends CommonAccountConfig {
-  type: 'cash_usd';
-  interest_rate?: number; // Annual decimal rate; omitted = observed 3-month T-bill return each year.
-}
 export interface OneTimeConfig {
   name: string;
   year: number;
@@ -64,8 +60,6 @@ export interface OneTimeConfig {
 }
 export interface CommonAccountConfig {
   name: string;
-  owner: PersonId | 'joint';
-  share_A: number;
   balance: number;
 }
 export interface BrokerageAccountConfig extends CommonAccountConfig {
@@ -74,19 +68,20 @@ export interface BrokerageAccountConfig extends CommonAccountConfig {
 }
 export interface RetirementAccountConfig extends CommonAccountConfig {
   type: 'pre_tax' | 'after_tax';
-  owner: PersonId;
   allocation: Partial<Record<AssetClass, number>>;
-  rule_of_55?: boolean; // trad only; omitted = false; roth rejects this key.
-  allow_early_trad?: boolean; // trad only; omitted = false; roth rejects this key.
+  rule_of_55?: boolean; // pre_tax only; omitted = false; after_tax rejects this key.
+  allow_early_trad?: boolean; // pre_tax only; omitted = false; after_tax rejects this key.
 }
-export interface CnyAccountConfig extends CommonAccountConfig {
-  type: 'cash_cny';
-}
-export type AccountConfig =
-  | BrokerageAccountConfig
-  | RetirementAccountConfig
-  | CnyAccountConfig
-  | SavingsAccountConfig;
+// The scenario always holds these three accounts in this fixed order, which is
+// also the withdrawal order. Ownership is derived from the household: even
+// A/B split with two people, full A with one.
+export const FIXED_ACCOUNT_ORDER = [
+  'brokerage',
+  'after_tax',
+  'pre_tax',
+] as const;
+export type FixedAccountName = (typeof FIXED_ACCOUNT_ORDER)[number];
+export type AccountConfig = BrokerageAccountConfig | RetirementAccountConfig;
 export interface PropertyConfig {
   id: string; // US real property only; all owners use citizen treatment (no FIRPTA).
   share_A: number;
@@ -161,7 +156,6 @@ export interface ScenarioConfig {
   accounts: AccountConfig[];
   withdrawals: {
     last_resort_property_sale: boolean;
-    surplus_account: string;
   };
   properties: PropertyConfig[];
 }
@@ -316,9 +310,8 @@ export interface TerminalMemo {
 }
 export interface AccountState {
   name: string;
-  original_owner: PersonId | 'joint';
   shares: Record<PersonId, number>;
-  values: Partial<Record<AssetClass | 'deposit', number>>;
+  values: Partial<Record<AssetClass, number>>;
   bases: Partial<Record<AssetClass, number>>;
   prior_year_end_balance: number;
 }
