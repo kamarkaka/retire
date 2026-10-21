@@ -179,9 +179,9 @@ const zhUI1 = {
   'tutorial.annualSpendingAria': '年度支出 {ccy}',
   'tutorial.medicalSpending': '上述支出中含医疗，{ccy}（选填）',
   'tutorial.medicalSpendingAria': '医疗支出 {ccy}',
-  'tutorial.q3': '有多少投资储蓄？',
-  'tutorial.investmentSavings': '投资储蓄，美元',
-  'tutorial.investmentSavingsAria': '投资储蓄 美元',
+  'tutorial.q3': '退休账户之外有多少储蓄？',
+  'tutorial.investmentSavings': '非退休投资，美元',
+  'tutorial.investmentSavingsAria': '非退休投资 美元',
   'tutorial.savingsNote':
     '我们将其放入一个证券账户（60% 股票、30% 债券、10% 现金），按账户顺序支取。之后可在构建器中拆分账户或调整配比。',
   'tutorial.q4': '退休账户中有多少钱？',
@@ -200,7 +200,7 @@ const zhUI1 = {
   'tutorial.reviewSpending': '每年支出 {amount} {ccy}{medical}。',
   'tutorial.reviewMedical': '，其中医疗 {amount} {ccy}',
   'tutorial.reviewSavings':
-    '投资储蓄 {balance} 美元；退休账户税前 {pre} 美元、税后 {after} 美元。',
+    '非退休投资 {balance} 美元；退休账户税前 {pre} 美元、税后 {after} 美元。',
   'tutorial.reviewHorizon': '方案从 {start} 年运行至 {age} 岁，采用历史市场。',
   'tutorial.confirmExit': '退出引导式设置？目前为止的回答将被丢弃。',
   'tutorial.keepEditing': '继续编辑',

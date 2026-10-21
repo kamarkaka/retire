@@ -48,7 +48,7 @@ test('M02 M10: question-based guided setup builds a runnable configuration in a 
   await dialog.getByRole('button', { name: 'Next', exact: false }).click();
   await expect(dialog.getByText('Step 4 of 7', { exact: true })).toBeVisible();
   await dialog
-    .getByLabel('Investment savings USD', { exact: true })
+    .getByLabel('Non-retirement investments USD', { exact: true })
     .fill('2000000');
   await dialog.getByRole('button', { name: 'Next', exact: false }).click();
   await expect(dialog.getByText('Step 5 of 7', { exact: true })).toBeVisible();

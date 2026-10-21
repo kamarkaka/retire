@@ -185,9 +185,9 @@ const enUI = {
   'tutorial.medicalSpending':
     'Medical spending included above, {ccy} (optional)',
   'tutorial.medicalSpendingAria': 'Medical spending {ccy}',
-  'tutorial.q3': 'How much is saved for investment?',
-  'tutorial.investmentSavings': 'Investment savings, USD',
-  'tutorial.investmentSavingsAria': 'Investment savings USD',
+  'tutorial.q3': 'How much is saved outside retirement accounts?',
+  'tutorial.investmentSavings': 'Non-retirement investments, USD',
+  'tutorial.investmentSavingsAria': 'Non-retirement investments USD',
   'tutorial.savingsNote':
     'We put it in one brokerage account (60% stocks, 30% bonds, 10% cash) with withdrawals in account order. Split accounts or change the mix later in the builder.',
   'tutorial.q4': 'How much is in retirement accounts?',
@@ -207,7 +207,7 @@ const enUI = {
   'tutorial.reviewSpending': 'Spending {amount} {ccy} per year{medical}.',
   'tutorial.reviewMedical': ', including {amount} {ccy} medical',
   'tutorial.reviewSavings':
-    'Investment savings {balance} USD; retirement {pre} USD pre-tax and {after} USD after-tax.',
+    'Non-retirement investments {balance} USD; retirement {pre} USD pre-tax and {after} USD after-tax.',
   'tutorial.reviewHorizon':
     'Plan runs {start} through age {age} with historical markets.',
   'tutorial.confirmExit':

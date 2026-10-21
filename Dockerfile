@@ -15,7 +15,7 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/scripts ./scripts
 COPY --from=build /app/src ./src
-COPY --from=build /app/verification ./verification
+COPY --from=build /app/verification/reference/check-refresh-source.py /app/verification/reference/read-historical-source.py ./verification/reference/
 COPY --from=build /app/package.json ./
 ENV PORT=8080 DATA_DIR=/data MARKET_DATA_REFRESH_HOURS=720 BASE_PATH=/
 VOLUME /data

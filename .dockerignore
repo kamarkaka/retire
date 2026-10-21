@@ -7,5 +7,6 @@ private/
 data/raw/
 data/refreshed/
 data/live/
+__pycache__/
 .DS_Store
 .git/
