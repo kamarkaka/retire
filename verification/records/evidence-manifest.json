@@ -1,6 +1,6 @@
 {
   "record_kind": "Current evidence content hashes (project has no Git repository); original M00 reports preserved",
-  "created_at": "2026-10-21T12:45:26.880Z",
+  "created_at": "2026-10-21T18:28:54.219Z",
   "environment": {
     "node": "v24.22.0",
     "npm": "11.17.0",
@@ -161,7 +161,7 @@
     "verification/records/e2e/chromium-unified-omitted.toml": "5df6ae5ea122bce9324a7a470a3d3bb2bc6e299cebf06544a186236b9b1e329e",
     "verification/records/e2e/chromium-wheel-config.toml": "cad5d8a0962d4a54b5b0890e726c9160bdb93393d0883ad65915a2fc6ad94c46",
     "verification/records/e2e/chromium-zero-start.csv": "1c4ff5ae97792ec7b43415bdfb123b6762e768e9202fe83755251260ec29c877",
-    "verification/records/inventory-integrity.json": "ba3cd9d2c22c8edf9716a36cb36ec7e8c65f39cc1ea1e3012c6d5a4d1bae6722",
+    "verification/records/inventory-integrity.json": "bfe53f8f9a82c5fd8f477b1c9af7e3dea7f0460b51fe1608574dbeeb7808f235",
     "verification/records/M00/acceptance.md": "ce416dc91e6d392f8af170649e4dd6f2c923bf45003f9c211ae3120112a1dde8",
     "verification/records/M00-1/automated.md": "1d8247f61b33f99727da54f66015aa9db2d40a70b91e143df0916a6feba4772d",
     "verification/records/M00-1/format-inspection-report.json": "a479ba3604f2469c3c0880103a4290e82436ca9d4fc7052c064ea1584c55b51d",

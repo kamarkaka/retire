@@ -1,304 +1,171 @@
 import { test, expect } from './fixtures';
-import {
-  createExampleDraft,
-  createControlDraft,
-} from '../../src/config/constructors';
-import { parseScenario } from '../../src/config/config';
-import {
-  parseMarketData,
-  marketDataHash,
-  PUBLIC_MARKET_SOURCES,
-  type MarketDataSnapshot,
-} from '../../src/reference/market-data';
-import { references } from '../../src/reference/bundle';
 import { complete, uploadDraft, saveDownload, record } from './helpers';
+import {
+  createControlDraft,
+  createExampleDraft,
+} from '../../src/config/constructors';
+import { references } from '../../src/reference/bundle';
+import { marketDataHash } from '../../src/reference/market-data';
+import type { MarketDataSnapshot } from '../../src/reference/market-data';
 
-test('M03 M10 M11: homepage refresh fetches all five live public sources and applies source-backed inputs', async ({
+test('M03 M11: the app loads server market data with a parameter-free public-data GET', async ({
   page,
-}, info) => {
-  const requests: { url: string; method: string; body: string | null }[] = [];
-  page.on('request', (r) =>
-    requests.push({ url: r.url(), method: r.method(), body: r.postData() }),
-  );
-  const d = createExampleDraft();
-  d.simulation!.n_paths = 16;
-  d.simulation!.max_age = 62;
-  d.budget!.annual = 310000;
-  d.market!.income_yield_us_stocks = 0.01;
-  d.market!.income_yield_us_bonds = 0.03;
-  d.market!.fx_sigma = 0.08;
-  d.market!.home_cpi_mean = 0.04;
+}) => {
+  const requests: {
+    method: string;
+    url: string;
+    body: string | null;
+    contentType: string | null;
+  }[] = [];
+  await page.route('**/api/market-data', async (route, request) => {
+    const response = await route.fetch();
+    requests.push({
+      method: request.method(),
+      url: request.url(),
+      body: request.postData(),
+      contentType: response.headers()['content-type'] ?? null,
+    });
+    await route.fulfill({ response });
+  });
   await page.goto('/');
-  await uploadDraft(page, d);
-  await page
-    .getByRole('button', { name: 'Refresh market data', exact: true })
-    .click();
   await expect(page.getByTestId('market-refresh-status')).toContainText(
-    'Applied',
-    { timeout: 40000 },
+    'Applied 98 historical US years',
+    { timeout: 30000 },
   );
-  const sourceFile = await saveDownload(
-      page,
-      'Download market data',
-      `${info.project.name}-market-refresh-live-package.json`,
-    ),
-    data = parseMarketData(sourceFile.text);
-  expect(data.sources.map((s) => s.id).sort()).toEqual(
-    Object.keys(PUBLIC_MARKET_SOURCES).sort(),
+  expect(requests).toHaveLength(1);
+  expect(requests[0].method).toBe('GET');
+  expect(requests[0].body).toBeNull();
+  expect(new URL(requests[0].url).search).toBe('');
+  expect(requests[0].contentType).toContain('application/json');
+  await record('m03.live-requests', requests);
+  const d = createExampleDraft();
+  d.simulation!.n_paths = 2;
+  await uploadDraft(page, d);
+  const data = references.market_data!;
+  const after = JSON.parse(
+    (await saveDownload(page, 'Download current config', 'live.toml')).text,
   );
-  expect(data.history).toHaveLength(98);
-  const configuration = parseScenario(
-    (
-      await saveDownload(
-        page,
-        'Download current config',
-        `${info.project.name}-market-refresh-live-config.toml`,
-      )
-    ).text,
-  );
-  expect(configuration.ok).toBe(true);
-  if (!configuration.ok) throw new Error(JSON.stringify(configuration.issues));
-  expect(configuration.value.market!.income_yield_us_stocks).toBe(
+  expect(after.market.income_yield_us_stocks).toBe(
     data.income_yields.us_stocks.value,
   );
-  expect(configuration.value.market!.income_yield_us_bonds).toBe(
+  expect(after.market.income_yield_us_bonds).toBe(
     data.income_yields.us_bonds.value,
   );
-  expect(configuration.value.market!.fx_spot).toBe(data.latest.usd_cny.value);
-  expect(configuration.value.budget!.annual).toBe(310000);
-  expect(configuration.value.market!.home_cpi_mean).toBe(0.04);
-  expect(configuration.value.market!.fx_sigma).toBe(0.08);
-  await complete(page, 16);
-  const manifest = JSON.parse(
-    (
-      await saveDownload(
-        page,
-        'Download run manifest',
-        `${info.project.name}-market-refresh-live-manifest.json`,
-      )
-    ).text,
-  );
-  expect(manifest.scientific.reference_hashes.market_data).toBe(data.sha256);
-  expect(manifest.market_data).toEqual(data);
-  const fetches = requests.filter((r) =>
-    new URL(r.url).pathname.endsWith('/api/market-data'),
-  );
-  expect(fetches).toHaveLength(1);
-  expect(fetches[0].method).toBe('GET');
-  expect(fetches[0].body).toBeNull();
-  expect(new URL(fetches[0].url).search).toBe('');
-  expect(
-    await page.evaluate(() => ({
-      local: localStorage.length,
-      session: sessionStorage.length,
-    })),
-  ).toEqual({ local: 0, session: 0 });
-  await record(`${info.project.name}-market-refresh-live.json`, {
-    status: 'PASS',
-    method:
-      'Live gateway, five fixed public downloads; native production worker after apply; no intercepted refresh response',
-    sources: data.sources,
-    income_yields: data.income_yields,
-    latest: data.latest,
-    configuration: configuration.value.market,
-    request: fetches[0],
-    manifest: manifest.scientific,
-  });
+  expect(after.market.fx_spot).toBe(data.latest.usd_cny.value);
+  await complete(page, 2);
+  await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
+  await expect(page.getByTestId('ledger-ready')).toContainText('Path 49');
+  expect(await page.getByTestId('path-stop').count()).toBe(1);
+  const storage = await page.evaluate(() => ({
+    local: Object.keys(localStorage).sort(),
+    session: sessionStorage.length,
+  }));
+  expect(storage.session).toBe(0);
+  expect(storage.local).toEqual(['retire.language']);
 });
 
-test('M03 M10: refreshing references cannot alter a completed or pinned ledger; exported data reproduce a new run', async ({
+test('M03 M11: completed runs pin their market data; new server data affects only new runs', async ({
   page,
-}, info) => {
-  // Deliberately changed public-package fixture tests a provider revision; this is not live-source evidence.
-  const updated = structuredClone(
-    references.market_data!,
-  ) as MarketDataSnapshot;
-  updated.history.find((r) => r.year === 1982)!.us_stocks = -0.2;
-  updated.income_yields.us_bonds.value = 0.055;
-  updated.sources.find((s) => s.id === 'DGS10')!.sha256 = '1'.repeat(64);
-  updated.sources.find((s) => s.id === 'NYU')!.sha256 = '2'.repeat(64);
-  updated.sha256 = marketDataHash(updated);
-  const d = createControlDraft();
-  d.simulation = { ...d.simulation, n_paths: 1, max_age: 70 };
-  for (const id of ['A', 'B'] as const) d.people![id]!.birth_year = 1956;
-  Object.assign(d.market!, {
-    home_cpi_mean: 0,
-    home_cpi_start: 0,
-    fx_spot: 1,
-    fx_fair_value: 1,
-    fx_spread: 0,
+}) => {
+  const requests: string[] = [];
+  await page.route('**/api/market-data', async (route, request) => {
+    requests.push(request.url());
+    await route.continue();
   });
-  d.budget = { annual: 10000, included_health: 0 };
-  d.accounts = [
-    {
-      name: 'revision_roth',
-      type: 'after_tax',
-      owner: 'A',
-      share_A: 1,
-      balance: 100000,
-      allocation: { us_stocks: 0.4, us_bonds: 0.6 },
-    },
-    { ...d.accounts![0], balance: 0 },
-  ];
   await page.goto('/');
-  await uploadDraft(page, d);
-  await complete(page, 1);
-  const before = JSON.parse(
-    (
-      await saveDownload(
-        page,
-        'Download run manifest',
-        `${info.project.name}-market-refresh-original-manifest.json`,
-      )
-    ).text,
-  );
-  await page
-    .getByRole('button', { name: 'Pin completed run', exact: true })
-    .click();
-  await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await expect(page.getByTestId('ledger-ready')).toContainText(
-    '1 active years',
-  );
-  const originalCsv = (
-    await saveDownload(
-      page,
-      'Download ledger CSV',
-      `${info.project.name}-market-refresh-original.csv`,
-    )
-  ).text;
-  await page.route('**/api/market-data', (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify(updated),
-    }),
-  );
-  await page
-    .getByRole('button', { name: 'Refresh market data', exact: true })
-    .click();
   await expect(page.getByTestId('market-refresh-status')).toContainText(
-    'Applied',
+    'Applied 98 historical US years',
+    { timeout: 30000 },
   );
-  await expect(
-    page.locator('.snapshot-note').filter({ hasText: 'Showing completed run' }),
-  ).toBeVisible();
-  await page.getByRole('button', { name: 'Results', exact: true }).click();
-  const unchanged = JSON.parse(
+  const d = createExampleDraft();
+  d.simulation!.n_paths = 2;
+  await uploadDraft(page, d);
+  await complete(page, 2);
+  const oldManifest = JSON.parse(
     (
       await saveDownload(
         page,
         'Download run manifest',
-        `${info.project.name}-market-refresh-retained-manifest.json`,
+        'before-refresh-manifest.json',
       )
     ).text,
   );
-  expect(unchanged).toEqual(before);
-  await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await expect(page.getByTestId('ledger-ready')).toContainText(
-    '1 active years',
+  expect(oldManifest.scientific.reference_hashes.market_data).toBe(
+    references.market_data!.sha256,
   );
-  expect(
-    (
-      await saveDownload(
-        page,
-        'Download ledger CSV',
-        `${info.project.name}-market-refresh-retained.csv`,
-      )
-    ).text,
-  ).toBe(originalCsv);
-  await complete(page, 1);
-  const after = JSON.parse(
-    (
-      await saveDownload(
-        page,
-        'Download run manifest',
-        `${info.project.name}-market-refresh-revised-manifest.json`,
-      )
-    ).text,
-  );
-  expect(after.scientific.reference_hashes.market_data).toBe(updated.sha256);
-  expect(after.aggregate).not.toEqual(before.aggregate);
-  const config = await saveDownload(
-      page,
-      'Download run config',
-      `${info.project.name}-market-refresh-revised.toml`,
-    ),
-    data = await saveDownload(
-      page,
-      'Download run market data',
-      `${info.project.name}-market-refresh-revised-data.json`,
-    );
-  await page.getByRole('button', { name: 'Compare', exact: true }).click();
-  await expect(page.getByTestId('comparison-compatibility')).toContainText(
-    'Unpaired:',
-  );
-  await page
-    .getByRole('button', { name: 'Show baseline ledger', exact: true })
-    .click();
-  await expect(page.getByTestId('ledger-ready')).toContainText(
-    '1 active years',
-  );
-  expect(
-    (
-      await saveDownload(
-        page,
-        'Download ledger CSV',
-        `${info.project.name}-market-refresh-pinned.csv`,
-      )
-    ).text,
-  ).toBe(originalCsv);
+  const oldLedger = (
+    await saveDownload(page, 'Download ledger CSV', 'before-refresh.csv')
+  ).text;
+  expect(oldLedger).toContain('annual_investment_return');
+
+  let updated: MarketDataSnapshot | null = null;
+  await page.unrouteAll({ behavior: 'wait' });
+  await page.route('**/api/market-data', async (route, request) => {
+    requests.push(request.url());
+    const response = await route.fetch();
+    const data = (await response.json()) as MarketDataSnapshot;
+    updated = {
+      ...data,
+      income_yields: {
+        us_stocks: {
+          ...data.income_yields.us_stocks,
+          value: 0.02,
+          numerator: 120,
+          denominator: 6000,
+        },
+        us_bonds: { ...data.income_yields.us_bonds, value: 0.06 },
+      },
+      latest: {
+        ...data.latest,
+        usd_cny: { ...data.latest.usd_cny, value: 7.5 },
+        cn_cpi: { ...data.latest.cn_cpi, value: 0.025 },
+        us_cpi: { ...data.latest.us_cpi, value: 0.031 },
+      },
+    };
+    updated.sha256 = marketDataHash(updated);
+    await route.fulfill({ response, json: updated });
+  });
   await page.reload();
-  await page
-    .getByLabel('Upload market data file', { exact: true })
-    .setInputFiles(data.path);
-  await page
-    .getByLabel('Upload configuration file', { exact: true })
-    .setInputFiles(config.path);
-  await complete(page, 1);
-  const reproduced = JSON.parse(
+  await expect(page.getByTestId('market-refresh-status')).toContainText(
+    'Applied 98 historical US years',
+    { timeout: 30000 },
+  );
+  // The re-uploaded draft picks up the new server data on load.
+  await uploadDraft(page, d);
+  const after = JSON.parse(
+    (await saveDownload(page, 'Download current config', 'live.toml')).text,
+  );
+  expect(after.market.income_yield_us_stocks).toBe(0.02);
+  expect(after.market.income_yield_us_bonds).toBe(0.06);
+  expect(after.market.fx_spot).toBe(7.5);
+  await complete(page, 2);
+  const newManifest = JSON.parse(
     (
       await saveDownload(
         page,
         'Download run manifest',
-        `${info.project.name}-market-refresh-reproduced.json`,
+        'after-refresh-manifest.json',
       )
     ).text,
   );
-  expect(reproduced.scientific).toEqual(after.scientific);
-  expect(reproduced.aggregate).toEqual(after.aggregate);
-  await record(`${info.project.name}-market-refresh-snapshots.json`, {
-    status: 'PASS',
-    method:
-      'Controlled provider-revision package; production workers and file exports; original and pinned CSV byte identity, package/config reload reproduces scientific inputs and aggregates',
-    original_hash: before.scientific.reference_hashes.market_data,
-    updated_hash: updated.sha256,
-    reproduced: reproduced.scientific,
+  expect(newManifest.scientific.reference_hashes.market_data).toBe(
+    updated!.sha256,
+  );
+  expect(newManifest.market_data).toEqual(updated);
+  expect(newManifest.scientific.reference_hashes.market_data).not.toBe(
+    oldManifest.scientific.reference_hashes.market_data,
+  );
+  expect(requests.length).toBeGreaterThanOrEqual(2);
+  await record('m03.refresh-rerun', {
+    before: oldManifest.scientific.reference_hashes.market_data,
+    after: newManifest.scientific.reference_hashes.market_data,
   });
 });
 
-test('M03 M10: failed, malformed and canceled refreshes preserve data and the editable configuration', async ({
+test('M03 M10: failed and malformed server data preserve data and the editable configuration', async ({
   page,
 }, info) => {
-  await page.goto('/retire/');
-  await page
-    .getByRole('button', { name: 'Load sample config', exact: false })
-    .click();
-  const initial = (
-      await saveDownload(
-        page,
-        'Download current config',
-        `${info.project.name}-market-refresh-failure-before.toml`,
-      )
-    ).text,
-    originalData = (
-      await saveDownload(
-        page,
-        'Download market data',
-        `${info.project.name}-market-refresh-failure-before.json`,
-      )
-    ).text;
-  let mode: 'failed' | 'malformed' | 'held' = 'failed',
-    release = () => {};
+  let mode: 'failed' | 'malformed' = 'failed';
   await page.route('**/api/market-data', async (route) => {
     if (mode === 'failed') {
       await route.fulfill({
@@ -308,52 +175,34 @@ test('M03 M10: failed, malformed and canceled refreshes preserve data and the ed
       });
       return;
     }
-    if (mode === 'malformed') {
-      const changed = JSON.parse(originalData);
-      changed.income_yields.us_bonds.value = 0.02;
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(changed),
-      });
-      return;
-    }
-    await new Promise<void>((resolve) => {
-      release = resolve;
+    const changed = structuredClone(references.market_data!);
+    changed.income_yields.us_bonds.value = 0.02;
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(changed),
     });
-    try {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: originalData,
-      });
-    } catch {}
   });
-  await page
-    .getByRole('button', { name: 'Refresh market data', exact: true })
-    .click();
+  await page.goto('/retire/');
   await expect(page.getByRole('alert')).toContainText('FRED unavailable');
+  await expect(page.getByTestId('market-refresh-status')).toHaveCount(0);
+  await page
+    .getByRole('button', { name: 'Load sample config', exact: false })
+    .click();
+  const initial = (
+    await saveDownload(
+      page,
+      'Download current config',
+      `${info.project.name}-market-refresh-failure-before.toml`,
+    )
+  ).text;
+  const originalHash = await page.getByTestId('market-data-hash').textContent();
   mode = 'malformed';
-  await page
-    .getByRole('button', { name: 'Refresh market data', exact: true })
-    .click();
+  await page.reload();
   await expect(page.getByRole('alert')).toContainText('SHA-256');
-  mode = 'held';
-  const requested = page.waitForRequest('**/api/market-data');
   await page
-    .getByRole('button', { name: 'Refresh market data', exact: true })
+    .getByRole('button', { name: 'Load sample config', exact: false })
     .click();
-  await requested;
-  await page
-    .getByRole('button', { name: 'Cancel refresh', exact: true })
-    .click();
-  release();
-  await expect(page.getByTestId('market-refresh-status')).toContainText(
-    'Refresh canceled',
-  );
-  await expect(
-    page.getByRole('button', { name: 'Refresh market data', exact: true }),
-  ).toBeEnabled();
   expect(
     (
       await saveDownload(
@@ -363,25 +212,62 @@ test('M03 M10: failed, malformed and canceled refreshes preserve data and the ed
       )
     ).text,
   ).toBe(initial);
-  expect(
-    (
-      await saveDownload(
-        page,
-        'Download market data',
-        `${info.project.name}-market-refresh-failure-after.json`,
-      )
-    ).text,
-  ).toBe(originalData);
+  await expect(page.getByTestId('market-data-hash')).toHaveText(originalHash!);
+  await expect(
+    page.getByRole('button', { name: 'Refresh market data', exact: true }),
+  ).toHaveCount(0);
   await record(`${info.project.name}-market-refresh-errors.json`, {
     status: 'PASS',
     mount: '/retire/',
-    cases: [
-      'HTTP 502',
-      'mismatched package hash',
-      'explicit cancellation before response',
-    ],
+    cases: ['HTTP 502', 'mismatched package hash'],
     configuration_and_data_unchanged: true,
   });
+});
+
+test('M03: the refresh gateway accepts only a parameter-free public-data GET', async ({
+  request,
+  baseURL,
+}) => {
+  const post = await request.post(`${baseURL}/api/market-data`, {
+    data: { seed: 1 },
+  });
+  expect(post.status()).toBe(404);
+  const params = await request.get(`${baseURL}/api/market-data?seed=1`);
+  expect(params.status()).toBe(404);
+  const put = await request.put(`${baseURL}/api/market-data`);
+  expect(put.status()).toBe(404);
+  const port = new URL(baseURL!).port || '4173';
+  for (const base of [
+    `http://127.0.0.1:${port}/`,
+    `http://127.0.0.1:${port}/retire/`,
+  ]) {
+    const ok = await request.get(`${base}api/market-data`);
+    expect(ok.status()).toBe(200);
+    expect(ok.headers()['content-type']).toContain('application/json');
+    const data = (await ok.json()) as MarketDataSnapshot;
+    expect(data.format_version).toBe('retire-market-data-v1');
+    expect(data.history).toHaveLength(98);
+    expect(
+      new Date(data.sources[0].retrieved_at).getTime(),
+    ).toBeLessThanOrEqual(new Date(data.fetched_at).getTime());
+  }
+  await record('m03.gateway-shape', { ok: true });
+});
+
+test('M03: the gateway serves the maintained package, not live providers', async ({
+  request,
+  baseURL,
+}) => {
+  const first = (await (
+    await request.get(`${baseURL}/api/market-data`)
+  ).json()) as MarketDataSnapshot;
+  const second = (await (
+    await request.get(`${baseURL}/api/market-data`)
+  ).json()) as MarketDataSnapshot;
+  // A file-backed gateway returns identical snapshots across calls.
+  expect(second).toEqual(first);
+  expect(first.sha256).toBe(references.market_data!.sha256);
+  await record('m03.gateway-stable', { sha256: first.sha256 });
 });
 
 test('M08 M09 M10: native worker stops at zero net assets and ledger/CSV contain only simulated years', async ({

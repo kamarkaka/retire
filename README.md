@@ -1,6 +1,6 @@
-# Retire — local retirement simulator
+# Retire — Local Retirement Simulator
 
-React, TypeScript, Vite and ECharts. The engine, workers and result analysis run in the browser. Upload TOML or build/edit a configuration in the app, then download it to save. There is no configuration API or simulation service.
+React, TypeScript, Vite and ECharts. The engine, workers and result analysis all run in the browser. Upload TOML or build/edit a scenario configuration in the app, then download it to save. There is no API or backend service.
 
 ## Start the app
 
@@ -9,27 +9,28 @@ npm ci
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173/`. Choose **Load sample config**, then **Run simulation**. The sample runs 200 paths, starts in 2027 with A/B born 1986, and has a maximum 70-year horizon. It stops earlier if net assets reach zero or below. A is Female/US citizen; B is Male/non-US citizen; the household domicile is China. Sex is descriptive; everyone remains alive throughout.
-
-You can upload [examples/sample.toml](examples/sample.toml). [examples/control-50year.toml](examples/control-50year.toml) is a 50-year planning example, ages 40–89 with Max age 89; it uses the same historical returns as all other configs. Independent constant-return PV controls use test-only literal data. The app never fetches these example files. **Download current config** saves draft edits; **Download run config** saves the immutable completed inputs. Reload clears session state; re-upload a saved file to continue.
-
-## Languages
-
-The header switcher toggles English and 简体中文 instantly; the choice persists across reloads and the browser default applies on first visit. Charts, numbers, field labels, help text and market messages all follow the switch. Validator diagnostics stay in English with their config paths. To add a language, author one file shaped like `src/i18n/zh.ts` (every `MessageKey` plus field/label/enum/unit tables) and register it in `src/i18n/core.ts`; `tests/i18n.test.ts` fails until the new locale is complete.
+Open `http://127.0.0.1:5173/`. Choose **Load sample config**, then **Run simulation**. The sample runs 200 paths, starts in 2027 with A/B born 1986, and has a maximum 70-year horizon. It stops earlier if net assets reach zero or below. A is Female/US citizen; B is Male/non-US citizen; the household domicile is China.
 
 ## Refresh market data
 
-Click **Refresh market data** on the homepage to download all five public sources: NYU annual returns/dividends and FRED US CPI, China CPI, USD/CNY and 10-year Treasury yield. Refresh replaces the active historical/calibration references, the two income yields and spot FX. It preserves budgets, allocations and configured China/FX risk parameters. Source dates/definitions/hashes are shown; failed/canceled refreshes preserve your work.
+The server refreshes all five public sources on a schedule (monthly by default); the browser never fetches them:
+- NYU annual returns/dividends
+- FRED US CPI
+- China CPI
+- USD/CNY
+- 10-year Treasury yield
 
-The sourced example yields are **1.335854% stock income** (2025 dividends 78.57 ÷ opening index 5881.63) and **5.10% bond income** (FRED DGS10, 2026-10-15). The former 1.3%/4.2% were undated assumptions. DGS10 is a par-Treasury income proxy, which can differ from actual portfolio coupons. Neither yield adds extra total return.
+A refresh replaces the active historical/calibration references, the two income yields and spot FX. It preserves budgets, allocations and configured China/FX risk parameters. Source dates/definitions/hashes are shown, and the Market data panel shows the data date. Failed refreshes keep serving the previous package.
 
-`npm run dev` and `npm run preview` include a read-only public-data gateway because the providers lack browser CORS headers. It requires Node and `curl`, accepts no financial inputs, and stores no configs. Repeat the identical collector outside the app with:
+The sourced example yields are **1.335854% stock income** (2025 dividends 78.57 ÷ opening index 5881.63) and **5.10% bond income** (FRED DGS10, 2026-10-15). DGS10 is a par-Treasury income proxy, which can differ from actual portfolio coupons. Neither yield adds extra total return.
+
+The Docker image (`docker build -t retire .`, then run with a `/data` volume) serves the app plus a read-only `GET api/market-data` endpoint backed by the scheduled job. Configure it with `PORT`, `DATA_DIR`, `MARKET_DATA_REFRESH_HOURS` (default 720) and `BASE_PATH`. `npm run serve` runs the same server locally; `npm run market:refresh` runs one refresh manually. Repeat the identical collector outside the app with:
 
 ```sh
 npm run data:fetch -- --output data/refreshed
 ```
 
-Upload its `market-data.json` with **Upload market data**. Static hosts support this file workflow without a gateway. For reproducibility, download **run market data** and **run config** from a completed result; after reload, upload the data package before the TOML. Refresh never changes a completed or pinned run's ledger.
+Static hosts use the bundled data without a gateway. For reproducibility, download **run config** and the run manifest from a completed result; the manifest embeds the exact market-data package the run used. A refresh never changes a completed or pinned run's ledger.
 
 ## Configuration and calculations
 

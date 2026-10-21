@@ -29,6 +29,8 @@
     "data:verify": "tsx scripts/verify-data.ts",
     "test:e2e": "playwright test",
     "test:serve": "tsx scripts/serve-test-build.ts",
+    "serve": "tsx scripts/serve.ts",
+    "market:refresh": "tsx scripts/market-data-refresh.ts",
     "verify:build": "tsx scripts/verify-build.ts",
     "report:release": "tsx scripts/release-report.ts",
     "check": "npm run prepare:build && npm run verify:reference && npm run typecheck && npm run test:report && npm run data:verify && npm run verify -- --all && npm run build && npm run verify:build && npm run test:e2e && npm run verify:inventory && npm run report:release"

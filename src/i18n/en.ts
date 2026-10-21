@@ -86,7 +86,6 @@ const enUI = {
   'export.pin': 'Pin completed run',
   'export.runConfig': 'Download run config',
   'export.manifest': 'Download run manifest',
-  'export.marketData': 'Download run market data',
 
   'error.simulation': 'Simulation or file error',
   'error.import': 'Import could not be applied',
@@ -363,13 +362,9 @@ const enUI = {
     'NYU/FRED historical US market data · {start}–{end} · China inflation and FX are modeled',
 
   'market.title': 'Market data',
-  'market.cancelRefresh': 'Cancel refresh',
-  'market.refresh': 'Refresh market data',
-  'market.upload': 'Upload market data',
-  'market.download': 'Download market data',
-  'market.uploadAria': 'Upload market data file',
   'market.intro':
-    'Refresh downloads public NYU/FRED data. Configurations and financial inputs stay in your browser. Completed runs keep their original data.',
+    'The server refreshes public NYU/FRED data on a schedule. Configurations and financial inputs stay in your browser. Completed runs keep their original data.',
+  'market.asOf': 'Market data as of {date}.',
   'market.stockYield': 'Stock income yield',
   'market.stockNote': 'NYU · {date} · dividends ÷ beginning-year index',
   'market.bondYield': 'Bond income yield',
@@ -383,20 +378,11 @@ const enUI = {
   'market.retrieved': '· retrieved {date} · raw SHA-256',
   'market.cpi':
     'Latest US CPI: {us} ({usDate}, monthly year over year). Latest China CPI: {cn} ({cnDate}, annual average). Future China inflation and FX volatility still follow your configured assumptions.',
-  'market.reproduce':
-    'Download this package alongside your TOML config to reproduce a run after reload. Package validation checks source shape, continuity, definitions and hashes; future provider revisions have not been independently audited.',
   'market.applied':
     'Applied {years} historical US years, both income yields and spot FX. China/FX calibration data updated; your risk parameters and budget are retained.',
-  'market.fetching': 'Fetching five public market sources…',
-  'market.noEndpoint':
-    'This host does not provide the public-data refresh endpoint. Upload a market data package generated with npm run data:fetch.',
   'market.refreshFailed': 'Public market refresh failed.',
   'market.fewerYears':
     'The fetched source has fewer complete years than the current data. Existing data are preserved.',
-  'market.canceled':
-    'Refresh canceled. Existing data and configuration are preserved.',
-  'market.tooLarge': 'Market data package exceeds 4 MiB',
-  'market.timeout': 'Market refresh timed out.',
   'market.errorSuffix': 'Existing data and configuration are preserved.',
 } as const;
 

@@ -115,7 +115,14 @@ export default function App() {
   };
   const load = (d: DraftScenario) => {
     importVersion.current++;
-    setDraft(d);
+    // Server data auto-applies at mount, possibly before any draft exists;
+    // patch newly loaded drafts when the active package differs from bundled.
+    const server = references.market_data;
+    setDraft(
+      server && server.sha256 !== bundledReferences.market_data?.sha256
+        ? applyMarketData(d, server, bundledReferences)
+        : d,
+    );
     setShowStart(false);
     setTab('configuration');
     setImportIssues([]);
@@ -362,11 +369,7 @@ export default function App() {
             </section>
           </>
         )}
-        <MarketData
-          references={references}
-          disabled={busy}
-          onApply={applyData}
-        />
+        <MarketData references={references} onApply={applyData} />
         {draft && !showStart && (
           <>
             <div className="workspace-toolbar">
@@ -639,24 +642,6 @@ export default function App() {
                   >
                     {t('export.manifest')}
                   </button>
-                  {completed.references.market_data && (
-                    <button
-                      className="secondary"
-                      onClick={() =>
-                        downloadLocal(
-                          'retire-run-market-data.json',
-                          JSON.stringify(
-                            completed.references.market_data,
-                            null,
-                            2,
-                          ),
-                          'application/json',
-                        )
-                      }
-                    >
-                      {t('export.marketData')}
-                    </button>
-                  )}
                 </div>
               </>
             )}

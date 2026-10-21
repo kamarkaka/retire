@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.venv/
+test-results/
+playwright-report/
+private/
+data/raw/
+data/refreshed/
+data/live/
+.DS_Store
+.git/

@@ -31,12 +31,6 @@ test('M02 M03 M10: buttons and inputs sharing a row render at one height', async
   await page
     .getByRole('button', { name: 'Load sample config', exact: false })
     .click();
-  const market = page.locator('.market-data');
-  measured.market_toolbar = await expectSameRow(page, 'market-data toolbar', [
-    market.getByRole('button', { name: 'Refresh market data', exact: true }),
-    market.getByRole('button', { name: 'Upload market data', exact: true }),
-    market.getByRole('button', { name: 'Download market data', exact: true }),
-  ]);
   const workspace = page.locator('.workspace-toolbar');
   measured.workspace_toolbar = await expectSameRow(page, 'workspace toolbar', [
     workspace.getByRole('button', {
@@ -65,10 +59,6 @@ test('M02 M03 M10: buttons and inputs sharing a row render at one height', async
       exports.getByRole('button', { name: 'Download run config', exact: true }),
       exports.getByRole('button', {
         name: 'Download run manifest',
-        exact: true,
-      }),
-      exports.getByRole('button', {
-        name: 'Download run market data',
         exact: true,
       }),
     ],

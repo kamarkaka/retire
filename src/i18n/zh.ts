@@ -82,7 +82,6 @@ const zhUI1 = {
   'export.pin': '固定已完成的运行',
   'export.runConfig': '下载运行配置',
   'export.manifest': '下载运行清单',
-  'export.marketData': '下载运行市场数据',
 
   'error.simulation': '模拟或文件错误',
   'error.import': '导入未能应用',
@@ -350,13 +349,9 @@ const zhUI2 = {
     'NYU/FRED 美国历史市场数据 · {start}–{end} · 中国通胀与汇率为模型假设',
 
   'market.title': '市场数据',
-  'market.cancelRefresh': '取消刷新',
-  'market.refresh': '刷新市场数据',
-  'market.upload': '上传市场数据',
-  'market.download': '下载市场数据',
-  'market.uploadAria': '上传市场数据文件',
   'market.intro':
-    '刷新下载公开的 NYU/FRED 数据。配置与财务输入保留在浏览器中。已完成的运行保留其原始数据。',
+    '服务器按计划刷新公开的 NYU/FRED 数据。配置与财务输入保留在浏览器中。已完成的运行保留其原始数据。',
+  'market.asOf': '市场数据截至 {date}。',
   'market.stockYield': '股票收益率',
   'market.stockNote': 'NYU · {date} · 股息 ÷ 年初指数',
   'market.bondYield': '债券收益率',
@@ -370,18 +365,10 @@ const zhUI2 = {
   'market.retrieved': '· 获取于 {date} · 原始 SHA-256',
   'market.cpi':
     '美国最新 CPI：{us}（{usDate}，月度同比）。中国最新 CPI：{cn}（{cnDate}，年均）。未来中国通胀与汇率波动仍遵循您的配置假设。',
-  'market.reproduce':
-    '下载此数据包并与 TOML 配置一并保存，以便重新加载后复现运行。数据包校验检查来源形态、连续性、定义与哈希；未来供应商修订尚未独立审计。',
   'market.applied':
     '已应用 {years} 个美国历史年份、两类收益率与即期汇率。中国/汇率校准数据已更新；您的风险参数与预算保留。',
-  'market.fetching': '正在获取五个公开市场来源…',
-  'market.noEndpoint':
-    '此主机不提供公开数据刷新端点。请上传用 npm run data:fetch 生成的市场数据包。',
   'market.refreshFailed': '公开市场刷新失败。',
   'market.fewerYears': '获取来源的完整年份少于当前数据。现有数据予以保留。',
-  'market.canceled': '刷新已取消。现有数据与配置予以保留。',
-  'market.tooLarge': '市场数据包超过 4 MiB',
-  'market.timeout': '市场刷新超时。',
   'market.errorSuffix': '现有数据与配置予以保留。',
 };
 

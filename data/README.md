@@ -31,7 +31,7 @@ DGS10 is a par-Treasury income proxy, not an existing portfolio's coupon income 
 
 ## Repeatable public refresh and integration
 
-**Refresh market data** downloads the NYU workbook and all four FRED CSVs (`CPIAUCNS`, `FPCPITOTLZGCHN`, `DEXCHUS`, `DGS10`). Shared JS collector: [market-data-source.ts](../scripts/market-data-source.ts). Dev/preview/test hosts expose a parameter-free, body-free `GET api/market-data`; this gateway fetches fixed public URLs and has no scenario files, configuration input or persistence. Both providers currently lack browser CORS headers. The app remains usable with a static host/offline assets through a local package upload.
+A scheduled server job downloads the NYU workbook and all four FRED CSVs (`CPIAUCNS`, `FPCPITOTLZGCHN`, `DEXCHUS`, `DGS10`); users never trigger a fetch. Shared JS collector: [market-data-source.ts](../scripts/market-data-source.ts). Job: [market-data-refresh.ts](../scripts/market-data-refresh.ts). Production/test hosts expose a parameter-free, body-free `GET api/market-data` served from the job-maintained package; the gateway has no scenario files, configuration input or persistence. Both providers currently lack browser CORS headers. The app remains usable with a static host/offline assets using the bundled data.
 
 Run the same collector explicitly:
 
@@ -42,7 +42,7 @@ python3 verification/reference/check-refresh-source.py --source-dir data/refresh
 
 The first command writes public raw files and `market-data.json` after every source is fetched and all checks pass. The second independently reconciles every annual value and both income yields, using stdlib BIFF/CSV readers; it is verification tooling, not part of the web app or gateway runtime.
 
-Upload the package in the app. Source/package hashes, complete consecutive US years, FRED missing values, exact NYU headers and dividend-yield definitions are checked. Annual US coverage advances when the workbook and December CPI both contain the new complete year. China/FX arrays update calibration displays; future AR/FX assumptions remain user parameters. Apply both sourced income rates and latest spot FX. A selected window that formerly ended at the latest year extends; a narrower window stays unchanged. No budget/allocation/risk settings are replaced. Failure/cancellation is atomic.
+The scheduled job runs this collector plus the independent check and a no-regression guard, then atomically swaps the package served at `GET api/market-data`. Source/package hashes, complete consecutive US years, FRED missing values, exact NYU headers and dividend-yield definitions are checked. Annual US coverage advances when the workbook and December CPI both contain the new complete year. China/FX arrays update calibration displays; future AR/FX assumptions remain user parameters. The app applies both sourced income rates and latest spot FX. A selected window that formerly ended at the latest year extends; a narrower window stays unchanged. No budget/allocation/risk settings are replaced. Failures keep the previous package and record the error in `status.json`.
 
 Each completed/pinned run owns its original data snapshot. Download its run data package and TOML, then upload data before TOML after reload. The scientific package hash excludes retrieval timestamps, so identical source bytes/observations reproduce it. Manifests include the package and hash. Runtime package validation does not claim an independent audit of future provider revisions.
 

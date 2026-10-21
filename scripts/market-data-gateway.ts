@@ -1,7 +1,12 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Plugin } from 'vite';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { fetchPublicMarketData } from './market-data-source.ts';
-import type { MarketDataSnapshot } from '../src/reference/market-data.ts';
+import {
+  parseMarketData,
+  type MarketDataSnapshot,
+} from '../src/reference/market-data.ts';
 
 /** Read-only public-data endpoint. It accepts no scenario, URL, file path, or request body. */
 export function marketDataMiddleware(
@@ -59,6 +64,23 @@ export function marketDataMiddleware(
             : 'Public market sources could not be refreshed.',
       });
     }
+  };
+}
+/**
+ * Serves the cron-maintained package. Missing or invalid files surface as a
+ * 502 through the middleware, and the client falls back to bundled data.
+ */
+export function fileMarketDataLoader(
+  dataDir: string,
+): () => Promise<Readonly<MarketDataSnapshot>> {
+  return async () => {
+    let text: string;
+    try {
+      text = await readFile(join(dataDir, 'market-data.json'), 'utf8');
+    } catch {
+      throw new Error('No server market data is available yet.');
+    }
+    return parseMarketData(text);
   };
 }
 export function publicMarketDataPlugin(): Plugin {
