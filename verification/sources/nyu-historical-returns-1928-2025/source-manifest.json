@@ -1,0 +1,15 @@
+{
+  "source_url": "https://pages.stern.nyu.edu/~adamodar/pc/datasets/histretSP.xls",
+  "retrieved_at": "2026-10-19T00:38:21.810727+00:00",
+  "edition": "Returns by year: calendar 1928–2025, as retrieved",
+  "provider": "Aswath Damodaran, NYU Stern",
+  "source_sha256": "28b8110916a15a4dcc11c87c6422510704608ddedcdfa67a1298abdc22e49c69",
+  "source_notes": {
+    "us_stocks": "S&P 500 annual nominal total return including dividends; pre-1957 backfilled index history.",
+    "us_bonds": "Annual nominal total return of reconstructed constant-maturity 10-year US Treasury, including coupon and price changes; not an aggregate-bond index or ETF.",
+    "usd_cash": "Annual 3-month Treasury-bill rate proxy; provider uses annual average rates. Not a bank deposit or money-market-fund return series.",
+    "us_cpi": "Annual US CPI inflation rate from provider worksheet.",
+    "us_home": "US home-price appreciation from provider Shiller/Case-Shiller history; excludes rent, modeled separately."
+  },
+  "coverage_note": "Only the five US joint annual series are historical. China CPI, medical cost growth, FX, fixed distribution yields and property-specific adjustments remain configuration assumptions."
+}

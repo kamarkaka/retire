@@ -1,0 +1,119 @@
+{
+  "status": "PASS",
+  "times": [
+    {
+      "action": "draft edit",
+      "ms": 10
+    },
+    {
+      "action": "tab switch",
+      "ms": 42
+    }
+  ],
+  "cancel_ms": 24,
+  "method": "Real worker computation and main-thread controls; delay analysis message delivery to hold summarizing phase and deliver old data after termination.",
+  "evidence": {
+    "live": 0,
+    "max_live": 4,
+    "created": 10,
+    "terminated": 10,
+    "stale_deliveries": 1,
+    "native_chunks": 33,
+    "delivered_chunks": [
+      192,
+      0,
+      64,
+      128,
+      320,
+      256,
+      384,
+      448,
+      512,
+      576,
+      704,
+      640,
+      768,
+      832,
+      896,
+      960,
+      1024,
+      1088,
+      1152,
+      1216,
+      1280,
+      1344,
+      1408,
+      1472,
+      1536,
+      1600,
+      1664,
+      1728,
+      1984,
+      1792,
+      1856,
+      1920,
+      0
+    ],
+    "held_chunks": 0,
+    "transfers": [
+      {
+        "type": "summarize",
+        "before": [
+          4480000,
+          336000,
+          64000,
+          14000,
+          1136000,
+          1120000,
+          1120000
+        ],
+        "after": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "type": "summarize",
+        "before": [
+          71680,
+          5376,
+          1024,
+          224,
+          18176,
+          17920,
+          17920
+        ],
+        "after": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "summaries": [
+      {
+        "run_id": "b1ba1bc0-0cb9-4034-b257-4d9800c9055a",
+        "n_paths": 2000,
+        "seed": 42,
+        "bytes": 4894000
+      },
+      {
+        "run_id": "c306e6f0-e074-4051-b620-bf812e87c001",
+        "n_paths": 32,
+        "seed": 44,
+        "bytes": 78304
+      }
+    ],
+    "replays": [],
+    "failures": []
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "method": "Bounding-box heights of same-row buttons and inputs; spread at most 1px",
+  "rows": {
+    "market_toolbar": [
+      43,
+      43,
+      43
+    ],
+    "workspace_toolbar": [
+      43,
+      43,
+      43
+    ],
+    "primitive_row": [
+      38,
+      38
+    ],
+    "export_toolbar": [
+      43,
+      43,
+      43,
+      43
+    ],
+    "ledger_path_row": [
+      32,
+      32,
+      32,
+      32
+    ],
+    "ledger_toolbar": [
+      43,
+      43,
+      43
+    ],
+    "compare_row": [
+      43,
+      43
+    ]
+  }
+}

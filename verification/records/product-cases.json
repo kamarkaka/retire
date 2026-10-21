@@ -1,0 +1,2357 @@
+{
+  "kind": "Product numeric oracle execution; structural acceptance is recorded separately",
+  "node": "v26.5.0",
+  "generated_at": "2026-10-20T04:24:31.864Z",
+  "oracle_sha256": "9b00ddb5ec4a470dae4cf648a9ac9e9300b6bd02c1fa895d3e727f90015fdc6a",
+  "reference_versions": {
+    "history": "nyu-fred-1928-2025-v1",
+    "calibration": "retire-population-v1",
+    "tax_tables": "spec-2026-unverified-v1",
+    "legal_sources": "retire-sources-fixed-horizon-v2",
+    "market_data": "retire-market-data-v1"
+  },
+  "reference_hashes": {
+    "history": "21662bee599ee61635a30fd81c3467a8c08bee6b7ff4a4d537e7a7f1327a1c1f",
+    "calibration": "ce713042b256eed1558ea08151b01aaf7f7fbd29033506e8d199a1a4ef3daf32",
+    "tax_tables": "97679cf7b11693b5a43bd2a80076995006daefd04846a1dbc761917b57365ca2",
+    "legal_sources": "a6a3695a3831c81607e1e85cc5bdb8688f62931ce3d13eea54c1328ee84d41f3",
+    "market_data": "5c945c9a3d1c7a7e992d86bc8d65c2ed946154164b6b15f88db3cc43ef7af885"
+  },
+  "counts": {
+    "PASS": 33,
+    "FAIL": 0,
+    "OPEN": 6,
+    "SUITE": 18,
+    "RETIRED": 23
+  },
+  "cases": [
+    {
+      "id": "US-1",
+      "step": "M06.1",
+      "status": "PASS",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 70,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 80000,
+        "qd": 10000,
+        "ss": 30000,
+        "securities_lt": 0,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 0,
+        "nii": 10000
+      },
+      "expected": {
+        "taxable_ss": 25500,
+        "deduction": 17750,
+        "ti": 97750,
+        "income_tax": 15517,
+        "niit": 0
+      },
+      "actual": {
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0,
+        "net_total": 0,
+        "loss_deduction": 0,
+        "carry": 0,
+        "agi": 115500,
+        "taxable_ss": 25500,
+        "senior_deduction": 0,
+        "deduction": 17750,
+        "ti": 97750,
+        "income_tax": 15517,
+        "regular_tax": 16217,
+        "A_amt": 87750,
+        "preferential_tax": 1500,
+        "u1250_cap_tax": 0,
+        "niit": 0,
+        "penalty": 0
+      },
+      "trace": "Product Schedule D netting, preferential tax, Social Security, deductions and NIIT. Legal registry remains unverified.",
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-2",
+      "step": "M06.1",
+      "status": "PASS",
+      "inputs": {
+        "filing_status": "single",
+        "age": 70,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 50000,
+        "qd": 0,
+        "ss": 40000,
+        "securities_lt": 20000,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 0,
+        "nii": 20000
+      },
+      "expected": {
+        "taxable_ss": 34000,
+        "senior_deduction": 4260,
+        "deduction": 22410,
+        "ti": 81590,
+        "income_tax": 11261.8,
+        "niit": 0
+      },
+      "actual": {
+        "lt_gain": 20000,
+        "u1250_gain": 0,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0,
+        "net_total": 20000,
+        "loss_deduction": 0,
+        "carry": 0,
+        "agi": 104000,
+        "taxable_ss": 34000,
+        "senior_deduction": 4260,
+        "deduction": 22410,
+        "ti": 81590,
+        "income_tax": 11261.8,
+        "regular_tax": 12661.8,
+        "A_amt": 61590,
+        "preferential_tax": 3000,
+        "u1250_cap_tax": 0,
+        "niit": 0,
+        "penalty": 0
+      },
+      "trace": "Product Schedule D netting, preferential tax, Social Security, deductions and NIIT. Legal registry remains unverified.",
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL",
+        "L-SENIOR"
+      ]
+    },
+    {
+      "id": "US-3",
+      "step": "M06.1",
+      "status": "PASS",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 5000,
+        "qd": 30000,
+        "ss": 0,
+        "securities_lt": 150000,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 0,
+        "nii": 185000
+      },
+      "expected": {
+        "ti": 168900,
+        "income_tax": 17917.5,
+        "niit": 2280
+      },
+      "actual": {
+        "lt_gain": 150000,
+        "u1250_gain": 0,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0,
+        "net_total": 150000,
+        "loss_deduction": 0,
+        "carry": 0,
+        "agi": 185000,
+        "taxable_ss": 0,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 168900,
+        "income_tax": 17917.5,
+        "regular_tax": 33134,
+        "A_amt": 0,
+        "preferential_tax": 17917.5,
+        "u1250_cap_tax": 0,
+        "niit": 2280,
+        "penalty": 0
+      },
+      "trace": "Product Schedule D netting, preferential tax, Social Security, deductions and NIIT. Legal registry remains unverified.",
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-4",
+      "step": "M06.1",
+      "status": "PASS",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 66,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 60000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 0,
+        "property_lt": 100000,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "nii": 150000
+      },
+      "expected": {
+        "ti": 192250,
+        "income_tax": 30007,
+        "niit": 3230
+      },
+      "actual": {
+        "lt_gain": 100000,
+        "u1250_gain": 50000,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0,
+        "net_total": 150000,
+        "loss_deduction": 0,
+        "carry": 0,
+        "agi": 210000,
+        "taxable_ss": 0,
+        "senior_deduction": 0,
+        "deduction": 17750,
+        "ti": 192250,
+        "income_tax": 30007,
+        "regular_tax": 38738,
+        "A_amt": 92250,
+        "preferential_tax": 15000,
+        "u1250_cap_tax": 0,
+        "niit": 3230,
+        "penalty": 0
+      },
+      "trace": "Product Schedule D netting, preferential tax, Social Security, deductions and NIIT. Legal registry remains unverified.",
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-5",
+      "step": "M06.1",
+      "status": "PASS",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 150000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 0,
+        "property_lt": 0,
+        "gross_u1250": 40000,
+        "prior_capital_loss": 0,
+        "nii": 40000
+      },
+      "expected": {
+        "ti": 173900,
+        "income_tax": 34334,
+        "regular_tax": 34334,
+        "niit": 1520
+      },
+      "actual": {
+        "lt_gain": 0,
+        "u1250_gain": 40000,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0,
+        "net_total": 40000,
+        "loss_deduction": 0,
+        "carry": 0,
+        "agi": 190000,
+        "taxable_ss": 0,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 173900,
+        "income_tax": 34334,
+        "regular_tax": 34334,
+        "A_amt": 173900,
+        "preferential_tax": 0,
+        "u1250_cap_tax": 0,
+        "niit": 1520,
+        "penalty": 0
+      },
+      "trace": "Product Schedule D netting, preferential tax, Social Security, deductions and NIIT. Legal registry remains unverified.",
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-6",
+      "step": "M06.1",
+      "status": "PASS",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 250000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 0,
+        "property_lt": 0,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "nii": 50000
+      },
+      "expected": {
+        "ti": 283900,
+        "income_tax": 63804,
+        "regular_tax": 68134.25,
+        "niit": 1900
+      },
+      "actual": {
+        "lt_gain": 0,
+        "u1250_gain": 50000,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0,
+        "net_total": 50000,
+        "loss_deduction": 0,
+        "carry": 0,
+        "agi": 300000,
+        "taxable_ss": 0,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 283900,
+        "income_tax": 63804,
+        "regular_tax": 68134.25,
+        "A_amt": 233900,
+        "preferential_tax": 0,
+        "u1250_cap_tax": 12500,
+        "niit": 1900,
+        "penalty": 0
+      },
+      "trace": "Product Schedule D netting, preferential tax, Social Security, deductions and NIIT. Legal registry remains unverified.",
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "NRA-1",
+      "step": "M06.2",
+      "status": "PASS",
+      "inputs": {
+        "filing_status": "mfs",
+        "rental_net": 20000,
+        "dividends": 10000,
+        "ss": 20000,
+        "price_index": 1
+      },
+      "expected": {
+        "rental_tax": 2152,
+        "dividend_tax": 1000,
+        "ss_tax": 5100,
+        "total": 8252
+      },
+      "actual": {
+        "rental_tax": 2152,
+        "dividend_tax": 1000,
+        "ss_tax": 5100,
+        "pension_tax": 0,
+        "security_tax": 0,
+        "income_tax": 8252,
+        "total": 8252,
+        "penalty": 0,
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0,
+        "carry": 0
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-NRA-TREATY",
+        "L-SSA-ABROAD"
+      ]
+    },
+    {
+      "id": "CN-1",
+      "step": "M06.3",
+      "status": "RETIRED",
+      "reason": "China pension treatment choice is removed; retirement distributions are not taxed in China. Original independent oracle preserved."
+    },
+    {
+      "id": "EST-1",
+      "step": "M06.2",
+      "status": "RETIRED",
+      "reason": "Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed. Original independent oracle preserved."
+    },
+    {
+      "id": "EST-2",
+      "step": "M06.2",
+      "status": "RETIRED",
+      "reason": "Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed. Original independent oracle preserved."
+    },
+    {
+      "id": "EST-3",
+      "step": "M06.2",
+      "status": "RETIRED",
+      "reason": "Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed. Original independent oracle preserved."
+    },
+    {
+      "id": "RMD-1",
+      "step": "M05.4",
+      "status": "PASS",
+      "inputs": {
+        "prior_year_end_balance": 1000000,
+        "age": 75,
+        "divisor": 24.6,
+        "need": 10000
+      },
+      "expected": {
+        "rmd": 40650.40650406504,
+        "surplus": 30650.40650406504
+      },
+      "actual": {
+        "rmd": 40650.40650406504,
+        "surplus": 30650.40650406504
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-RMD"
+      ]
+    },
+    {
+      "id": "MORT-1",
+      "step": "M05.2",
+      "status": "RETIRED",
+      "reason": "Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed. Original independent oracle preserved."
+    },
+    {
+      "id": "US-7",
+      "step": "M06.1",
+      "status": "PASS",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 100000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": -50000,
+        "property_lt": 0,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "nii": 0
+      },
+      "expected": {
+        "net_total": 0,
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "loss_deduction": 0,
+        "carry": 0,
+        "ti": 83900,
+        "income_tax": 13170,
+        "niit": 0
+      },
+      "actual": {
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0,
+        "net_total": 0,
+        "loss_deduction": 0,
+        "carry": 0,
+        "agi": 100000,
+        "taxable_ss": 0,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 83900,
+        "income_tax": 13170,
+        "regular_tax": 13170,
+        "A_amt": 83900,
+        "preferential_tax": 0,
+        "u1250_cap_tax": 0,
+        "niit": 0,
+        "penalty": 0
+      },
+      "trace": "Product Schedule D netting, preferential tax, Social Security, deductions and NIIT. Legal registry remains unverified.",
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-8",
+      "step": "M06.1",
+      "status": "PASS",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 100000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": -50000,
+        "property_lt": 0,
+        "gross_u1250": 20000,
+        "prior_capital_loss": 0,
+        "nii": 0
+      },
+      "expected": {
+        "net_total": -30000,
+        "loss_deduction": 1500,
+        "carry": 28500,
+        "ti": 82400,
+        "income_tax": 12840,
+        "niit": 0
+      },
+      "actual": {
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "ordinary_loss_deduction": 1500,
+        "loss_carryforward": 28500,
+        "net_total": -30000,
+        "loss_deduction": 1500,
+        "carry": 28500,
+        "agi": 98500,
+        "taxable_ss": 0,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 82400,
+        "income_tax": 12840,
+        "regular_tax": 12840,
+        "A_amt": 82400,
+        "preferential_tax": 0,
+        "u1250_cap_tax": 0,
+        "niit": 0,
+        "penalty": 0
+      },
+      "trace": "Product Schedule D netting, preferential tax, Social Security, deductions and NIIT. Legal registry remains unverified.",
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "FIRPTA-1",
+      "step": "M07.2",
+      "status": "RETIRED",
+      "reason": "FIRPTA withholding is removed; US properties use citizen treatment for all owners with no closing prepayment. Original independent oracle preserved."
+    },
+    {
+      "id": "DEATH-1",
+      "step": "M07.3",
+      "status": "RETIRED",
+      "reason": "Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed. Original independent oracle preserved."
+    },
+    {
+      "id": "DEATH-2",
+      "step": "M07.3",
+      "status": "RETIRED",
+      "reason": "Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed. Original independent oracle preserved."
+    },
+    {
+      "id": "TERMINAL-1",
+      "step": "M07.3",
+      "status": "PASS",
+      "inputs": {
+        "assets": 500000,
+        "final_income_liability": 30000,
+        "net_remitted": 0,
+        "estate_due": 0,
+        "conditional_credit": 0
+      },
+      "expected": {
+        "net_to_heirs": 470000,
+        "unpaid": 30000,
+        "actual_paid": 0,
+        "estate_shortfall": 0
+      },
+      "actual": {
+        "net_to_heirs": 470000,
+        "unpaid": 30000,
+        "actual_paid": 0,
+        "estate_shortfall": 0
+      },
+      "trace": {
+        "year": 2026,
+        "assets_cny": 500000,
+        "income_due_cny": 30000,
+        "estate_due_cny": 0,
+        "confirmed_refunds_cny": 0,
+        "excluded_conditional_credits_cny": 0,
+        "signed_net_cny": 470000,
+        "net_to_heirs_cny": 470000,
+        "estate_shortfall_cny": 0,
+        "items": [
+          {
+            "id": "A:2026:us_federal",
+            "taxpayer": "A",
+            "jurisdiction": "us_federal",
+            "income_year": 2026,
+            "due_year": 2027,
+            "currency": "USD",
+            "final_liability": 30000,
+            "projected_liability": 30000,
+            "net_cash_remitted": 0,
+            "unpaid": 30000,
+            "confirmed_refund_receivable": 0,
+            "conditional_credit": 0,
+            "ftc_projected": 0,
+            "ftc_used": 0,
+            "ftc_adjustment": 0,
+            "source_components": [
+              {
+                "id": "A:2026:us_federal:eligible",
+                "taxpayer": "A",
+                "income_year": 2026,
+                "source_country": "US",
+                "category": "scenario_eligible_income",
+                "currency": "USD",
+                "final_liability": 0,
+                "credit_eligibility": "eligible",
+                "eligibility_basis": "Example allocation: recompute federal income tax excluding China-exempt income; proportional retained-payment allocation. Requires primary-source acceptance.",
+                "source_gate_ids": [
+                  "L-CN-FTC"
+                ]
+              },
+              {
+                "id": "A:2026:us_federal:ineligible",
+                "taxpayer": "A",
+                "income_year": 2026,
+                "source_country": "US",
+                "category": "exempt_income_or_additional_tax",
+                "currency": "USD",
+                "final_liability": 30000,
+                "credit_eligibility": "ineligible",
+                "eligibility_basis": "Excludes China-exempt Social Security, additional tax and unsupported credit amounts",
+                "source_gate_ids": [
+                  "L-CN-FTC"
+                ]
+              }
+            ],
+            "payments": [],
+            "final_return_credit_snapshot": []
+          },
+          {
+            "id": "A:2026:us_estate",
+            "taxpayer": "A",
+            "jurisdiction": "us_estate",
+            "income_year": 2026,
+            "due_year": 2027,
+            "currency": "USD",
+            "final_liability": 0,
+            "projected_liability": 0,
+            "net_cash_remitted": 0,
+            "unpaid": 0,
+            "confirmed_refund_receivable": 0,
+            "conditional_credit": 0,
+            "ftc_projected": 0,
+            "ftc_used": 0,
+            "ftc_adjustment": 0,
+            "source_components": [],
+            "payments": [],
+            "final_return_credit_snapshot": []
+          }
+        ],
+        "beneficiary_trad_tax_included": false
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-ESTATE"
+      ]
+    },
+    {
+      "id": "CN-2",
+      "step": "M06.3",
+      "status": "PASS",
+      "inputs": {
+        "dividends": 50000,
+        "dividend_us_final_paid_tax": 5000,
+        "ss_us_final_paid_tax": 5100,
+        "ss_china_exempt": true,
+        "fx": 1
+      },
+      "expected": {
+        "before_credit": 10000,
+        "eligible_pool": 5000,
+        "credit": 5000,
+        "due": 5000,
+        "excluded_ss_tax": 5100
+      },
+      "actual": {
+        "before_credit": 10000,
+        "eligible_pool": 5000,
+        "credit": 5000,
+        "due": 5000,
+        "excluded_ss_tax": 5100
+      },
+      "trace": {
+        "id": "B:2026:us_federal",
+        "taxpayer": "B",
+        "jurisdiction": "us_federal",
+        "income_year": 2026,
+        "due_year": 2027,
+        "currency": "USD",
+        "final_liability": 10100,
+        "projected_liability": 10100,
+        "net_cash_remitted": 10100,
+        "unpaid": 0,
+        "confirmed_refund_receivable": 0,
+        "conditional_credit": 0,
+        "ftc_projected": 0,
+        "ftc_used": 0,
+        "ftc_adjustment": 0,
+        "source_components": [
+          {
+            "id": "B:2026:us_federal:eligible",
+            "taxpayer": "B",
+            "income_year": 2026,
+            "source_country": "US",
+            "category": "scenario_eligible_income",
+            "currency": "USD",
+            "final_liability": 5000,
+            "credit_eligibility": "eligible",
+            "eligibility_basis": "Example allocation: recompute federal income tax excluding China-exempt income; proportional retained-payment allocation. Requires primary-source acceptance.",
+            "source_gate_ids": [
+              "L-CN-FTC"
+            ]
+          },
+          {
+            "id": "B:2026:us_federal:ineligible",
+            "taxpayer": "B",
+            "income_year": 2026,
+            "source_country": "US",
+            "category": "exempt_income_or_additional_tax",
+            "currency": "USD",
+            "final_liability": 5100,
+            "credit_eligibility": "ineligible",
+            "eligibility_basis": "Excludes China-exempt Social Security, additional tax and unsupported credit amounts",
+            "source_gate_ids": [
+              "L-CN-FTC"
+            ]
+          }
+        ],
+        "payments": [
+          {
+            "id": "B:2026:us_federal:cash:0",
+            "settlement_id": "B:2026:us_federal",
+            "component_id": "B:2026:us_federal:eligible",
+            "cash_year": 2027,
+            "currency": "USD",
+            "amount": 10100,
+            "kind": "payment",
+            "eligible_retained_amount": 0,
+            "allocation_basis": "Proportional example allocation; applicable source rule remains unverified"
+          }
+        ],
+        "final_return_credit_snapshot": []
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-CN-SSA",
+        "L-CN-FTC"
+      ]
+    },
+    {
+      "id": "US-CARRY",
+      "step": "M06.1",
+      "status": "PASS",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2028,
+        "price_index": 1,
+        "ordinary": 100000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 10000,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 28500,
+        "nii": 0
+      },
+      "expected": {
+        "net_total": -18500,
+        "loss_deduction": 1500,
+        "carry": 17000,
+        "ti": 82400,
+        "income_tax": 12840,
+        "niit": 0
+      },
+      "actual": {
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "ordinary_loss_deduction": 1500,
+        "loss_carryforward": 17000,
+        "net_total": -18500,
+        "loss_deduction": 1500,
+        "carry": 17000,
+        "agi": 98500,
+        "taxable_ss": 0,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 82400,
+        "income_tax": 12840,
+        "regular_tax": 12840,
+        "A_amt": 82400,
+        "preferential_tax": 0,
+        "u1250_cap_tax": 0,
+        "niit": 0,
+        "penalty": 0
+      },
+      "trace": "Product Schedule D netting, preferential tax, Social Security, deductions and NIIT. Legal registry remains unverified.",
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-EARLY",
+      "step": "M06.1",
+      "status": "PASS",
+      "inputs": {
+        "early_trad": 10000,
+        "age": 40,
+        "exception": false,
+        "penalty_rate": 0.1
+      },
+      "expected": {
+        "penalty": 1000
+      },
+      "actual": {
+        "penalty": 1000
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-RMD"
+      ]
+    },
+    {
+      "id": "CAPITAL-PARTIAL",
+      "step": "M06.1",
+      "status": "OPEN",
+      "reason": "The complete original source/data gate remains open; later scoped evidence is recorded in the source registry and unit/browser reports.",
+      "source_gate_ids": [
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "PROPERTY-1231",
+      "step": "M06.1",
+      "status": "RETIRED",
+      "reason": "Section 1231 loss history and lookback ordering are removed; property sales use the simple split. Original independent oracle preserved."
+    },
+    {
+      "id": "CN-PARTIAL",
+      "step": "M06.3",
+      "status": "PASS",
+      "inputs": {
+        "china_precredit": 10000,
+        "eligible_final_source_liability": 10000,
+        "source_paid": 4000,
+        "source_unpaid": 6000,
+        "projected_credit": 10000,
+        "fx": 1
+      },
+      "expected": {
+        "eligible_paid": 4000,
+        "used_credit": 4000,
+        "china_due": 6000,
+        "ftc_adjustment": 6000
+      },
+      "actual": {
+        "eligible_paid": 4000,
+        "used_credit": 4000,
+        "china_due": 6000,
+        "ftc_adjustment": 6000
+      },
+      "trace": {
+        "id": "B:2026:us_federal",
+        "taxpayer": "B",
+        "jurisdiction": "us_federal",
+        "income_year": 2026,
+        "due_year": 2027,
+        "currency": "USD",
+        "final_liability": 10000,
+        "projected_liability": 10000,
+        "net_cash_remitted": 4000,
+        "unpaid": 6000,
+        "confirmed_refund_receivable": 0,
+        "conditional_credit": 0,
+        "ftc_projected": 0,
+        "ftc_used": 0,
+        "ftc_adjustment": 0,
+        "source_components": [
+          {
+            "id": "B:2026:us_federal:eligible",
+            "taxpayer": "B",
+            "income_year": 2026,
+            "source_country": "US",
+            "category": "scenario_eligible_income",
+            "currency": "USD",
+            "final_liability": 10000,
+            "credit_eligibility": "eligible",
+            "eligibility_basis": "Example allocation: recompute federal income tax excluding China-exempt income; proportional retained-payment allocation. Requires primary-source acceptance.",
+            "source_gate_ids": [
+              "L-CN-FTC"
+            ]
+          },
+          {
+            "id": "B:2026:us_federal:ineligible",
+            "taxpayer": "B",
+            "income_year": 2026,
+            "source_country": "US",
+            "category": "exempt_income_or_additional_tax",
+            "currency": "USD",
+            "final_liability": 0,
+            "credit_eligibility": "ineligible",
+            "eligibility_basis": "Excludes China-exempt Social Security, additional tax and unsupported credit amounts",
+            "source_gate_ids": [
+              "L-CN-FTC"
+            ]
+          }
+        ],
+        "payments": [
+          {
+            "id": "B:2026:us_federal:cash:0",
+            "settlement_id": "B:2026:us_federal",
+            "component_id": "B:2026:us_federal:eligible",
+            "cash_year": 2027,
+            "currency": "USD",
+            "amount": 4000,
+            "kind": "payment",
+            "eligible_retained_amount": 0,
+            "allocation_basis": "Proportional example allocation; applicable source rule remains unverified"
+          }
+        ],
+        "final_return_credit_snapshot": []
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "OPEN: numeric under all-paid-components-eligible assumption; primary-source payment-allocation rules pending",
+      "source_gate_ids": [
+        "L-CN-FTC"
+      ]
+    },
+    {
+      "id": "CN-WITHHOLDING",
+      "step": "M06.3",
+      "status": "PASS",
+      "inputs": {
+        "china_precredit": 30000,
+        "gross_withholding": 150000,
+        "final_eligible_source_liability": 20000,
+        "refund": 130000,
+        "fx": 1
+      },
+      "expected": {
+        "eligible_retained_pool": 20000,
+        "credit": 20000,
+        "china_due": 10000
+      },
+      "actual": {
+        "eligible_retained_pool": 20000,
+        "credit": 20000,
+        "china_due": 10000
+      },
+      "trace": {
+        "id": "B:2026:us_federal",
+        "taxpayer": "B",
+        "jurisdiction": "us_federal",
+        "income_year": 2026,
+        "due_year": 2027,
+        "currency": "USD",
+        "final_liability": 20000,
+        "projected_liability": 20000,
+        "net_cash_remitted": 20000,
+        "unpaid": 0,
+        "confirmed_refund_receivable": 0,
+        "conditional_credit": 0,
+        "ftc_projected": 0,
+        "ftc_used": 0,
+        "ftc_adjustment": 0,
+        "source_components": [
+          {
+            "id": "B:2026:us_federal:eligible",
+            "taxpayer": "B",
+            "income_year": 2026,
+            "source_country": "US",
+            "category": "scenario_eligible_income",
+            "currency": "USD",
+            "final_liability": 20000,
+            "credit_eligibility": "eligible",
+            "eligibility_basis": "Example allocation: recompute federal income tax excluding China-exempt income; proportional retained-payment allocation. Requires primary-source acceptance.",
+            "source_gate_ids": [
+              "L-CN-FTC"
+            ]
+          },
+          {
+            "id": "B:2026:us_federal:ineligible",
+            "taxpayer": "B",
+            "income_year": 2026,
+            "source_country": "US",
+            "category": "exempt_income_or_additional_tax",
+            "currency": "USD",
+            "final_liability": 0,
+            "credit_eligibility": "ineligible",
+            "eligibility_basis": "Excludes China-exempt Social Security, additional tax and unsupported credit amounts",
+            "source_gate_ids": [
+              "L-CN-FTC"
+            ]
+          }
+        ],
+        "payments": [
+          {
+            "id": "B:2026:us_federal:cash:0",
+            "settlement_id": "B:2026:us_federal",
+            "component_id": "B:2026:us_federal:eligible",
+            "cash_year": 2026,
+            "currency": "USD",
+            "amount": 150000,
+            "kind": "withholding",
+            "eligible_retained_amount": 0,
+            "allocation_basis": "Proportional example allocation; applicable source rule remains unverified"
+          },
+          {
+            "id": "B:2026:us_federal:cash:1",
+            "settlement_id": "B:2026:us_federal",
+            "component_id": "B:2026:us_federal:eligible",
+            "cash_year": 2027,
+            "currency": "USD",
+            "amount": 130000,
+            "kind": "refund",
+            "eligible_retained_amount": 0,
+            "allocation_basis": "Proportional example allocation; applicable source rule remains unverified"
+          }
+        ],
+        "final_return_credit_snapshot": []
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-CN-FTC",
+        "L-FIRPTA"
+      ]
+    },
+    {
+      "id": "CN-EXPIRY",
+      "step": "M06.3",
+      "status": "OPEN",
+      "reason": "The complete original source/data gate remains open; later scoped evidence is recorded in the source registry and unit/browser reports.",
+      "source_gate_ids": [
+        "L-CN-FTC"
+      ]
+    },
+    {
+      "id": "CN-REFUND",
+      "step": "M06.3",
+      "status": "OPEN",
+      "reason": "The complete original source/data gate remains open; later scoped evidence is recorded in the source registry and unit/browser reports.",
+      "source_gate_ids": [
+        "L-CN-FTC"
+      ]
+    },
+    {
+      "id": "CN-RESIDENCE",
+      "step": "M06.3",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "RNG-VECTORS",
+      "step": "M04.1",
+      "status": "PASS",
+      "inputs": {
+        "raw_state": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "tuple_text": "[\"retire-rng-v1\",42,0,\"bootstrap\",\"\"]",
+        "normal_uniforms": [
+          0.5,
+          0.5
+        ]
+      },
+      "expected": {
+        "raw_outputs": [
+          11520,
+          0,
+          5927040,
+          70819200,
+          2031721883,
+          1637235492,
+          1287239034,
+          3734860849
+        ],
+        "sha256": "ab710528cf1bc287af2b294db0827f5bf5ec8348ee9de1d5ba81169939757f3b",
+        "little_endian_state": [
+          671445419,
+          2277645263,
+          1294543791,
+          1535083184
+        ],
+        "seeded_outputs": [
+          2406593643,
+          4039661935,
+          1310122810,
+          591680076,
+          881506770
+        ],
+        "uniform_min": 1.1641532182693481e-10,
+        "uniform_max": 0.9999999998835847,
+        "normal_pair": [
+          -1.1774100225154747,
+          0
+        ]
+      },
+      "actual": {
+        "raw_outputs": [
+          11520,
+          0,
+          5927040,
+          70819200,
+          2031721883,
+          1637235492,
+          1287239034,
+          3734860849
+        ],
+        "sha256": "ab710528cf1bc287af2b294db0827f5bf5ec8348ee9de1d5ba81169939757f3b",
+        "little_endian_state": [
+          671445419,
+          2277645263,
+          1294543791,
+          1535083184
+        ],
+        "seeded_outputs": [
+          2406593643,
+          4039661935,
+          1310122810,
+          591680076,
+          881506770
+        ],
+        "uniform_min": 1.1641532182693481e-10,
+        "uniform_max": 0.9999999998835847,
+        "normal_pair": [
+          -1.1774100225154747,
+          1.4419114153575892e-16
+        ]
+      },
+      "failures": [],
+      "tolerance": 1e-12,
+      "legal_status": "NOT APPLICABLE: algorithm",
+      "source_gate_ids": []
+    },
+    {
+      "id": "RNG-PREFIX",
+      "step": "M04.4",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "MARKET-JOINT",
+      "step": "M04.2",
+      "status": "PASS",
+      "inputs": {
+        "source_rows": [
+          [
+            2000,
+            0,
+            0.01,
+            0.005,
+            0.02,
+            0.03
+          ],
+          [
+            2001,
+            0.01,
+            0.011,
+            0.0051,
+            0.0201,
+            0.0301
+          ],
+          [
+            2002,
+            0.02,
+            0.012,
+            0.0052,
+            0.0202,
+            0.0302
+          ],
+          [
+            2003,
+            0.03,
+            0.013,
+            0.0053,
+            0.0203,
+            0.0303
+          ],
+          [
+            2004,
+            0.04,
+            0.014,
+            0.0054,
+            0.0204,
+            0.0304
+          ],
+          [
+            2005,
+            0.05,
+            0.015,
+            0.0055,
+            0.0205,
+            0.0305
+          ],
+          [
+            2006,
+            0.06,
+            0.016,
+            0.0056,
+            0.0206,
+            0.0306
+          ],
+          [
+            2007,
+            0.07,
+            0.017,
+            0.0057,
+            0.0207,
+            0.0307
+          ],
+          [
+            2008,
+            0.08,
+            0.018,
+            0.0058,
+            0.0208,
+            0.0308
+          ],
+          [
+            2009,
+            0.09,
+            0.019,
+            0.0059,
+            0.0209,
+            0.0309
+          ]
+        ],
+        "columns": [
+          "year",
+          "us_stocks",
+          "us_bonds",
+          "usd_cash",
+          "us_cpi",
+          "us_home"
+        ],
+        "block_mean_years": 2,
+        "bootstrap_uniforms": [
+          0.95,
+          0.9,
+          0.1,
+          0.1,
+          0.25,
+          0.8,
+          0.99
+        ]
+      },
+      "expected": {
+        "row_indices": [
+          9,
+          0,
+          2,
+          3
+        ],
+        "all_columns_same_row": true,
+        "consumed_uniform_count": 7
+      },
+      "actual": {
+        "row_indices": [
+          9,
+          0,
+          2,
+          3
+        ],
+        "all_columns_same_row": true,
+        "consumed_uniform_count": 7
+      },
+      "failures": [],
+      "tolerance": 0,
+      "legal_status": "NOT APPLICABLE: synthetic tape",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MARKET-PROJECTION",
+      "step": "M04.2",
+      "status": "RETIRED",
+      "reason": "Market return/inflation rescaling was removed. All product configurations use source rows directly. Original independent oracle preserved."
+    },
+    {
+      "id": "MARKET-DOMAIN",
+      "step": "M04.2",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "MARKET-TIMING",
+      "step": "M04.3",
+      "status": "PASS",
+      "inputs": {
+        "start_year": 2026,
+        "cn_cpi": 0.04,
+        "us_cpi": 0.03,
+        "fx_spot": 6.69,
+        "fx_multiplier": 0.99,
+        "stress_year": 2029,
+        "stress_pct": -0.15,
+        "deposit_real_rate": 0.005,
+        "deposit_floor": 0.002,
+        "medical_excess": 0.02
+      },
+      "expected": {
+        "cn_index_0": 1,
+        "us_index_0": 1,
+        "cn_index_1": 1.04,
+        "us_index_1": 1.03,
+        "fx_10": 6.0503160818089015,
+        "stress_index": 3,
+        "stress_ratio": 0.85,
+        "deposit_rate": 0.045,
+        "medical_price_factor": 1.06
+      },
+      "actual": {
+        "cn_index_0": 1,
+        "us_index_0": 1,
+        "cn_index_1": 1.04,
+        "us_index_1": 1.03,
+        "fx_10": 6.050316081808907,
+        "medical_price_factor": 1.06
+      },
+      "trace": {
+        "retired_fields": [
+          "deposit_rate",
+          "stress_index",
+          "stress_ratio"
+        ],
+        "reason": "CNY cash interest and FX stress events are removed. Frozen FX/CPI/medical timing answers remain applicable with a literal test-only return tape."
+      },
+      "excluded_expected_fields": [
+        "deposit_rate",
+        "stress_index",
+        "stress_ratio"
+      ],
+      "failures": [],
+      "tolerance": 1e-12,
+      "legal_status": "NOT APPLICABLE: deterministic recurrence",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MARKET-AR",
+      "step": "M04.3",
+      "status": "PASS",
+      "inputs": {
+        "mean": 0.04,
+        "start": 0.02,
+        "phi": 0.5,
+        "sigma": 0,
+        "years": 3
+      },
+      "expected": {
+        "cn_rates": [
+          0.03,
+          0.035,
+          0.0375
+        ]
+      },
+      "actual": {
+        "cn_rates": [
+          0.03,
+          0.035,
+          0.037500000000000006
+        ]
+      },
+      "failures": [],
+      "tolerance": 1e-12,
+      "legal_status": "NOT APPLICABLE: recurrence",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MARKET-INVALID",
+      "step": "M04.3",
+      "status": "PASS",
+      "inputs": {
+        "mean": 0.04,
+        "phi": 0,
+        "sigma": 0.02,
+        "z": -60,
+        "path_id": 7,
+        "t": 2,
+        "start_year": 2026
+      },
+      "expected": {
+        "cn_cpi": -1.16,
+        "gross_factor": -0.16,
+        "error_path_id": 7,
+        "error_year": 2028,
+        "whole_job_failed": true,
+        "partial_probabilities": false
+      },
+      "actual": {
+        "cn_cpi": -1.16,
+        "gross_factor": -0.15999999999999992,
+        "error_path_id": 7,
+        "error_year": 2028,
+        "whole_job_failed": true,
+        "partial_probabilities": false
+      },
+      "trace": {
+        "code": "INVALID_FACTOR",
+        "message": "Invalid cn_cpi gross factor -0.15999999999999992",
+        "factor": -0.15999999999999992,
+        "series": "cn_cpi",
+        "path_id": 7,
+        "year": 2028
+      },
+      "failures": [],
+      "tolerance": 1e-12,
+      "legal_status": "NOT APPLICABLE: domain policy",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MARKET-CALIBRATION",
+      "step": "M04.4",
+      "status": "OPEN",
+      "reason": "The complete original source/data gate remains open; later scoped evidence is recorded in the source registry and unit/browser reports.",
+      "source_gate_ids": [
+        "DATA-HISTORY"
+      ]
+    },
+    {
+      "id": "BUDGET-1",
+      "step": "M05.1",
+      "status": "RETIRED",
+      "reason": "The medical base now has one source, Budget included_health_cny; the former duplicate-entry fixture is obsolete. Original independent oracle preserved."
+    },
+    {
+      "id": "SPENDING-TIMING",
+      "step": "M05.1",
+      "status": "RETIRED",
+      "reason": "Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed. Original independent oracle preserved."
+    },
+    {
+      "id": "FLEX-1",
+      "step": "M05.1",
+      "status": "RETIRED",
+      "reason": "Recurring spending and its flexibility rules were removed. Original independent oracle preserved."
+    },
+    {
+      "id": "MEDICAL-GROWTH",
+      "step": "M05.2",
+      "status": "PASS",
+      "inputs": {
+        "base": 38000,
+        "ordinary": 212000,
+        "cn_cpi": 0.04,
+        "medical_excess": 0.02,
+        "age_growth": 0.04,
+        "increments": 50
+      },
+      "expected": {
+        "nominal_factor": 1.1024,
+        "real_factor": 1.06,
+        "year1_medical_nominal": 41891.2,
+        "year1_medical_real": 40280,
+        "year1_included_total": 262371.2,
+        "year1_ceiling": 260000,
+        "year1_excess": 2371.2,
+        "after50_medical_real": 699965.8624496766
+      },
+      "actual": {
+        "nominal_factor": 1.1024,
+        "real_factor": 1.06,
+        "year1_medical_nominal": 41891.200000000004,
+        "year1_medical_real": 40280,
+        "year1_included_total": 262371.2,
+        "year1_ceiling": 260000,
+        "after50_medical_real": 699965.8624496764
+      },
+      "trace": {
+        "retired_fields": [
+          "year1_excess"
+        ],
+        "reason": "Budget mode is removed; every budget uses initial treatment with no ceiling-excess report. Frozen medical growth answers remain applicable."
+      },
+      "excluded_expected_fields": [
+        "year1_excess"
+      ],
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT APPLICABLE: illustrative configurable growth, not calibrated premiums",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MEDICAL-SCOPE",
+      "step": "M05.2",
+      "status": "PASS",
+      "inputs": {
+        "age": 60,
+        "occurrence_uniform": 0.01,
+        "prob_at60": 0.02,
+        "size_normal": 0,
+        "median": 50000,
+        "medical_index": 1,
+        "included_recurring": 250000,
+        "ceiling": 250000
+      },
+      "expected": {
+        "shock": 50000,
+        "additional_scope": {
+          "included": 250000,
+          "additional": 50000,
+          "total": 300000,
+          "excess": 0
+        },
+        "included_scope": {
+          "included": 300000,
+          "additional": 0,
+          "total": 300000,
+          "excess": 50000
+        }
+      },
+      "actual": {
+        "shock": 50000,
+        "additional_scope": {
+          "included": 250000,
+          "additional": 50000,
+          "total": 300000
+        },
+        "included_scope": {
+          "included": 300000,
+          "additional": 0,
+          "total": 300000
+        }
+      },
+      "trace": {
+        "retired_fields": [
+          "additional_scope.excess",
+          "included_scope.excess"
+        ],
+        "reason": "Budget mode is removed; every budget uses initial treatment with no ceiling-excess report. Frozen shock scope answers remain applicable."
+      },
+      "excluded_expected_fields": [
+        "additional_scope.excess",
+        "included_scope.excess"
+      ],
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT APPLICABLE: scope arithmetic",
+      "source_gate_ids": []
+    },
+    {
+      "id": "SS-GATES",
+      "step": "M05.3",
+      "status": "RETIRED",
+      "reason": "Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed. Original independent oracle preserved."
+    },
+    {
+      "id": "ACCOUNT-BASIS",
+      "step": "M05.4",
+      "status": "PASS",
+      "inputs": {
+        "opening_value": 100000,
+        "opening_basis": 60000,
+        "withdrawal": 50000,
+        "separate_return_case": {
+          "total_return": 0.1,
+          "yield": 0.013
+        }
+      },
+      "expected": {
+        "withdrawal_gain": 20000,
+        "remaining_value": 50000,
+        "remaining_basis": 30000,
+        "return_case_value": 110000,
+        "return_case_basis": 61300
+      },
+      "actual": {
+        "withdrawal_gain": 20000,
+        "remaining_value": 50000,
+        "remaining_basis": 30000,
+        "return_case_value": 110000.00000000001,
+        "return_case_basis": 61300
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "ACCOUNT-REBALANCE",
+      "step": "M05.4",
+      "status": "PASS",
+      "inputs": {
+        "stock_value": 60000,
+        "stock_basis": 30000,
+        "bond_value": 50000,
+        "bond_basis": 30000,
+        "target_stock": 0.5,
+        "yields": 0
+      },
+      "expected": {
+        "stock_sale": 5000,
+        "gain": 2500,
+        "ending_stock": 55000,
+        "ending_bond": 55000,
+        "stock_basis": 27500,
+        "bond_basis": 35000,
+        "retirement_taxable_gain": 0
+      },
+      "actual": {
+        "stock_sale": 5000,
+        "gain": 2500,
+        "ending_stock": 55000,
+        "ending_bond": 55000,
+        "stock_basis": 27500,
+        "bond_basis": 35000,
+        "retirement_taxable_gain": 0
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "ACCOUNT-ACCESS",
+      "step": "M05.4",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "CONVERSION-1",
+      "step": "M05.4",
+      "status": "PASS",
+      "inputs": {
+        "fx": 6.69,
+        "spread": 0.003,
+        "cny_need": 6690,
+        "usd_need": 1000
+      },
+      "expected": {
+        "usd_to_fund_cny": 1003.0090270812436,
+        "cny_to_fund_usd": 6710.07
+      },
+      "actual": {
+        "usd_to_fund_cny": 1003.0090270812436,
+        "cny_to_fund_usd": 6710.07
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "SOURCE-1",
+      "step": "M06.2",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "PROPERTY-BOOKS",
+      "step": "M07.1",
+      "status": "RETIRED",
+      "reason": "Vacancy and split management/maintenance inputs are removed; expenses use one annual maintenance figure. Original independent oracle preserved."
+    },
+    {
+      "id": "PROPERTY-MORTGAGE",
+      "step": "M07.1",
+      "status": "PASS",
+      "inputs": {
+        "opening_balance": 100000,
+        "rate": 0.05,
+        "years_left": 10
+      },
+      "expected": {
+        "annual_payment": 12950.457496545661,
+        "first_interest": 5000,
+        "first_principal": 7950.457496545662,
+        "ending_balance": 92049.54250345434
+      },
+      "actual": {
+        "annual_payment": 12950.45749654566,
+        "first_interest": 5000,
+        "first_principal": 7950.4574965456595,
+        "ending_balance": 92049.54250345434
+      },
+      "trace": {
+        "cash": {
+          "gross_rent": 0,
+          "maintenance": 0,
+          "cash_flow": -12950.45749654566,
+          "annual_depreciation": 24436.363636363636,
+          "schedule_e_net": -29436.363636363636,
+          "owner_net": {
+            "A": 0,
+            "B": -29436.363636363636
+          },
+          "interest": 5000,
+          "principal": 7950.4574965456595,
+          "payment": 12950.45749654566
+        },
+        "state": {
+          "id": "synthetic_sale",
+          "held": true,
+          "value": 1000000,
+          "mortgage_balance": 92049.54250345434,
+          "mortgage_payment": 12950.45749654566,
+          "property_tax_annual": 0,
+          "owners": {
+            "A": {
+              "share": 0,
+              "basis_usd": 0,
+              "depreciation_taken": 0,
+              "suspended_loss": 0
+            },
+            "B": {
+              "share": 1,
+              "basis_usd": 840000,
+              "depreciation_taken": 24436.363636363636,
+              "suspended_loss": 0
+            }
+          }
+        }
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "FIRPTA-SHARE",
+      "step": "M07.2",
+      "status": "RETIRED",
+      "reason": "FIRPTA withholding is removed; US properties use citizen treatment for all owners with no closing prepayment. Original independent oracle preserved."
+    },
+    {
+      "id": "SALE-FAIL",
+      "step": "M07.2",
+      "status": "RETIRED",
+      "reason": "FIRPTA withholding is removed; US properties use citizen treatment for all owners with no closing prepayment. Original independent oracle preserved."
+    },
+    {
+      "id": "HOLD-1",
+      "step": "M07.2",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "DEATH-SNAPSHOT",
+      "step": "M07.3",
+      "status": "RETIRED",
+      "reason": "Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed. Original independent oracle preserved."
+    },
+    {
+      "id": "TERMINAL-REFUND",
+      "step": "M07.3",
+      "status": "PASS",
+      "inputs": {
+        "assets": 90000,
+        "final_liability": 20000,
+        "net_remitted": 150000,
+        "estate_due": 0,
+        "conditional_credit": 0
+      },
+      "expected": {
+        "due": 0,
+        "confirmed_refund": 130000,
+        "net_to_heirs": 220000,
+        "actual_refund_cash_at_terminal": 0
+      },
+      "actual": {
+        "due": 0,
+        "confirmed_refund": 130000,
+        "net_to_heirs": 220000,
+        "actual_refund_cash_at_terminal": 0
+      },
+      "trace": {
+        "year": 2026,
+        "assets_cny": 90000,
+        "income_due_cny": 0,
+        "estate_due_cny": 0,
+        "confirmed_refunds_cny": 130000,
+        "excluded_conditional_credits_cny": 0,
+        "signed_net_cny": 220000,
+        "net_to_heirs_cny": 220000,
+        "estate_shortfall_cny": 0,
+        "items": [
+          {
+            "id": "B:2026:us_federal",
+            "taxpayer": "B",
+            "jurisdiction": "us_federal",
+            "income_year": 2026,
+            "due_year": 2027,
+            "currency": "USD",
+            "final_liability": 20000,
+            "projected_liability": 20000,
+            "net_cash_remitted": 150000,
+            "unpaid": 0,
+            "confirmed_refund_receivable": 130000,
+            "conditional_credit": 0,
+            "ftc_projected": 0,
+            "ftc_used": 0,
+            "ftc_adjustment": 0,
+            "source_components": [
+              {
+                "id": "B:2026:us_federal:eligible",
+                "taxpayer": "B",
+                "income_year": 2026,
+                "source_country": "US",
+                "category": "scenario_eligible_income",
+                "currency": "USD",
+                "final_liability": 0,
+                "credit_eligibility": "eligible",
+                "eligibility_basis": "Example allocation: recompute federal income tax excluding China-exempt income; proportional retained-payment allocation. Requires primary-source acceptance.",
+                "source_gate_ids": [
+                  "L-CN-FTC"
+                ]
+              },
+              {
+                "id": "B:2026:us_federal:ineligible",
+                "taxpayer": "B",
+                "income_year": 2026,
+                "source_country": "US",
+                "category": "exempt_income_or_additional_tax",
+                "currency": "USD",
+                "final_liability": 20000,
+                "credit_eligibility": "ineligible",
+                "eligibility_basis": "Excludes China-exempt Social Security, additional tax and unsupported credit amounts",
+                "source_gate_ids": [
+                  "L-CN-FTC"
+                ]
+              }
+            ],
+            "payments": [
+              {
+                "id": "B:2026:us_federal:cash:0",
+                "settlement_id": "B:2026:us_federal",
+                "component_id": "B:2026:us_federal:eligible",
+                "cash_year": 2026,
+                "currency": "USD",
+                "amount": 150000,
+                "kind": "withholding",
+                "eligible_retained_amount": 0,
+                "allocation_basis": "Proportional example allocation; applicable source rule remains unverified"
+              }
+            ],
+            "final_return_credit_snapshot": []
+          }
+        ],
+        "beneficiary_trad_tax_included": false
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-FIRPTA",
+        "L-ESTATE"
+      ]
+    },
+    {
+      "id": "TERMINAL-DEFICIT",
+      "step": "M07.3",
+      "status": "PASS",
+      "inputs": {
+        "assets": 20000,
+        "final_liability": 30000,
+        "net_remitted": 0,
+        "estate_due": 0,
+        "conditional_credit": 5000
+      },
+      "expected": {
+        "signed_net": -10000,
+        "net_to_heirs": 0,
+        "estate_shortfall": 10000,
+        "excluded_conditional_credit": 5000,
+        "actual_paid": 0
+      },
+      "actual": {
+        "signed_net": -10000,
+        "net_to_heirs": 0,
+        "estate_shortfall": 10000,
+        "excluded_conditional_credit": 5000,
+        "actual_paid": 0
+      },
+      "trace": {
+        "year": 2026,
+        "assets_cny": 20000,
+        "income_due_cny": 30000,
+        "estate_due_cny": 0,
+        "confirmed_refunds_cny": 0,
+        "excluded_conditional_credits_cny": 5000,
+        "signed_net_cny": -10000,
+        "net_to_heirs_cny": 0,
+        "estate_shortfall_cny": 10000,
+        "items": [
+          {
+            "id": "B:2026:us_federal",
+            "taxpayer": "B",
+            "jurisdiction": "us_federal",
+            "income_year": 2026,
+            "due_year": 2027,
+            "currency": "USD",
+            "final_liability": 30000,
+            "projected_liability": 30000,
+            "net_cash_remitted": 0,
+            "unpaid": 30000,
+            "confirmed_refund_receivable": 0,
+            "conditional_credit": 5000,
+            "ftc_projected": 0,
+            "ftc_used": 0,
+            "ftc_adjustment": 0,
+            "source_components": [
+              {
+                "id": "B:2026:us_federal:eligible",
+                "taxpayer": "B",
+                "income_year": 2026,
+                "source_country": "US",
+                "category": "scenario_eligible_income",
+                "currency": "USD",
+                "final_liability": 0,
+                "credit_eligibility": "eligible",
+                "eligibility_basis": "Example allocation: recompute federal income tax excluding China-exempt income; proportional retained-payment allocation. Requires primary-source acceptance.",
+                "source_gate_ids": [
+                  "L-CN-FTC"
+                ]
+              },
+              {
+                "id": "B:2026:us_federal:ineligible",
+                "taxpayer": "B",
+                "income_year": 2026,
+                "source_country": "US",
+                "category": "exempt_income_or_additional_tax",
+                "currency": "USD",
+                "final_liability": 30000,
+                "credit_eligibility": "ineligible",
+                "eligibility_basis": "Excludes China-exempt Social Security, additional tax and unsupported credit amounts",
+                "source_gate_ids": [
+                  "L-CN-FTC"
+                ]
+              }
+            ],
+            "payments": [],
+            "final_return_credit_snapshot": []
+          },
+          {
+            "id": "B:2026:us_estate",
+            "taxpayer": "B",
+            "jurisdiction": "us_estate",
+            "income_year": 2026,
+            "due_year": 2027,
+            "currency": "USD",
+            "final_liability": 0,
+            "projected_liability": 0,
+            "net_cash_remitted": 0,
+            "unpaid": 0,
+            "confirmed_refund_receivable": 0,
+            "conditional_credit": 0,
+            "ftc_projected": 0,
+            "ftc_used": 0,
+            "ftc_adjustment": 0,
+            "source_components": [],
+            "payments": [],
+            "final_return_credit_snapshot": []
+          }
+        ],
+        "beneficiary_trad_tax_included": false
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-ESTATE",
+        "L-CN-FTC"
+      ]
+    },
+    {
+      "id": "CONTROL-PV",
+      "step": "M08.1",
+      "status": "PASS",
+      "inputs": {
+        "start_year": 2026,
+        "birth_year_A": 1986,
+        "birth_year_B": 1986,
+        "death_age_A": 89,
+        "death_age_B": 89,
+        "max_age": 110,
+        "annual_cny": 250000,
+        "ordinary_cny": 212000,
+        "health_cny": 38000,
+        "medical_bases": 0,
+        "shock": false,
+        "ss": false,
+        "property": false,
+        "flex": false,
+        "return": 0.03,
+        "cn_cpi": 0.04,
+        "us_cpi": 0.03,
+        "fx_spot": 6.69,
+        "fx_spread": 0,
+        "all_applicable_tax_rates": 0,
+        "accessible_account_type": "taxable",
+        "allocated_asset": "usd_cash",
+        "n_paths": 1,
+        "seed": 42,
+        "fx_multiplier": 1,
+        "config_file": "control-pv.toml"
+      },
+      "expected": {
+        "payment_count": 50,
+        "first_payment": 37369.20777279521,
+        "required_balance": 2390572.9770677146,
+        "displayed_pv": "2,390,572.98",
+        "final_balance": 0,
+        "exact_pv_decimal": "2390572.9770677145932828554267970000473442304988766842740735298308",
+        "first_age": 40,
+        "last_age": 89,
+        "allocated_rows": 71
+      },
+      "actual": {
+        "payment_count": 50,
+        "first_payment": 37369.20777279521,
+        "required_balance": 2390572.9770677146,
+        "displayed_pv": "2,390,572.98",
+        "final_balance": 0,
+        "first_age": 40,
+        "last_age": 89,
+        "allocated_rows": 50
+      },
+      "trace": "Starting balance is the independently authored fixture input. The actual engine must fund all 50 payments and finish at numerical zero. The exact rational decimal is oracle provenance, not a Float64 product output.",
+      "excluded_expected_fields": [
+        "exact_pv_decimal",
+        "allocated_rows"
+      ],
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT APPLICABLE: tax-free arithmetic control; not household funding advice",
+      "source_gate_ids": []
+    },
+    {
+      "id": "CONTROL-FX",
+      "step": "M08.2",
+      "status": "PASS",
+      "inputs": {
+        "start_year": 2026,
+        "birth_year_A": 1986,
+        "birth_year_B": 1986,
+        "death_age_A": 89,
+        "death_age_B": 89,
+        "max_age": 110,
+        "annual_cny": 250000,
+        "ordinary_cny": 212000,
+        "health_cny": 38000,
+        "medical_bases": 0,
+        "shock": false,
+        "ss": false,
+        "property": false,
+        "flex": false,
+        "return": 0.03,
+        "cn_cpi": 0.04,
+        "us_cpi": 0.03,
+        "fx_spot": 6.69,
+        "fx_spread": 0,
+        "all_applicable_tax_rates": 0,
+        "accessible_account_type": "taxable",
+        "allocated_asset": "usd_cash",
+        "n_paths": 1,
+        "seed": 42,
+        "fx_multiplier": 0.99,
+        "config_file": "control-fx.toml"
+      },
+      "expected": {
+        "payment_count": 50,
+        "first_payment": 37369.20777279521,
+        "required_balance": 3152520.3411145047,
+        "displayed_pv": "3,152,520.34",
+        "final_balance": 0,
+        "exact_pv_decimal": "3152520.3411145046905392977802592090780936043212755608347596589861",
+        "first_age": 40,
+        "last_age": 89,
+        "allocated_rows": 71
+      },
+      "actual": {
+        "payment_count": 50,
+        "first_payment": 37369.20777279521,
+        "required_balance": 3152520.3411145047,
+        "displayed_pv": "3,152,520.34",
+        "final_balance": 0,
+        "first_age": 40,
+        "last_age": 89,
+        "allocated_rows": 50
+      },
+      "trace": "Starting balance is the independently authored fixture input. The actual engine must fund all 50 payments and finish at numerical zero. The exact rational decimal is oracle provenance, not a Float64 product output.",
+      "excluded_expected_fields": [
+        "exact_pv_decimal",
+        "allocated_rows"
+      ],
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT APPLICABLE: tax-free arithmetic control; not household funding advice",
+      "source_gate_ids": []
+    },
+    {
+      "id": "CONTROL-DEPLETION",
+      "step": "M08.2",
+      "status": "RETIRED",
+      "reason": "A path now stops when net assets become nonpositive; the old fixture continued after spending its final dollar to observe a later shortfall. Original independent oracle preserved."
+    },
+    {
+      "id": "CONTROL-HOLD",
+      "step": "M08.2",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "ENGINE-FINAL-TAX",
+      "step": "M08.3",
+      "status": "RETIRED",
+      "reason": "Custom flat tax tables are removed with tax overrides; terminal mechanics are re-pinned at bundled reference rates in unit tests. Original independent oracle preserved."
+    },
+    {
+      "id": "ENGINE-PRIOR-TAX",
+      "step": "M08.3",
+      "status": "RETIRED",
+      "reason": "Custom flat tax tables are removed with tax overrides; terminal mechanics are re-pinned at bundled reference rates in unit tests. Original independent oracle preserved."
+    },
+    {
+      "id": "ENGINE-FIRPTA",
+      "step": "M08.3",
+      "status": "RETIRED",
+      "reason": "FIRPTA withholding is removed; US properties use citizen treatment for all owners with no closing prepayment. Original independent oracle preserved."
+    },
+    {
+      "id": "SUMMARY-1",
+      "step": "M09.2",
+      "status": "RETIRED",
+      "reason": "Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed. Original independent oracle preserved."
+    },
+    {
+      "id": "RANKING-1",
+      "step": "M09.2",
+      "status": "PASS",
+      "inputs": {
+        "paths": [
+          {
+            "id": 0,
+            "depletion_t": 5,
+            "terminal": 1000
+          },
+          {
+            "id": 1,
+            "depletion_t": null,
+            "terminal": 200
+          },
+          {
+            "id": 2,
+            "depletion_t": 3,
+            "terminal": 9999
+          },
+          {
+            "id": 3,
+            "depletion_t": null,
+            "terminal": 100
+          }
+        ]
+      },
+      "expected": {
+        "ascending_ids": [
+          2,
+          0,
+          3,
+          1
+        ],
+        "worst": 2,
+        "p10": 2,
+        "median": 0
+      },
+      "actual": {
+        "ascending_ids": [
+          2,
+          0,
+          3,
+          1
+        ],
+        "worst": 2,
+        "p10": 2,
+        "median": 0
+      },
+      "failures": [],
+      "tolerance": 0,
+      "legal_status": "NOT APPLICABLE: ranking",
+      "source_gate_ids": []
+    },
+    {
+      "id": "SEQUENCE-1",
+      "step": "M11.2",
+      "status": "PASS",
+      "inputs": {
+        "initial": 100000,
+        "annual_beginning_withdrawal": 10000,
+        "returns": [
+          -0.2,
+          0.25
+        ],
+        "reversed": [
+          0.25,
+          -0.2
+        ]
+      },
+      "expected": {
+        "ending_original": 77500,
+        "ending_reversed": 82000,
+        "no_withdrawal_both": 100000
+      },
+      "actual": {
+        "ending_original": 77500,
+        "ending_reversed": 82000,
+        "no_withdrawal_both": 100000
+      },
+      "failures": [],
+      "tolerance": 0.01,
+      "legal_status": "NOT APPLICABLE: synthetic portfolio sequence; no historical claim",
+      "source_gate_ids": []
+    },
+    {
+      "id": "CRISIS-DOTCOM",
+      "step": "M11.2",
+      "status": "OPEN",
+      "reason": "The complete original source/data gate remains open; later scoped evidence is recorded in the source registry and unit/browser reports.",
+      "source_gate_ids": [
+        "DATA-HISTORY"
+      ]
+    },
+    {
+      "id": "CRISIS-2008",
+      "step": "M11.2",
+      "status": "OPEN",
+      "reason": "The complete original source/data gate remains open; later scoped evidence is recorded in the source registry and unit/browser reports.",
+      "source_gate_ids": [
+        "DATA-HISTORY"
+      ]
+    },
+    {
+      "id": "CONFIG-ROUNDTRIP",
+      "step": "M02.3",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "CONFIG-INVALID",
+      "step": "M02.1",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "DRAFT-GATES",
+      "step": "M02.2",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "WORKER-TRANSFER",
+      "step": "M01.3",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "RUN-REPRO",
+      "step": "M09.3",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "RUN-CANCEL",
+      "step": "M09.4",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "RUN-FAIL",
+      "step": "M09.4",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "RUN-IMMUTABLE",
+      "step": "M10.3",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "PERFORMANCE",
+      "step": "M11.3",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "PRIVACY-OFFLINE",
+      "step": "M11.4",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    },
+    {
+      "id": "HOUSEHOLD-GATE",
+      "step": "M11.5",
+      "status": "SUITE",
+      "evidence": "npm test and npm run test:e2e; see current recorded suite output. This CLI does not claim a browser assertion has run."
+    }
+  ],
+  "legal_status": "OPEN; arithmetic does not verify sources"
+}

@@ -1,0 +1,113 @@
+import csv, json, math, re, subprocess, sys, tomllib, zipfile
+from datetime import datetime, timezone
+from decimal import Decimal, localcontext
+from fractions import Fraction
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+root = Path('verification')
+fields = json.loads((root/'config-fields.json').read_text())['fields']
+patterns = [(re.compile('^'+re.escape(f['path']).replace(r'\*', '[^.]+')+'$'), f) for f in fields]
+checks = []
+def check(name, passed, detail=None):
+    checks.append({'name':name, 'status':'PASS' if passed else 'FAIL', 'detail':detail})
+def leaves(obj, path=''):
+    if isinstance(obj, dict):
+        for k,v in obj.items():
+            yield from leaves(v, f'{path}.{k}' if path else k)
+    elif isinstance(obj,list) and obj and isinstance(obj[0],dict):
+        for v in obj: yield from leaves(v, path+'[]')
+    else: yield path,obj
+containers = json.loads((root/'config-fields.json').read_text())['containers']
+toml_files = sorted((root/'fixtures').glob('*.toml'))
+for p in toml_files:
+    obj = tomllib.loads(p.read_text())
+    unknown, bad_types = [], []
+    for path,v in leaves(obj):
+        found = next((f for pattern,f in patterns if pattern.fullmatch(path)),None)
+        if found is None:
+            if path in containers and v==[]: continue
+            unknown.append(path); continue
+        t = found['type']
+        valid = True
+        if t.startswith('enum '): valid = v in t[5:].split('|')
+        elif t=='boolean': valid = type(v) is bool
+        elif t=='integer': valid = type(v) is int and abs(v)<=9007199254740991
+        elif t=='number': valid = type(v) in (int,float) and math.isfinite(v)
+        elif t=='string': valid = isinstance(v,str)
+        elif t=='string[]': valid = isinstance(v,list) and all(isinstance(x,str) for x in v)
+        elif t=='number[]': valid = isinstance(v,list) and all(type(x) in (int,float) and math.isfinite(x) for x in v)
+        elif t=='[number,number][]': valid = isinstance(v,list) and all(len(x)==2 and all(type(y) in (int,float) for y in x) for x in v)
+        elif t=='object[]': valid = isinstance(v,list)
+        if not valid: bad_types.append(path)
+    check('TOML syntax/known leaf types: '+p.name, not unknown and not bad_types, {'unknown':unknown,'bad_types':bad_types})
+    mirror = p.with_suffix('.json')
+    if mirror.exists(): check('TOML/JSON authoring round trip: '+p.name, obj==json.loads(mirror.read_text()))
+ns={'x':'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
+book=root/'records/M00-2/control-calculations.xlsx'
+with zipfile.ZipFile(book) as z:
+    check('Independent standard ZIP reader/CRC', z.testzip() is None, {'parts':len(z.namelist())})
+    trees = {name:ET.fromstring(z.read(name)) for name in z.namelist() if name.endswith('.xml') or name.endswith('.rels')}
+    check('All workbook XML parses', len(trees)==7)
+    for k,mult in enumerate([Fraction(1),Fraction(99,100)],1):
+        tree=trees[f'xl/worksheets/sheet{k}.xml']
+        cells={c.attrib['r']:c for c in tree.findall('.//x:c',ns)}
+        def val(a): return Decimal(cells[a].find('x:v',ns).text)
+        def formula(a): return cells[a].find('x:f',ns).text
+        data_rows=[r for r in tree.findall('.//x:row',ns) if 14<=int(r.attrib['r'])<=63]
+        check(f'Workbook sheet{k}: exactly50 payment rows', len(data_rows)==50 and val('A14')==0 and val('A63')==49)
+        check(f'Workbook sheet{k}: PV formula range and cash timing',
+              formula('B65')=='SUM(I14:I63)' and formula('K14')=='$B$65' and formula('K15')=='M14'
+              and formula('L14')=='K14-G14' and formula('M14')=='L14*(1+$B$8)')
+        w=Fraction(25000000,669); q=Fraction(104,103)/mult
+        pv=sum((w*q**t for t in range(50)),Fraction())
+        balance=pv; max_cache_error=Decimal(0)
+        with localcontext() as ctx:
+            ctx.prec=80
+            dec=lambda f:Decimal(f.numerator)/Decimal(f.denominator)
+            for t in range(50):
+                row=14+t; spend=Fraction(250000)*Fraction(104,100)**t
+                fx=Fraction(669,100)*mult**t; payment=spend/fx; discount=Fraction(103,100)**t
+                present=payment/discount; after=balance-payment; end=after*Fraction(103,100)
+                refs={f'A{row}':Fraction(t),f'B{row}':Fraction(2026+t),f'C{row}':Fraction(40+t),f'D{row}':Fraction(40+t),
+                      f'E{row}':spend,f'F{row}':fx,f'G{row}':payment,f'H{row}':discount,f'I{row}':present,
+                      f'K{row}':balance,f'L{row}':after,f'M{row}':end}
+                max_cache_error=max(max_cache_error,max(abs(val(a)-dec(v)) for a,v in refs.items()))
+                balance=end
+            check(f'Workbook sheet{k}:50-row cached arithmetic independently reconciles',
+                  balance==0 and max_cache_error<=Decimal('0.000001') and abs(val('B65')-dec(pv))<=Decimal('0.000001'),
+                  {'max_cached_error_usd':str(max_cache_error), 'rational_pv':str(dec(pv)), 'final_exact_balance':str(balance)})
+        csvpath=root/('records/M00-2/control-flat.csv' if k==1 else 'records/M00-2/control-appreciation.csv')
+        rows=list(csv.DictReader(csvpath.open()))
+        with localcontext() as ctx:
+            ctx.prec=80
+            sum_pv=sum((Decimal(r['pv_payment']) for r in rows),Decimal())
+            exact=Decimal(pv.numerator)/Decimal(pv.denominator)
+            check(f'CSV control{k}: independent50-row rational PV',
+                  len(rows)==50 and rows[0]['age_A']=='40' and rows[-1]['age_A']=='89'
+                  and abs(sum_pv-exact)<=Decimal('1e-30') and Decimal(rows[-1]['end_usd'])==0,
+                  {'sum_pv':str(sum_pv),'reference_pv':str(exact)})
+# Check real file targets in prepared Markdown, excluding external URLs and code-like fragments.
+broken=[]
+docs=sorted(Path('plan').glob('*.md'))+sorted(root.rglob('*.md'))
+for p in docs:
+    for raw in re.findall(r'\]\(([^)]+)\)',p.read_text()):
+        target=raw.strip('<>').split('#')[0]
+        if not target or '://' in target: continue
+        target=re.sub(r':\d+$','',target)
+        if not (p.parent/target).exists(): broken.append({'file':str(p),'target':raw})
+check('All local Markdown links resolve',not broken,{'broken':broken})
+for p in sorted((root/'reference').glob('*.mjs')):
+    result=subprocess.run(['node','--check',str(p)],capture_output=True,text=True)
+    check('Node syntax: '+p.name,result.returncode==0,{'returncode':result.returncode,'output':result.stdout+result.stderr})
+report={'kind':'Independent TOML/ZIP/XML/CSV format and arithmetic inspection, not app execution',
+        'checked_at':datetime.now(timezone.utc).isoformat(),'python_inspection_only':sys.version.split()[0],
+        'checks':checks,'counts':{'pass':sum(x['status']=='PASS' for x in checks),'fail':sum(x['status']=='FAIL' for x in checks)},
+        'typescript_compile':'NOT RUN: tsc is not installed; standalone declarations prepared, toolchain gate is M01',
+        'spreadsheet_application_open_recalculation':'NOT RUN','human_acceptance':'NOT RUN'}
+(root/'records/M00-1/format-inspection-report.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps(report['counts']))
+for c in checks:
+    if c['status']=='FAIL': print(json.dumps(c))
+if report['counts']['fail']: sys.exit(1)
+

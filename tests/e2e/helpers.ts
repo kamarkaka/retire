@@ -1,0 +1,37 @@
+import { expect } from './fixtures';
+import type { Page } from '@playwright/test';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { exportScenario } from '../../src/config/config';
+import type { DraftScenario } from '../../src/model/types';
+
+export async function record(name: string, value: unknown) {
+  const path = resolve(`verification/records/e2e/${name}`);
+  await mkdir(resolve('verification/records/e2e'), { recursive: true });
+  await writeFile(path, JSON.stringify(value, null, 2) + '\n');
+}
+export async function saveDownload(page: Page, button: string, name: string) {
+  const pending = page.waitForEvent('download');
+  await page.getByRole('button', { name: button, exact: true }).click();
+  const download = await pending,
+    path = resolve(`verification/records/e2e/${name}`);
+  await mkdir(resolve('verification/records/e2e'), { recursive: true });
+  await download.saveAs(path);
+  return { path, text: await readFile(path, 'utf8') };
+}
+export async function complete(page: Page, paths: number, timeout = 60_000) {
+  await page
+    .getByRole('button', { name: 'Run simulation', exact: false })
+    .click();
+  await expect(page.getByTestId('run-status')).toContainText(
+    `Completed ${paths.toLocaleString()} paths`,
+    { timeout },
+  );
+}
+export async function uploadDraft(page: Page, draft: DraftScenario) {
+  await page.getByLabel('Upload configuration file').setInputFiles({
+    name: 'local-test.toml',
+    mimeType: 'text/plain',
+    buffer: Buffer.from(exportScenario(draft)),
+  });
+}

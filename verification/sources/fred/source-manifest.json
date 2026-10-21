@@ -1,0 +1,22 @@
+{
+  "CPIAUCNS": {
+    "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS",
+    "retrieved_at": "2026-10-19T00:54:45.186381+00:00",
+    "source_sha256": "cfab9b9be4a5d4f06253c4dcc3f7e0b28b1d58837e710dd7cb1fd54a49e7ad7c"
+  },
+  "FPCPITOTLZGCHN": {
+    "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=FPCPITOTLZGCHN",
+    "retrieved_at": "2026-10-19T00:54:45.410790+00:00",
+    "source_sha256": "9f18533fef4dbd2b8fc05339be96ebd575b8778191234da36fb3e50933e997c9"
+  },
+  "DEXCHUS": {
+    "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXCHUS",
+    "retrieved_at": "2026-10-19T00:54:45.200289+00:00",
+    "source_sha256": "8265144a91eb9a7573c8919754ff48d1a84e219a1fb92b18a321c4e13afa4cd3"
+  },
+  "conventions": {
+    "CPIAUCNS": "US CPI, all urban consumers, not seasonally adjusted: December index / preceding December index - 1. Bundled annual series 1928–2025.",
+    "FPCPITOTLZGCHN": "World Bank China annual-average inflation, source percent divided by 100. Reference history 1987–2025; calibration 1997–2025; future paths still use configured AR(1) parameters.",
+    "DEXCHUS": "CNY per USD: last valid observation of each calendar year, 1981–2025. Calibration log returns 2006–2025 require the 2005 baseline; future paths still use configured FX parameters."
+  }
+}

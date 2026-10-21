@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "properties": [],
+  "simulation": {
+    "start_year": 2026,
+    "n_paths": 1,
+    "seed": 42,
+    "max_age": 61
+  },
+  "market": {
+    "sample_start": 1928,
+    "sample_end": 2025,
+    "block_mean_years": 8,
+    "home_cpi_mean": 0,
+    "home_cpi_phi": 0.3,
+    "home_cpi_sigma": 0,
+    "home_cpi_start": 0,
+    "fx_spot": 1,
+    "fx_fair_value": 1,
+    "fx_adjust_speed": 0.15,
+    "fx_sigma": 0,
+    "fx_real_trend": 0,
+    "fx_mode": "drift",
+    "fx_drift": 0,
+    "fx_spread": 0,
+    "fx_quota_usd_per_person": 50000,
+    "medical_excess_inflation": 0,
+    "income_yield_us_stocks": 0,
+    "income_yield_us_bonds": 0
+  },
+  "people": {
+    "domicile": "US",
+    "A": {
+      "birth_year": 1966,
+      "sex": "M",
+      "us_citizen": true,
+      "us_income_tax_status": "resident"
+    },
+    "B": {
+      "birth_year": 1966,
+      "sex": "F",
+      "us_citizen": false,
+      "us_income_tax_status": "nonresident"
+    }
+  },
+  "medical": {
+    "age_growth": 0,
+    "shock_enabled": false,
+    "shock_prob_at_60": 0,
+    "shock_prob_doubling_years": 8,
+    "shock_median": 0,
+    "late_life_care": {
+      "enabled": false,
+      "start_age": 85,
+      "monthly": 0,
+      "real_growth": 0
+    }
+  },
+  "budget": {
+    "annual": 0,
+    "included_health": 0
+  },
+  "one_time": [
+    {
+      "name": "year0_consumption",
+      "year": 2026,
+      "amount": 150000,
+      "currency": "USD"
+    }
+  ],
+  "accounts": [
+    {
+      "name": "control_cash",
+      "type": "brokerage",
+      "owner": "A",
+      "share_A": 1,
+      "balance": 0,
+      "allocation": {
+        "usd_cash": 1,
+        "us_stocks": 0,
+        "us_bonds": 0
+      }
+    },
+    {
+      "name": "A_trad",
+      "type": "pre_tax",
+      "owner": "A",
+      "share_A": 1,
+      "balance": 650000,
+      "rule_of_55": false,
+      "allocation": {
+        "usd_cash": 1,
+        "us_stocks": 0,
+        "us_bonds": 0
+      }
+    }
+  ],
+  "withdrawals": {
+    "last_resort_property_sale": false,
+    "surplus_account": "control_cash"
+  }
+}

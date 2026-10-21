@@ -1,0 +1,58 @@
+{
+  "name": "retire-local",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x || 26.x",
+    "npm": ">=11 <13"
+  },
+  "packageManager": "npm@11.17.0",
+  "scripts": {
+    "dev": "npm run prepare:build && vite --host 127.0.0.1",
+    "prepare:build": "tsx scripts/build-info.ts && npm run format:check",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:report": "vitest run --reporter=default --reporter=json --outputFile=verification/records/unit-results.json",
+    "test:watch": "vitest",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"scripts/**/*.ts\" \"scripts/**/*.mjs\" \"tests/**/*.ts\" \"verification/reference/*.mjs\" \"*.ts\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"scripts/**/*.ts\" \"scripts/**/*.mjs\" \"tests/**/*.ts\" \"verification/reference/*.mjs\" \"*.ts\"",
+    "build": "npm run prepare:build && npm run typecheck && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    "verify": "tsx scripts/verify-case.ts",
+    "verify:inventory": "node verification/reference/check-artifacts.mjs",
+    "verify:reference": "node verification/reference/recalculate.mjs --report verification/records/reference-arithmetic.json",
+    "examples:export": "tsx scripts/export-examples.ts",
+    "data:import": "tsx scripts/import-data.ts",
+    "data:fetch": "tsx scripts/fetch-market-data.ts",
+    "data:bundle": "tsx scripts/bundle-data.ts",
+    "data:verify": "tsx scripts/verify-data.ts",
+    "test:e2e": "playwright test",
+    "test:serve": "tsx scripts/serve-test-build.ts",
+    "verify:build": "tsx scripts/verify-build.ts",
+    "report:release": "tsx scripts/release-report.ts",
+    "check": "npm run prepare:build && npm run verify:reference && npm run typecheck && npm run test:report && npm run data:verify && npm run verify -- --all && npm run build && npm run verify:build && npm run test:e2e && npm run verify:inventory && npm run report:release"
+  },
+  "dependencies": {
+    "@noble/hashes": "2.4.0",
+    "echarts": "6.1.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "smol-toml": "1.9.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "node": "24.22.0",
+    "prettier": "^3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vite": "8.3.4",
+    "vitest": "5.0.5",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  }
+}

@@ -1,0 +1,404 @@
+/** Canonical UI strings. Every other language translates these keys. */
+
+const enUI = {
+  'meta.title': 'Retire · Local retirement planner',
+
+  'header.home': 'Retire home',
+  'header.localBadge': 'Runs on your device',
+  'language.label': 'Language',
+
+  'hero.eyebrow': 'YOUR NEXT CHAPTER, IN NUMBERS',
+  'hero.title': 'A clearer view of retirement.',
+  'hero.copy':
+    'Explore how spending, taxes, inflation, health costs and the exchange rate shape your plan over a lifetime.',
+
+  'start.backToConfig': '← Back to configuration',
+  'entry.grid': 'Start a configuration',
+  'entry.example.title': 'Start with an example',
+  'entry.example.body':
+    'A complete scenario with accounts, property, tax and market assumptions ready to explore.',
+  'entry.example.load': 'Load sample config',
+  'entry.example.control': 'Use a 50-year planning example',
+  'entry.guided.title': 'Guided setup',
+  'entry.guided.body':
+    'Answer a few questions and we build your starting configuration.',
+  'entry.guided.start': 'Start guided setup',
+  'entry.guided.blank': 'Build from a blank configuration',
+  'entry.byo.title': 'Bring your own plan',
+  'entry.byo.body':
+    'Upload a TOML configuration from your device. Edit it here and download it to keep your work.',
+  'actions.uploadConfig': 'Upload configuration',
+  'upload.aria': 'Upload configuration file',
+
+  'workspace.configChip': 'Configuration',
+  'workspace.hint': 'Download to save · reload requires re-upload',
+  'workspace.backToStart': 'Back to start',
+  'workspace.newBlank': 'New blank',
+  'workspace.downloadConfig': 'Download current config',
+
+  'plan.financial': 'Financial assets · gross',
+  'plan.property': 'Property equity',
+  'plan.budget': 'Starting annual budget',
+  'plan.health': 'Included health budget',
+
+  'run.issues': '{count} items to resolve',
+  'run.marketAttention': 'Market assumptions need attention',
+  'run.ready': 'Ready to explore',
+  'run.issuesHint': 'Fill the missing inputs and resolve the listed gates.',
+  'run.readyHint':
+    'All configurations use the same calculation rules. Your configuration stays in browser memory.',
+  'run.cancel': 'Cancel run',
+  'run.start': 'Run simulation',
+  'run.simulating': 'Simulating {done} / {total} paths…',
+  'run.summarizing': 'Calculating percentiles…',
+  'run.completed': 'Completed {paths} paths. Configuration {hash}.',
+  'run.canceled': 'Run canceled. Partial results discarded.',
+  'run.failed': 'Run failed. Partial results discarded.',
+  'run.local': 'All calculations run locally.',
+  'run.errorPath': 'path {id}',
+  'run.errorYear': 'year {year}',
+
+  'validation.title': 'Validation and open gates',
+
+  'tabs.label': 'Workspace tabs',
+  'tabs.configuration': 'Configuration',
+  'tabs.results': 'Results',
+  'tabs.ledger': 'Year ledger',
+  'tabs.assumptions': 'Assumptions',
+  'tabs.compare': 'Compare',
+
+  'snapshot.note':
+    'Showing completed run {hash} with seed {seed}. Current draft edits, market refreshes and incomplete runs do not change it.',
+
+  'toml.title': 'Portable TOML configuration',
+  'toml.hint':
+    'Every builder field follows the same parser and validator as an upload.',
+  'toml.copy': 'Copy preview into editor',
+  'toml.label': 'Configuration text',
+  'toml.description':
+    'Edit or paste a complete TOML configuration here, then choose Apply TOML to replace the editable draft. Invalid text leaves your existing configuration intact. Editing this text alone does not change the draft, completed results or any file on your device.',
+  'toml.editorPath': 'TOML editor',
+  'toml.placeholder': 'Paste a TOML configuration to edit and apply locally',
+  'toml.apply': 'Apply TOML',
+  'draft.invalidArray':
+    '# Draft has an invalid array element; repair the field before exporting.',
+
+  'export.pin': 'Pin completed run',
+  'export.runConfig': 'Download run config',
+  'export.manifest': 'Download run manifest',
+  'export.marketData': 'Download run market data',
+
+  'error.simulation': 'Simulation or file error',
+  'error.import': 'Import could not be applied',
+  'error.preserved': 'Your existing configuration is preserved.',
+  'error.readFile': 'Could not read local file: {detail}',
+  'error.tooLarge': 'Configuration exceeds 2 MiB',
+
+  'footer.line1': 'Portable inputs. Transparent assumptions.',
+  'footer.line2': 'Local files · browser computation · no automatic saving',
+
+  'builder.sections': 'Configuration sections',
+  'section.simulation': 'Simulation',
+  'section.people': 'People',
+  'section.budget': 'Budget',
+  'section.accounts': 'Accounts',
+  'section.properties': 'Properties',
+  'section.market': 'Markets, inflation & FX',
+  'section.schema_version': 'Schema',
+  'household.group': 'Household size',
+  'household.one': 'One person',
+  'household.two': 'Two people',
+  'list.count': '{count} items · order is preserved',
+  'list.moveUp': 'Move {path} up',
+  'list.moveDown': 'Move {path} down',
+  'list.removeItem': 'Remove {path}',
+  'list.addItem': 'Add {path}',
+  'list.remove': 'Remove',
+  'list.add': '+ Add {label}',
+  'list.addShort': '+ Add',
+  'list.item': '{label} {index}',
+  'builder.advancedProperty': 'Advanced property details',
+  'budget.core': 'Budget',
+  'budget.medical': 'Medical',
+  'budget.shocks': 'Shocks',
+  'budget.oneTime': 'One-time costs',
+  'market.markets': 'Markets',
+  'market.inflation': 'Inflation',
+  'market.fx': 'FX',
+  'market.advanced': 'Advanced {label}',
+  'market.presets': 'Market presets',
+  'market.sampleDefaults': 'Sample defaults',
+  'market.stablePrices': 'Stable prices',
+  'market.presetsHint':
+    "Sample defaults restore the shipped example's market assumptions. Stable prices turns off inflation and FX volatility while keeping historical return sampling.",
+  'market.cnyCashNote':
+    'Cash CNY earns no interest in this model. Interest is intentionally omitted and may be added back in the future.',
+  'field.bracket': 'Bracket {index} {part}',
+  'field.bracketLower': 'lower threshold',
+  'field.bracketRate': 'rate',
+  'field.bracketUnitRate': 'decimal fraction',
+  'field.bracketDesc': '{description} This box is {part} for bracket {index}.',
+  'field.bracketDescLower': 'the lower CNY income threshold',
+  'field.bracketDescRate': 'the decimal tax rate',
+  'field.entryDesc': '{description} This is entry {index}, in the order shown.',
+  'field.required': 'Required',
+  'field.default': 'Default: {value}',
+  'field.select': 'Select…',
+  'field.annualBudget': 'Annual {ccy} (includes medical)',
+  'field.medicalExpenses': 'Medical expenses',
+  'field.ruleOf55': 'Rule of 55 Exemption',
+  'field.allowEarly': 'Allow early withdraw',
+  'seed.label': 'Generate random simulation seed',
+  'seed.title': 'Generate an integer from 0 to 4,294,967,295',
+  'seed.random': 'Random',
+  'configField.about': 'About {path}',
+
+  'tutorial.dialog': 'Guided setup',
+  'tutorial.eyebrow': 'GUIDED SETUP',
+  'tutorial.question': 'Question {step}: {name}',
+  'tutorial.reviewTitle': 'Review your starting plan',
+  'tutorial.stepOf': 'Step {step} of {total}',
+  'tutorial.step.household': 'Household',
+  'tutorial.step.people': 'People',
+  'tutorial.step.spending': 'Spending',
+  'tutorial.step.savings': 'Savings',
+  'tutorial.step.retirement': 'Retirement',
+  'tutorial.step.horizon': 'Horizon',
+  'tutorial.step.done': 'Done',
+  'tutorial.q0household': 'Who is this plan for?',
+  'tutorial.q0domicile': 'Where does the household retire?',
+  'tutorial.domicile': 'Household domicile',
+  'tutorial.domicileNote':
+    'One domicile covers the whole household and routes China tax for everyone.',
+  'tutorial.q1':
+    'One birth year and citizenship answer per person. Citizens use resident tax treatment; everyone else uses nonresident treatment.',
+  'tutorial.you': 'You',
+  'tutorial.personA': 'Person A',
+  'tutorial.personB': 'Person B',
+  'tutorial.birthYear': 'Birth year',
+  'tutorial.personBirth': 'Person {id} birth year',
+  'tutorial.citizenship': 'Person {id} citizenship',
+  'tutorial.citizen': 'US citizen',
+  'tutorial.nonCitizen': 'Not a US citizen',
+  'tutorial.q2': 'How much will the household spend in a typical year?',
+  'tutorial.annualSpending': 'Annual spending, {ccy}',
+  'tutorial.annualSpendingAria': 'Annual spending {ccy}',
+  'tutorial.medicalSpending':
+    'Medical spending included above, {ccy} (optional)',
+  'tutorial.medicalSpendingAria': 'Medical spending {ccy}',
+  'tutorial.q3': 'How much is saved for investment?',
+  'tutorial.investmentSavings': 'Investment savings, USD',
+  'tutorial.investmentSavingsAria': 'Investment savings USD',
+  'tutorial.savingsNote':
+    'We put it in one brokerage account (60% stocks, 30% bonds, 10% cash) with withdrawals in account order. Split accounts or change the mix later in the builder.',
+  'tutorial.q4': 'How much is in retirement accounts?',
+  'tutorial.preTax': 'Pre-tax retirement (401k, traditional IRA), USD',
+  'tutorial.preTaxAria': 'Pre-tax retirement USD',
+  'tutorial.afterTax': 'After-tax retirement (Roth), USD',
+  'tutorial.afterTaxAria': 'After-tax retirement USD',
+  'tutorial.retirementNote':
+    'Retirement accounts belong to Person A; split them between people later in the builder. Withdrawals spend the brokerage account first, then pre-tax, then after-tax.',
+  'tutorial.q5':
+    'When does the plan start, and through what age should it run?',
+  'tutorial.startYear': 'Plan start year',
+  'tutorial.throughAge': 'Plan through age',
+  'tutorial.horizonNote':
+    'Everyone stays alive through the younger person\u2019s through-age year. Markets replay observed history with standard defaults.',
+  'tutorial.reviewHousehold': '{household} retiring in {domicile}.',
+  'tutorial.reviewSpending': 'Spending {amount} {ccy} per year{medical}.',
+  'tutorial.reviewMedical': ', including {amount} {ccy} medical',
+  'tutorial.reviewSavings':
+    'Investment savings {balance} USD; retirement {pre} USD pre-tax and {after} USD after-tax.',
+  'tutorial.reviewHorizon':
+    'Plan runs {start} through age {age} with historical markets.',
+  'tutorial.confirmExit':
+    'Exit guided setup? Your answers so far will be discarded.',
+  'tutorial.keepEditing': 'Keep editing',
+  'tutorial.discardExit': 'Discard and exit',
+  'tutorial.back': 'Back',
+  'tutorial.next': 'Next',
+  'tutorial.finish': 'Start simulation',
+  'tutorial.exit': 'Exit guided setup',
+
+  'results.eyebrow': 'COMPLETED RUN',
+  'results.title': 'Your simulation at a glance',
+  'results.paths': '{paths} paths · {seconds}s',
+  'results.fundingTitle': 'Funding success through Max age',
+  'results.fundingHint': 'No funding failure or early asset exhaustion',
+  'results.terminalTitle': 'Median terminal net worth',
+  'results.terminalHint': 'In today’s USD',
+  'results.heirsTitle': 'Median ending assets after tax',
+  'results.heirsHint': 'After leftover unpaid income tax',
+  'results.wealthTitle': 'Household wealth over time',
+  'results.wealthHint': 'Median and 10th–90th percentiles across all paths',
+  'results.unitsAria': 'Wealth chart units',
+  'results.unitRealCny': 'Today’s CNY',
+  'results.unitRealUsd': 'Today’s USD',
+  'results.unitNominalCny': 'Nominal CNY',
+  'results.wealthChart': 'Household wealth percentile chart',
+  'results.wealthNote':
+    'Year-end values. A path stops at the younger person’s Max age or when net assets reach zero or below. Stopped paths contribute zero to later wealth percentiles; both people remain alive. Account balances include retirement assets before withdrawal tax.',
+  'results.fundingChart': 'Funding through the horizon',
+  'results.fundingDenom':
+    'The curve uses all {paths} paths as their denominator.',
+  'results.fundingChartLabel': 'Funding through the horizon probability chart',
+  'results.fxTitle': 'Exchange rate',
+  'results.fxHint': 'CNY per USD · unconditional market percentiles',
+  'results.fxChart': 'Exchange rate percentile chart',
+  'results.depletionTitle': 'First funding failure or asset exhaustion',
+  'results.depletionSome':
+    'Count of failed paths by A’s age at the first funding failure or early net-asset exhaustion.',
+  'results.depletionNone':
+    'No path had a funding failure or early net-asset exhaustion.',
+  'results.depletionChart': 'First depletion age histogram',
+  'results.taxTitle': 'Taxes and cash flow',
+  'results.forcedSale': 'Forced property sale',
+  'results.lifetimeTax': 'Median lifetime income tax paid',
+  'results.terminalDue': 'Median ending income tax due',
+  'results.taxNote':
+    'Taxes are computed and paid each simulated year. Both people remain alive; no estate tax, inheritance or death-related basis reset is simulated. The broader tax/source audit remains open.',
+  'chart.median': 'Median',
+  'chart.p10': '10th',
+  'chart.p90': '90th',
+  'chart.tooltipTitle': '{year} · A age {age}',
+  'chart.funded': 'Without funding shortfall',
+  'chart.ageAxis': 'A age',
+  'chart.pathsAxis': 'Paths',
+
+  'ledger.eyebrow': 'REPLAY FROM COMPLETED RUN',
+  'ledger.title': 'Follow one path, year by year',
+  'ledger.p10': '10th path',
+  'ledger.pathId': 'Path ID',
+  'ledger.pathIdAria': 'Replay path ID',
+  'ledger.replaying': 'Replaying path {path}…',
+  'ledger.summary': 'Path {path} · {years} active years · Float64',
+  'ledger.allColumns': 'All {count} columns',
+  'ledger.lastYear': 'Last active year',
+  'ledger.downloadCsv': 'Download ledger CSV',
+  'ledger.downloadProv': 'Download path provenance',
+  'ledger.stopMaxAge': 'Stopped at the younger person’s Max age in {year}.',
+  'ledger.stopBefore':
+    'Stopped before the first year because starting net assets were zero or negative.',
+  'ledger.stopDepleted':
+    'Stopped in {year} because net assets reached zero or below.',
+  'ledger.explainer':
+    'Starting balances precede this year’s cash flows. Liquid USD includes USD financial accounts, including retirement; starting net worth includes Cash CNY and property equity at opening FX. Medical includes the base budget, shocks and late-life care. Investment return covers USD financial accounts and Cash CNY, weighted after opening-year cash flows, before tax and FX changes. Money is rounded to whole numbers here; downloads retain full precision.',
+  'ledger.table': 'Year ledger',
+  'ledger.prevRows': 'Previous rows',
+  'ledger.rowsOf': 'Rows {a}–{b} of {c}',
+  'ledger.nextRows': 'Next rows',
+  'ledger.yearTitle': 'Year {year} · raw provenance',
+  'ledger.yearOutside': 'outside the planning horizon',
+  'ledger.fxNote':
+    'Transactions use opening FX {open}; ending FX {close} values the ledger.',
+  'ledger.noYear': 'No year is selected inside the planning horizon.',
+
+  'compare.title': 'Compare completed runs',
+  'compare.unpin': 'Unpin baseline',
+  'compare.paired': 'Paired: same indexed latent draws and reference versions.',
+  'compare.unpaired':
+    'Unpaired: seeds, timeline, counts or reference data differ.',
+  'compare.metric': 'Metric',
+  'compare.baseline': 'Baseline',
+  'compare.current': 'Current',
+  'compare.configuration': 'Configuration',
+  'compare.fundingSuccess': 'Lifetime funding success',
+  'compare.preTaxWealth': 'Pre-tax terminal wealth',
+  'compare.netHeirs': 'Net to heirs',
+  'compare.lifetimeTax': 'Lifetime income tax paid',
+  'compare.terminalDue': 'Unpaid terminal income tax',
+  'compare.medianSuffix': '{label} · median today’s USD',
+  'compare.pathsSeed': 'Paths / seed',
+  'compare.deltasTitle': 'Change for each matched path · today’s CNY',
+  'compare.deltasHint':
+    'Current minus baseline, matched by path ID. These percentiles describe individual path changes.',
+  'compare.matched': 'Matched paths',
+  'compare.downloadPaired': 'Download paired comparison',
+  'compare.computing': 'Computing matched-path differences…',
+  'compare.retained':
+    'Baseline uses its original immutable configuration. Retained baseline buffers: {mib} MiB. Comparison temporarily copies two Float64 summary buffers.',
+  'compare.downloadBaseline': 'Download baseline config',
+  'compare.showLedger': 'Show baseline ledger',
+  'compare.hideLedger': 'Hide baseline ledger',
+  'compare.baselineLedger': 'Baseline ledger · seed {seed}',
+  'compare.empty':
+    'Pin a completed run, edit the configuration, then run again. A baseline stays tied to its original assumptions.',
+
+  'assumptions.title': 'Know what the numbers assume',
+  'assumptions.marketTitle': 'Market reference',
+  'assumptions.marketP1':
+    '{label}. US stocks, 10-year Treasury bonds, Treasury bills, US inflation and home prices use {count} joint calendar-year observations. Simulation paths resample these years in blocks; they are not chronological forecasts.',
+  'assumptions.marketP2':
+    'All configurations use the selected historical rows directly, including their annual losses. The model does not impose a 3% planning return. Arithmetic annual means at positive volatility are not compound returns. Stock and bond income yields split total return into income and price change; they do not add extra return.',
+  'assumptions.marketP3':
+    'The bond series represents 10-year US Treasuries, not a broad bond fund. Home returns measure price changes only; rent is modeled separately. China CPI, FX and medical growth remain configured assumptions.',
+  'assumptions.sourcesTitle': 'Historical data sources and calibration',
+  'assumptions.fetched':
+    'Fetched {date}. US inflation uses December-to-December FRED CPI. China annual-average inflation and year-end USD/CNY provide calibration references; configured parameters control future paths.',
+  'assumptions.rawSha': '· raw SHA-256:',
+  'assumptions.stopTitle': 'When a path ends',
+  'assumptions.stopBody':
+    'A path stops after the younger person’s Max age year — or the person’s Max age year in a one-person household — or after the first year with nonpositive net worth. Net worth includes investments, Cash CNY and property equity after mortgages; taxes are paid each year and any leftover unpaid tax is deducted once at that stopping point. Nonpositive starting net worth stops before any annual cash flows. Ledgers contain only simulated years; stopped paths contribute zero to subsequent wealth percentiles.',
+  'assumptions.healthTitle': 'Health and the budget',
+  'assumptions.healthBody':
+    'The annual budget provides ordinary spending after Medical expenses is deducted once. Medical expenses is the single base medical amount for both people; the Medical group adds configured shocks and late-life care. Care is always additional and continues from its start age through the horizon; shocks are always additional as well. Every budget uses initial treatment.',
+  'assumptions.medicalFactor':
+    'With constant mean CPI, the annual medical price × age factor is {factor}, or {real} in real {ccy}.',
+  'assumptions.ssTitle': 'Social Security',
+  'assumptions.ssBody':
+    'Social Security is excluded from the entire simulation: no benefits are ever paid and there are no Social Security inputs, so results never include Social Security income.',
+  'assumptions.cnyTitle': 'Cash CNY',
+  'assumptions.cnyBody':
+    'Cash CNY interest is intentionally omitted and may be added back in the future. Deposits and withdrawals change its nominal balance; inflation and FX still affect purchasing power and USD value.',
+  'assumptions.fxTitle': 'FX and purchasing power',
+  'assumptions.fxBody':
+    'FX is CNY per USD. Transactions use beginning-year FX with the configured spread. Real CNY return equals (1 + USD return) × ending FX / beginning FX / (1 + China inflation). PPP is an assumption linking relative inflation to FX.',
+  'assumptions.taxTitle': 'Tax and supported classifications',
+  'assumptions.taxBody':
+    'The model supports citizen/resident and noncitizen/nonresident. A retained green card requires the applicable resident branch; it is never silently treated as NRA. Tax stays simple: all-long-term netting with loss carryforward, property gains at LTCG rates, no state tax, and same-year payment with a same-year China credit. Section 1231 loss history and lookback ordering are removed.',
+  'assumptions.registry': 'Source registry · {open} open',
+  'assumptions.snapshot': 'Current scientific snapshot',
+  'assumptions.configHash': 'Current configuration hash:',
+  'marketData.label':
+    'NYU/FRED historical US market data · {start}–{end} · China inflation and FX are modeled',
+
+  'market.title': 'Market data',
+  'market.cancelRefresh': 'Cancel refresh',
+  'market.refresh': 'Refresh market data',
+  'market.upload': 'Upload market data',
+  'market.download': 'Download market data',
+  'market.uploadAria': 'Upload market data file',
+  'market.intro':
+    'Refresh downloads public NYU/FRED data. Configurations and financial inputs stay in your browser. Completed runs keep their original data.',
+  'market.stockYield': 'Stock income yield',
+  'market.stockNote': 'NYU · {date} · dividends ÷ beginning-year index',
+  'market.bondYield': 'Bond income yield',
+  'market.bondNote': 'FRED DGS10 · {date} · 10-year Treasury par-yield proxy',
+  'market.spotFx': 'Spot CNY per USD',
+  'market.fxNote': 'FRED DEXCHUS · {date}',
+  'market.yieldNote':
+    'These yields split total investment return into income and price change; they add no extra return. A par-yield proxy can differ from your holdings’ actual coupon income. Current source values are editable in Configuration.',
+  'market.sourcesTitle': 'Source dates and public data package',
+  'market.fetched': 'Fetched {date}. Package SHA-256:',
+  'market.retrieved': '· retrieved {date} · raw SHA-256',
+  'market.cpi':
+    'Latest US CPI: {us} ({usDate}, monthly year over year). Latest China CPI: {cn} ({cnDate}, annual average). Future China inflation and FX volatility still follow your configured assumptions.',
+  'market.reproduce':
+    'Download this package alongside your TOML config to reproduce a run after reload. Package validation checks source shape, continuity, definitions and hashes; future provider revisions have not been independently audited.',
+  'market.applied':
+    'Applied {years} historical US years, both income yields and spot FX. China/FX calibration data updated; your risk parameters and budget are retained.',
+  'market.fetching': 'Fetching five public market sources…',
+  'market.noEndpoint':
+    'This host does not provide the public-data refresh endpoint. Upload a market data package generated with npm run data:fetch.',
+  'market.refreshFailed': 'Public market refresh failed.',
+  'market.fewerYears':
+    'The fetched source has fewer complete years than the current data. Existing data are preserved.',
+  'market.canceled':
+    'Refresh canceled. Existing data and configuration are preserved.',
+  'market.tooLarge': 'Market data package exceeds 4 MiB',
+  'market.timeout': 'Market refresh timed out.',
+  'market.errorSuffix': 'Existing data and configuration are preserved.',
+} as const;
+
+export default enUI;
+export type MessageKey = keyof typeof enUI;

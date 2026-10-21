@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "one_time": [],
+  "simulation": {
+    "start_year": 2026,
+    "n_paths": 1,
+    "seed": 42,
+    "max_age": 60
+  },
+  "market": {
+    "sample_start": 1928,
+    "sample_end": 2025,
+    "block_mean_years": 8,
+    "home_cpi_mean": 0,
+    "home_cpi_phi": 0.3,
+    "home_cpi_sigma": 0,
+    "home_cpi_start": 0,
+    "fx_spot": 1,
+    "fx_fair_value": 1,
+    "fx_adjust_speed": 0.15,
+    "fx_sigma": 0,
+    "fx_real_trend": 0,
+    "fx_mode": "drift",
+    "fx_drift": 0,
+    "fx_spread": 0,
+    "fx_quota_usd_per_person": 50000,
+    "medical_excess_inflation": 0,
+    "income_yield_us_stocks": 0,
+    "income_yield_us_bonds": 0
+  },
+  "people": {
+    "domicile": "US",
+    "A": {
+      "birth_year": 1966,
+      "sex": "M",
+      "us_citizen": true,
+      "us_income_tax_status": "resident"
+    },
+    "B": {
+      "birth_year": 1966,
+      "sex": "F",
+      "us_citizen": false,
+      "us_income_tax_status": "nonresident"
+    }
+  },
+  "medical": {
+    "age_growth": 0,
+    "shock_enabled": false,
+    "shock_prob_at_60": 0,
+    "shock_prob_doubling_years": 8,
+    "shock_median": 0,
+    "late_life_care": {
+      "enabled": false,
+      "start_age": 85,
+      "monthly": 0,
+      "real_growth": 0
+    }
+  },
+  "budget": {
+    "annual": 0,
+    "included_health": 0
+  },
+  "accounts": [
+    {
+      "name": "B_cash",
+      "type": "brokerage",
+      "owner": "B",
+      "share_A": 0,
+      "balance": 0,
+      "allocation": {
+        "usd_cash": 1,
+        "us_stocks": 0,
+        "us_bonds": 0
+      }
+    }
+  ],
+  "withdrawals": {
+    "last_resort_property_sale": false,
+    "surplus_account": "B_cash"
+  },
+  "properties": [
+    {
+      "id": "synthetic_sale",
+      "share_A": 0,
+      "value": 1000000,
+      "cost_basis": 840000,
+      "land_share": 0.2,
+      "depreciation_taken": 0,
+      "mortgage_balance": 700000,
+      "mortgage_rate": 0,
+      "mortgage_years_left": 10,
+      "rent_monthly": 0,
+      "property_tax_annual": 0,
+      "insurance_annual": 0,
+      "hoa_monthly": 0,
+      "rent_real_growth": 0,
+      "selling_cost": 0.06,
+      "strategy": "sell_year",
+      "sell_year": 2026,
+      "sell_liquid_years": 0,
+      "proceeds_account": "B_cash",
+      "maintenance_annual": 0
+    }
+  ]
+}

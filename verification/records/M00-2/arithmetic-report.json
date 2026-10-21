@@ -1,0 +1,2621 @@
+{
+  "record_kind": "M00 independent arithmetic verification, not product execution or human acceptance",
+  "node": "v26.5.0",
+  "input_hashes": {
+    "fixtures/oracles.json": "9b00ddb5ec4a470dae4cf648a9ac9e9300b6bd02c1fa895d3e727f90015fdc6a",
+    "fixtures/tax-tables.spec.json": "7435ef322b027f987ea162857133b2bc38f9e086c83a84fe10c76417fd9ea267",
+    "reference/recalculate.mjs": "321c6de13ff71fbbef10ca12698c4ed50f82ae537bcba35e1a4af94563016b75",
+    "../plan/2026-10-18-retirement-sim-design.md": "c95d911f104158efd6a5f2ec3831c31751b5e87e384103127d7c6ad0d1644bec"
+  },
+  "reference_imports_product_model": false,
+  "checked_at": "2026-10-18T19:41:38.842Z",
+  "counts": {
+    "reference_pass": 55,
+    "reference_fail": 0,
+    "structural_prepared": 18,
+    "open": 7
+  },
+  "records": [
+    {
+      "id": "US-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 70,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 80000,
+        "qd": 10000,
+        "ss": 30000,
+        "securities_lt": 0,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 0,
+        "nii": 10000
+      },
+      "actual": {
+        "net_total": 0,
+        "loss_deduction": 0,
+        "carry": 0,
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "taxable_ss": 25500,
+        "agi": 115500,
+        "senior_deduction": 0,
+        "deduction": 17750,
+        "ti": 97750,
+        "regular_tax": 16217,
+        "A_amt": 87750,
+        "preferential_tax": 1500,
+        "u1250_cap_tax": 0,
+        "income_tax": 15517,
+        "niit": 0
+      },
+      "expected": {
+        "taxable_ss": 25500,
+        "deduction": 17750,
+        "ti": 97750,
+        "income_tax": 15517,
+        "niit": 0
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-2",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "filing_status": "single",
+        "age": 70,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 50000,
+        "qd": 0,
+        "ss": 40000,
+        "securities_lt": 20000,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 0,
+        "nii": 20000
+      },
+      "actual": {
+        "net_total": 20000,
+        "loss_deduction": 0,
+        "carry": 0,
+        "lt_gain": 20000,
+        "u1250_gain": 0,
+        "taxable_ss": 34000,
+        "agi": 104000,
+        "senior_deduction": 4260,
+        "deduction": 22410,
+        "ti": 81590,
+        "regular_tax": 12661.8,
+        "A_amt": 61590,
+        "preferential_tax": 3000,
+        "u1250_cap_tax": 0,
+        "income_tax": 11261.8,
+        "niit": 0
+      },
+      "expected": {
+        "taxable_ss": 34000,
+        "senior_deduction": 4260,
+        "deduction": 22410,
+        "ti": 81590,
+        "income_tax": 11261.8,
+        "niit": 0
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL",
+        "L-SENIOR"
+      ]
+    },
+    {
+      "id": "US-3",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 5000,
+        "qd": 30000,
+        "ss": 0,
+        "securities_lt": 150000,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 0,
+        "nii": 185000
+      },
+      "actual": {
+        "net_total": 150000,
+        "loss_deduction": 0,
+        "carry": 0,
+        "lt_gain": 150000,
+        "u1250_gain": 0,
+        "taxable_ss": 0,
+        "agi": 185000,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 168900,
+        "regular_tax": 33134,
+        "A_amt": 0,
+        "preferential_tax": 17917.5,
+        "u1250_cap_tax": 0,
+        "income_tax": 17917.5,
+        "niit": 2280
+      },
+      "expected": {
+        "ti": 168900,
+        "income_tax": 17917.5,
+        "niit": 2280
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-4",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 66,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 60000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 0,
+        "property_lt": 100000,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "nii": 150000
+      },
+      "actual": {
+        "net_total": 150000,
+        "loss_deduction": 0,
+        "carry": 0,
+        "lt_gain": 100000,
+        "u1250_gain": 50000,
+        "taxable_ss": 0,
+        "agi": 210000,
+        "senior_deduction": 0,
+        "deduction": 17750,
+        "ti": 192250,
+        "regular_tax": 38738,
+        "A_amt": 92250,
+        "preferential_tax": 15000,
+        "u1250_cap_tax": 0,
+        "income_tax": 30007,
+        "niit": 3230
+      },
+      "expected": {
+        "ti": 192250,
+        "income_tax": 30007,
+        "niit": 3230
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-5",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 150000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 0,
+        "property_lt": 0,
+        "gross_u1250": 40000,
+        "prior_capital_loss": 0,
+        "nii": 40000
+      },
+      "actual": {
+        "net_total": 40000,
+        "loss_deduction": 0,
+        "carry": 0,
+        "lt_gain": 0,
+        "u1250_gain": 40000,
+        "taxable_ss": 0,
+        "agi": 190000,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 173900,
+        "regular_tax": 34334,
+        "A_amt": 173900,
+        "preferential_tax": 0,
+        "u1250_cap_tax": 0,
+        "income_tax": 34334,
+        "niit": 1520
+      },
+      "expected": {
+        "ti": 173900,
+        "income_tax": 34334,
+        "regular_tax": 34334,
+        "niit": 1520
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-6",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 250000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 0,
+        "property_lt": 0,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "nii": 50000
+      },
+      "actual": {
+        "net_total": 50000,
+        "loss_deduction": 0,
+        "carry": 0,
+        "lt_gain": 0,
+        "u1250_gain": 50000,
+        "taxable_ss": 0,
+        "agi": 300000,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 283900,
+        "regular_tax": 68134.25,
+        "A_amt": 233900,
+        "preferential_tax": 0,
+        "u1250_cap_tax": 12500,
+        "income_tax": 63804,
+        "niit": 1900
+      },
+      "expected": {
+        "ti": 283900,
+        "income_tax": 63804,
+        "regular_tax": 68134.25,
+        "niit": 1900
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "NRA-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "filing_status": "mfs",
+        "rental_net": 20000,
+        "dividends": 10000,
+        "ss": 20000,
+        "price_index": 1
+      },
+      "actual": {
+        "rental_tax": 2152,
+        "dividend_tax": 1000,
+        "ss_tax": 5100,
+        "total": 8252
+      },
+      "expected": {
+        "rental_tax": 2152,
+        "dividend_tax": 1000,
+        "ss_tax": 5100,
+        "total": 8252
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-NRA-TREATY",
+        "L-SSA-ABROAD"
+      ]
+    },
+    {
+      "id": "CN-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "dividends": 50000,
+        "gross_rent": 200000,
+        "trad": 300000,
+        "pension_treatment": "comprehensive",
+        "eligible_final_paid_us_tax_cny": 20000
+      },
+      "actual": {
+        "dividend_tax": 10000,
+        "rent_tax": 32000,
+        "pension_tax": 31080,
+        "before_credit": 73080,
+        "credit": 20000,
+        "due": 53080
+      },
+      "expected": {
+        "dividend_tax": 10000,
+        "rent_tax": 32000,
+        "pension_tax": 31080,
+        "before_credit": 73080,
+        "credit": 20000,
+        "due": 53080
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-CN-PENSION",
+        "L-CN-FTC",
+        "L-CN-DEPOSIT"
+      ]
+    },
+    {
+      "id": "EST-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "bases": [
+          1000000,
+          60000
+        ]
+      },
+      "actual": {
+        "tentative_taxes": [
+          345800,
+          13000
+        ]
+      },
+      "expected": {
+        "tentative_taxes": [
+          345800,
+          13000
+        ]
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-ESTATE"
+      ]
+    },
+    {
+      "id": "EST-2",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "us_situs": 2000000,
+        "citizen_spouse": false,
+        "nra_credit": 13000
+      },
+      "actual": {
+        "estate_tax": 732800
+      },
+      "expected": {
+        "estate_tax": 732800
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-ESTATE"
+      ]
+    },
+    {
+      "id": "EST-3",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "citizen": true,
+        "gross": 16000000,
+        "exclusion": 15000000,
+        "index": 1
+      },
+      "actual": {
+        "estate_tax": 400000
+      },
+      "expected": {
+        "estate_tax": 400000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-ESTATE"
+      ]
+    },
+    {
+      "id": "RMD-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "prior_year_end_balance": 1000000,
+        "age": 75,
+        "divisor": 24.6,
+        "need": 10000
+      },
+      "actual": {
+        "rmd": 40650.40650406504,
+        "surplus": 30650.40650406504
+      },
+      "expected": {
+        "rmd": 40650.40650406504,
+        "surplus": 30650.40650406504
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-RMD"
+      ]
+    },
+    {
+      "id": "MORT-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "start_age": 65,
+        "parameters": [
+          [
+            88,
+            9.5
+          ],
+          [
+            91,
+            8.5
+          ]
+        ],
+        "integration_end": 120,
+        "intervals": 24000
+      },
+      "actual": {
+        "life_expectancy": [
+          20.045775003615265,
+          22.520808899339617
+        ],
+        "rounded_spec": [
+          20.05,
+          22.52
+        ]
+      },
+      "expected": {
+        "life_expectancy": [
+          20.045775003615287,
+          22.5208088993396
+        ],
+        "rounded_spec": [
+          20.05,
+          22.52
+        ]
+      },
+      "tolerance": 0.05,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: illustrative mortality model",
+      "source_gate_ids": []
+    },
+    {
+      "id": "US-7",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 100000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": -50000,
+        "property_lt": 0,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "nii": 0
+      },
+      "actual": {
+        "net_total": 0,
+        "loss_deduction": 0,
+        "carry": 0,
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "taxable_ss": 0,
+        "agi": 100000,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 83900,
+        "regular_tax": 13170,
+        "A_amt": 83900,
+        "preferential_tax": 0,
+        "u1250_cap_tax": 0,
+        "income_tax": 13170,
+        "niit": 0
+      },
+      "expected": {
+        "net_total": 0,
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "loss_deduction": 0,
+        "carry": 0,
+        "ti": 83900,
+        "income_tax": 13170,
+        "niit": 0
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-8",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 100000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": -50000,
+        "property_lt": 0,
+        "gross_u1250": 20000,
+        "prior_capital_loss": 0,
+        "nii": 0
+      },
+      "actual": {
+        "net_total": -30000,
+        "loss_deduction": 1500,
+        "carry": 28500,
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "taxable_ss": 0,
+        "agi": 98500,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 82400,
+        "regular_tax": 12840,
+        "A_amt": 82400,
+        "preferential_tax": 0,
+        "u1250_cap_tax": 0,
+        "income_tax": 12840,
+        "niit": 0
+      },
+      "expected": {
+        "net_total": -30000,
+        "loss_deduction": 1500,
+        "carry": 28500,
+        "ti": 82400,
+        "income_tax": 12840,
+        "niit": 0
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "FIRPTA-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "price": 1000000,
+        "mortgage": 700000,
+        "costs": 60000,
+        "foreign_share": 1,
+        "withholding_rate": 0.15,
+        "final_liability": 20000
+      },
+      "actual": {
+        "cash_at_closing": 90000,
+        "prepayment": 150000,
+        "refund": 130000,
+        "permanent_tax": 20000
+      },
+      "expected": {
+        "cash_at_closing": 90000,
+        "prepayment": 150000,
+        "refund": 130000,
+        "permanent_tax": 20000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-FIRPTA"
+      ]
+    },
+    {
+      "id": "DEATH-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "suspended_loss": 30000,
+        "relevant_positive_basis_increase": 20000
+      },
+      "actual": {
+        "permitted_final_return_deduction": 10000
+      },
+      "expected": {
+        "permitted_final_return_deduction": 10000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-PASSIVE-DEATH"
+      ]
+    },
+    {
+      "id": "DEATH-2",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "suspended_loss": 30000,
+        "relevant_positive_basis_increase": 50000
+      },
+      "actual": {
+        "permitted_final_return_deduction": 0
+      },
+      "expected": {
+        "permitted_final_return_deduction": 0
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-PASSIVE-DEATH"
+      ]
+    },
+    {
+      "id": "TERMINAL-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "assets": 500000,
+        "final_income_liability": 30000,
+        "net_remitted": 0,
+        "estate_due": 0,
+        "conditional_credit": 0
+      },
+      "actual": {
+        "net_to_heirs": 470000,
+        "unpaid": 30000,
+        "actual_paid": 0,
+        "estate_shortfall": 0
+      },
+      "expected": {
+        "net_to_heirs": 470000,
+        "unpaid": 30000,
+        "actual_paid": 0,
+        "estate_shortfall": 0
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-ESTATE"
+      ]
+    },
+    {
+      "id": "CN-2",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "dividends": 50000,
+        "dividend_us_final_paid_tax": 5000,
+        "ss_us_final_paid_tax": 5100,
+        "ss_china_exempt": true,
+        "fx": 1
+      },
+      "actual": {
+        "before_credit": 10000,
+        "eligible_pool": 5000,
+        "credit": 5000,
+        "due": 5000,
+        "excluded_ss_tax": 5100
+      },
+      "expected": {
+        "before_credit": 10000,
+        "eligible_pool": 5000,
+        "credit": 5000,
+        "due": 5000,
+        "excluded_ss_tax": 5100
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-CN-SSA",
+        "L-CN-FTC"
+      ]
+    },
+    {
+      "id": "US-CARRY",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2028,
+        "price_index": 1,
+        "ordinary": 100000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 10000,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 28500,
+        "nii": 0
+      },
+      "actual": {
+        "net_total": -18500,
+        "loss_deduction": 1500,
+        "carry": 17000,
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "taxable_ss": 0,
+        "agi": 98500,
+        "senior_deduction": 0,
+        "deduction": 16100,
+        "ti": 82400,
+        "regular_tax": 12840,
+        "A_amt": 82400,
+        "preferential_tax": 0,
+        "u1250_cap_tax": 0,
+        "income_tax": 12840,
+        "niit": 0
+      },
+      "expected": {
+        "net_total": -18500,
+        "loss_deduction": 1500,
+        "carry": 17000,
+        "ti": 82400,
+        "income_tax": 12840,
+        "niit": 0
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ]
+    },
+    {
+      "id": "US-EARLY",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "early_trad": 10000,
+        "age": 40,
+        "exception": false,
+        "penalty_rate": 0.1
+      },
+      "actual": {
+        "penalty": 1000
+      },
+      "expected": {
+        "penalty": 1000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-RMD"
+      ]
+    },
+    {
+      "id": "CAPITAL-PARTIAL",
+      "status": "OPEN",
+      "reason": "OPEN: worksheet ordering",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "PROPERTY-1231",
+      "status": "OPEN",
+      "reason": "OPEN: worksheet ordering",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "CN-PARTIAL",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "china_precredit": 10000,
+        "eligible_final_source_liability": 10000,
+        "source_paid": 4000,
+        "source_unpaid": 6000,
+        "projected_credit": 10000,
+        "fx": 1
+      },
+      "actual": {
+        "eligible_paid": 4000,
+        "used_credit": 4000,
+        "china_due": 6000,
+        "ftc_adjustment": 6000
+      },
+      "expected": {
+        "eligible_paid": 4000,
+        "used_credit": 4000,
+        "china_due": 6000,
+        "ftc_adjustment": 6000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "OPEN: numeric under all-paid-components-eligible assumption; primary-source payment-allocation rules pending",
+      "source_gate_ids": [
+        "L-CN-FTC"
+      ]
+    },
+    {
+      "id": "CN-WITHHOLDING",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "china_precredit": 30000,
+        "gross_withholding": 150000,
+        "final_eligible_source_liability": 20000,
+        "refund": 130000,
+        "fx": 1
+      },
+      "actual": {
+        "eligible_retained_pool": 20000,
+        "credit": 20000,
+        "china_due": 10000
+      },
+      "expected": {
+        "eligible_retained_pool": 20000,
+        "credit": 20000,
+        "china_due": 10000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-CN-FTC",
+        "L-FIRPTA"
+      ]
+    },
+    {
+      "id": "CN-EXPIRY",
+      "status": "OPEN",
+      "reason": "OPEN: inclusive expiry/application rules",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "CN-REFUND",
+      "status": "OPEN",
+      "reason": "OPEN: refund-year conversion/amendment rule",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "CN-RESIDENCE",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "RNG-VECTORS",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "raw_state": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "tuple_text": "[\"retire-rng-v1\",42,0,\"bootstrap\",\"\"]",
+        "normal_uniforms": [
+          0.5,
+          0.5
+        ]
+      },
+      "actual": {
+        "raw_outputs": [
+          11520,
+          0,
+          5927040,
+          70819200,
+          2031721883,
+          1637235492,
+          1287239034,
+          3734860849
+        ],
+        "sha256": "ab710528cf1bc287af2b294db0827f5bf5ec8348ee9de1d5ba81169939757f3b",
+        "little_endian_state": [
+          671445419,
+          2277645263,
+          1294543791,
+          1535083184
+        ],
+        "seeded_outputs": [
+          2406593643,
+          4039661935,
+          1310122810,
+          591680076,
+          881506770
+        ],
+        "uniform_min": 1.1641532182693481e-10,
+        "uniform_max": 0.9999999998835847,
+        "normal_pair": [
+          -1.1774100225154747,
+          1.4419114153575892e-16
+        ]
+      },
+      "expected": {
+        "raw_outputs": [
+          11520,
+          0,
+          5927040,
+          70819200,
+          2031721883,
+          1637235492,
+          1287239034,
+          3734860849
+        ],
+        "sha256": "ab710528cf1bc287af2b294db0827f5bf5ec8348ee9de1d5ba81169939757f3b",
+        "little_endian_state": [
+          671445419,
+          2277645263,
+          1294543791,
+          1535083184
+        ],
+        "seeded_outputs": [
+          2406593643,
+          4039661935,
+          1310122810,
+          591680076,
+          881506770
+        ],
+        "uniform_min": 1.1641532182693481e-10,
+        "uniform_max": 0.9999999998835847,
+        "normal_pair": [
+          -1.1774100225154747,
+          0
+        ]
+      },
+      "tolerance": 1e-12,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: algorithm",
+      "source_gate_ids": []
+    },
+    {
+      "id": "RNG-PREFIX",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "MARKET-JOINT",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "source_rows": [
+          [
+            2000,
+            0,
+            0.01,
+            0.005,
+            0.02,
+            0.03
+          ],
+          [
+            2001,
+            0.01,
+            0.011,
+            0.0051,
+            0.0201,
+            0.0301
+          ],
+          [
+            2002,
+            0.02,
+            0.012,
+            0.0052,
+            0.0202,
+            0.0302
+          ],
+          [
+            2003,
+            0.03,
+            0.013,
+            0.0053,
+            0.0203,
+            0.0303
+          ],
+          [
+            2004,
+            0.04,
+            0.014,
+            0.0054,
+            0.0204,
+            0.0304
+          ],
+          [
+            2005,
+            0.05,
+            0.015,
+            0.0055,
+            0.0205,
+            0.0305
+          ],
+          [
+            2006,
+            0.06,
+            0.016,
+            0.0056,
+            0.0206,
+            0.0306
+          ],
+          [
+            2007,
+            0.07,
+            0.017,
+            0.0057,
+            0.0207,
+            0.0307
+          ],
+          [
+            2008,
+            0.08,
+            0.018,
+            0.0058,
+            0.0208,
+            0.0308
+          ],
+          [
+            2009,
+            0.09,
+            0.019,
+            0.0059,
+            0.0209,
+            0.0309
+          ]
+        ],
+        "columns": [
+          "year",
+          "us_stocks",
+          "us_bonds",
+          "usd_cash",
+          "us_cpi",
+          "us_home"
+        ],
+        "block_mean_years": 2,
+        "bootstrap_uniforms": [
+          0.95,
+          0.9,
+          0.1,
+          0.1,
+          0.25,
+          0.8,
+          0.99
+        ]
+      },
+      "actual": {
+        "row_indices": [
+          9,
+          0,
+          2,
+          3
+        ],
+        "all_columns_same_row": true,
+        "consumed_uniform_count": 7
+      },
+      "expected": {
+        "row_indices": [
+          9,
+          0,
+          2,
+          3
+        ],
+        "all_columns_same_row": true,
+        "consumed_uniform_count": 7
+      },
+      "tolerance": 0,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: synthetic tape",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MARKET-PROJECTION",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "unit_source": [
+          -0.2,
+          0,
+          0.2
+        ],
+        "target_mean": 0.07,
+        "target_vol": 0.15,
+        "correlated_series": [
+          1,
+          2,
+          3
+        ]
+      },
+      "actual": {
+        "source_mean": 0,
+        "source_population_sd": 0.16329931618554522,
+        "transformed": [
+          -0.11371173070873833,
+          0.07,
+          0.2537117307087383
+        ],
+        "mean": 0.06999999999999999,
+        "sd": 0.14999999999999997,
+        "correlation": 1
+      },
+      "expected": {
+        "source_mean": 0,
+        "source_population_sd": 0.1632993161855452,
+        "transformed": [
+          -0.11371173070873836,
+          0.07,
+          0.25371173070873837
+        ],
+        "mean": 0.07,
+        "sd": 0.15,
+        "correlation": 1
+      },
+      "tolerance": 1e-9,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: synthetic three-row helper; not a runnable sample window",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MARKET-DOMAIN",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "MARKET-TIMING",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "start_year": 2026,
+        "cn_cpi": 0.04,
+        "us_cpi": 0.03,
+        "fx_spot": 6.69,
+        "fx_multiplier": 0.99,
+        "stress_year": 2029,
+        "stress_pct": -0.15,
+        "deposit_real_rate": 0.005,
+        "deposit_floor": 0.002,
+        "medical_excess": 0.02
+      },
+      "actual": {
+        "cn_index_0": 1,
+        "us_index_0": 1,
+        "cn_index_1": 1.04,
+        "us_index_1": 1.03,
+        "fx_10": 6.0503160818089015,
+        "stress_index": 3,
+        "stress_ratio": 0.85,
+        "deposit_rate": 0.045,
+        "medical_price_factor": 1.06
+      },
+      "expected": {
+        "cn_index_0": 1,
+        "us_index_0": 1,
+        "cn_index_1": 1.04,
+        "us_index_1": 1.03,
+        "fx_10": 6.0503160818089015,
+        "stress_index": 3,
+        "stress_ratio": 0.85,
+        "deposit_rate": 0.045,
+        "medical_price_factor": 1.06
+      },
+      "tolerance": 1e-12,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: deterministic recurrence",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MARKET-AR",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "mean": 0.04,
+        "start": 0.02,
+        "phi": 0.5,
+        "sigma": 0,
+        "years": 3
+      },
+      "actual": {
+        "cn_rates": [
+          0.03,
+          0.035,
+          0.037500000000000006
+        ]
+      },
+      "expected": {
+        "cn_rates": [
+          0.03,
+          0.035,
+          0.0375
+        ]
+      },
+      "tolerance": 1e-12,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: recurrence",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MARKET-INVALID",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "mean": 0.04,
+        "phi": 0,
+        "sigma": 0.02,
+        "z": -60,
+        "path_id": 7,
+        "t": 2,
+        "start_year": 2026
+      },
+      "actual": {
+        "cn_cpi": -1.16,
+        "gross_factor": -0.15999999999999992,
+        "error_path_id": 7,
+        "error_year": 2028,
+        "whole_job_failed": true,
+        "partial_probabilities": false
+      },
+      "expected": {
+        "cn_cpi": -1.16,
+        "gross_factor": -0.16,
+        "error_path_id": 7,
+        "error_year": 2028,
+        "whole_job_failed": true,
+        "partial_probabilities": false
+      },
+      "tolerance": 1e-12,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: domain policy",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MARKET-CALIBRATION",
+      "status": "OPEN",
+      "reason": "OPEN: source calibration must be reproduced at M03",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "BUDGET-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "ordinary_cny": 212000,
+        "cpi_health_cny": 38000,
+        "medical_base_cny": 0,
+        "annual_cny": 250000,
+        "included_health_cny": 38000,
+        "duplicate_medical_base_cny": 38000
+      },
+      "actual": {
+        "included_recurring": 250000,
+        "health": 38000,
+        "duplicate_total": 288000,
+        "duplicate_run_allowed": false
+      },
+      "expected": {
+        "included_recurring": 250000,
+        "health": 38000,
+        "duplicate_total": 288000,
+        "duplicate_run_allowed": false
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "SPENDING-TIMING",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "start_year": 2026,
+        "start_age_A": 40,
+        "cn_cpi": 0.04,
+        "care_monthly": 8000,
+        "care_start_age": 60,
+        "first_death_t": 0,
+        "base_monthly": 1000,
+        "survivor_factor": 0.6
+      },
+      "actual": {
+        "care_before_t20": 0,
+        "care_t20_cny": 210347.8217312084,
+        "survivor_item_t0": 12000,
+        "survivor_item_t1": 7488
+      },
+      "expected": {
+        "care_before_t20": 0,
+        "care_t20_cny": 210347.82173120714,
+        "survivor_item_t0": 12000,
+        "survivor_item_t1": 7488
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "FLEX-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "prior_returns": [
+          -0.2,
+          0.05,
+          0.05,
+          0.05
+        ],
+        "loss_returns": [
+          -0.1,
+          -0.1,
+          -0.1,
+          -0.1,
+          -0.1
+        ],
+        "cut": 0.1,
+        "recover": 0.05,
+        "floor": 0.75,
+        "cap": 1
+      },
+      "actual": {
+        "multipliers": [
+          1,
+          0.9,
+          0.9450000000000001,
+          0.9922500000000001,
+          1
+        ],
+        "loss_multipliers": [
+          1,
+          0.9,
+          0.81,
+          0.75,
+          0.75,
+          0.75
+        ],
+        "disabled_multiplier": 1
+      },
+      "expected": {
+        "multipliers": [
+          1,
+          0.9,
+          0.945,
+          0.99225,
+          1
+        ],
+        "loss_multipliers": [
+          1,
+          0.9,
+          0.81,
+          0.75,
+          0.75,
+          0.75
+        ],
+        "disabled_multiplier": 1
+      },
+      "tolerance": 1e-12,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: spending rule",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MEDICAL-GROWTH",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "base": 38000,
+        "ordinary": 212000,
+        "cn_cpi": 0.04,
+        "medical_excess": 0.02,
+        "age_growth": 0.04,
+        "increments": 50
+      },
+      "actual": {
+        "nominal_factor": 1.1024,
+        "real_factor": 1.06,
+        "year1_medical_nominal": 41891.200000000004,
+        "year1_medical_real": 40280,
+        "year1_included_total": 262371.2,
+        "year1_ceiling": 260000,
+        "year1_excess": 2371.2000000000116,
+        "after50_medical_real": 699965.8624496766
+      },
+      "expected": {
+        "nominal_factor": 1.1024,
+        "real_factor": 1.06,
+        "year1_medical_nominal": 41891.2,
+        "year1_medical_real": 40280,
+        "year1_included_total": 262371.2,
+        "year1_ceiling": 260000,
+        "year1_excess": 2371.2,
+        "after50_medical_real": 699965.8624496766
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {
+        "nominal_factor": 1e-12,
+        "real_factor": 1e-12
+      },
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: illustrative configurable growth, not calibrated premiums",
+      "source_gate_ids": []
+    },
+    {
+      "id": "MEDICAL-SCOPE",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "age": 60,
+        "occurrence_uniform": 0.01,
+        "prob_at60": 0.02,
+        "size_normal": 0,
+        "median": 50000,
+        "medical_index": 1,
+        "included_recurring": 250000,
+        "ceiling": 250000
+      },
+      "actual": {
+        "shock": 50000,
+        "additional_scope": {
+          "included": 250000,
+          "additional": 50000,
+          "total": 300000,
+          "excess": 0
+        },
+        "included_scope": {
+          "included": 300000,
+          "additional": 0,
+          "total": 300000,
+          "excess": 50000
+        }
+      },
+      "expected": {
+        "shock": 50000,
+        "additional_scope": {
+          "included": 250000,
+          "additional": 50000,
+          "total": 300000,
+          "excess": 0
+        },
+        "included_scope": {
+          "included": 300000,
+          "additional": 0,
+          "total": 300000,
+          "excess": 50000
+        }
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: scope arithmetic",
+      "source_gate_ids": []
+    },
+    {
+      "id": "SS-GATES",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "A_start_age": 45,
+        "B_death_t": 0,
+        "own_monthly": 2200,
+        "own_claim_age": 67,
+        "survivor_monthly": 1800,
+        "survivor_claim_age": 62,
+        "eligible": true,
+        "payable_abroad": true,
+        "us_cpi": 0,
+        "cut": 0.2,
+        "cut_start_age": 62,
+        "deceased_future_own_monthly": 9000
+      },
+      "actual": {
+        "before_cut_schedule": {
+          "age45": 0,
+          "age60": 0,
+          "age62": 21600,
+          "age67": 26400
+        },
+        "with_cut": {
+          "age45": 0,
+          "age60": 0,
+          "age62": 17280,
+          "age67": 21120
+        },
+        "disabled_all": 0,
+        "ordinary_claim_age45_allowed": false
+      },
+      "expected": {
+        "before_cut_schedule": {
+          "age45": 0,
+          "age60": 0,
+          "age62": 21600,
+          "age67": 26400
+        },
+        "with_cut": {
+          "age45": 0,
+          "age60": 0,
+          "age62": 17280,
+          "age67": 21120
+        },
+        "disabled_all": 0,
+        "ordinary_claim_age45_allowed": false
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-SURVIVOR",
+        "L-SSA-ABROAD"
+      ]
+    },
+    {
+      "id": "ACCOUNT-BASIS",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "opening_value": 100000,
+        "opening_basis": 60000,
+        "withdrawal": 50000,
+        "separate_return_case": {
+          "total_return": 0.1,
+          "yield": 0.013
+        }
+      },
+      "actual": {
+        "withdrawal_gain": 20000,
+        "remaining_value": 50000,
+        "remaining_basis": 30000,
+        "return_case_value": 110000.00000000001,
+        "return_case_basis": 61300
+      },
+      "expected": {
+        "withdrawal_gain": 20000,
+        "remaining_value": 50000,
+        "remaining_basis": 30000,
+        "return_case_value": 110000,
+        "return_case_basis": 61300
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "ACCOUNT-REBALANCE",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "stock_value": 60000,
+        "stock_basis": 30000,
+        "bond_value": 50000,
+        "bond_basis": 30000,
+        "target_stock": 0.5,
+        "yields": 0
+      },
+      "actual": {
+        "stock_sale": 5000,
+        "gain": 2500,
+        "ending_stock": 55000,
+        "ending_bond": 55000,
+        "stock_basis": 27500,
+        "bond_basis": 35000,
+        "retirement_taxable_gain": 0
+      },
+      "expected": {
+        "stock_sale": 5000,
+        "gain": 2500,
+        "ending_stock": 55000,
+        "ending_bond": 55000,
+        "stock_basis": 27500,
+        "bond_basis": 35000,
+        "retirement_taxable_gain": 0
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "ACCOUNT-ACCESS",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "CONVERSION-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "fx": 6.69,
+        "spread": 0.003,
+        "cny_need": 6690,
+        "usd_need": 1000
+      },
+      "actual": {
+        "usd_to_fund_cny": 1003.0090270812436,
+        "cny_to_fund_usd": 6710.07
+      },
+      "expected": {
+        "usd_to_fund_cny": 1003.0090270812436,
+        "cny_to_fund_usd": 6710.07
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "SOURCE-1",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "PROPERTY-BOOKS",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "value": 900000,
+        "cost_basis": 600000,
+        "land_share": 0.2,
+        "rent_monthly": 3800,
+        "vacancy": 0.05,
+        "management_fee": 0.08,
+        "maintenance_pct": 0.01,
+        "property_tax": 9000,
+        "insurance": 1500,
+        "hoa_monthly": 0,
+        "mortgage": 0,
+        "index": 1
+      },
+      "actual": {
+        "gross_rent": 43320,
+        "management_fee": 3465.6,
+        "maintenance": 9000,
+        "cash_flow": 20354.4,
+        "annual_depreciation": 17454.545454545456,
+        "schedule_e_net": 2899.8545454545456
+      },
+      "expected": {
+        "gross_rent": 43320,
+        "management_fee": 3465.6,
+        "maintenance": 9000,
+        "cash_flow": 20354.4,
+        "annual_depreciation": 17454.545454545456,
+        "schedule_e_net": 2899.854545454542
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "PROPERTY-MORTGAGE",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "opening_balance": 100000,
+        "rate": 0.05,
+        "years_left": 10
+      },
+      "actual": {
+        "annual_payment": 12950.45749654566,
+        "first_interest": 5000,
+        "first_principal": 7950.4574965456595,
+        "ending_balance": 92049.54250345434
+      },
+      "expected": {
+        "annual_payment": 12950.457496545661,
+        "first_interest": 5000,
+        "first_principal": 7950.457496545662,
+        "ending_balance": 92049.54250345434
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": []
+    },
+    {
+      "id": "FIRPTA-SHARE",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "price": 1000000,
+        "costs": 60000,
+        "mortgage": 700000,
+        "foreign_share": 0.5,
+        "withholding_rate": 0.15
+      },
+      "actual": {
+        "withholding": 75000,
+        "cash_at_closing": 165000
+      },
+      "expected": {
+        "withholding": 75000,
+        "cash_at_closing": 165000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-FIRPTA"
+      ]
+    },
+    {
+      "id": "SALE-FAIL",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "price": 1000000,
+        "costs": 60000,
+        "mortgage": 900000,
+        "foreign_share": 1,
+        "withholding_rate": 0.15,
+        "accessible_closing_funds": 0
+      },
+      "actual": {
+        "quoted_closing_cash": -110000,
+        "required_contribution": 110000,
+        "executed": false,
+        "realized_gain": 0,
+        "prepayment": 0,
+        "property_still_held": true
+      },
+      "expected": {
+        "quoted_closing_cash": -110000,
+        "required_contribution": 110000,
+        "executed": false,
+        "realized_gain": 0,
+        "prepayment": 0,
+        "property_still_held": true
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-FIRPTA"
+      ]
+    },
+    {
+      "id": "HOLD-1",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "DEATH-SNAPSHOT",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "A_death_t": 0,
+        "B_death_t": 0,
+        "citizen_A": true,
+        "citizen_B": false,
+        "B_us_situs": 500000,
+        "B_nra_credit": 13000,
+        "pre_transfer_shares": [
+          0.5,
+          0.5
+        ],
+        "passive_loss": 30000,
+        "basis_increase": 20000
+      },
+      "actual": {
+        "simultaneous": true,
+        "B_surviving_citizen_spouse": false,
+        "B_estate_tax": 142800,
+        "permitted_passive_deduction": 10000,
+        "tax_inputs_before_transfer": true,
+        "carry_to_survivor": false
+      },
+      "expected": {
+        "simultaneous": true,
+        "B_surviving_citizen_spouse": false,
+        "B_estate_tax": 142800,
+        "permitted_passive_deduction": 10000,
+        "tax_inputs_before_transfer": true,
+        "carry_to_survivor": false
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-ESTATE",
+        "L-PASSIVE-DEATH",
+        "L-CN-FTC"
+      ]
+    },
+    {
+      "id": "TERMINAL-REFUND",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "assets": 90000,
+        "final_liability": 20000,
+        "net_remitted": 150000,
+        "estate_due": 0,
+        "conditional_credit": 0
+      },
+      "actual": {
+        "due": 0,
+        "confirmed_refund": 130000,
+        "net_to_heirs": 220000,
+        "actual_refund_cash_at_terminal": 0
+      },
+      "expected": {
+        "due": 0,
+        "confirmed_refund": 130000,
+        "net_to_heirs": 220000,
+        "actual_refund_cash_at_terminal": 0
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-FIRPTA",
+        "L-ESTATE"
+      ]
+    },
+    {
+      "id": "TERMINAL-DEFICIT",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "assets": 20000,
+        "final_liability": 30000,
+        "net_remitted": 0,
+        "estate_due": 0,
+        "conditional_credit": 5000
+      },
+      "actual": {
+        "signed_net": -10000,
+        "net_to_heirs": 0,
+        "estate_shortfall": 10000,
+        "excluded_conditional_credit": 5000,
+        "actual_paid": 0
+      },
+      "expected": {
+        "signed_net": -10000,
+        "net_to_heirs": 0,
+        "estate_shortfall": 10000,
+        "excluded_conditional_credit": 5000,
+        "actual_paid": 0
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT VERIFIED",
+      "source_gate_ids": [
+        "L-ESTATE",
+        "L-CN-FTC"
+      ]
+    },
+    {
+      "id": "CONTROL-PV",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "start_year": 2026,
+        "birth_year_A": 1986,
+        "birth_year_B": 1986,
+        "death_age_A": 89,
+        "death_age_B": 89,
+        "max_age": 110,
+        "annual_cny": 250000,
+        "ordinary_cny": 212000,
+        "health_cny": 38000,
+        "medical_bases": 0,
+        "shock": false,
+        "ss": false,
+        "property": false,
+        "flex": false,
+        "return": 0.03,
+        "cn_cpi": 0.04,
+        "us_cpi": 0.03,
+        "fx_spot": 6.69,
+        "fx_spread": 0,
+        "all_applicable_tax_rates": 0,
+        "accessible_account_type": "taxable",
+        "allocated_asset": "usd_cash",
+        "n_paths": 1,
+        "seed": 42,
+        "fx_multiplier": 1,
+        "config_file": "control-pv.toml"
+      },
+      "actual": {
+        "payment_count": 50,
+        "first_payment": 37369.20777279522,
+        "required_balance": 2390572.9770677146,
+        "displayed_pv": "2,390,572.98",
+        "final_balance": 0,
+        "exact_pv_decimal": "2390572.9770677145932828554267970000473442304988766842740735298308",
+        "first_age": 40,
+        "last_age": 89,
+        "allocated_rows": 71
+      },
+      "expected": {
+        "payment_count": 50,
+        "first_payment": 37369.20777279521,
+        "required_balance": 2390572.9770677146,
+        "displayed_pv": "2,390,572.98",
+        "final_balance": 0,
+        "exact_pv_decimal": "2390572.9770677145932828554267970000473442304988766842740735298308",
+        "first_age": 40,
+        "last_age": 89,
+        "allocated_rows": 71
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {
+        "first_payment": 1e-8,
+        "required_balance": 1e-8,
+        "final_balance": 0.000001
+      },
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: tax-free arithmetic control; not household funding advice",
+      "source_gate_ids": []
+    },
+    {
+      "id": "CONTROL-FX",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "start_year": 2026,
+        "birth_year_A": 1986,
+        "birth_year_B": 1986,
+        "death_age_A": 89,
+        "death_age_B": 89,
+        "max_age": 110,
+        "annual_cny": 250000,
+        "ordinary_cny": 212000,
+        "health_cny": 38000,
+        "medical_bases": 0,
+        "shock": false,
+        "ss": false,
+        "property": false,
+        "flex": false,
+        "return": 0.03,
+        "cn_cpi": 0.04,
+        "us_cpi": 0.03,
+        "fx_spot": 6.69,
+        "fx_spread": 0,
+        "all_applicable_tax_rates": 0,
+        "accessible_account_type": "taxable",
+        "allocated_asset": "usd_cash",
+        "n_paths": 1,
+        "seed": 42,
+        "fx_multiplier": 0.99,
+        "config_file": "control-fx.toml"
+      },
+      "actual": {
+        "payment_count": 50,
+        "first_payment": 37369.20777279522,
+        "required_balance": 3152520.3411145047,
+        "displayed_pv": "3,152,520.34",
+        "final_balance": 0,
+        "exact_pv_decimal": "3152520.3411145046905392977802592090780936043212755608347596589861",
+        "first_age": 40,
+        "last_age": 89,
+        "allocated_rows": 71
+      },
+      "expected": {
+        "payment_count": 50,
+        "first_payment": 37369.20777279521,
+        "required_balance": 3152520.3411145047,
+        "displayed_pv": "3,152,520.34",
+        "final_balance": 0,
+        "exact_pv_decimal": "3152520.3411145046905392977802592090780936043212755608347596589861",
+        "first_age": 40,
+        "last_age": 89,
+        "allocated_rows": 71
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {
+        "first_payment": 1e-8,
+        "required_balance": 1e-8,
+        "final_balance": 0.000001
+      },
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: tax-free arithmetic control; not household funding advice",
+      "source_gate_ids": []
+    },
+    {
+      "id": "CONTROL-DEPLETION",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "start_year": 2026,
+        "A_start_age": 60,
+        "A_death_age": 75,
+        "B_start_age": 60,
+        "B_death_age": 60,
+        "fx": 7,
+        "cpi": 0,
+        "return": 0,
+        "tax": 0,
+        "spending_monthly_cny": 7000,
+        "survivor_factor": 1,
+        "initial_accessible_roth_usd": 120000,
+        "empty_taxable_surplus": true,
+        "ss": false,
+        "medical": false,
+        "property": false,
+        "flex": false
+      },
+      "actual": {
+        "annual_usd_need": 12000,
+        "t9_end_balance": 0,
+        "t9_depleted": false,
+        "first_shortfall_t": 10,
+        "first_shortfall_year": 2036,
+        "first_shortfall_cny": 84000
+      },
+      "expected": {
+        "annual_usd_need": 12000,
+        "t9_end_balance": 0,
+        "t9_depleted": false,
+        "first_shortfall_t": 10,
+        "first_shortfall_year": 2036,
+        "first_shortfall_cny": 84000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: zero-tax timing control",
+      "source_gate_ids": []
+    },
+    {
+      "id": "CONTROL-HOLD",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "ENGINE-FINAL-TAX",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "start_year": 2026,
+        "A_age": 60,
+        "B_age": 60,
+        "fx": 1,
+        "cpi": 0,
+        "return": 0,
+        "yields": 0,
+        "A_trad": 650000,
+        "empty_taxable_surplus": true,
+        "spending_year0_usd": 150000,
+        "spending_other_years": 0,
+        "us_ordinary_flat_rate": 0.2,
+        "standard_deduction": 0,
+        "other_taxes": 0,
+        "china_A_exempt": true,
+        "ss": false,
+        "medical": false,
+        "property": false,
+        "flex": false,
+        "both_die_end_t": 0,
+        "config_file": "engine-final-tax.toml"
+      },
+      "actual": {
+        "year0_trad_withdrawal": 150000,
+        "year0_assets": 500000,
+        "year0_income_tax": 30000,
+        "actual_paid": 0,
+        "terminal_unpaid": 30000,
+        "net_to_heirs": 470000
+      },
+      "expected": {
+        "year0_trad_withdrawal": 150000,
+        "year0_assets": 500000,
+        "year0_income_tax": 30000,
+        "actual_paid": 0,
+        "terminal_unpaid": 30000,
+        "net_to_heirs": 470000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: explicit flat-tax synthetic table; actual US tax module must run, no tax stub",
+      "source_gate_ids": []
+    },
+    {
+      "id": "ENGINE-PRIOR-TAX",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "start_year": 2026,
+        "A_age": 60,
+        "B_age": 60,
+        "fx": 1,
+        "cpi": 0,
+        "return": 0,
+        "yields": 0,
+        "A_trad": 650000,
+        "empty_taxable_surplus": true,
+        "spending_year0_usd": 150000,
+        "spending_other_years": 0,
+        "us_ordinary_flat_rate": 0.2,
+        "standard_deduction": 0,
+        "other_taxes": 0,
+        "china_A_exempt": true,
+        "ss": false,
+        "medical": false,
+        "property": false,
+        "flex": false,
+        "both_die_end_t": 1,
+        "config_file": "engine-prior-tax.toml"
+      },
+      "actual": {
+        "year0_income_tax": 30000,
+        "year1_trad_withdrawal": 30000,
+        "year1_actual_paid": 30000,
+        "year1_assets": 470000,
+        "year1_income_tax": 6000,
+        "terminal_unpaid": 6000,
+        "net_to_heirs": 464000
+      },
+      "expected": {
+        "year0_income_tax": 30000,
+        "year1_trad_withdrawal": 30000,
+        "year1_actual_paid": 30000,
+        "year1_assets": 470000,
+        "year1_income_tax": 6000,
+        "terminal_unpaid": 6000,
+        "net_to_heirs": 464000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: explicit flat-tax synthetic table; taxes from the real module, not a stub",
+      "source_gate_ids": []
+    },
+    {
+      "id": "ENGINE-FIRPTA",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "start_year": 2026,
+        "A_age": 60,
+        "B_age": 60,
+        "fx": 1,
+        "purchase_fx": 1,
+        "cpi": 0,
+        "return": 0,
+        "yields": 0,
+        "ss": false,
+        "medical": false,
+        "flex": false,
+        "B_owned_property": {
+          "price": 1000000,
+          "cost_basis": 840000,
+          "depreciation": 0,
+          "mortgage": 700000,
+          "selling_cost": 0.06,
+          "firpta_rate": 0.15,
+          "sell_start_t": 0
+        },
+        "us_property_gain_rate": 0.2,
+        "china_property_gain_rate": 0.2,
+        "eligible_credit": 20000,
+        "bank_profile_situs": "non_us",
+        "B_retirement": 0,
+        "estate_tax": 0,
+        "both_die_end_t": 0,
+        "config_file": "engine-firpta.toml"
+      },
+      "actual": {
+        "gain": 100000,
+        "closing_cash": 90000,
+        "withheld": 150000,
+        "final_federal_tax": 20000,
+        "final_china_due": 0,
+        "confirmed_refund": 130000,
+        "terminal_assets": 90000,
+        "net_to_heirs": 220000
+      },
+      "expected": {
+        "gain": 100000,
+        "closing_cash": 90000,
+        "withheld": 150000,
+        "final_federal_tax": 20000,
+        "final_china_due": 0,
+        "confirmed_refund": 130000,
+        "terminal_assets": 90000,
+        "net_to_heirs": 220000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "OPEN: eligible source-tax assumption; flat-tax synthetic table uses real tax module, not a stub",
+      "source_gate_ids": [
+        "L-FIRPTA",
+        "L-CN-FTC"
+      ]
+    },
+    {
+      "id": "SUMMARY-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "n_paths": 5,
+        "active_values": [
+          1,
+          2,
+          3,
+          4,
+          null
+        ],
+        "alive": [
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        "depleted": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "inactive_has_no_depletion": true
+      },
+      "actual": {
+        "p10": 1.3,
+        "median": 2.5,
+        "p90": 3.7,
+        "alive_probability": 0.8,
+        "alive_not_depleted_probability": 0.6,
+        "conditional_healthy_given_alive": 0.75,
+        "lifetime_success": 0.8,
+        "empty_quantile": null
+      },
+      "expected": {
+        "p10": 1.3,
+        "median": 2.5,
+        "p90": 3.7,
+        "alive_probability": 0.8,
+        "alive_not_depleted_probability": 0.6,
+        "conditional_healthy_given_alive": 0.75,
+        "lifetime_success": 0.8,
+        "empty_quantile": null
+      },
+      "tolerance": 1e-12,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: cohorts and Type7",
+      "source_gate_ids": []
+    },
+    {
+      "id": "RANKING-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "paths": [
+          {
+            "id": 0,
+            "depletion_t": 5,
+            "terminal": 1000
+          },
+          {
+            "id": 1,
+            "depletion_t": null,
+            "terminal": 200
+          },
+          {
+            "id": 2,
+            "depletion_t": 3,
+            "terminal": 9999
+          },
+          {
+            "id": 3,
+            "depletion_t": null,
+            "terminal": 100
+          }
+        ]
+      },
+      "actual": {
+        "ascending_ids": [
+          2,
+          0,
+          3,
+          1
+        ],
+        "worst": 2,
+        "p10": 2,
+        "median": 0
+      },
+      "expected": {
+        "ascending_ids": [
+          2,
+          0,
+          3,
+          1
+        ],
+        "worst": 2,
+        "p10": 2,
+        "median": 0
+      },
+      "tolerance": 0,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: ranking",
+      "source_gate_ids": []
+    },
+    {
+      "id": "SEQUENCE-1",
+      "status": "PASS: INDEPENDENT REFERENCE ONLY",
+      "inputs": {
+        "initial": 100000,
+        "annual_beginning_withdrawal": 10000,
+        "returns": [
+          -0.2,
+          0.25
+        ],
+        "reversed": [
+          0.25,
+          -0.2
+        ]
+      },
+      "actual": {
+        "ending_original": 77500,
+        "ending_reversed": 82000,
+        "no_withdrawal_both": 100000
+      },
+      "expected": {
+        "ending_original": 77500,
+        "ending_reversed": 82000,
+        "no_withdrawal_both": 100000
+      },
+      "tolerance": 0.01,
+      "field_tolerances": {},
+      "failures": [],
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN",
+      "legal_status": "NOT APPLICABLE: synthetic portfolio sequence; no historical claim",
+      "source_gate_ids": []
+    },
+    {
+      "id": "CRISIS-DOTCOM",
+      "status": "OPEN",
+      "reason": "OPEN: annual historical rows not imported",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "CRISIS-2008",
+      "status": "OPEN",
+      "reason": "OPEN: annual historical rows not imported",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "CONFIG-ROUNDTRIP",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "CONFIG-INVALID",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "DRAFT-GATES",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "WORKER-TRANSFER",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "RUN-REPRO",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "RUN-CANCEL",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "RUN-FAIL",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "RUN-IMMUTABLE",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "PERFORMANCE",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "PRIVACY-OFFLINE",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    },
+    {
+      "id": "HOUSEHOLD-GATE",
+      "status": "PREPARED STRUCTURAL ORACLE",
+      "implementation_status": "NOT IMPLEMENTED",
+      "manual_status": "NOT RUN"
+    }
+  ]
+}

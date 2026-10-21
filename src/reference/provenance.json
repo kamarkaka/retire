@@ -1,0 +1,73 @@
+{
+  "source_url": "https://pages.stern.nyu.edu/~adamodar/pc/datasets/histretSP.xls",
+  "retrieved_at": "2026-10-19T00:38:21.810727+00:00",
+  "edition": "Returns by year: calendar 1928–2025, as retrieved",
+  "provider": "Aswath Damodaran, NYU Stern",
+  "source_sha256": "28b8110916a15a4dcc11c87c6422510704608ddedcdfa67a1298abdc22e49c69",
+  "source_notes": {
+    "us_stocks": "S&P 500 annual nominal total return including dividends; pre-1957 backfilled index history.",
+    "us_bonds": "Annual nominal total return of reconstructed constant-maturity 10-year US Treasury, including coupon and price changes; not an aggregate-bond index or ETF.",
+    "usd_cash": "Annual 3-month Treasury-bill rate proxy; provider uses annual average rates. Not a bank deposit or money-market-fund return series.",
+    "us_cpi": "FRED CPIAUCNS December index / preceding December index - 1; not the workbook inflation column",
+    "us_home": "US home-price appreciation from provider Shiller/Case-Shiller history; excludes rent, modeled separately."
+  },
+  "coverage_note": "US annual series use observed NYU/FRED history. Observed China CPI and year-end USD/CNY supply calibration references; configured AR(1)/FX parameters generate future paths. Medical growth, distribution yields and property-specific adjustments remain assumptions.",
+  "us_cpi_source": {
+    "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS",
+    "retrieved_at": "2026-10-19T00:54:45.186381+00:00",
+    "source_sha256": "cfab9b9be4a5d4f06253c4dcc3f7e0b28b1d58837e710dd7cb1fd54a49e7ad7c",
+    "series": "CPIAUCNS",
+    "convention": "December CPI / preceding December CPI - 1; not seasonally adjusted"
+  },
+  "kind": "observed-historical",
+  "history_sha256": "21662bee599ee61635a30fd81c3467a8c08bee6b7ff4a4d537e7a7f1327a1c1f",
+  "calibration_sha256": "ce713042b256eed1558ea08151b01aaf7f7fbd29033506e8d199a1a4ef3daf32",
+  "mapping": {
+    "sheet": "Returns by year",
+    "header_row": 20,
+    "returns_unit": "decimal",
+    "columns": {
+      "year": "Year",
+      "us_stocks": "S&P 500 (includes dividends)",
+      "us_bonds": "US T. Bond (10-year)",
+      "usd_cash": "3-month T.Bill",
+      "us_cpi": "Inflation Rate",
+      "us_home": "Real Estate"
+    }
+  },
+  "rows": 98,
+  "status": "Observed annual references bundled; raw-cell fidelity and independent population calibration checked; provider methodology and legal rules remain separate",
+  "version": "nyu-fred-1928-2025-v1",
+  "observed_historical_rows": true,
+  "historical_source_status": "CHECKED: 392 NYU return cells and 98 FRED December-to-December CPI rates; 98 consecutive joint years",
+  "independent_acceptance_sha256": "6fe539382db0093d73d17b088bd13284577935be4632a88d029c83c24b3f9519",
+  "independent_reader_sha256": "a586704c7ad8720475c1a9fe7b03ae2a5f3e29f5304da6169be6c4aa6d646272",
+  "fred_sources": {
+    "CPIAUCNS": {
+      "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS",
+      "retrieved_at": "2026-10-19T00:54:45.186381+00:00",
+      "source_sha256": "cfab9b9be4a5d4f06253c4dcc3f7e0b28b1d58837e710dd7cb1fd54a49e7ad7c"
+    },
+    "FPCPITOTLZGCHN": {
+      "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=FPCPITOTLZGCHN",
+      "retrieved_at": "2026-10-19T00:54:45.410790+00:00",
+      "source_sha256": "9f18533fef4dbd2b8fc05339be96ebd575b8778191234da36fb3e50933e997c9"
+    },
+    "DEXCHUS": {
+      "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXCHUS",
+      "retrieved_at": "2026-10-19T00:54:45.200289+00:00",
+      "source_sha256": "8265144a91eb9a7573c8919754ff48d1a84e219a1fb92b18a321c4e13afa4cd3"
+    },
+    "conventions": {
+      "CPIAUCNS": "US CPI, all urban consumers, not seasonally adjusted: December index / preceding December index - 1. Bundled annual series 1928–2025.",
+      "FPCPITOTLZGCHN": "World Bank China annual-average inflation, source percent divided by 100. Reference history 1987–2025; calibration 1997–2025; future paths still use configured AR(1) parameters.",
+      "DEXCHUS": "CNY per USD: last valid observation of each calendar year, 1981–2025. Calibration log returns 2006–2025 require the 2005 baseline; future paths still use configured FX parameters."
+    }
+  },
+  "fred_independent_acceptance_sha256": "30a93296a76510c5be7cc88eb7cff4cc67cb8b44165e412811827271181bf5e9",
+  "fred_independent_reader_sha256": "1ddeccd842564a1f5724c32f9ef10d654ee9061d62397f90f9b2a52039e4b28c",
+  "china_cpi_sha256": "183015b9fc10789f27a9cc7f7c88a0d2d24ab85af7468b4dd13b22a7375f1a5b",
+  "usdcny_sha256": "0058a77377ca8a4d9a4e1d56f828fa4d5ef2818d75357db97b7b7a3b213a4aeb",
+  "china_fx_calibration_sha256": "04d1a0cc33e1a00e112edeb694f077cd0587a407524bcee4437b9e57a17d5d88",
+  "legal_source_status": "unverified"
+}

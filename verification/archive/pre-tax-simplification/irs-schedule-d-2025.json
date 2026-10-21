@@ -1,0 +1,116 @@
+{
+  "source": "IRS Instructions for Schedule D (Form 1040), 2025",
+  "url": "https://www.irs.gov/instructions/i1040sd",
+  "pdf_url": "https://www.irs.gov/pub/irs-pdf/i1040sd.pdf",
+  "retrieved_at": "2026-10-18T23:45:20.527184+00:00",
+  "pdf_sha256": "650643a686378b7573e4f4476ee4e7c9f9bab1384314dca32dc336f7b2276002",
+  "pdf_bytes": 298718,
+  "checked_scope": [
+    "All securities capital gains/losses and capital-loss carryovers have long-term character",
+    "Property gain character has already been determined by the supported Form 4797 branch",
+    "No short-term, collectibles/section 1202, Form 4952 or Form 2555 adjustments",
+    "Unrecaptured Section 1250 Gain Worksheet lines 13\u201318 and Schedule D Tax Worksheet lines 7\u201314"
+  ],
+  "remaining_open": [
+    "Section 1231 mixed sales and five-year lookback",
+    "Broader source audit, NIIT/ECI classifications and annual tax-table verification"
+  ],
+  "cases": [
+    {
+      "id": "current-loss-only",
+      "inputs": {
+        "securities_lt": -10000,
+        "property_lt": 0,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "capital_loss_limit": 1500
+      },
+      "expected": {
+        "lt_gain": 0,
+        "u1250_gain": 40000,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0
+      }
+    },
+    {
+      "id": "current-loss-with-other-lt-gain",
+      "inputs": {
+        "securities_lt": -10000,
+        "property_lt": 30000,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "capital_loss_limit": 1500
+      },
+      "expected": {
+        "lt_gain": 20000,
+        "u1250_gain": 50000,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0
+      }
+    },
+    {
+      "id": "prior-loss-preserves-current-lt-gain",
+      "inputs": {
+        "securities_lt": 30000,
+        "property_lt": 20000,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 10000,
+        "capital_loss_limit": 1500
+      },
+      "expected": {
+        "lt_gain": 50000,
+        "u1250_gain": 40000,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0
+      }
+    },
+    {
+      "id": "prior-loss-exceeds-u1250",
+      "inputs": {
+        "securities_lt": 100000,
+        "property_lt": 0,
+        "gross_u1250": 20000,
+        "prior_capital_loss": 30000,
+        "capital_loss_limit": 1500
+      },
+      "expected": {
+        "lt_gain": 90000,
+        "u1250_gain": 0,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0
+      }
+    },
+    {
+      "id": "partial-current-loss-and-carryover",
+      "inputs": {
+        "securities_lt": -20000,
+        "property_lt": 0,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 10000,
+        "capital_loss_limit": 1500
+      },
+      "expected": {
+        "lt_gain": 0,
+        "u1250_gain": 20000,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0
+      }
+    },
+    {
+      "id": "mixed-loss-with-other-lt-gain",
+      "inputs": {
+        "securities_lt": -10000,
+        "property_lt": 30000,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 20000,
+        "capital_loss_limit": 1500
+      },
+      "expected": {
+        "lt_gain": 20000,
+        "u1250_gain": 30000,
+        "ordinary_loss_deduction": 0,
+        "loss_carryforward": 0
+      }
+    }
+  ]
+}

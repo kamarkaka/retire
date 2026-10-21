@@ -1,0 +1,13 @@
+{
+  "sheet": "Returns by year",
+  "header_row": 20,
+  "returns_unit": "decimal",
+  "columns": {
+    "year": "Year",
+    "us_stocks": "S&P 500 (includes dividends)",
+    "us_bonds": "US T. Bond (10-year)",
+    "usd_cash": "3-month T.Bill",
+    "us_cpi": "Inflation Rate",
+    "us_home": "Real Estate"
+  }
+}

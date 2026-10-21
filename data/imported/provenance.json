@@ -1,0 +1,40 @@
+{
+  "source_url": "https://pages.stern.nyu.edu/~adamodar/pc/datasets/histretSP.xls",
+  "retrieved_at": "2026-10-19T00:38:21.810727+00:00",
+  "edition": "Returns by year: calendar 1928–2025, as retrieved",
+  "provider": "Aswath Damodaran, NYU Stern",
+  "source_sha256": "28b8110916a15a4dcc11c87c6422510704608ddedcdfa67a1298abdc22e49c69",
+  "source_notes": {
+    "us_stocks": "S&P 500 annual nominal total return including dividends; pre-1957 backfilled index history.",
+    "us_bonds": "Annual nominal total return of reconstructed constant-maturity 10-year US Treasury, including coupon and price changes; not an aggregate-bond index or ETF.",
+    "usd_cash": "Annual 3-month Treasury-bill rate proxy; provider uses annual average rates. Not a bank deposit or money-market-fund return series.",
+    "us_cpi": "Annual US CPI inflation rate from provider worksheet.",
+    "us_home": "US home-price appreciation from provider Shiller/Case-Shiller history; excludes rent, modeled separately."
+  },
+  "coverage_note": "Only the five US joint annual series are historical. China CPI, medical cost growth, FX, fixed distribution yields and property-specific adjustments remain configuration assumptions.",
+  "us_cpi_source": {
+    "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS",
+    "retrieved_at": "2026-10-19T00:54:45.186381+00:00",
+    "source_sha256": "cfab9b9be4a5d4f06253c4dcc3f7e0b28b1d58837e710dd7cb1fd54a49e7ad7c",
+    "series": "CPIAUCNS",
+    "convention": "December CPI / preceding December CPI - 1; not seasonally adjusted"
+  },
+  "kind": "imported-unverified",
+  "history_sha256": "21662bee599ee61635a30fd81c3467a8c08bee6b7ff4a4d537e7a7f1327a1c1f",
+  "calibration_sha256": "ce713042b256eed1558ea08151b01aaf7f7fbd29033506e8d199a1a4ef3daf32",
+  "mapping": {
+    "sheet": "Returns by year",
+    "header_row": 20,
+    "returns_unit": "decimal",
+    "columns": {
+      "year": "Year",
+      "us_stocks": "S&P 500 (includes dividends)",
+      "us_bonds": "US T. Bond (10-year)",
+      "usd_cash": "3-month T.Bill",
+      "us_cpi": "Inflation Rate",
+      "us_home": "Real Estate"
+    }
+  },
+  "rows": 98,
+  "status": "Imported, pending independent raw-cell/source acceptance; does not verify legal rules"
+}

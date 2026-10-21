@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "checked": [
+    "market.fx_spread",
+    "market.income_yield_us_stocks",
+    "market.income_yield_us_bonds",
+    "market.fx_real_trend",
+    "accounts[1].allocation.us_stocks",
+    "properties[0].maintenance_annual"
+  ],
+  "focused_wheel_unchanged": true,
+  "keyboard_editing_preserved": true,
+  "exported_decimal_values_preserved": true
+}

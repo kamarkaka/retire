@@ -1,0 +1,8 @@
+{
+  "kind": "synthetic",
+  "version": "synthetic-demo-v1",
+  "observed_historical_rows": false,
+  "method": "98 deterministic trigonometric rows for engineering demonstrations. Year labels cover the requested schema window and do not identify observed returns.",
+  "historical_source_status": "OPEN: raw workbook/FRED inputs not imported",
+  "legal_source_status": "unverified"
+}

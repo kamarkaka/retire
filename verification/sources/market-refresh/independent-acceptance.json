@@ -1,0 +1,22 @@
+{
+  "status": "CHECKED",
+  "method": "Independent stdlib OLE/BIFF and CSV readers; every annual value and both sourced income yields",
+  "reader_sha256": "c367497385de682a277d74a4ec0f8b1b16f77865d62261a69aea8b588eb2ca4d",
+  "biff_library_sha256": "a586704c7ad8720475c1a9fe7b03ae2a5f3e29f5304da6169be6c4aa6d646272",
+  "source_sha256": {
+    "NYU": "28b8110916a15a4dcc11c87c6422510704608ddedcdfa67a1298abdc22e49c69",
+    "CPIAUCNS": "cfab9b9be4a5d4f06253c4dcc3f7e0b28b1d58837e710dd7cb1fd54a49e7ad7c",
+    "FPCPITOTLZGCHN": "9f18533fef4dbd2b8fc05339be96ebd575b8778191234da36fb3e50933e997c9",
+    "DEXCHUS": "8265144a91eb9a7573c8919754ff48d1a84e219a1fb92b18a321c4e13afa4cd3",
+    "DGS10": "b972c9a2bbfbbe82596aeeef473dbee40490f2c6a773dbd228491df17306a04d"
+  },
+  "package_sha256": "5c945c9a3d1c7a7e992d86bc8d65c2ed946154164b6b15f88db3cc43ef7af885",
+  "history_cells_checked": 490,
+  "china_rows_checked": 39,
+  "fx_rows_checked": 45,
+  "independent_stock_yield": 0.01335854176478289,
+  "stock_dividends": 78.57,
+  "stock_opening_index": 5881.63,
+  "independent_bond_yield": 0.051,
+  "bond_observation_date": "2026-10-15"
+}

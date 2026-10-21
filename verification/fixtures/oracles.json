@@ -1,0 +1,2961 @@
+{
+  "version": "retire-oracles-m00-v1",
+  "date": "2026-10-18",
+  "status": "Literal expected values prepared. Product cases NOT IMPLEMENTED; legal source acceptance remains separate.",
+  "cases": [
+    {
+      "id": "US-1",
+      "step": "M06.1",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 70,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 80000,
+        "qd": 10000,
+        "ss": 30000,
+        "securities_lt": 0,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 0,
+        "nii": 10000
+      },
+      "expected": {
+        "taxable_ss": 25500,
+        "deduction": 17750,
+        "ti": 97750,
+        "income_tax": 15517,
+        "niit": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ],
+      "manual_instructions": [
+        "Run US-1 at M06.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "US-2",
+      "step": "M06.1",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "filing_status": "single",
+        "age": 70,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 50000,
+        "qd": 0,
+        "ss": 40000,
+        "securities_lt": 20000,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 0,
+        "nii": 20000
+      },
+      "expected": {
+        "taxable_ss": 34000,
+        "senior_deduction": 4260,
+        "deduction": 22410,
+        "ti": 81590,
+        "income_tax": 11261.8,
+        "niit": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL",
+        "L-SENIOR"
+      ],
+      "manual_instructions": [
+        "Run US-2 at M06.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "US-3",
+      "step": "M06.1",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 5000,
+        "qd": 30000,
+        "ss": 0,
+        "securities_lt": 150000,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 0,
+        "nii": 185000
+      },
+      "expected": {
+        "ti": 168900,
+        "income_tax": 17917.5,
+        "niit": 2280
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ],
+      "manual_instructions": [
+        "Run US-3 at M06.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "US-4",
+      "step": "M06.1",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 66,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 60000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 0,
+        "property_lt": 100000,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "nii": 150000
+      },
+      "expected": {
+        "ti": 192250,
+        "income_tax": 30007,
+        "niit": 3230
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ],
+      "manual_instructions": [
+        "Run US-4 at M06.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "US-5",
+      "step": "M06.1",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 150000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 0,
+        "property_lt": 0,
+        "gross_u1250": 40000,
+        "prior_capital_loss": 0,
+        "nii": 40000
+      },
+      "expected": {
+        "ti": 173900,
+        "income_tax": 34334,
+        "regular_tax": 34334,
+        "niit": 1520
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ],
+      "manual_instructions": [
+        "Run US-5 at M06.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "US-6",
+      "step": "M06.1",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 250000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 0,
+        "property_lt": 0,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "nii": 50000
+      },
+      "expected": {
+        "ti": 283900,
+        "income_tax": 63804,
+        "regular_tax": 68134.25,
+        "niit": 1900
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ],
+      "manual_instructions": [
+        "Run US-6 at M06.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "NRA-1",
+      "step": "M06.2",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "filing_status": "mfs",
+        "rental_net": 20000,
+        "dividends": 10000,
+        "ss": 20000,
+        "price_index": 1
+      },
+      "expected": {
+        "rental_tax": 2152,
+        "dividend_tax": 1000,
+        "ss_tax": 5100,
+        "total": 8252
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-NRA-TREATY",
+        "L-SSA-ABROAD"
+      ],
+      "manual_instructions": [
+        "Run NRA-1 at M06.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "CN-1",
+      "step": "M06.3",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "CNY",
+      "tolerance": 0.01,
+      "inputs": {
+        "dividends": 50000,
+        "gross_rent": 200000,
+        "trad": 300000,
+        "pension_treatment": "comprehensive",
+        "eligible_final_paid_us_tax_cny": 20000
+      },
+      "expected": {
+        "dividend_tax": 10000,
+        "rent_tax": 32000,
+        "pension_tax": 31080,
+        "before_credit": 73080,
+        "credit": 20000,
+        "due": 53080
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-CN-PENSION",
+        "L-CN-FTC",
+        "L-CN-DEPOSIT"
+      ],
+      "manual_instructions": [
+        "Run CN-1 at M06.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "EST-1",
+      "step": "M06.2",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "bases": [
+          1000000,
+          60000
+        ]
+      },
+      "expected": {
+        "tentative_taxes": [
+          345800,
+          13000
+        ]
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-ESTATE"
+      ],
+      "manual_instructions": [
+        "Run EST-1 at M06.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "EST-2",
+      "step": "M06.2",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "us_situs": 2000000,
+        "citizen_spouse": false,
+        "nra_credit": 13000
+      },
+      "expected": {
+        "estate_tax": 732800
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-ESTATE"
+      ],
+      "manual_instructions": [
+        "Run EST-2 at M06.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "EST-3",
+      "step": "M06.2",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "citizen": true,
+        "gross": 16000000,
+        "exclusion": 15000000,
+        "index": 1
+      },
+      "expected": {
+        "estate_tax": 400000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-ESTATE"
+      ],
+      "manual_instructions": [
+        "Run EST-3 at M06.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "RMD-1",
+      "step": "M05.4",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "prior_year_end_balance": 1000000,
+        "age": 75,
+        "divisor": 24.6,
+        "need": 10000
+      },
+      "expected": {
+        "rmd": 40650.40650406504,
+        "surplus": 30650.40650406504
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-RMD"
+      ],
+      "manual_instructions": [
+        "Run RMD-1 at M05.4; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "MORT-1",
+      "step": "M05.2",
+      "spec_section": "11.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: illustrative mortality model",
+      "currency": "years",
+      "tolerance": 0.05,
+      "inputs": {
+        "start_age": 65,
+        "parameters": [
+          [
+            88,
+            9.5
+          ],
+          [
+            91,
+            8.5
+          ]
+        ],
+        "integration_end": 120,
+        "intervals": 24000
+      },
+      "expected": {
+        "life_expectancy": [
+          20.045775003615287,
+          22.5208088993396
+        ],
+        "rounded_spec": [
+          20.05,
+          22.52
+        ]
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run MORT-1 at M05.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "US-7",
+      "step": "M06.1",
+      "spec_section": "11.1 / R1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 100000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": -50000,
+        "property_lt": 0,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 0,
+        "nii": 0
+      },
+      "expected": {
+        "net_total": 0,
+        "lt_gain": 0,
+        "u1250_gain": 0,
+        "loss_deduction": 0,
+        "carry": 0,
+        "ti": 83900,
+        "income_tax": 13170,
+        "niit": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ],
+      "manual_instructions": [
+        "Run US-7 at M06.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "US-8",
+      "step": "M06.1",
+      "spec_section": "11.1 / R1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2027,
+        "price_index": 1,
+        "ordinary": 100000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": -50000,
+        "property_lt": 0,
+        "gross_u1250": 20000,
+        "prior_capital_loss": 0,
+        "nii": 0
+      },
+      "expected": {
+        "net_total": -30000,
+        "loss_deduction": 1500,
+        "carry": 28500,
+        "ti": 82400,
+        "income_tax": 12840,
+        "niit": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ],
+      "manual_instructions": [
+        "Run US-8 at M06.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "FIRPTA-1",
+      "step": "M07.2",
+      "spec_section": "11.1 / R2",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "price": 1000000,
+        "mortgage": 700000,
+        "costs": 60000,
+        "foreign_share": 1,
+        "withholding_rate": 0.15,
+        "final_liability": 20000
+      },
+      "expected": {
+        "cash_at_closing": 90000,
+        "prepayment": 150000,
+        "refund": 130000,
+        "permanent_tax": 20000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-FIRPTA"
+      ],
+      "manual_instructions": [
+        "Run FIRPTA-1 at M07.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "DEATH-1",
+      "step": "M07.3",
+      "spec_section": "11.1 / R3",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "suspended_loss": 30000,
+        "relevant_positive_basis_increase": 20000
+      },
+      "expected": {
+        "permitted_final_return_deduction": 10000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-PASSIVE-DEATH"
+      ],
+      "manual_instructions": [
+        "Run DEATH-1 at M07.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "DEATH-2",
+      "step": "M07.3",
+      "spec_section": "11.1 / R3",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "suspended_loss": 30000,
+        "relevant_positive_basis_increase": 50000
+      },
+      "expected": {
+        "permitted_final_return_deduction": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-PASSIVE-DEATH"
+      ],
+      "manual_instructions": [
+        "Run DEATH-2 at M07.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "TERMINAL-1",
+      "step": "M07.3",
+      "spec_section": "11.1 / R3",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "assets": 500000,
+        "final_income_liability": 30000,
+        "net_remitted": 0,
+        "estate_due": 0,
+        "conditional_credit": 0
+      },
+      "expected": {
+        "net_to_heirs": 470000,
+        "unpaid": 30000,
+        "actual_paid": 0,
+        "estate_shortfall": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-ESTATE"
+      ],
+      "manual_instructions": [
+        "Run TERMINAL-1 at M07.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "CN-2",
+      "step": "M06.3",
+      "spec_section": "11.1 / R4",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "CNY",
+      "tolerance": 0.01,
+      "inputs": {
+        "dividends": 50000,
+        "dividend_us_final_paid_tax": 5000,
+        "ss_us_final_paid_tax": 5100,
+        "ss_china_exempt": true,
+        "fx": 1
+      },
+      "expected": {
+        "before_credit": 10000,
+        "eligible_pool": 5000,
+        "credit": 5000,
+        "due": 5000,
+        "excluded_ss_tax": 5100
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-CN-SSA",
+        "L-CN-FTC"
+      ],
+      "manual_instructions": [
+        "Run CN-2 at M06.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "US-CARRY",
+      "step": "M06.1",
+      "spec_section": "6.2",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "filing_status": "mfs",
+        "age": 60,
+        "year": 2028,
+        "price_index": 1,
+        "ordinary": 100000,
+        "qd": 0,
+        "ss": 0,
+        "securities_lt": 10000,
+        "property_lt": 0,
+        "gross_u1250": 0,
+        "prior_capital_loss": 28500,
+        "nii": 0
+      },
+      "expected": {
+        "net_total": -18500,
+        "loss_deduction": 1500,
+        "carry": 17000,
+        "ti": 82400,
+        "income_tax": 12840,
+        "niit": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-US-TABLES",
+        "L-SS-PASSIVE",
+        "L-CAPITAL"
+      ],
+      "manual_instructions": [
+        "Run US-CARRY at M06.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "US-EARLY",
+      "step": "M06.1",
+      "spec_section": "5.6 / 6.2",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "early_trad": 10000,
+        "age": 40,
+        "exception": false,
+        "penalty_rate": 0.1
+      },
+      "expected": {
+        "penalty": 1000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-RMD"
+      ],
+      "manual_instructions": [
+        "Run US-EARLY at M06.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "CAPITAL-PARTIAL",
+      "step": "M06.1",
+      "spec_section": "6.1–6.2",
+      "oracle_kind": "conditional",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "OPEN: worksheet ordering",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "ordinary": 100000,
+        "securities_lt": -20000,
+        "gross_u1250": 50000,
+        "prior_capital_loss": 10000,
+        "description": "Partial securities/carryover offset against gross unrecaptured gain"
+      },
+      "expected": null,
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-CAPITAL"
+      ],
+      "manual_instructions": [
+        "Open Schedule D/unrecaptured-gain worksheet and Form4797; cite exact lines and supported conditions; freeze numeric buckets only after source review. Do not accept a gross-gain shortcut."
+      ]
+    },
+    {
+      "id": "PROPERTY-1231",
+      "step": "M06.1",
+      "spec_section": "6.1–6.2",
+      "oracle_kind": "conditional",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "OPEN: worksheet ordering",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "gain": 50000,
+        "prior_losses": [
+          {
+            "income_year": 2025,
+            "amount": 20000
+          }
+        ],
+        "description": "Net business-property gain with nonrecaptured prior Section1231 losses"
+      },
+      "expected": null,
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-CAPITAL"
+      ],
+      "manual_instructions": [
+        "Open Schedule D/unrecaptured-gain worksheet and Form4797; cite exact lines and supported conditions; freeze numeric buckets only after source review. Do not accept a gross-gain shortcut."
+      ]
+    },
+    {
+      "id": "CN-PARTIAL",
+      "step": "M06.3",
+      "spec_section": "6.4",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "OPEN: numeric under all-paid-components-eligible assumption; primary-source payment-allocation rules pending",
+      "currency": "CNY",
+      "tolerance": 0.01,
+      "inputs": {
+        "china_precredit": 10000,
+        "eligible_final_source_liability": 10000,
+        "source_paid": 4000,
+        "source_unpaid": 6000,
+        "projected_credit": 10000,
+        "fx": 1
+      },
+      "expected": {
+        "eligible_paid": 4000,
+        "used_credit": 4000,
+        "china_due": 6000,
+        "ftc_adjustment": 6000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-CN-FTC"
+      ],
+      "manual_instructions": [
+        "Run CN-PARTIAL at M06.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "CN-WITHHOLDING",
+      "step": "M06.3",
+      "spec_section": "6.4",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "CNY",
+      "tolerance": 0.01,
+      "inputs": {
+        "china_precredit": 30000,
+        "gross_withholding": 150000,
+        "final_eligible_source_liability": 20000,
+        "refund": 130000,
+        "fx": 1
+      },
+      "expected": {
+        "eligible_retained_pool": 20000,
+        "credit": 20000,
+        "china_due": 10000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-CN-FTC",
+        "L-FIRPTA"
+      ],
+      "manual_instructions": [
+        "Run CN-WITHHOLDING at M06.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "CN-EXPIRY",
+      "step": "M06.3",
+      "spec_section": "6.4",
+      "oracle_kind": "conditional",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "OPEN: inclusive expiry/application rules",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "income_year": 2026,
+        "excess_eligible_paid_credit": 12000,
+        "proposed_last_usable_income_year": 2031,
+        "country": "US"
+      },
+      "expected": null,
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-CN-FTC"
+      ],
+      "manual_instructions": [
+        "Confirm five FOLLOWING income years, vintage conversion, oldest-first use and post-refund correction from primary source. Then pin 2031/2032 boundaries and no carry of ineligible tax."
+      ]
+    },
+    {
+      "id": "CN-REFUND",
+      "step": "M06.3",
+      "spec_section": "6.4",
+      "oracle_kind": "conditional",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "OPEN: refund-year conversion/amendment rule",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "income_year": 2026,
+        "payment_year": 2027,
+        "credit_used": 5000,
+        "later_refund": 2000,
+        "refund_year": 2028,
+        "fx": [
+          6.69,
+          6.7,
+          6.5
+        ]
+      },
+      "expected": null,
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-CN-FTC"
+      ],
+      "manual_instructions": [
+        "Confirm component allocation and refund/amendment FX convention; show income/payment/vintage years and reduce eligible paid tax without a duplicate credit/refund."
+      ]
+    },
+    {
+      "id": "CN-RESIDENCE",
+      "step": "M06.3",
+      "spec_section": "6.4",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "CNY",
+      "tolerance": 0.01,
+      "inputs": {
+        "cn_domiciled": false,
+        "reset": true,
+        "alternative_reset": false,
+        "start_year": 2026
+      },
+      "expected": {
+        "reset_china_foreign_income_tax_active": false,
+        "no_reset_first_active_t": 6,
+        "no_reset_first_active_year": 2032
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-CN-SIX-YEAR"
+      ],
+      "manual_instructions": [
+        "Run CN-RESIDENCE at M06.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "RNG-VECTORS",
+      "step": "M04.1",
+      "spec_section": "3.2",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: algorithm",
+      "currency": "dimensionless",
+      "tolerance": 1e-12,
+      "inputs": {
+        "raw_state": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "tuple_text": "[\"retire-rng-v1\",42,0,\"bootstrap\",\"\"]",
+        "normal_uniforms": [
+          0.5,
+          0.5
+        ]
+      },
+      "expected": {
+        "raw_outputs": [
+          11520,
+          0,
+          5927040,
+          70819200,
+          2031721883,
+          1637235492,
+          1287239034,
+          3734860849
+        ],
+        "sha256": "ab710528cf1bc287af2b294db0827f5bf5ec8348ee9de1d5ba81169939757f3b",
+        "little_endian_state": [
+          671445419,
+          2277645263,
+          1294543791,
+          1535083184
+        ],
+        "seeded_outputs": [
+          2406593643,
+          4039661935,
+          1310122810,
+          591680076,
+          881506770
+        ],
+        "uniform_min": 1.1641532182693481e-10,
+        "uniform_max": 0.9999999998835847,
+        "normal_pair": [
+          -1.1774100225154747,
+          0
+        ]
+      },
+      "provenance": "Independent unsigned xoshiro128** reference and standard SHA-256; exact seed text; not a call into future rng.ts.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run RNG-VECTORS at M04.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ],
+      "integer_fields": [
+        "raw_outputs",
+        "little_endian_state",
+        "seeded_outputs"
+      ]
+    },
+    {
+      "id": "RNG-PREFIX",
+      "step": "M04.4",
+      "spec_section": "3.2",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: algorithm",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "seed": 42,
+        "path_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "path_counts": [
+          10,
+          100
+        ],
+        "horizons": [
+          52,
+          71
+        ],
+        "property_ids": [
+          "rental_1",
+          "rental_2"
+        ]
+      },
+      "expected": {
+        "unchanged_prefixes": true,
+        "property_reorder_unchanged": true,
+        "spending_switches_unchanged": true,
+        "seed43_changes_stochastic_draws": true
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Compare exact latent bytes before/after path-count, horizon, spending/medical switch, property label/order/addition changes; fixed keyed IDs must retain existing prefixes."
+      ]
+    },
+    {
+      "id": "MARKET-JOINT",
+      "step": "M04.2",
+      "spec_section": "4.3",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: synthetic tape",
+      "currency": "dimensionless",
+      "tolerance": 0,
+      "inputs": {
+        "source_rows": [
+          [
+            2000,
+            0,
+            0.01,
+            0.005,
+            0.02,
+            0.03
+          ],
+          [
+            2001,
+            0.01,
+            0.011,
+            0.0051,
+            0.0201,
+            0.0301
+          ],
+          [
+            2002,
+            0.02,
+            0.012,
+            0.0052,
+            0.0202,
+            0.0302
+          ],
+          [
+            2003,
+            0.03,
+            0.013,
+            0.0053,
+            0.0203,
+            0.0303
+          ],
+          [
+            2004,
+            0.04,
+            0.014,
+            0.0054,
+            0.0204,
+            0.0304
+          ],
+          [
+            2005,
+            0.05,
+            0.015,
+            0.0055,
+            0.0205,
+            0.0305
+          ],
+          [
+            2006,
+            0.06,
+            0.016,
+            0.0056,
+            0.0206,
+            0.0306
+          ],
+          [
+            2007,
+            0.07,
+            0.017,
+            0.0057,
+            0.0207,
+            0.0307
+          ],
+          [
+            2008,
+            0.08,
+            0.018,
+            0.0058,
+            0.0208,
+            0.0308
+          ],
+          [
+            2009,
+            0.09,
+            0.019,
+            0.0059,
+            0.0209,
+            0.0309
+          ]
+        ],
+        "columns": [
+          "year",
+          "us_stocks",
+          "us_bonds",
+          "usd_cash",
+          "us_cpi",
+          "us_home"
+        ],
+        "block_mean_years": 2,
+        "bootstrap_uniforms": [
+          0.95,
+          0.9,
+          0.1,
+          0.1,
+          0.25,
+          0.8,
+          0.99
+        ]
+      },
+      "expected": {
+        "row_indices": [
+          9,
+          0,
+          2,
+          3
+        ],
+        "all_columns_same_row": true,
+        "consumed_uniform_count": 7
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run MARKET-JOINT at M04.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "MARKET-PROJECTION",
+      "step": "M04.2",
+      "spec_section": "4.3.1",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: synthetic three-row helper; not a runnable sample window",
+      "currency": "dimensionless",
+      "tolerance": 1e-9,
+      "inputs": {
+        "unit_source": [
+          -0.2,
+          0,
+          0.2
+        ],
+        "target_mean": 0.07,
+        "target_vol": 0.15,
+        "correlated_series": [
+          1,
+          2,
+          3
+        ]
+      },
+      "expected": {
+        "source_mean": 0,
+        "source_population_sd": 0.1632993161855452,
+        "transformed": [
+          -0.11371173070873836,
+          0.07,
+          0.25371173070873837
+        ],
+        "mean": 0.07,
+        "sd": 0.15,
+        "correlation": 1
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run MARKET-PROJECTION at M04.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "MARKET-DOMAIN",
+      "step": "M04.2",
+      "spec_section": "4.3.1",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "reference_projection": {
+          "mean": 0.03,
+          "vol": 0.4
+        },
+        "isolated_returns": [
+          -1,
+          -1
+        ],
+        "isolated_yields": [
+          0,
+          0.013
+        ],
+        "constant_source": [
+          0.02,
+          0.02,
+          0.02
+        ],
+        "requested_vol": 0.1
+      },
+      "expected": {
+        "full_reference_rejected_after_M03": true,
+        "total_loss_zero_yield_allowed": true,
+        "total_loss_positive_yield_rejected": true,
+        "zero_sd_positive_vol_rejected": true,
+        "no_clipping": true
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "DATA-HISTORY"
+      ],
+      "manual_instructions": [
+        "After M03 pins actual full-window rows, cite the transformed minimum/year; verify invalidity before sampling. Isolated helper cases check total-loss vs price/log domains; do not treat provisional SD as verified data."
+      ]
+    },
+    {
+      "id": "MARKET-TIMING",
+      "step": "M04.3",
+      "spec_section": "4.5–4.7",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: deterministic recurrence",
+      "currency": "mixed",
+      "tolerance": 1e-12,
+      "inputs": {
+        "start_year": 2026,
+        "cn_cpi": 0.04,
+        "us_cpi": 0.03,
+        "fx_spot": 6.69,
+        "fx_multiplier": 0.99,
+        "stress_year": 2029,
+        "stress_pct": -0.15,
+        "deposit_real_rate": 0.005,
+        "deposit_floor": 0.002,
+        "medical_excess": 0.02
+      },
+      "expected": {
+        "cn_index_0": 1,
+        "us_index_0": 1,
+        "cn_index_1": 1.04,
+        "us_index_1": 1.03,
+        "fx_10": 6.0503160818089015,
+        "stress_index": 3,
+        "stress_ratio": 0.85,
+        "deposit_rate": 0.045,
+        "medical_price_factor": 1.06
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run MARKET-TIMING at M04.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "MARKET-AR",
+      "step": "M04.3",
+      "spec_section": "4.4",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: recurrence",
+      "currency": "dimensionless",
+      "tolerance": 1e-12,
+      "inputs": {
+        "mean": 0.04,
+        "start": 0.02,
+        "phi": 0.5,
+        "sigma": 0,
+        "years": 3
+      },
+      "expected": {
+        "cn_rates": [
+          0.03,
+          0.035,
+          0.0375
+        ]
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run MARKET-AR at M04.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "MARKET-INVALID",
+      "step": "M04.3",
+      "spec_section": "4.4–4.6",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: domain policy",
+      "currency": "dimensionless",
+      "tolerance": 1e-12,
+      "inputs": {
+        "mean": 0.04,
+        "phi": 0,
+        "sigma": 0.02,
+        "z": -60,
+        "path_id": 7,
+        "t": 2,
+        "start_year": 2026
+      },
+      "expected": {
+        "cn_cpi": -1.16,
+        "gross_factor": -0.16,
+        "error_path_id": 7,
+        "error_year": 2028,
+        "whole_job_failed": true,
+        "partial_probabilities": false
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run MARKET-INVALID at M04.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "MARKET-CALIBRATION",
+      "step": "M04.4",
+      "spec_section": "11.2",
+      "oracle_kind": "conditional",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "OPEN: source calibration must be reproduced at M03",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "n_paths": 20000,
+        "horizon": 40,
+        "seed": 42,
+        "reference_status": "not imported"
+      },
+      "expected": null,
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "DATA-HISTORY"
+      ],
+      "manual_instructions": [
+        "Reproduce exact population moments/correlations from raw public data. Record measured stochastic means/CPI correlation/FX SD/bond drawdowns under fixed versions. Do not inherit provisional benchmark PASS."
+      ]
+    },
+    {
+      "id": "BUDGET-1",
+      "step": "M05.1",
+      "spec_section": "5.2",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "CNY",
+      "tolerance": 0.01,
+      "inputs": {
+        "ordinary_cny": 212000,
+        "cpi_health_cny": 38000,
+        "medical_base_cny": 0,
+        "annual_cny": 250000,
+        "included_health_cny": 38000,
+        "duplicate_medical_base_cny": 38000
+      },
+      "expected": {
+        "included_recurring": 250000,
+        "health": 38000,
+        "duplicate_total": 288000,
+        "duplicate_run_allowed": false
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run BUDGET-1 at M05.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "SPENDING-TIMING",
+      "step": "M05.1",
+      "spec_section": "5.2",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "CNY",
+      "tolerance": 0.01,
+      "inputs": {
+        "start_year": 2026,
+        "start_age_A": 40,
+        "cn_cpi": 0.04,
+        "care_monthly": 8000,
+        "care_start_age": 60,
+        "first_death_t": 0,
+        "base_monthly": 1000,
+        "survivor_factor": 0.6
+      },
+      "expected": {
+        "care_before_t20": 0,
+        "care_t20_cny": 210347.82173120714,
+        "survivor_item_t0": 12000,
+        "survivor_item_t1": 7488
+      },
+      "provenance": "Care=96000*(1.04^20); survivor=12000*1.04*.6; independent powers, not household medical forecast.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run SPENDING-TIMING at M05.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "FLEX-1",
+      "step": "M05.1",
+      "spec_section": "5.2",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: spending rule",
+      "currency": "dimensionless",
+      "tolerance": 1e-12,
+      "inputs": {
+        "prior_returns": [
+          -0.2,
+          0.05,
+          0.05,
+          0.05
+        ],
+        "loss_returns": [
+          -0.1,
+          -0.1,
+          -0.1,
+          -0.1,
+          -0.1
+        ],
+        "cut": 0.1,
+        "recover": 0.05,
+        "floor": 0.75,
+        "cap": 1
+      },
+      "expected": {
+        "multipliers": [
+          1,
+          0.9,
+          0.945,
+          0.99225,
+          1
+        ],
+        "loss_multipliers": [
+          1,
+          0.9,
+          0.81,
+          0.75,
+          0.75,
+          0.75
+        ],
+        "disabled_multiplier": 1
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run FLEX-1 at M05.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "MEDICAL-GROWTH",
+      "step": "M05.2",
+      "spec_section": "5.3",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: illustrative configurable growth, not calibrated premiums",
+      "currency": "CNY",
+      "tolerance": 0.01,
+      "inputs": {
+        "base": 38000,
+        "ordinary": 212000,
+        "cn_cpi": 0.04,
+        "medical_excess": 0.02,
+        "age_growth": 0.04,
+        "increments": 50
+      },
+      "expected": {
+        "nominal_factor": 1.1024,
+        "real_factor": 1.06,
+        "year1_medical_nominal": 41891.2,
+        "year1_medical_real": 40280,
+        "year1_included_total": 262371.2,
+        "year1_ceiling": 260000,
+        "year1_excess": 2371.2,
+        "after50_medical_real": 699965.8624496766
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run MEDICAL-GROWTH at M05.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ],
+      "field_tolerances": {
+        "nominal_factor": 1e-12,
+        "real_factor": 1e-12
+      }
+    },
+    {
+      "id": "MEDICAL-SCOPE",
+      "step": "M05.2",
+      "spec_section": "5.3",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: scope arithmetic",
+      "currency": "CNY",
+      "tolerance": 0.01,
+      "inputs": {
+        "age": 60,
+        "occurrence_uniform": 0.01,
+        "prob_at60": 0.02,
+        "size_normal": 0,
+        "median": 50000,
+        "medical_index": 1,
+        "included_recurring": 250000,
+        "ceiling": 250000
+      },
+      "expected": {
+        "shock": 50000,
+        "additional_scope": {
+          "included": 250000,
+          "additional": 50000,
+          "total": 300000,
+          "excess": 0
+        },
+        "included_scope": {
+          "included": 300000,
+          "additional": 0,
+          "total": 300000,
+          "excess": 50000
+        }
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run MEDICAL-SCOPE at M05.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "SS-GATES",
+      "step": "M05.3",
+      "spec_section": "5.4",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "A_start_age": 45,
+        "B_death_t": 0,
+        "own_monthly": 2200,
+        "own_claim_age": 67,
+        "survivor_monthly": 1800,
+        "survivor_claim_age": 62,
+        "eligible": true,
+        "payable_abroad": true,
+        "us_cpi": 0,
+        "cut": 0.2,
+        "cut_start_age": 62,
+        "deceased_future_own_monthly": 9000
+      },
+      "expected": {
+        "before_cut_schedule": {
+          "age45": 0,
+          "age60": 0,
+          "age62": 21600,
+          "age67": 26400
+        },
+        "with_cut": {
+          "age45": 0,
+          "age60": 0,
+          "age62": 17280,
+          "age67": 21120
+        },
+        "disabled_all": 0,
+        "ordinary_claim_age45_allowed": false
+      },
+      "provenance": "Unit COLA index1; later indexed case multiplies 21600/26400 by us_index[17]/[22]. Manual supplied entitlement; no deceased-benefit substitution.",
+      "source_gate_ids": [
+        "L-SURVIVOR",
+        "L-SSA-ABROAD"
+      ],
+      "manual_instructions": [
+        "Run SS-GATES at M05.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "ACCOUNT-BASIS",
+      "step": "M05.4",
+      "spec_section": "5.5",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "opening_value": 100000,
+        "opening_basis": 60000,
+        "withdrawal": 50000,
+        "separate_return_case": {
+          "total_return": 0.1,
+          "yield": 0.013
+        }
+      },
+      "expected": {
+        "withdrawal_gain": 20000,
+        "remaining_value": 50000,
+        "remaining_basis": 30000,
+        "return_case_value": 110000,
+        "return_case_basis": 61300
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run ACCOUNT-BASIS at M05.4; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "ACCOUNT-REBALANCE",
+      "step": "M05.4",
+      "spec_section": "5.5",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "stock_value": 60000,
+        "stock_basis": 30000,
+        "bond_value": 50000,
+        "bond_basis": 30000,
+        "target_stock": 0.5,
+        "yields": 0
+      },
+      "expected": {
+        "stock_sale": 5000,
+        "gain": 2500,
+        "ending_stock": 55000,
+        "ending_bond": 55000,
+        "stock_basis": 27500,
+        "bond_basis": 35000,
+        "retirement_taxable_gain": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run ACCOUNT-REBALANCE at M05.4; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "ACCOUNT-ACCESS",
+      "step": "M05.4",
+      "spec_section": "5.6",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "ages": [
+          40,
+          55,
+          60
+        ],
+        "trad_balance": 120000,
+        "roth_balance": 120000,
+        "early_flag": true,
+        "qualifying_rule55": true
+      },
+      "expected": {
+        "trad40_without_early": false,
+        "trad40_with_early": true,
+        "roth40_with_early": false,
+        "trad55_rule55": true,
+        "trad60": true,
+        "roth60": true
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-RMD"
+      ],
+      "manual_instructions": [
+        "Inspect access walk and distribution penalty base; Rule55 qualifying facts and penalty exception require primary-source acceptance. Do not assume all withdrawals before60 incur a penalty despite a qualifying exception."
+      ]
+    },
+    {
+      "id": "CONVERSION-1",
+      "step": "M05.4",
+      "spec_section": "5.7",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "fx": 6.69,
+        "spread": 0.003,
+        "cny_need": 6690,
+        "usd_need": 1000
+      },
+      "expected": {
+        "usd_to_fund_cny": 1003.0090270812436,
+        "cny_to_fund_usd": 6710.07
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run CONVERSION-1 at M05.4; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "SOURCE-1",
+      "step": "M06.2",
+      "spec_section": "1.2 / 5.5 / 9.2",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "us_citizen": false,
+        "us_income_tax_status": "resident",
+        "estate_domicile": "unresolved",
+        "household_legal_checkbox": true,
+        "applicable_registry_verified": false,
+        "cash_value": 100000,
+        "cash_return": 0.03,
+        "bank_nra_rate": 0,
+        "fund_nra_rate": 0.1
+      },
+      "expected": {
+        "unsupported_resident_branch_run_allowed": false,
+        "checkbox_bypass_allowed": false,
+        "bank_profile_tax": 0,
+        "fund_profile_tax": 300,
+        "wrapper_controls_retirement_situs": true
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-RESIDENCY",
+        "L-ESTATE",
+        "L-NRA-TREATY"
+      ],
+      "manual_instructions": [
+        "Run SOURCE-1 at M06.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "PROPERTY-BOOKS",
+      "step": "M07.1",
+      "spec_section": "5.8",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "value": 900000,
+        "cost_basis": 600000,
+        "land_share": 0.2,
+        "rent_monthly": 3800,
+        "vacancy": 0.05,
+        "management_fee": 0.08,
+        "maintenance_pct": 0.01,
+        "property_tax": 9000,
+        "insurance": 1500,
+        "hoa_monthly": 0,
+        "mortgage": 0,
+        "index": 1
+      },
+      "expected": {
+        "gross_rent": 43320,
+        "management_fee": 3465.6,
+        "maintenance": 9000,
+        "cash_flow": 20354.4,
+        "annual_depreciation": 17454.545454545456,
+        "schedule_e_net": 2899.854545454542
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run PROPERTY-BOOKS at M07.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "PROPERTY-MORTGAGE",
+      "step": "M07.1",
+      "spec_section": "5.8",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "opening_balance": 100000,
+        "rate": 0.05,
+        "years_left": 10
+      },
+      "expected": {
+        "annual_payment": 12950.457496545661,
+        "first_interest": 5000,
+        "first_principal": 7950.457496545662,
+        "ending_balance": 92049.54250345434
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run PROPERTY-MORTGAGE at M07.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "FIRPTA-SHARE",
+      "step": "M07.2",
+      "spec_section": "5.8",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "price": 1000000,
+        "costs": 60000,
+        "mortgage": 700000,
+        "foreign_share": 0.5,
+        "withholding_rate": 0.15
+      },
+      "expected": {
+        "withholding": 75000,
+        "cash_at_closing": 165000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-FIRPTA"
+      ],
+      "manual_instructions": [
+        "Run FIRPTA-SHARE at M07.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "SALE-FAIL",
+      "step": "M07.2",
+      "spec_section": "5.8",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "price": 1000000,
+        "costs": 60000,
+        "mortgage": 900000,
+        "foreign_share": 1,
+        "withholding_rate": 0.15,
+        "accessible_closing_funds": 0
+      },
+      "expected": {
+        "quoted_closing_cash": -110000,
+        "required_contribution": 110000,
+        "executed": false,
+        "realized_gain": 0,
+        "prepayment": 0,
+        "property_still_held": true
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-FIRPTA"
+      ],
+      "manual_instructions": [
+        "Run SALE-FAIL at M07.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "HOLD-1",
+      "step": "M07.2",
+      "spec_section": "5.8",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "mixed",
+      "tolerance": 0.01,
+      "inputs": {
+        "strategy": "hold",
+        "last_resort_property_sale": false,
+        "cash_shortfall_cny": 10000,
+        "property_equity_usd": 1269000
+      },
+      "expected": {
+        "strategy_sale": false,
+        "forced_sale": false,
+        "property_liquid_funding": 0,
+        "shortfall_cny": 10000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Force funding need and retain valuable property; inspect that neither strategy nor last-resort code sells it. Compare with explicitly enabled last-resort-sale variant."
+      ]
+    },
+    {
+      "id": "DEATH-SNAPSHOT",
+      "step": "M07.3",
+      "spec_section": "5.9",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "A_death_t": 0,
+        "B_death_t": 0,
+        "citizen_A": true,
+        "citizen_B": false,
+        "B_us_situs": 500000,
+        "B_nra_credit": 13000,
+        "pre_transfer_shares": [
+          0.5,
+          0.5
+        ],
+        "passive_loss": 30000,
+        "basis_increase": 20000
+      },
+      "expected": {
+        "simultaneous": true,
+        "B_surviving_citizen_spouse": false,
+        "B_estate_tax": 142800,
+        "permitted_passive_deduction": 10000,
+        "tax_inputs_before_transfer": true,
+        "carry_to_survivor": false
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-ESTATE",
+        "L-PASSIVE-DEATH",
+        "L-CN-FTC"
+      ],
+      "manual_instructions": [
+        "Run DEATH-SNAPSHOT at M07.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "TERMINAL-REFUND",
+      "step": "M07.3",
+      "spec_section": "6.7",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "assets": 90000,
+        "final_liability": 20000,
+        "net_remitted": 150000,
+        "estate_due": 0,
+        "conditional_credit": 0
+      },
+      "expected": {
+        "due": 0,
+        "confirmed_refund": 130000,
+        "net_to_heirs": 220000,
+        "actual_refund_cash_at_terminal": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-FIRPTA",
+        "L-ESTATE"
+      ],
+      "manual_instructions": [
+        "Run TERMINAL-REFUND at M07.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "TERMINAL-DEFICIT",
+      "step": "M07.3",
+      "spec_section": "6.7",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "assets": 20000,
+        "final_liability": 30000,
+        "net_remitted": 0,
+        "estate_due": 0,
+        "conditional_credit": 5000
+      },
+      "expected": {
+        "signed_net": -10000,
+        "net_to_heirs": 0,
+        "estate_shortfall": 10000,
+        "excluded_conditional_credit": 5000,
+        "actual_paid": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-ESTATE",
+        "L-CN-FTC"
+      ],
+      "manual_instructions": [
+        "Run TERMINAL-DEFICIT at M07.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "CONTROL-PV",
+      "step": "M08.1",
+      "spec_section": "9.3",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: tax-free arithmetic control; not household funding advice",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "start_year": 2026,
+        "birth_year_A": 1986,
+        "birth_year_B": 1986,
+        "death_age_A": 89,
+        "death_age_B": 89,
+        "max_age": 110,
+        "annual_cny": 250000,
+        "ordinary_cny": 212000,
+        "health_cny": 38000,
+        "medical_bases": 0,
+        "shock": false,
+        "ss": false,
+        "property": false,
+        "flex": false,
+        "return": 0.03,
+        "cn_cpi": 0.04,
+        "us_cpi": 0.03,
+        "fx_spot": 6.69,
+        "fx_spread": 0,
+        "all_applicable_tax_rates": 0,
+        "accessible_account_type": "taxable",
+        "allocated_asset": "usd_cash",
+        "n_paths": 1,
+        "seed": 42,
+        "fx_multiplier": 1,
+        "config_file": "control-pv.toml"
+      },
+      "expected": {
+        "payment_count": 50,
+        "first_payment": 37369.20777279521,
+        "required_balance": 2390572.9770677146,
+        "displayed_pv": "2,390,572.98",
+        "final_balance": 0,
+        "exact_pv_decimal": "2390572.9770677145932828554267970000473442304988766842740735298308",
+        "first_age": 40,
+        "last_age": 89,
+        "allocated_rows": 71
+      },
+      "provenance": "50 beginning-of-year payments, exact rational sum; M00-2 workbook and independent reference. Final balance residual <=1e-6 is numerical zero.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run CONTROL-PV at M08.1; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ],
+      "field_tolerances": {
+        "first_payment": 1e-8,
+        "required_balance": 1e-8,
+        "final_balance": 0.000001
+      }
+    },
+    {
+      "id": "CONTROL-FX",
+      "step": "M08.2",
+      "spec_section": "9.3",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: tax-free arithmetic control; not household funding advice",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "start_year": 2026,
+        "birth_year_A": 1986,
+        "birth_year_B": 1986,
+        "death_age_A": 89,
+        "death_age_B": 89,
+        "max_age": 110,
+        "annual_cny": 250000,
+        "ordinary_cny": 212000,
+        "health_cny": 38000,
+        "medical_bases": 0,
+        "shock": false,
+        "ss": false,
+        "property": false,
+        "flex": false,
+        "return": 0.03,
+        "cn_cpi": 0.04,
+        "us_cpi": 0.03,
+        "fx_spot": 6.69,
+        "fx_spread": 0,
+        "all_applicable_tax_rates": 0,
+        "accessible_account_type": "taxable",
+        "allocated_asset": "usd_cash",
+        "n_paths": 1,
+        "seed": 42,
+        "fx_multiplier": 0.99,
+        "config_file": "control-fx.toml"
+      },
+      "expected": {
+        "payment_count": 50,
+        "first_payment": 37369.20777279521,
+        "required_balance": 3152520.3411145047,
+        "displayed_pv": "3,152,520.34",
+        "final_balance": 0,
+        "exact_pv_decimal": "3152520.3411145046905392977802592090780936043212755608347596589861",
+        "first_age": 40,
+        "last_age": 89,
+        "allocated_rows": 71
+      },
+      "provenance": "Exact rational q=10400/10197; FX input is log(.99), not -.01. Earlier spec float sum differs <2e-9 USD.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run CONTROL-FX at M08.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ],
+      "field_tolerances": {
+        "first_payment": 1e-8,
+        "required_balance": 1e-8,
+        "final_balance": 0.000001
+      }
+    },
+    {
+      "id": "CONTROL-DEPLETION",
+      "step": "M08.2",
+      "spec_section": "5.11",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: zero-tax timing control",
+      "currency": "mixed",
+      "tolerance": 0.01,
+      "inputs": {
+        "start_year": 2026,
+        "A_start_age": 60,
+        "A_death_age": 75,
+        "B_start_age": 60,
+        "B_death_age": 60,
+        "fx": 7,
+        "cpi": 0,
+        "return": 0,
+        "tax": 0,
+        "spending_monthly_cny": 7000,
+        "survivor_factor": 1,
+        "initial_accessible_roth_usd": 120000,
+        "empty_taxable_surplus": true,
+        "ss": false,
+        "medical": false,
+        "property": false,
+        "flex": false
+      },
+      "expected": {
+        "annual_usd_need": 12000,
+        "t9_end_balance": 0,
+        "t9_depleted": false,
+        "first_shortfall_t": 10,
+        "first_shortfall_year": 2036,
+        "first_shortfall_cny": 84000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run CONTROL-DEPLETION at M08.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "CONTROL-HOLD",
+      "step": "M08.2",
+      "spec_section": "9.3",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: labeled zero-rent sensitivity, not actual property cash flow",
+      "currency": "mixed",
+      "tolerance": 0.01,
+      "inputs": {
+        "cash_usd": 0,
+        "property_value": 2000000,
+        "property_loan": 731000,
+        "annual_cny_need": 250000,
+        "fx": 6.69,
+        "strategy": "hold",
+        "last_resort_property_sale": false,
+        "zero_net_rent_assumption": true
+      },
+      "expected": {
+        "equity_usd": 1269000,
+        "available_property_cash": 0,
+        "forced_sale": false,
+        "first_shortfall_t": 0,
+        "shortfall_cny": 250000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run CONTROL-HOLD at M08.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "ENGINE-FINAL-TAX",
+      "step": "M08.3",
+      "spec_section": "5.10 / 6.7",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: explicit flat-tax synthetic table; actual US tax module must run, no tax stub",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "start_year": 2026,
+        "A_age": 60,
+        "B_age": 60,
+        "fx": 1,
+        "cpi": 0,
+        "return": 0,
+        "yields": 0,
+        "A_trad": 650000,
+        "empty_taxable_surplus": true,
+        "spending_year0_usd": 150000,
+        "spending_other_years": 0,
+        "us_ordinary_flat_rate": 0.2,
+        "standard_deduction": 0,
+        "other_taxes": 0,
+        "china_A_exempt": true,
+        "ss": false,
+        "medical": false,
+        "property": false,
+        "flex": false,
+        "both_die_end_t": 0,
+        "config_file": "engine-final-tax.toml"
+      },
+      "expected": {
+        "year0_trad_withdrawal": 150000,
+        "year0_assets": 500000,
+        "year0_income_tax": 30000,
+        "actual_paid": 0,
+        "terminal_unpaid": 30000,
+        "net_to_heirs": 470000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run ENGINE-FINAL-TAX at M08.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "ENGINE-PRIOR-TAX",
+      "step": "M08.3",
+      "spec_section": "5.10 / 6.7",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: explicit flat-tax synthetic table; taxes from the real module, not a stub",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "start_year": 2026,
+        "A_age": 60,
+        "B_age": 60,
+        "fx": 1,
+        "cpi": 0,
+        "return": 0,
+        "yields": 0,
+        "A_trad": 650000,
+        "empty_taxable_surplus": true,
+        "spending_year0_usd": 150000,
+        "spending_other_years": 0,
+        "us_ordinary_flat_rate": 0.2,
+        "standard_deduction": 0,
+        "other_taxes": 0,
+        "china_A_exempt": true,
+        "ss": false,
+        "medical": false,
+        "property": false,
+        "flex": false,
+        "both_die_end_t": 1,
+        "config_file": "engine-prior-tax.toml"
+      },
+      "expected": {
+        "year0_income_tax": 30000,
+        "year1_trad_withdrawal": 30000,
+        "year1_actual_paid": 30000,
+        "year1_assets": 470000,
+        "year1_income_tax": 6000,
+        "terminal_unpaid": 6000,
+        "net_to_heirs": 464000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run ENGINE-PRIOR-TAX at M08.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "ENGINE-FIRPTA",
+      "step": "M08.3",
+      "spec_section": "5.8 / 6.7",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "OPEN: eligible source-tax assumption; flat-tax synthetic table uses real tax module, not a stub",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "start_year": 2026,
+        "A_age": 60,
+        "B_age": 60,
+        "fx": 1,
+        "purchase_fx": 1,
+        "cpi": 0,
+        "return": 0,
+        "yields": 0,
+        "ss": false,
+        "medical": false,
+        "flex": false,
+        "B_owned_property": {
+          "price": 1000000,
+          "cost_basis": 840000,
+          "depreciation": 0,
+          "mortgage": 700000,
+          "selling_cost": 0.06,
+          "firpta_rate": 0.15,
+          "sell_start_t": 0
+        },
+        "us_property_gain_rate": 0.2,
+        "china_property_gain_rate": 0.2,
+        "eligible_credit": 20000,
+        "bank_profile_situs": "non_us",
+        "B_retirement": 0,
+        "estate_tax": 0,
+        "both_die_end_t": 0,
+        "config_file": "engine-firpta.toml"
+      },
+      "expected": {
+        "gain": 100000,
+        "closing_cash": 90000,
+        "withheld": 150000,
+        "final_federal_tax": 20000,
+        "final_china_due": 0,
+        "confirmed_refund": 130000,
+        "terminal_assets": 90000,
+        "net_to_heirs": 220000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "L-FIRPTA",
+        "L-CN-FTC"
+      ],
+      "manual_instructions": [
+        "Run ENGINE-FIRPTA at M08.3; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "SUMMARY-1",
+      "step": "M09.2",
+      "spec_section": "7.2",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: cohorts and Type7",
+      "currency": "dimensionless",
+      "tolerance": 1e-12,
+      "inputs": {
+        "n_paths": 5,
+        "active_values": [
+          1,
+          2,
+          3,
+          4,
+          null
+        ],
+        "alive": [
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        "depleted": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "inactive_has_no_depletion": true
+      },
+      "expected": {
+        "p10": 1.3,
+        "median": 2.5,
+        "p90": 3.7,
+        "alive_probability": 0.8,
+        "alive_not_depleted_probability": 0.6,
+        "conditional_healthy_given_alive": 0.75,
+        "lifetime_success": 0.8,
+        "empty_quantile": null
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run SUMMARY-1 at M09.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "RANKING-1",
+      "step": "M09.2",
+      "spec_section": "8.3",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: ranking",
+      "currency": "IDs",
+      "tolerance": 0,
+      "inputs": {
+        "paths": [
+          {
+            "id": 0,
+            "depletion_t": 5,
+            "terminal": 1000
+          },
+          {
+            "id": 1,
+            "depletion_t": null,
+            "terminal": 200
+          },
+          {
+            "id": 2,
+            "depletion_t": 3,
+            "terminal": 9999
+          },
+          {
+            "id": 3,
+            "depletion_t": null,
+            "terminal": 100
+          }
+        ]
+      },
+      "expected": {
+        "ascending_ids": [
+          2,
+          0,
+          3,
+          1
+        ],
+        "worst": 2,
+        "p10": 2,
+        "median": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run RANKING-1 at M09.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "SEQUENCE-1",
+      "step": "M11.2",
+      "spec_section": "11.3",
+      "oracle_kind": "numeric",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: synthetic portfolio sequence; no historical claim",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "initial": 100000,
+        "annual_beginning_withdrawal": 10000,
+        "returns": [
+          -0.2,
+          0.25
+        ],
+        "reversed": [
+          0.25,
+          -0.2
+        ]
+      },
+      "expected": {
+        "ending_original": 77500,
+        "ending_reversed": 82000,
+        "no_withdrawal_both": 100000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Run SEQUENCE-1 at M11.2; compare raw inputs, each intermediate and final outputs with this literal oracle; save the trace."
+      ]
+    },
+    {
+      "id": "CRISIS-DOTCOM",
+      "step": "M11.2",
+      "spec_section": "9.3 / 11.3",
+      "oracle_kind": "conditional",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "OPEN: annual historical rows not imported",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "years": [
+          2000,
+          2001,
+          2002
+        ],
+        "allocation": {
+          "us_stocks": 0.4,
+          "us_bonds": 0.6,
+          "usd_cash": 0
+        },
+        "reference_rows": "pending M03 raw-source import",
+        "amplified": false
+      },
+      "expected": null,
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "DATA-HISTORY"
+      ],
+      "manual_instructions": [
+        "Open and cite the raw annual stock/bond/cash returns. Compute 40/60 calendar portfolio returns and compounded result independently; then compare full engine with eligible losses/settlements. Do not replace annual portfolio return with equity peak-to-trough decline."
+      ]
+    },
+    {
+      "id": "CRISIS-2008",
+      "step": "M11.2",
+      "spec_section": "9.3 / 11.3",
+      "oracle_kind": "conditional",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "OPEN: annual historical rows not imported",
+      "legal_status": "NOT VERIFIED",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "years": [
+          2008
+        ],
+        "allocation": {
+          "us_stocks": 0.4,
+          "us_bonds": 0.6,
+          "usd_cash": 0
+        },
+        "reference_rows": "pending M03 raw-source import",
+        "amplified": false
+      },
+      "expected": null,
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [
+        "DATA-HISTORY"
+      ],
+      "manual_instructions": [
+        "Open and cite the raw annual stock/bond/cash returns. Compute 40/60 calendar portfolio returns and compounded result independently; then compare full engine with eligible losses/settlements. Do not replace annual portfolio return with equity peak-to-trough decline."
+      ]
+    },
+    {
+      "id": "CONFIG-ROUNDTRIP",
+      "step": "M02.3",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "source_choices": [
+          "upload",
+          "builder"
+        ],
+        "fixture": "spec-example.toml"
+      },
+      "expected": {
+        "same_normalized_hash": true,
+        "notes_ids_overrides_preserved": true,
+        "no_config_requests": true
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Download, inspect, reload/re-upload; compare normalized objects and hashes; inspect Network and storage."
+      ]
+    },
+    {
+      "id": "CONFIG-INVALID",
+      "step": "M02.1",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "bad_keys": [
+          "unknown",
+          "schema_version=999",
+          "seed=-1",
+          "n_paths=100001",
+          "nan"
+        ],
+        "file_limit_bytes": 2097152
+      },
+      "expected": {
+        "run_allowed": false,
+        "current_draft_preserved_on_bad_import": true,
+        "field_paths_visible": true
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Try each invalid input separately; record precise field or syntax/size error and unchanged current draft."
+      ]
+    },
+    {
+      "id": "DRAFT-GATES",
+      "step": "M02.2",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "kind": "household",
+        "B_status": "unresolved",
+        "required_blank": true
+      },
+      "expected": {
+        "editable": true,
+        "downloadable": true,
+        "runnable": false
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Build/export/re-import an incomplete household; confirm blank stays omitted and never becomes zero."
+      ]
+    },
+    {
+      "id": "WORKER-TRANSFER",
+      "step": "M01.3",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "float64_values": [
+          1,
+          2,
+          3
+        ]
+      },
+      "expected": {
+        "returned_values": [
+          1,
+          2,
+          3
+        ],
+        "sender_byte_length_after_transfer": 0
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Transfer the buffer in dev/production on both browsers; inspect detached sender and returned data."
+      ]
+    },
+    {
+      "id": "RUN-REPRO",
+      "step": "M09.3",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "seed": 42,
+        "path_counts": [
+          20000,
+          21000
+        ],
+        "worker_counts": [
+          1,
+          4
+        ],
+        "chunk_sizes": [
+          1,
+          128,
+          257
+        ]
+      },
+      "expected": {
+        "same_path_prefix": true,
+        "same_discrete_decisions": true,
+        "same_browser_money_exact": true,
+        "cross_browser_money_tolerance": 0.01
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Compare complete path hashes and summaries by path ID; vary scheduling, then edit draft and replay saved request."
+      ]
+    },
+    {
+      "id": "RUN-CANCEL",
+      "step": "M09.4",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "cancel_then_new_run": true,
+        "late_old_message": true
+      },
+      "expected": {
+        "canceled_result_not_promoted": true,
+        "new_run_unchanged": true,
+        "no_partial_kpis": true
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Cancel a production job, immediately run another; inject late old messages in harness and check manifest/run ID."
+      ]
+    },
+    {
+      "id": "RUN-FAIL",
+      "step": "M09.4",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "invalid_path_id": 7,
+        "invalid_year": 2028
+      },
+      "expected": {
+        "whole_job_failed": true,
+        "partial_success_probability": null
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Force invalid factor in one path, check whole-run failure and labeled prior completed run."
+      ]
+    },
+    {
+      "id": "RUN-IMMUTABLE",
+      "step": "M10.3",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "completed_config_budget": 250000,
+        "later_draft_budget": 300000
+      },
+      "expected": {
+        "replay_uses_completed_budget": 250000,
+        "baseline_unmodified": true
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Complete/pin run, edit draft; replay/export both snapshots and compare manifest hashes."
+      ]
+    },
+    {
+      "id": "PERFORMANCE",
+      "step": "M11.3",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "n_paths": 20000,
+        "horizon": 52,
+        "chart_fields": 8,
+        "hardware": "Apple M4 Pro",
+        "browsers": [
+          "Chrome",
+          "Safari"
+        ]
+      },
+      "expected": {
+        "chart_bytes": 33280000,
+        "retained_financial_array_bytes_max_exclusive": 50000000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Record exact production versions, elapsed time, peak memory, responsiveness/cancel behavior. M00 arithmetic is not a browser benchmark."
+      ]
+    },
+    {
+      "id": "PRIVACY-OFFLINE",
+      "step": "M11.4",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "production_static": true,
+        "warmed_worker_assets": true,
+        "network_disabled_during_run": true
+      },
+      "expected": {
+        "config_post_count": 0,
+        "external_reference_requests_during_compute": 0,
+        "scenario_file_dependency": false
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Build without fixture/config files, warm app/workers, turn network off, run/upload/download/reload; inspect Network and storage."
+      ]
+    },
+    {
+      "id": "HOUSEHOLD-GATE",
+      "step": "M11.5",
+      "spec_section": "3 / 8 / 9 / 11",
+      "oracle_kind": "structural",
+      "implementation_status": "NOT IMPLEMENTED",
+      "arithmetic_status": "NOT CHECKED",
+      "legal_status": "NOT APPLICABLE: workflow (household/source gates remain open)",
+      "currency": "USD",
+      "tolerance": 0.01,
+      "inputs": {
+        "financial_gross_usd": 5300000,
+        "property_value_usd": 2000000,
+        "property_loans_usd": 731000,
+        "B_green_card": true
+      },
+      "expected": {
+        "runnable_while_applicable_facts_open": false,
+        "financial_gross_usd": 5300000,
+        "property_equity_usd": 1269000
+      },
+      "provenance": "Spec and independent M00 worksheet/reference arithmetic, 2026-10-18; not a legal certification.",
+      "source_gate_ids": [],
+      "manual_instructions": [
+        "Resolve listed facts and sources or report OPEN; do not present example/NRA/control outputs as actual household forecast."
+      ]
+    }
+  ]
+}

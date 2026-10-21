@@ -1,0 +1,221 @@
+{
+  "kind": "Independent TOML/ZIP/XML/CSV format and arithmetic inspection, not app execution",
+  "checked_at": "2026-10-18T19:36:12.719643+00:00",
+  "python_inspection_only": "3.12.15+meta",
+  "checks": [
+    {
+      "name": "TOML syntax/known leaf types: control-depletion.toml",
+      "status": "PASS",
+      "detail": {
+        "unknown": [],
+        "bad_types": []
+      }
+    },
+    {
+      "name": "TOML/JSON authoring round trip: control-depletion.toml",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "TOML syntax/known leaf types: control-fx.toml",
+      "status": "PASS",
+      "detail": {
+        "unknown": [],
+        "bad_types": []
+      }
+    },
+    {
+      "name": "TOML/JSON authoring round trip: control-fx.toml",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "TOML syntax/known leaf types: control-pv.toml",
+      "status": "PASS",
+      "detail": {
+        "unknown": [],
+        "bad_types": []
+      }
+    },
+    {
+      "name": "TOML/JSON authoring round trip: control-pv.toml",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "TOML syntax/known leaf types: engine-final-tax.toml",
+      "status": "PASS",
+      "detail": {
+        "unknown": [],
+        "bad_types": []
+      }
+    },
+    {
+      "name": "TOML/JSON authoring round trip: engine-final-tax.toml",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "TOML syntax/known leaf types: engine-firpta.toml",
+      "status": "PASS",
+      "detail": {
+        "unknown": [],
+        "bad_types": []
+      }
+    },
+    {
+      "name": "TOML/JSON authoring round trip: engine-firpta.toml",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "TOML syntax/known leaf types: engine-prior-tax.toml",
+      "status": "PASS",
+      "detail": {
+        "unknown": [],
+        "bad_types": []
+      }
+    },
+    {
+      "name": "TOML/JSON authoring round trip: engine-prior-tax.toml",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "TOML syntax/known leaf types: spec-example.toml",
+      "status": "PASS",
+      "detail": {
+        "unknown": [],
+        "bad_types": []
+      }
+    },
+    {
+      "name": "Independent standard ZIP reader/CRC",
+      "status": "PASS",
+      "detail": {
+        "parts": 7
+      }
+    },
+    {
+      "name": "All workbook XML parses",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "Workbook sheet1: exactly50 payment rows",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "Workbook sheet1: PV formula range and cash timing",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "Workbook sheet1:50-row cached arithmetic independently reconciles",
+      "status": "PASS",
+      "detail": {
+        "max_cached_error_usd": "6.053603646401379350190915169263262552005183263454670778080035391E-10",
+        "rational_pv": "2390572.9770677145932828554267970000473442304988766842740735298307562189676408499",
+        "final_exact_balance": "0"
+      }
+    },
+    {
+      "name": "CSV control1: independent50-row rational PV",
+      "status": "PASS",
+      "detail": {
+        "sum_pv": "2390572.9770677145932828554267970000473442304990",
+        "reference_pv": "2390572.9770677145932828554267970000473442304988766842740735298307562189676408499"
+      }
+    },
+    {
+      "name": "Workbook sheet2: exactly50 payment rows",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "Workbook sheet2: PV formula range and cash timing",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "Workbook sheet2:50-row cached arithmetic independently reconciles",
+      "status": "PASS",
+      "detail": {
+        "max_cached_error_usd": "1.0908548705007003610240436301432727737716922818102596059127891667E-9",
+        "rational_pv": "3152520.3411145046905392977802592090780936043212755608347596589860795327141583091",
+        "final_exact_balance": "0"
+      }
+    },
+    {
+      "name": "CSV control2: independent50-row rational PV",
+      "status": "PASS",
+      "detail": {
+        "sum_pv": "3152520.3411145046905392977802592090780936043211",
+        "reference_pv": "3152520.3411145046905392977802592090780936043212755608347596589860795327141583091"
+      }
+    },
+    {
+      "name": "All local Markdown links resolve",
+      "status": "PASS",
+      "detail": {
+        "broken": []
+      }
+    },
+    {
+      "name": "Node syntax: build-workbook.mjs",
+      "status": "PASS",
+      "detail": {
+        "returncode": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "Node syntax: catalog.mjs",
+      "status": "PASS",
+      "detail": {
+        "returncode": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "Node syntax: check-artifacts.mjs",
+      "status": "PASS",
+      "detail": {
+        "returncode": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "Node syntax: inventory.mjs",
+      "status": "PASS",
+      "detail": {
+        "returncode": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "Node syntax: prepare-artifacts.mjs",
+      "status": "PASS",
+      "detail": {
+        "returncode": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "Node syntax: recalculate.mjs",
+      "status": "PASS",
+      "detail": {
+        "returncode": 0,
+        "output": ""
+      }
+    }
+  ],
+  "counts": {
+    "pass": 30,
+    "fail": 0
+  },
+  "typescript_compile": "NOT RUN: tsc is not installed; standalone declarations prepared, toolchain gate is M01",
+  "spreadsheet_application_open_recalculation": "NOT RUN",
+  "human_acceptance": "NOT RUN"
+}

@@ -1,0 +1,109 @@
+{
+  "status": "PASS",
+  "source_sha256": "28b8110916a15a4dcc11c87c6422510704608ddedcdfa67a1298abdc22e49c69",
+  "scope": "Actual calendar return tape through the year engine; 40% stocks / 60% 10-year Treasuries, annually rebalanced; after-tax account, zero taxes/FX/China inflation, $0 or $10k beginning-year spend",
+  "evidence": [
+    {
+      "scope": "without_spending",
+      "source_years": [
+        2000,
+        2001,
+        2002
+      ],
+      "expected": {
+        "years": [
+          {
+            "source_year": 2000,
+            "opening_usd": 100000,
+            "withdrawal_usd": 0,
+            "return": 0.06380432693138782,
+            "ending_usd": 106380.43269313879
+          },
+          {
+            "source_year": 2001,
+            "opening_usd": 106380.43269313879,
+            "withdrawal_usd": 0,
+            "return": -0.01396594943250521,
+            "ending_usd": 104894.72894953839
+          },
+          {
+            "source_year": 2002,
+            "opening_usd": 104894.72894953839,
+            "withdrawal_usd": 0,
+            "return": 0.002834210437004908,
+            "ending_usd": 105192.02268511397
+          }
+        ],
+        "ending_usd": 105192.02268511397
+      },
+      "actual": [
+        {
+          "opening": 100000,
+          "return": 0.06380432693138782,
+          "ending": 106380.43269313878
+        },
+        {
+          "opening": 106380.43269313878,
+          "return": -0.01396594943250522,
+          "ending": 104894.72894953837
+        },
+        {
+          "opening": 104894.72894953837,
+          "return": 0.0028342104370048865,
+          "ending": 105192.02268511395
+        }
+      ]
+    },
+    {
+      "scope": "with_spending",
+      "source_years": [
+        2000,
+        2001,
+        2002
+      ],
+      "expected": {
+        "years": [
+          {
+            "source_year": 2000,
+            "opening_usd": 100000,
+            "withdrawal_usd": 10000,
+            "return": 0.06380432693138782,
+            "ending_usd": 95742.38942382492
+          },
+          {
+            "source_year": 2001,
+            "opening_usd": 95742.38942382492,
+            "withdrawal_usd": 10000,
+            "return": -0.01396594943250521,
+            "ending_usd": 84544.91554890962
+          },
+          {
+            "source_year": 2002,
+            "opening_usd": 84544.91554890962,
+            "withdrawal_usd": 10000,
+            "return": 0.002834210437004908,
+            "ending_usd": 74756.19152658399
+          }
+        ],
+        "ending_usd": 74756.19152658399
+      },
+      "actual": [
+        {
+          "opening": 100000,
+          "return": 0.06380432693138781,
+          "ending": 95742.3894238249
+        },
+        {
+          "opening": 95742.3894238249,
+          "return": -0.01396594943250522,
+          "ending": 84544.91554890959
+        },
+        {
+          "opening": 84544.91554890959,
+          "return": 0.0028342104370049043,
+          "ending": 74756.19152658395
+        }
+      ]
+    }
+  ]
+}
