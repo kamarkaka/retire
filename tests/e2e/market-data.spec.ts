@@ -61,8 +61,9 @@ test('M03 M11: the app loads server market data with a parameter-free public-dat
   expect(after.value.market!.fx_spot).toBe(data.latest.usd_cny.value);
   await complete(page, 2);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await expect(page.getByTestId('ledger-ready')).toContainText('Path 49');
-  expect(await page.getByTestId('path-stop').count()).toBe(1);
+  await expect(
+    page.getByRole('table', { name: 'Year ledger', exact: true }),
+  ).toBeVisible();
   const storage = await page.evaluate(() => ({
     local: Object.keys(localStorage).sort(),
     session: sessionStorage.length,
@@ -100,6 +101,10 @@ test('M03 M11: completed runs pin their market data; new server data affects onl
   expect(oldManifest.scientific.reference_hashes.market_data).toBe(
     references.market_data!.sha256,
   );
+  await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
+  await expect(
+    page.getByRole('table', { name: 'Year ledger', exact: true }),
+  ).toBeVisible();
   const oldLedger = (
     await saveDownload(page, 'Download ledger CSV', 'before-refresh.csv')
   ).text;
@@ -236,11 +241,11 @@ test('M03: the refresh gateway accepts only a parameter-free public-data GET', a
   const post = await request.post(`${baseURL}/api/market-data`, {
     data: { seed: 1 },
   });
-  expect(post.status()).toBe(404);
+  expect(post.status()).toBe(405);
   const params = await request.get(`${baseURL}/api/market-data?seed=1`);
-  expect(params.status()).toBe(404);
+  expect(params.status()).toBe(400);
   const put = await request.put(`${baseURL}/api/market-data`);
-  expect(put.status()).toBe(404);
+  expect(put.status()).toBe(405);
   const port = new URL(baseURL!).port || '4173';
   for (const base of [
     `http://127.0.0.1:${port}/`,
@@ -307,18 +312,15 @@ test('M08 M09 M10: native worker stops at zero net assets and ledger/CSV contain
     'younger-max-age-or-nonpositive-net-worth',
   );
   expect(manifest.aggregate.nominal_bands).toEqual([
-    250000, 250000, 250000, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    272180, 272180, 272180, 23768.087890625, 23768.087890625, 23768.087890625,
+    0, 0, 0, 0, 0, 0,
   ]);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await expect(page.getByTestId('ledger-ready')).toContainText(
-    '2 active years',
-  );
-  await expect(page.getByTestId('path-stop')).toContainText('Stopped in 2027');
   await expect(
     page
       .getByRole('table', { name: 'Year ledger', exact: true })
       .locator('tbody tr'),
-  ).toHaveCount(2);
+  ).toHaveCount(3);
   const csv = (
     await saveDownload(
       page,
@@ -328,21 +330,13 @@ test('M08 M09 M10: native worker stops at zero net assets and ledger/CSV contain
   ).text;
   expect(
     csv.split('\n').filter((row) => row && !row.startsWith('#')),
-  ).toHaveLength(3);
-  expect(csv).toContain('# active_years=2');
-  d.accounts![1].balance = 0;
+  ).toHaveLength(4);
+  expect(csv).toContain('# active_years=3');
+  expect(csv).toContain('"year":2028');
+  d.accounts![0].balance = 0;
   await uploadDraft(page, d);
   await complete(page, 1);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await expect(page.getByTestId('ledger-ready')).toContainText(
-    '0 active years',
-  );
-  await expect(page.getByTestId('path-stop')).toContainText(
-    'before the first year',
-  );
-  await expect(
-    page.getByRole('button', { name: 'Last active year', exact: true }),
-  ).toBeDisabled();
   await expect(
     page
       .getByRole('table', { name: 'Year ledger', exact: true })
@@ -361,9 +355,9 @@ test('M08 M09 M10: native worker stops at zero net assets and ledger/CSV contain
   await record(`${info.project.name}-net-asset-stop.json`, {
     status: 'PASS',
     method:
-      'Actual production worker; zero-interest Cash CNY runs out after two fully funded years; zero initial net assets have zero annual rows with no Social Security benefits',
+      'Actual production worker; brokerage T-bill cash depletes in the third year; zero initial net assets have zero annual rows with no Social Security benefits',
     planned_horizon: 4,
-    first_active_years: 2,
+    first_active_years: 3,
     zero_start_active_years: 0,
     csv_only_simulated_years: true,
     whole_cohort_zero_padding: true,

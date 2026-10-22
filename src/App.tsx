@@ -414,7 +414,16 @@ export default function App() {
                 </div>
               </div>
             )}
-            <section className="run-bar">
+            <section
+              className="run-bar"
+              style={
+                phase === 'running' && activeCount > 0
+                  ? {
+                      background: `linear-gradient(to right, #c9dfcd ${(100 * progress) / activeCount}%, #edf2e9 ${(100 * progress) / activeCount}%)`,
+                    }
+                  : undefined
+              }
+            >
               <div>
                 <strong>
                   {issues.length
@@ -451,10 +460,7 @@ export default function App() {
             </section>
             <div className="run-status" role="status" data-testid="run-status">
               {phase === 'running'
-                ? t('run.simulating', {
-                    done: progress.toLocaleString(intlLocale),
-                    total: activeCount.toLocaleString(intlLocale),
-                  })
+                ? ''
                 : phase === 'summarizing'
                   ? t('run.summarizing')
                   : phase === 'completed'
@@ -463,6 +469,9 @@ export default function App() {
                           completed?.request.manifest.n_paths.toLocaleString(
                             intlLocale,
                           ) ?? '',
+                        seconds: (
+                          (completed?.execution.elapsed_ms ?? 0) / 1000
+                        ).toFixed(2),
                         hash:
                           completed?.request.manifest.scenario_sha256.slice(
                             0,

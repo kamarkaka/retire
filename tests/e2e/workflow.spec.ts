@@ -79,9 +79,11 @@ test('M03 M04 M10: production worker and ledger use observed NYU/FRED returns', 
     }),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await expect(page.getByTestId('ledger-ready')).toContainText(
-    '1 active years',
-  );
+  await expect(
+    page
+      .getByRole('table', { name: 'Year ledger', exact: true })
+      .locator('tbody tr'),
+  ).toHaveCount(1);
   // Frozen M00 seed vector starts the bootstrap at row floor((2406593643+.5)/2^32*98)=54, year 1982.
   const receipt = JSON.parse(
     readFileSync(
@@ -237,14 +239,14 @@ test('M02 M09 M10: sample builder → worker run → ledger/export → reload/up
   if (parsed.ok)
     expect(hashObject(parsed.value)).toBe(a.scientific.scenario_sha256);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await page.getByLabel('Replay path ID').fill('17');
-  await expect(page.getByTestId('ledger-ready')).toContainText('Path 17');
+  await page.getByRole('button', { name: 'Median', exact: true }).click();
+  const medianId = a.aggregate.representative_paths.median;
   const csv = await saveDownload(
     page,
     'Download ledger CSV',
-    `${info.project.name}-sample-path17.csv`,
+    `${info.project.name}-sample-median.csv`,
   );
-  expect(csv.text).toContain('# path_id=17');
+  expect(csv.text).toContain(`# path_id=${medianId}`);
   expect(csv.text).toContain('net_worth_cny_real');
   await page.reload();
   await expect(
@@ -272,10 +274,12 @@ test('M02 M09 M10: sample builder → worker run → ledger/export → reload/up
   ).toBe(true);
   expect(
     await page.evaluate(() => ({
-      local: localStorage.length,
+      keys: Array.from({ length: localStorage.length }, (_, i) =>
+        localStorage.key(i),
+      ),
       session: sessionStorage.length,
     })),
-  ).toEqual({ local: 0, session: 0 });
+  ).toEqual({ keys: ['retire.language'], session: 0 });
   await page.screenshot({
     path: resolve(`verification/records/e2e/${info.project.name}-results.png`),
     fullPage: true,
@@ -300,19 +304,27 @@ test('M08: a 50-year planning config uses historical returns and integer money d
   );
   expect(manifest.scientific.horizon).toBe(50);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await expect(page.getByTestId('ledger-ready')).toContainText(
-    '50 active years',
-  );
+  const ledgerTable = page.getByRole('table', {
+    name: 'Year ledger',
+    exact: true,
+  });
+  await expect(ledgerTable.locator('tbody tr')).toHaveCount(50);
   for (const label of [
+    'Age B',
     'Starting net worth USD',
     'Spend CNY (excluding medical)',
-    'Medical CNY',
+    'Medical USD',
     'Overall annual investment return',
+    'US income tax A',
     'Ending net worth USD (today’s money)',
   ])
     await expect(
       page.getByRole('columnheader', { name: label, exact: true }),
     ).toBeVisible();
+  for (const label of ['Medical CNY', 'FX', 'China income tax A'])
+    await expect(
+      page.getByRole('columnheader', { name: label, exact: true }),
+    ).toHaveCount(0);
   const firstRow = page
     .getByRole('table', { name: 'Year ledger', exact: true })
     .locator('tbody tr')
@@ -320,8 +332,8 @@ test('M08: a 50-year planning config uses historical returns and integer money d
   await expect(
     firstRow.locator('[data-field=spend_excluding_medical_cny]'),
   ).toHaveText('212,000');
-  await expect(firstRow.locator('[data-field=medical_total_cny]')).toHaveText(
-    '38,000',
+  await expect(firstRow.locator('[data-field=medical_total_usd]')).toHaveText(
+    '5,680',
   );
   await expect(
     firstRow.locator('[data-field=annual_investment_return]'),
@@ -330,10 +342,10 @@ test('M08: a 50-year planning config uses historical returns and integer money d
     firstRow.locator('[data-field=starting_net_worth_usd]'),
   ).toHaveText('2,390,573');
   await expect(firstRow.locator('[data-field=age_B]')).toHaveText('40');
-  await expect(firstRow.locator('[data-field=fx]')).toHaveText('6.69');
-  await page.getByRole('button', { name: 'Last active year' }).click();
+  await expect(firstRow.locator('[data-field=fx]')).toHaveCount(0);
+  await ledgerTable.locator('tbody tr').last().click();
   await expect(page.getByTestId('year-provenance')).toContainText(
-    '"after_tax_assets_cny"',
+    '"medical_detail"',
   );
   const csv = (
       await saveDownload(
@@ -394,9 +406,7 @@ test('M09: one-person US ledger shows USD columns and hides second-person and Ch
     name: 'Year ledger',
     exact: true,
   });
-  await expect(page.getByTestId('ledger-ready')).toContainText(
-    '2 active years',
-  );
+  await expect(table.locator('tbody tr')).toHaveCount(2);
   await expect(
     page.getByRole('columnheader', { name: 'Medical USD', exact: true }),
   ).toBeVisible();
@@ -450,7 +460,7 @@ test('M02 M06: invalid upload preserves draft and actual missing inputs block an
     'Resolve income residency',
   );
   await expect(page.locator('.validation')).toContainText(
-    'Brokerage basis is required',
+    'properties[0].cost_basis',
   );
   await expect(page.getByLabel('simulation.kind', { exact: true })).toHaveCount(
     0,
@@ -487,14 +497,14 @@ test('M06 M08: shipped example and a property-sale/securities-loss case complete
   });
   await complete(page, 16);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await page.getByLabel('Replay path ID').fill('0');
-  await expect(page.getByTestId('ledger-ready')).toContainText('Path 0');
+  await page.getByRole('button', { name: 'Median', exact: true }).click();
+  await expect(page.getByTestId('year-provenance')).toContainText('"report"');
   const first = JSON.parse(
     (await page.getByTestId('year-provenance').textContent())!,
   );
-  expect(first.income.A.cap_gain).toBeCloseTo(4591.749007397338, 6);
+  expect(first.income.A.cap_gain).toBeCloseTo(7573.6949043351515, 6);
   expect(first.income.A.ltcg_property).toBe(198000);
-  expect(first.tax_detail.A.lt_gain).toBeCloseTo(202591.74900739733, 6);
+  expect(first.tax_detail.A.lt_gain).toBeCloseTo(205573.69490433516, 6);
   expect(first.tax_detail.A.carry).toBe(0);
   const csv = await saveDownload(
     page,
@@ -502,6 +512,7 @@ test('M06 M08: shipped example and a property-sale/securities-loss case complete
     `${info.project.name}-property-gain-regression.csv`,
   );
   expect(csv.text).toContain('tax_us_A');
+  expect(csv.text).toContain('# path_id=12');
   await record(`${info.project.name}-property-gain-regression.json`, {
     status: 'PASS',
     shipped_example_paths: 200,
@@ -669,31 +680,22 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
   }
   await complete(page, 16);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await page.getByLabel('Replay path ID').fill('0');
-  await expect(page.getByTestId('ledger-ready')).toContainText(
-    '4 active years',
-  );
-  await page.getByLabel('All 42 columns', { exact: true }).check();
   const rows = page
     .getByRole('table', { name: 'Year ledger', exact: true })
     .locator('tbody tr');
   await expect(rows).toHaveCount(4);
   for (let t = 0; t < 4; t++) {
     for (const key of [
-      'starting_liquid_usd',
-      'starting_net_worth_cny',
+      'starting_net_worth_usd',
       'spend_excluding_medical_cny',
       'medical_total_cny',
       'tax_us_A',
       'tax_cn_A',
-      'liquid_usd',
-      'net_worth_cny_real',
+      'net_worth_usd_real',
     ])
       await expect(rows.nth(t).locator(`[data-field=${key}]`)).toHaveText(
         /^-?\d{1,3}(,\d{3})*$/,
       );
-    for (const key of ['alive_A', 'alive_B'])
-      await expect(rows.nth(t).locator(`[data-field=${key}]`)).toHaveText('1');
     await expect(rows.nth(t).locator('[data-field=estate_tax]')).toHaveCount(0);
     await expect(rows.nth(t).locator('[data-field=ss_usd]')).toHaveCount(0);
   }
@@ -715,6 +717,8 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
     else expect(amount).toBeGreaterThan(0);
     const value = (field: keyof typeof LI) =>
       provenance.replay.ledger[t * LEDGER_FIELDS.length + LI[field]];
+    expect(value('alive_A')).toBe(1);
+    expect(value('alive_B')).toBe(1);
     expect(value('additional_consumption_cny')).toBeCloseTo(
       detail.shock_cny + amount,
       6,
@@ -917,7 +921,9 @@ test('M09 M11: cancel/discard, restart and fresh offline computation with local 
   await page.getByLabel('simulation.seed', { exact: true }).fill('44');
   await complete(page, 32);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await expect(page.getByTestId('ledger-ready')).toBeVisible();
+  await expect(
+    page.getByRole('table', { name: 'Year ledger', exact: true }),
+  ).toBeVisible();
   await page.getByLabel('Upload configuration file').setInputFiles(config.path);
   await page.getByRole('button', { name: 'Simulation', exact: true }).click();
   await page.getByLabel('simulation.seed', { exact: true }).fill('45');

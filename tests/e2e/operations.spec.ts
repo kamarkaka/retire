@@ -14,22 +14,29 @@ import { FI, FLOAT_FIELDS } from '../../src/model/layout';
 test('M09: one/four workers, out-of-order chunks, 1000-path prefix and exact replay', async ({
   page,
 }, info) => {
-  const replayHashes = async () => {
+  const replayHashes = async (representative: {
+    worst: number;
+    p10: number;
+    median: number;
+  }) => {
     const hashes: Record<number, string> = {};
     await page
       .getByRole('button', { name: 'Year ledger', exact: true })
       .click();
-    for (const id of [0, 17, 999]) {
-      await page.getByLabel('Replay path ID').fill(String(id));
-      await expect(page.getByTestId('ledger-ready')).toContainText(
-        `Path ${id}`,
-      );
+    for (const [name, id] of [
+      ['Worst', representative.worst],
+      ['P10', representative.p10],
+      ['Median', representative.median],
+    ] as const) {
+      await page.getByRole('button', { name, exact: true }).click();
+      // Wait for this specific path's replay: length-based waits can catch a
+      // stale in-flight replay from the tab remount under load.
       await expect
         .poll(() =>
           page.evaluate(
-            (id) =>
+            (wanted) =>
               window.__workerEvidence.replays
-                .filter((r) => r.path_id === id)
+                .filter((r) => r.path_id === wanted)
                 .at(-1)?.hash,
             id,
           ),
@@ -67,7 +74,9 @@ test('M09: one/four workers, out-of-order chunks, 1000-path prefix and exact rep
       ).text,
     );
   expect(oneManifest.execution.worker_count).toBe(1);
-  const firstReplay = await replayHashes();
+  const firstReplay = await replayHashes(
+    oneManifest.aggregate.representative_paths,
+  );
   await page.evaluate(() =>
     Object.defineProperty(navigator, 'hardwareConcurrency', {
       configurable: true,
@@ -97,7 +106,9 @@ test('M09: one/four workers, out-of-order chunks, 1000-path prefix and exact rep
   expect(four.delivered_chunks.slice(one.delivered_chunks.length)[0]).not.toBe(
     0,
   );
-  expect(await replayHashes()).toEqual(firstReplay);
+  expect(
+    await replayHashes(fourManifest.aggregate.representative_paths),
+  ).toEqual(firstReplay);
   await page
     .getByRole('button', { name: 'Configuration', exact: true })
     .click();
@@ -285,14 +296,16 @@ test('M10: immutable current/run exports, matched-path deltas and pinned replay'
   await page
     .getByRole('button', { name: 'Show baseline ledger', exact: true })
     .click();
-  await expect(page.getByTestId('ledger-ready')).toBeVisible();
-  await page.getByLabel('Replay path ID').fill('17');
-  await expect(page.getByTestId('ledger-ready')).toContainText('Path 17');
+  await expect(
+    page.getByRole('table', { name: 'Year ledger', exact: true }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Median', exact: true }).click();
+  await expect(page.getByTestId('year-provenance')).toContainText('"report"');
   const csv = (
     await saveDownload(
       page,
       'Download ledger CSV',
-      `${info.project.name}-baseline-path17.csv`,
+      `${info.project.name}-baseline-median.csv`,
     )
   ).text;
   expect(csv).toContain('# seed=42');
@@ -347,7 +360,7 @@ test('M09: later invalid path fails the whole job and five cancel/restarts relea
     await page.evaluate(() => window.__releaseHeldWorkerChunks()),
   ).toBeGreaterThan(0);
   await expect(page.getByTestId('run-status')).toContainText(
-    'Completed 32 paths.',
+    'Completed 32 paths in ',
     { timeout: 60000 },
   );
   await expect

@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "method": "Seven-question modal holds the start page until finished, then auto-runs the simulation and lands on results; exiting early requires confirming the discard",
+  "steps": 7,
+  "runnable": true
+}

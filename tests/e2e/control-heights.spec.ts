@@ -62,20 +62,17 @@ test('M02 M03 M10: buttons and inputs sharing a row render at one height', async
     ],
   );
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await expect(page.getByTestId('ledger-ready')).toContainText('active years');
   const ledger = page.locator('.ledger-panel');
+  await expect(
+    ledger.getByRole('table', { name: 'Year ledger', exact: true }),
+  ).toBeVisible();
   measured.ledger_path_row = await expectSameRow(page, 'ledger path row', [
     ledger.getByRole('button', { name: 'Worst', exact: true }),
-    ledger.getByRole('button', { name: '10th path', exact: true }),
+    ledger.getByRole('button', { name: 'P10', exact: true }),
     ledger.getByRole('button', { name: 'Median', exact: true }),
-    ledger.getByLabel('Replay path ID', { exact: true }),
   ]);
-  const ledgerToolbar = page.locator('.ledger-toolbar');
+  const ledgerToolbar = ledger.locator('.section-title .toolbar');
   measured.ledger_toolbar = await expectSameRow(page, 'ledger toolbar', [
-    ledgerToolbar.getByRole('button', {
-      name: 'Last active year',
-      exact: true,
-    }),
     ledgerToolbar.getByRole('button', {
       name: 'Download ledger CSV',
       exact: true,

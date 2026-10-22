@@ -28,7 +28,9 @@ test('M01 M11: production subdirectory uses static assets and a locally uploaded
   );
   expect(manifest.scientific.n_paths).toBe(200);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await expect(page.getByTestId('ledger-ready')).toBeVisible();
+  await expect(
+    page.getByRole('table', { name: 'Year ledger', exact: true }),
+  ).toBeVisible();
   expect(
     requests.every(
       (r) =>
@@ -96,7 +98,7 @@ test('M01: development-only literal oracle harness and detached worker probe', a
     await expect(
       page.getByRole('heading', { name: 'Development verification' }),
     ).toBeVisible();
-    await page.locator('select').selectOption('US-7');
+    await page.locator('select').selectOption('US-3');
     await page.getByRole('button', { name: 'Run case', exact: true }).click();
     await expect(page.locator('pre').nth(1)).toContainText('"status": "PASS"');
     await page
@@ -106,7 +108,7 @@ test('M01: development-only literal oracle harness and detached worker probe', a
     await expect(page.locator('pre').last()).toContainText('"values":[1,2,3]');
     await record(`${info.project.name}-dev-harness.json`, {
       status: 'PASS',
-      case: 'US-7',
+      case: 'US-3',
       actual: await page.locator('pre').nth(1).textContent(),
       worker_probe: await page.locator('pre').last().textContent(),
     });

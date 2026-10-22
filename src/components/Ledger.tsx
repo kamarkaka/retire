@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { startReplay, type CompletedRun } from '../workers/pool';
 import type { DetailedReplay } from '../model/engine';
-import { LEDGER_CSV_FIELDS, ledgerValue } from '../model/ledger-report';
+import { ledgerValue } from '../model/ledger-report';
 import { downloadLocal, ledgerCsv, plainData } from '../config/downloads';
 import { number } from './format';
 import { pretty } from './Builder';
@@ -71,11 +71,12 @@ export default function Ledger({ run }: { run: CompletedRun }) {
     [replay, setReplay] = useState<DetailedReplay>(),
     [error, setError] = useState(''),
     [selected, setSelected] = useState(0),
-    [all, setAll] = useState(false),
-    [page, setPage] = useState(0);
+    [loading, setLoading] = useState(true);
   useEffect(() => {
     let active = true;
-    setReplay(undefined);
+    // Keep the previous replay on screen while the new path loads so the
+    // toolbar and table do not unmount and flicker on every switch.
+    setLoading(true);
     setError('');
     let job: ReturnType<typeof startReplay> | undefined;
     try {
@@ -85,15 +86,21 @@ export default function Ledger({ run }: { run: CompletedRun }) {
           if (active) {
             setReplay(r);
             setSelected(0);
-            setPage(0);
+            setLoading(false);
           }
         },
         (e) => {
-          if (active) setError(e.message);
+          if (active) {
+            setReplay(undefined);
+            setError(e.message);
+            setLoading(false);
+          }
         },
       );
     } catch (e) {
+      setReplay(undefined);
       setError(e instanceof Error ? e.message : String(e));
+      setLoading(false);
     }
     return () => {
       active = false;
@@ -102,9 +109,40 @@ export default function Ledger({ run }: { run: CompletedRun }) {
   }, [run, path]);
   const usDomicile = run.request.scenario.people.domicile === 'US',
     twoPeople = run.request.scenario.people.B !== undefined;
-  const fields = all
-      ? LEDGER_CSV_FIELDS
-      : selectedFieldsFor(usDomicile, twoPeople),
+  const segKeys = ['worst', 'p10', 'median'] as const,
+    segIndex = segKeys.findIndex(
+      (k) => run.aggregate.representative_paths[k] === path,
+    );
+  const segGroup = useRef<HTMLDivElement>(null),
+    [segThumb, setSegThumb] = useState({ left: 0, width: 0 }),
+    [segWidth, setSegWidth] = useState(0);
+  // Size every button to the widest label so none overflow, then align the
+  // sliding thumb to the active button. Re-measure on every render and on
+  // any resize, since layout can shift without a re-render.
+  useLayoutEffect(() => {
+    const group = segGroup.current;
+    if (!group) return;
+    const measure = () => {
+      const buttons = [...group.querySelectorAll('button')],
+        widest = Math.max(0, ...buttons.map((b) => b.scrollWidth));
+      setSegWidth((prev) => (prev === widest || widest === 0 ? prev : widest));
+      const active = group.querySelector('button.active');
+      if (!active) return;
+      const g = group.getBoundingClientRect(),
+        b = active.getBoundingClientRect();
+      setSegThumb((prev) =>
+        prev.left === b.left - g.left && prev.width === b.width
+          ? prev
+          : { left: b.left - g.left, width: b.width },
+      );
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(group);
+    for (const button of group.querySelectorAll('button')) ro.observe(button);
+    return () => ro.disconnect();
+  });
+  const fields = selectedFieldsFor(usDomicile, twoPeople),
     detail = replay?.years[selected],
     rows = replay?.years.length ?? 0;
   // Derived USD columns divide the CNY report by the year's opening FX.
@@ -121,77 +159,51 @@ export default function Ledger({ run }: { run: CompletedRun }) {
     return ledgerValue(replay, ti, f);
   };
   return (
-    <section className="panel ledger-panel">
+    <section className="panel ledger-panel" aria-busy={loading}>
       <div className="section-title">
         <div>
           <p className="eyebrow">{t('ledger.eyebrow')}</p>
           <h2>{t('ledger.title')}</h2>
         </div>
         <div className="toolbar">
-          {(['worst', 'p10', 'median'] as const).map((k) => (
-            <button
-              key={k}
-              type="button"
-              className="small"
-              onClick={() => setPath(run.aggregate.representative_paths[k])}
-            >
-              {k === 'p10' ? t('ledger.p10') : labelFor(lang, k, pretty(k))}
-            </button>
-          ))}
-          <label className="inline-label">
-            {t('ledger.pathId')}
-            <input
-              type="number"
-              aria-label={t('ledger.pathIdAria')}
-              min={0}
-              max={run.request.manifest.n_paths - 1}
-              value={path}
-              onChange={(e) => {
-                const id = Number(e.target.value);
-                if (
-                  Number.isSafeInteger(id) &&
-                  id >= 0 &&
-                  id < run.request.manifest.n_paths
-                )
-                  setPath(id);
-              }}
-            />
-          </label>
-        </div>
-      </div>
-      {error && <p role="alert">{error}</p>}
-      {!replay && !error ? (
-        <p role="status">{t('ledger.replaying', { path })}</p>
-      ) : (
-        replay && (
-          <>
-            <div className="toolbar ledger-toolbar">
-              <span data-testid="ledger-ready">
-                {t('ledger.summary', {
-                  path,
-                  years: replay.years.length,
-                })}
-              </span>
-              <label className="inline-label">
-                <input
-                  type="checkbox"
-                  checked={all}
-                  onChange={(e) => setAll(e.target.checked)}
-                />
-                {t('ledger.allColumns', { count: LEDGER_CSV_FIELDS.length })}
-              </label>
+          <div
+            className="seg-group"
+            role="group"
+            aria-label={t('ledger.pathGroup')}
+            ref={segGroup}
+          >
+            {segKeys.map((k, i) => (
               <button
-                className="secondary"
-                disabled={rows === 0}
-                onClick={() => {
-                  setSelected(replay.years.length - 1);
-                  setPage(Math.floor((replay.years.length - 1) / 100));
-                }}
+                key={k}
+                type="button"
+                className={i === segIndex ? 'active' : ''}
+                aria-pressed={i === segIndex}
+                disabled={loading}
+                style={segWidth > 0 ? { width: segWidth } : undefined}
+                onClick={() => setPath(run.aggregate.representative_paths[k])}
               >
-                {t('ledger.lastYear')}
+                {k === 'p10' ? t('ledger.p10') : labelFor(lang, k, pretty(k))}
               </button>
+            ))}
+            <span
+              className="seg-thumb"
+              aria-hidden="true"
+              style={
+                segIndex >= 0 && segThumb.width > 0
+                  ? {
+                      opacity: 1,
+                      width: segThumb.width,
+                      left: segThumb.left,
+                    }
+                  : { opacity: 0 }
+              }
+            />
+          </div>
+          {replay && (
+            <>
               <button
                 className="secondary"
+                disabled={loading}
                 onClick={() =>
                   downloadLocal(
                     `retire-path-${path}.csv`,
@@ -204,6 +216,7 @@ export default function Ledger({ run }: { run: CompletedRun }) {
               </button>
               <button
                 className="secondary"
+                disabled={loading}
                 onClick={() =>
                   downloadLocal(
                     `retire-path-${path}-provenance.json`,
@@ -221,14 +234,16 @@ export default function Ledger({ run }: { run: CompletedRun }) {
               >
                 {t('ledger.downloadProv')}
               </button>
-            </div>
-            <p className="snapshot-note" data-testid="path-stop">
-              {replay.stop.reason === 'max_age'
-                ? t('ledger.stopMaxAge', { year: replay.stop.year })
-                : replay.stop.year_index < 0
-                  ? t('ledger.stopBefore')
-                  : t('ledger.stopDepleted', { year: replay.stop.year })}
-            </p>
+            </>
+          )}
+        </div>
+      </div>
+      {error && <p role="alert">{error}</p>}
+      {!replay && !error ? (
+        <p role="status">{t('ledger.replaying', { path })}</p>
+      ) : (
+        replay && (
+          <>
             <p className="ledger-explanation">{t('ledger.explainer')}</p>
             <div className="table-scroll">
               <table aria-label={t('ledger.table')}>
@@ -242,47 +257,34 @@ export default function Ledger({ run }: { run: CompletedRun }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {Array.from(
-                    { length: Math.min(100, rows - page * 100) },
-                    (_, i) => i + page * 100,
-                  ).map((ti) => (
+                  {Array.from({ length: rows }, (_, ti) => ti).map((ti) => (
                     <tr
                       key={ti}
                       className={selected === ti ? 'selected-row' : ''}
                       onClick={() => setSelected(ti)}
                     >
-                      {fields.map((f) => (
-                        <td key={f} data-field={f}>
-                          {displayValue(f, cellValue(ti, f), intlLocale)}
-                        </td>
-                      ))}
+                      {fields.map((f) => {
+                        const shocked =
+                          (f === 'medical_total_cny' ||
+                            f === 'medical_total_usd') &&
+                          ledgerValue(replay, ti, 'medical_shock_cny') > 0;
+                        return (
+                          <td key={f} data-field={f}>
+                            {shocked && (
+                              <span
+                                className="shock-dot"
+                                title={t('ledger.shockDot')}
+                                aria-label={t('ledger.shockDot')}
+                              />
+                            )}
+                            {displayValue(f, cellValue(ti, f), intlLocale)}
+                          </td>
+                        );
+                      })}
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-            <div className="toolbar">
-              <button
-                className="small"
-                disabled={page === 0}
-                onClick={() => setPage(page - 1)}
-              >
-                {t('ledger.prevRows')}
-              </button>
-              <span>
-                {t('ledger.rowsOf', {
-                  a: rows === 0 ? 0 : page * 100 + 1,
-                  b: Math.min(rows, (page + 1) * 100),
-                  c: rows,
-                })}
-              </span>
-              <button
-                className="small"
-                disabled={(page + 1) * 100 >= rows}
-                onClick={() => setPage(page + 1)}
-              >
-                {t('ledger.nextRows')}
-              </button>
             </div>
             <div className="year-detail">
               <h3>

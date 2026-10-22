@@ -1,0 +1,1051 @@
+{
+  "manifest": {
+    "manifest_version": "retire-manifest-v1",
+    "canonical_version": "retire-canonical-v1",
+    "schema_version": 1,
+    "model_version": "retire-model-v5.1",
+    "rng_version": "retire-rng-v1",
+    "draw_version": "retire-draws-v3",
+    "longevity_policy": "both-alive-to-younger-max-age",
+    "cny_cash_policy": "no-interest",
+    "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
+    "result_layout_version": "retire-results-v1",
+    "ledger_report_version": "retire-ledger-report-v1",
+    "build_version": "0.1.0+42e3df23040b4be6a6a0d36d67790ccf244b5b1c9353ed3d8234ae264df06cf8",
+    "scenario_sha256": "47b122116fde2d013ed137ad0a1bc7f318df7fb872ff16f4e944f7e7d7a54940",
+    "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
+    "reference_versions": {
+      "history": "nyu-fred-1928-2025-v1",
+      "calibration": "retire-population-v1",
+      "tax_tables": "spec-2026-unverified-v1",
+      "legal_sources": "retire-sources-fixed-horizon-v2",
+      "market_data": "retire-market-data-v1"
+    },
+    "reference_hashes": {
+      "history": "21662bee599ee61635a30fd81c3467a8c08bee6b7ff4a4d537e7a7f1327a1c1f",
+      "calibration": "ce713042b256eed1558ea08151b01aaf7f7fbd29033506e8d199a1a4ef3daf32",
+      "tax_tables": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
+      "legal_sources": "3591b96710df66276c3bb65e69cd9cd5b9ed23e3d9d031bb045d18b16adcafa8",
+      "market_data": "5c945c9a3d1c7a7e992d86bc8d65c2ed946154164b6b15f88db3cc43ef7af885"
+    },
+    "seed": 42,
+    "n_paths": 16,
+    "start_year": 2027,
+    "start_age_A": 61,
+    "start_age_B": 59,
+    "horizon": 4,
+    "property_stream_ids": [
+      "rental_1"
+    ],
+    "verified_source_ids": []
+  },
+  "replay": {
+    "path_id": 9,
+    "ledger": [
+      2027,
+      61,
+      59,
+      1,
+      1,
+      6.085116410804159,
+      1.0242398416616783,
+      1.0229885057471266,
+      276000,
+      276000,
+      36000,
+      36000,
+      0,
+      0,
+      312000,
+      0,
+      22634.4,
+      0,
+      0.1272911029424877,
+      38998.25708139456,
+      0,
+      60884.460825558934,
+      0,
+      748.1962558356142,
+      49611.71329079739,
+      44604.783946745454,
+      2883058.746303961,
+      0,
+      1049258.0473327753,
+      23928605.453439698,
+      23362306.83490994,
+      17128554.63812514,
+      3843950.124116809,
+      0,
+      0,
+      0,
+      0,
+      2028,
+      62,
+      60,
+      1,
+      1,
+      6.308144836315218,
+      1.0552102085912458,
+      1.0503523958185517,
+      282690.1962986232,
+      282690.1962986232,
+      39096.339671813235,
+      39096.339671813235,
+      0,
+      0,
+      321786.53597043647,
+      0,
+      21869.047112879147,
+      0,
+      -0.016086861355731612,
+      47437.58804801929,
+      0,
+      68555.32950485035,
+      0,
+      751.3056560480962,
+      49350.452722321876,
+      44778.67034517362,
+      2789743.235318452,
+      0,
+      1075653.0400101645,
+      24383479.55452629,
+      23107698.68979884,
+      16677344.704628743,
+      3680094.690807335,
+      0,
+      0,
+      0,
+      0,
+      2029,
+      63,
+      61,
+      1,
+      1,
+      6.2653632088491555,
+      1.0801459638057738,
+      1.0770146476830174,
+      291238.01757118385,
+      291238.01757118385,
+      55863.25337708424,
+      42702.85633197393,
+      0,
+      0,
+      333940.8739031578,
+      13160.397045110307,
+      22470.737430180747,
+      0,
+      0.312553802136584,
+      53268.115244712855,
+      0,
+      74983.34643805453,
+      0,
+      755.5062368390694,
+      64625.7286008419,
+      59859.88583412158,
+      3598193.4852458853,
+      0,
+      1094928.7725760948,
+      29404115.528788913,
+      27222353.75040128,
+      20871243.18027265,
+      4357528.718776758,
+      0,
+      0,
+      0,
+      0,
+      2030,
+      64,
+      62,
+      1,
+      1,
+      6.193447666255103,
+      1.1063299843163954,
+      1.112798196237958,
+      298120.2860103936,
+      298120.2860103936,
+      60083.26848759369,
+      46348.669126649016,
+      0,
+      0,
+      344468.9551370426,
+      13734.599360944674,
+      23121.424444902692,
+      0,
+      0.14937184894907318,
+      61544.02289423195,
+      0,
+      83581.89847191487,
+      166.41600309466958,
+      917.1328641250839,
+      84299.90775180647,
+      79596.39395044379,
+      4069006.3769379454,
+      0,
+      1121484.956048459,
+      32147036.43300198,
+      29057367.050270926,
+      22779078.94252304,
+      4664359.944627806,
+      0,
+      0,
+      0,
+      0
+    ],
+    "market": {
+      "us_stocks": [
+        0.1903067694944301,
+        0.013259206774573897,
+        0.3719519890260631,
+        0.2268096601886579
+      ],
+      "us_bonds": [
+        0.025776111579070303,
+        -0.08036655550998592,
+        0.23480780112538907,
+        0.01428607793401844
+      ],
+      "usd_cash": [
+        0.0038,
+        0.0437,
+        0.056600000000000004,
+        0.051500000000000004
+      ],
+      "us_cpi": [
+        0.02298850574712663,
+        0.02674897119341546,
+        0.025384101536406245,
+        0.03322475570032579
+      ],
+      "us_home": [
+        0.16584227481419478,
+        0.02515586394070124,
+        0.017920027972726515,
+        0.02425380000735955
+      ],
+      "home_cpi": [
+        0.024239841661678335,
+        0.03023741673563768,
+        0.02363107844437788,
+        0.02424118719877925
+      ],
+      "fx": [
+        6.692,
+        6.085116410804159,
+        6.308144836315218,
+        6.2653632088491555,
+        6.193447666255103
+      ],
+      "home_index": [
+        1,
+        1.0242398416616783,
+        1.0552102085912458,
+        1.0801459638057738,
+        1.1063299843163954
+      ],
+      "usd_index": [
+        1,
+        1.0229885057471266,
+        1.0503523958185517,
+        1.0770146476830174,
+        1.112798196237958
+      ],
+      "home_medical_index": [
+        1,
+        1.0442398416616783,
+        1.0966997537591923,
+        1.1445499467453895,
+        1.1951861951977052
+      ],
+      "usd_medical_index": [
+        1,
+        1.0429885057471266,
+        1.0917471453573626,
+        1.1412951086543428,
+        1.202040261994447
+      ]
+    },
+    "years": [
+      {
+        "year": 2027,
+        "report": {
+          "starting_liquid_usd": 2594829.6473401077,
+          "starting_net_worth_cny": 23387400,
+          "spend_excluding_medical_cny": 276000,
+          "medical_total_cny": 36000,
+          "annual_investment_return": 0.1272911029424877
+        },
+        "medical_detail": {
+          "base_cny": 36000,
+          "shock_cny": 0,
+          "late_life_care_cny": 0
+        },
+        "phases": [
+          "start",
+          "property strategies",
+          "rent RMD",
+          "consumption",
+          "funding living needs",
+          "returns",
+          "rebalance",
+          "compute income taxes",
+          "pay income taxes",
+          "end-of-horizon and ledger"
+        ],
+        "income": {
+          "A": {
+            "interest_us": 9570.295249950555,
+            "dividends": 4892.03528562887,
+            "qualified_dividends": 4892.03528562887,
+            "nra_dividends": 4892.03528562887,
+            "nra_exempt_interest": 9570.295249950555,
+            "cap_gain": 4365.596310503495,
+            "trad_own": 0,
+            "trad_inherited": 0,
+            "roth": 0,
+            "early_trad": 0,
+            "rental_net": 2589.927272727273,
+            "rent_gross": 22800,
+            "ordinary_property_gain": 0,
+            "ltcg_property": 0,
+            "property_gain_cny": 0,
+            "passive_released": 0
+          },
+          "B": {
+            "interest_us": 9570.295249950555,
+            "dividends": 4892.03528562887,
+            "qualified_dividends": 4892.03528562887,
+            "nra_dividends": 4892.03528562887,
+            "nra_exempt_interest": 9570.295249950555,
+            "cap_gain": 4365.596310503495,
+            "trad_own": 0,
+            "trad_inherited": 0,
+            "roth": 0,
+            "early_trad": 0,
+            "rental_net": 2589.927272727273,
+            "rent_gross": 22800,
+            "ordinary_property_gain": 0,
+            "ltcg_property": 0,
+            "property_gain_cny": 0,
+            "passive_released": 0
+          }
+        },
+        "accounts": [
+          {
+            "name": "brokerage",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 813071.5939715119,
+              "us_bonds": 406535.79698575597,
+              "usd_cash": 135511.93232858536
+            },
+            "bases": {
+              "us_stocks": 692202.267460258,
+              "us_bonds": 415672.7852697036,
+              "usd_cash": 135511.93232858536
+            },
+            "prior_year_end_balance": 1355119.3232858533
+          },
+          {
+            "name": "after_tax",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 178546.0154241645,
+              "us_bonds": 0,
+              "usd_cash": 0
+            },
+            "bases": {},
+            "prior_year_end_balance": 178546.0154241645
+          },
+          {
+            "name": "pre_tax",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 809636.044556366,
+              "us_bonds": 539757.3630375774,
+              "usd_cash": 0
+            },
+            "bases": {},
+            "prior_year_end_balance": 1349393.4075939434
+          }
+        ],
+        "properties": [
+          {
+            "id": "rental_1",
+            "held": true,
+            "value": 1049258.0473327753,
+            "mortgage_balance": 0,
+            "mortgage_payment": 0,
+            "property_tax_annual": 10492.580473327753,
+            "owners": {
+              "A": {
+                "share": 0.5,
+                "basis_usd": 300000,
+                "depreciation_taken": 83727.27272727274,
+                "suspended_loss": 0
+              },
+              "B": {
+                "share": 0.5,
+                "basis_usd": 300000,
+                "depreciation_taken": 83727.27272727274,
+                "suspended_loss": 0
+              }
+            }
+          }
+        ],
+        "sales": [],
+        "tax_detail": {
+          "A_china": {
+            "dividend_tax": 6547.50002628568,
+            "interest_tax": 12808.883162533824,
+            "rent_tax": 24412.416000000005,
+            "pension_tax": 0,
+            "securities_tax": 5842.914101977879,
+            "property_tax": 0,
+            "before_credit": 49611.71329079739
+          },
+          "B_china": {
+            "dividend_tax": 6547.50002628568,
+            "interest_tax": 12808.883162533824,
+            "rent_tax": 24412.416000000005,
+            "pension_tax": 0,
+            "securities_tax": 5842.914101977879,
+            "property_tax": 0,
+            "before_credit": 49611.71329079739
+          },
+          "A": {
+            "lt_gain": 4365.596310503495,
+            "ordinary_loss_deduction": 0,
+            "loss_carryforward": 0,
+            "net_total": 4365.596310503495,
+            "loss_deduction": 0,
+            "carry": 0,
+            "agi": 21417.854118810195,
+            "deduction": 16100,
+            "ti": 5317.854118810195,
+            "income_tax": 0,
+            "regular_tax": 531.7854118810195,
+            "A_amt": 0,
+            "preferential_tax": 0,
+            "niit": 0,
+            "penalty": 0
+          },
+          "B": {
+            "rental_tax": 258.9927272727273,
+            "dividend_tax": 489.203528562887,
+            "pension_tax": 0,
+            "security_tax": 0,
+            "income_tax": 748.1962558356142,
+            "total": 748.1962558356142,
+            "penalty": 0,
+            "lt_gain": 0,
+            "ordinary_loss_deduction": 0,
+            "loss_carryforward": 0,
+            "carry": 0
+          }
+        },
+        "capital_loss_carryforward": {
+          "A": 0,
+          "B": 0
+        }
+      },
+      {
+        "year": 2028,
+        "report": {
+          "starting_liquid_usd": 2883058.746303961,
+          "starting_net_worth_cny": 23928605.453439698,
+          "spend_excluding_medical_cny": 282690.1962986232,
+          "medical_total_cny": 39096.339671813235,
+          "annual_investment_return": -0.016086861355731612
+        },
+        "medical_detail": {
+          "base_cny": 39096.339671813235,
+          "shock_cny": 0,
+          "late_life_care_cny": 0
+        },
+        "phases": [
+          "start",
+          "property strategies",
+          "rent RMD",
+          "consumption",
+          "funding living needs",
+          "returns",
+          "rebalance",
+          "compute income taxes",
+          "pay income taxes",
+          "end-of-horizon and ledger"
+        ],
+        "income": {
+          "A": {
+            "interest_us": 13021.031857694546,
+            "dividends": 5305.805731314117,
+            "qualified_dividends": 5305.805731314117,
+            "nra_dividends": 5305.805731314117,
+            "nra_exempt_interest": 13021.031857694546,
+            "cap_gain": 3563.9824093564116,
+            "trad_own": 0,
+            "trad_inherited": 0,
+            "roth": 0,
+            "early_trad": 0,
+            "rental_net": 2207.2508291668455,
+            "rent_gross": 23324.137931034486,
+            "ordinary_property_gain": 0,
+            "ltcg_property": 0,
+            "property_gain_cny": 0,
+            "passive_released": 0
+          },
+          "B": {
+            "interest_us": 13021.031857694546,
+            "dividends": 5305.805731314117,
+            "qualified_dividends": 5305.805731314117,
+            "nra_dividends": 5305.805731314117,
+            "nra_exempt_interest": 13021.031857694546,
+            "cap_gain": 3563.9824093564116,
+            "trad_own": 0,
+            "trad_inherited": 0,
+            "roth": 0,
+            "early_trad": 0,
+            "rental_net": 2207.2508291668455,
+            "rent_gross": 23324.137931034486,
+            "ordinary_property_gain": 0,
+            "ltcg_property": 0,
+            "property_gain_cny": 0,
+            "passive_released": 0
+          }
+        },
+        "accounts": [
+          {
+            "name": "brokerage",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 775247.8452687727,
+              "us_bonds": 387623.92263438634,
+              "usd_cash": 129207.97421146215
+            },
+            "bases": {
+              "us_stocks": 661585.3922130651,
+              "us_bonds": 447967.80057988106,
+              "usd_cash": 129207.97421146212
+            },
+            "prior_year_end_balance": 1292079.742114621
+          },
+          {
+            "name": "after_tax",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 180913.39396144974,
+              "us_bonds": 0,
+              "usd_cash": 0
+            },
+            "bases": {},
+            "prior_year_end_balance": 180913.39396144974
+          },
+          {
+            "name": "pre_tax",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 790050.0595454287,
+              "us_bonds": 526700.0396969526,
+              "usd_cash": 0
+            },
+            "bases": {},
+            "prior_year_end_balance": 1316750.0992423813
+          }
+        ],
+        "properties": [
+          {
+            "id": "rental_1",
+            "held": true,
+            "value": 1075653.0400101645,
+            "mortgage_balance": 0,
+            "mortgage_payment": 0,
+            "property_tax_annual": 10756.530400101645,
+            "owners": {
+              "A": {
+                "share": 0.5,
+                "basis_usd": 300000,
+                "depreciation_taken": 92454.54545454547,
+                "suspended_loss": 0
+              },
+              "B": {
+                "share": 0.5,
+                "basis_usd": 300000,
+                "depreciation_taken": 92454.54545454547,
+                "suspended_loss": 0
+              }
+            }
+          }
+        ],
+        "sales": [],
+        "tax_detail": {
+          "A_china": {
+            "dividend_tax": 6457.289105631659,
+            "interest_tax": 15846.898928572171,
+            "rent_tax": 22708.815118719634,
+            "pension_tax": 0,
+            "securities_tax": 4337.449569398409,
+            "property_tax": 0,
+            "before_credit": 49350.452722321876
+          },
+          "B_china": {
+            "dividend_tax": 6457.289105631659,
+            "interest_tax": 15846.898928572171,
+            "rent_tax": 22708.815118719634,
+            "pension_tax": 0,
+            "securities_tax": 4337.449569398409,
+            "property_tax": 0,
+            "before_credit": 49350.452722321876
+          },
+          "A": {
+            "lt_gain": 3563.9824093564116,
+            "ordinary_loss_deduction": 0,
+            "loss_carryforward": 0,
+            "net_total": 3563.9824093564116,
+            "loss_deduction": 0,
+            "carry": 0,
+            "agi": 24098.070827531923,
+            "deduction": 16470.11494252874,
+            "ti": 7627.955885003183,
+            "income_tax": 0,
+            "regular_tax": 762.7955885003183,
+            "A_amt": 0,
+            "preferential_tax": 0,
+            "niit": 0,
+            "penalty": 0
+          },
+          "B": {
+            "rental_tax": 220.72508291668456,
+            "dividend_tax": 530.5805731314117,
+            "pension_tax": 0,
+            "security_tax": 0,
+            "income_tax": 751.3056560480962,
+            "total": 751.3056560480962,
+            "penalty": 0,
+            "lt_gain": 0,
+            "ordinary_loss_deduction": 0,
+            "loss_carryforward": 0,
+            "carry": 0
+          }
+        },
+        "capital_loss_carryforward": {
+          "A": 0,
+          "B": 0
+        }
+      },
+      {
+        "year": 2029,
+        "report": {
+          "starting_liquid_usd": 2789743.235318452,
+          "starting_net_worth_cny": 24383479.55452629,
+          "spend_excluding_medical_cny": 291238.01757118385,
+          "medical_total_cny": 55863.25337708424,
+          "annual_investment_return": 0.312553802136584
+        },
+        "medical_detail": {
+          "base_cny": 42702.85633197393,
+          "shock_cny": 0,
+          "late_life_care_cny": 13160.397045110307
+        },
+        "phases": [
+          "start",
+          "property strategies",
+          "rent RMD",
+          "consumption",
+          "funding living needs",
+          "returns",
+          "rebalance",
+          "compute income taxes",
+          "pay income taxes",
+          "end-of-horizon and ledger"
+        ],
+        "income": {
+          "A": {
+            "interest_us": 13198.099163748851,
+            "dividends": 5046.966380573048,
+            "qualified_dividends": 5046.966380573048,
+            "nra_dividends": 5046.966380573048,
+            "nra_exempt_interest": 13198.099163748851,
+            "cap_gain": 13820.543519339293,
+            "trad_own": 0,
+            "trad_inherited": 0,
+            "roth": 0,
+            "early_trad": 0,
+            "rental_net": 2508.0959878176454,
+            "rent_gross": 23948.034624662978,
+            "ordinary_property_gain": 0,
+            "ltcg_property": 0,
+            "property_gain_cny": 0,
+            "passive_released": 0
+          },
+          "B": {
+            "interest_us": 13198.099163748851,
+            "dividends": 5046.966380573048,
+            "qualified_dividends": 5046.966380573048,
+            "nra_dividends": 5046.966380573048,
+            "nra_exempt_interest": 13198.099163748851,
+            "cap_gain": 13820.543519339293,
+            "trad_own": 0,
+            "trad_inherited": 0,
+            "roth": 0,
+            "early_trad": 0,
+            "rental_net": 2508.0959878176454,
+            "rent_gross": 23948.034624662978,
+            "ordinary_property_gain": 0,
+            "ltcg_property": 0,
+            "property_gain_cny": 0,
+            "passive_released": 0
+          }
+        },
+        "accounts": [
+          {
+            "name": "brokerage",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 969422.9556387955,
+              "us_bonds": 484711.47781939775,
+              "usd_cash": 161570.49260646594
+            },
+            "bases": {
+              "us_stocks": 612442.5127272103,
+              "us_bonds": 474216.6618531207,
+              "usd_cash": 161570.4926064659
+            },
+            "prior_year_end_balance": 1615704.9260646591
+          },
+          {
+            "name": "after_tax",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 248204.4906868667,
+              "us_bonds": 0,
+              "usd_cash": 0
+            },
+            "bases": {},
+            "prior_year_end_balance": 248204.4906868667
+          },
+          {
+            "name": "pre_tax",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 1040570.4410966156,
+              "us_bonds": 693713.6273977439,
+              "usd_cash": 0
+            },
+            "bases": {},
+            "prior_year_end_balance": 1734284.0684943595
+          }
+        ],
+        "properties": [
+          {
+            "id": "rental_1",
+            "held": true,
+            "value": 1094928.7725760948,
+            "mortgage_balance": 0,
+            "mortgage_payment": 0,
+            "property_tax_annual": 10949.287725760949,
+            "owners": {
+              "A": {
+                "share": 0.5,
+                "basis_usd": 300000,
+                "depreciation_taken": 101181.8181818182,
+                "suspended_loss": 0
+              },
+              "B": {
+                "share": 0.5,
+                "basis_usd": 300000,
+                "depreciation_taken": 101181.8181818182,
+                "suspended_loss": 0
+              }
+            }
+          }
+        ],
+        "sales": [],
+        "tax_detail": {
+          "A_china": {
+            "dividend_tax": 6367.398982533676,
+            "interest_tax": 16651.104217795706,
+            "rent_tax": 24170.827353194534,
+            "pension_tax": 0,
+            "securities_tax": 17436.398047317984,
+            "property_tax": 0,
+            "before_credit": 64625.7286008419
+          },
+          "B_china": {
+            "dividend_tax": 6367.398982533676,
+            "interest_tax": 16651.104217795706,
+            "rent_tax": 24170.827353194534,
+            "pension_tax": 0,
+            "securities_tax": 17436.398047317984,
+            "property_tax": 0,
+            "before_credit": 64625.7286008419
+          },
+          "A": {
+            "lt_gain": 13820.543519339293,
+            "ordinary_loss_deduction": 0,
+            "loss_carryforward": 0,
+            "net_total": 13820.543519339293,
+            "loss_deduction": 0,
+            "carry": 0,
+            "agi": 34573.705051478835,
+            "deduction": 16910.673572678683,
+            "ti": 17663.031478800152,
+            "income_tax": 0,
+            "regular_tax": 1859.0763832930177,
+            "A_amt": 0,
+            "preferential_tax": 0,
+            "niit": 0,
+            "penalty": 0
+          },
+          "B": {
+            "rental_tax": 250.80959878176455,
+            "dividend_tax": 504.6966380573048,
+            "pension_tax": 0,
+            "security_tax": 0,
+            "income_tax": 755.5062368390694,
+            "total": 755.5062368390694,
+            "penalty": 0,
+            "lt_gain": 0,
+            "ordinary_loss_deduction": 0,
+            "loss_carryforward": 0,
+            "carry": 0
+          }
+        },
+        "capital_loss_carryforward": {
+          "A": 0,
+          "B": 0
+        }
+      },
+      {
+        "year": 2030,
+        "report": {
+          "starting_liquid_usd": 3598193.4852458853,
+          "starting_net_worth_cny": 29404115.528788913,
+          "spend_excluding_medical_cny": 298120.2860103936,
+          "medical_total_cny": 60083.26848759369,
+          "annual_investment_return": 0.14937184894907318
+        },
+        "medical_detail": {
+          "base_cny": 46348.669126649016,
+          "shock_cny": 0,
+          "late_life_care_cny": 13734.599360944674
+        },
+        "phases": [
+          "start",
+          "property strategies",
+          "rent RMD",
+          "consumption",
+          "funding living needs",
+          "returns",
+          "rebalance",
+          "compute income taxes",
+          "pay income taxes",
+          "end-of-horizon and ledger"
+        ],
+        "income": {
+          "A": {
+            "interest_us": 16170.656363464657,
+            "dividends": 6337.88914607222,
+            "qualified_dividends": 6337.88914607222,
+            "nra_dividends": 6337.88914607222,
+            "nra_exempt_interest": 16170.656363464657,
+            "cap_gain": 25953.34504079354,
+            "trad_own": 0,
+            "trad_inherited": 0,
+            "roth": 0,
+            "early_trad": 0,
+            "rental_net": 2833.439495178618,
+            "rent_gross": 24555.933967172794,
+            "ordinary_property_gain": 0,
+            "ltcg_property": 0,
+            "property_gain_cny": 0,
+            "passive_released": 0
+          },
+          "B": {
+            "interest_us": 16170.656363464657,
+            "dividends": 6337.88914607222,
+            "qualified_dividends": 6337.88914607222,
+            "nra_dividends": 6337.88914607222,
+            "nra_exempt_interest": 16170.656363464657,
+            "cap_gain": 25953.34504079354,
+            "trad_own": 0,
+            "trad_inherited": 0,
+            "roth": 0,
+            "early_trad": 0,
+            "rental_net": 2833.439495178618,
+            "rent_gross": 24555.933967172794,
+            "ordinary_property_gain": 0,
+            "ltcg_property": 0,
+            "property_gain_cny": 0,
+            "passive_released": 0
+          }
+        },
+        "accounts": [
+          {
+            "name": "brokerage",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 1070580.4598846114,
+              "us_bonds": 535290.2299423057,
+              "usd_cash": 178430.07664743523
+            },
+            "bases": {
+              "us_stocks": 562965.2095624069,
+              "us_bonds": 542328.6593511755,
+              "usd_cash": 178430.07664743517
+            },
+            "prior_year_end_balance": 1784300.7664743525
+          },
+          {
+            "name": "after_tax",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 304499.6668768538,
+              "us_bonds": 0,
+              "usd_cash": 0
+            },
+            "bases": {},
+            "prior_year_end_balance": 304499.6668768538
+          },
+          {
+            "name": "pre_tax",
+            "shares": {
+              "A": 0.5,
+              "B": 0.5
+            },
+            "values": {
+              "us_stocks": 1188123.5661520434,
+              "us_bonds": 792082.3774346957,
+              "usd_cash": 0
+            },
+            "bases": {},
+            "prior_year_end_balance": 1980205.9435867392
+          }
+        ],
+        "properties": [
+          {
+            "id": "rental_1",
+            "held": true,
+            "value": 1121484.956048459,
+            "mortgage_balance": 0,
+            "mortgage_payment": 0,
+            "property_tax_annual": 11214.849560484592,
+            "owners": {
+              "A": {
+                "share": 0.5,
+                "basis_usd": 300000,
+                "depreciation_taken": 109909.09090909094,
+                "suspended_loss": 0
+              },
+              "B": {
+                "share": 0.5,
+                "basis_usd": 300000,
+                "depreciation_taken": 109909.09090909094,
+                "suspended_loss": 0
+              }
+            }
+          }
+        ],
+        "sales": [],
+        "terminal": {
+          "year": 2030,
+          "assets_cny": 32147036.43300198,
+          "income_due_cny": 0.012342853980953805,
+          "signed_net_cny": 32147036.420659125,
+          "net_to_heirs_cny": 32147036.420659125
+        },
+        "tax_detail": {
+          "A_china": {
+            "dividend_tax": 7941.835495513055,
+            "interest_tax": 20263.00708851879,
+            "rent_tax": 24616.295237896593,
+            "pension_tax": 0,
+            "securities_tax": 32521.426633031107,
+            "property_tax": 0,
+            "before_credit": 85342.56445495955
+          },
+          "B_china": {
+            "dividend_tax": 7941.835495513055,
+            "interest_tax": 20263.00708851879,
+            "rent_tax": 24616.295237896593,
+            "pension_tax": 0,
+            "securities_tax": 32521.426633031107,
+            "property_tax": 0,
+            "before_credit": 85342.56445495955
+          },
+          "A": {
+            "lt_gain": 25953.34504079354,
+            "ordinary_loss_deduction": 0,
+            "loss_carryforward": 0,
+            "net_total": 25953.34504079354,
+            "loss_deduction": 0,
+            "carry": 0,
+            "agi": 51295.330045509036,
+            "deduction": 17339.93582769658,
+            "ti": 33955.394217812456,
+            "income_tax": 166.41600309466958,
+            "regular_tax": 3807.547673512106,
+            "A_amt": 1664.1600309466958,
+            "preferential_tax": 0,
+            "niit": 0,
+            "penalty": 0
+          },
+          "B": {
+            "rental_tax": 283.3439495178618,
+            "dividend_tax": 633.7889146072221,
+            "pension_tax": 0,
+            "security_tax": 0,
+            "income_tax": 917.1328641250839,
+            "total": 917.1328641250839,
+            "penalty": 0,
+            "lt_gain": 0,
+            "ordinary_loss_deduction": 0,
+            "loss_carryforward": 0,
+            "carry": 0
+          }
+        },
+        "capital_loss_carryforward": {
+          "A": 0,
+          "B": 0
+        }
+      }
+    ],
+    "stop": {
+      "reason": "max_age",
+      "year": 2030,
+      "year_index": 3,
+      "net_worth_cny": 32147036.43300198
+    }
+  }
+}

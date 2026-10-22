@@ -49,9 +49,9 @@ const enUI = {
     'All configurations use the same calculation rules. Your configuration stays in browser memory.',
   'run.cancel': 'Cancel run',
   'run.start': 'Run simulation',
-  'run.simulating': 'Simulating {done} / {total} paths…',
   'run.summarizing': 'Calculating percentiles…',
-  'run.completed': 'Completed {paths} paths. Configuration {hash}.',
+  'run.completed':
+    'Completed {paths} paths in {seconds}s. Configuration {hash}.',
   'run.canceled': 'Run canceled. Partial results discarded.',
   'run.failed': 'Run failed. Partial results discarded.',
   'run.local': 'All calculations run locally.',
@@ -242,7 +242,6 @@ const enUI = {
 
   'results.eyebrow': 'COMPLETED RUN',
   'results.title': 'Your simulation at a glance',
-  'results.paths': '{paths} paths · {seconds}s',
   'results.fundingTitle': 'Funding success through Max age',
   'results.fundingHint': 'No funding failure or early asset exhaustion',
   'results.terminalTitle': 'Median terminal net worth',
@@ -287,26 +286,15 @@ const enUI = {
 
   'ledger.eyebrow': 'REPLAY FROM COMPLETED RUN',
   'ledger.title': 'Follow one path, year by year',
-  'ledger.p10': '10th path',
-  'ledger.pathId': 'Path ID',
-  'ledger.pathIdAria': 'Replay path ID',
+  'ledger.p10': 'P10',
   'ledger.replaying': 'Replaying path {path}…',
-  'ledger.summary': 'Path {path} · {years} active years · Float64',
-  'ledger.allColumns': 'All {count} columns',
-  'ledger.lastYear': 'Last active year',
   'ledger.downloadCsv': 'Download ledger CSV',
   'ledger.downloadProv': 'Download path provenance',
-  'ledger.stopMaxAge': 'Stopped at the younger person’s Max age in {year}.',
-  'ledger.stopBefore':
-    'Stopped before the first year because starting net assets were zero or negative.',
-  'ledger.stopDepleted':
-    'Stopped in {year} because net assets reached zero or below.',
   'ledger.explainer':
     'Starting balances precede this year’s cash flows. Liquid USD includes USD financial accounts, including retirement; starting net worth includes property equity at opening FX. Medical includes the base budget, shocks and late-life care. Investment return covers USD financial accounts, weighted after opening-year cash flows, before tax and FX changes. Money is rounded to whole numbers here; downloads retain full precision.',
   'ledger.table': 'Year ledger',
-  'ledger.prevRows': 'Previous rows',
-  'ledger.rowsOf': 'Rows {a}–{b} of {c}',
-  'ledger.nextRows': 'Next rows',
+  'ledger.shockDot': 'Medical shock this year',
+  'ledger.pathGroup': 'Representative path',
   'ledger.yearTitle': 'Year {year} · raw provenance',
   'ledger.yearOutside': 'outside the planning horizon',
   'ledger.fxNote':

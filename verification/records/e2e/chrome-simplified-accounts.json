@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "fixed_accounts": [
+    "brokerage",
+    "after_tax",
+    "pre_tax"
+  ],
+  "holdings_removed": true,
+  "legacy_rejected": true,
+  "ledger_columns": 42
+}

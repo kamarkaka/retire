@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "mount": "/retire/",
+  "cases": [
+    "HTTP 502",
+    "mismatched package hash"
+  ],
+  "configuration_and_data_unchanged": true
+}

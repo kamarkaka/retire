@@ -302,8 +302,9 @@ test('M02 M05 M09 M10: fixed three accounts, export/run/reload, and legacy holdi
     ).text,
   );
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
-  await page.getByLabel('Replay path ID').fill('0');
-  await expect(page.getByTestId('ledger-ready')).toContainText('Path 0');
+  await expect(
+    page.getByRole('table', { name: 'Year ledger', exact: true }),
+  ).toBeVisible();
   const firstCsv = (
     await saveDownload(
       page,

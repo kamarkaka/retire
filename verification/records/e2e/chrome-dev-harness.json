@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "case": "US-3",
+  "actual": "{\n  \"status\": \"PASS\",\n  \"actual\": {\n    \"lt_gain\": 150000,\n    \"ordinary_loss_deduction\": 0,\n    \"loss_carryforward\": 0,\n    \"net_total\": 150000,\n    \"loss_deduction\": 0,\n    \"carry\": 0,\n    \"agi\": 185000,\n    \"deduction\": 16100,\n    \"ti\": 168900,\n    \"income_tax\": 17917.5,\n    \"regular_tax\": 33134,\n    \"A_amt\": 0,\n    \"preferential_tax\": 17917.5,\n    \"niit\": 2280,\n    \"penalty\": 0\n  },\n  \"trace\": \"Product Schedule D netting, preferential tax, deductions and NIIT. Legal registry remains unverified.\",\n  \"failures\": []\n}",
+  "worker_probe": "{\"detached\":true,\"values\":[1,2,3]}"
+}

@@ -1,0 +1,119 @@
+{
+  "status": "PASS",
+  "times": [
+    {
+      "action": "draft edit",
+      "ms": 7
+    },
+    {
+      "action": "tab switch",
+      "ms": 50
+    }
+  ],
+  "cancel_ms": 28,
+  "method": "Real worker computation and main-thread controls; delay analysis message delivery to hold summarizing phase and deliver old data after termination.",
+  "evidence": {
+    "live": 0,
+    "max_live": 4,
+    "created": 10,
+    "terminated": 10,
+    "stale_deliveries": 1,
+    "native_chunks": 33,
+    "delivered_chunks": [
+      192,
+      0,
+      64,
+      128,
+      256,
+      320,
+      384,
+      448,
+      512,
+      576,
+      640,
+      704,
+      768,
+      832,
+      896,
+      960,
+      1024,
+      1088,
+      1152,
+      1216,
+      1280,
+      1344,
+      1472,
+      1408,
+      1536,
+      1600,
+      1664,
+      1728,
+      1792,
+      1856,
+      1984,
+      1920,
+      0
+    ],
+    "held_chunks": 0,
+    "transfers": [
+      {
+        "type": "summarize",
+        "before": [
+          3920000,
+          272000,
+          40000,
+          6000,
+          1136000,
+          1120000,
+          1120000
+        ],
+        "after": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "type": "summarize",
+        "before": [
+          62720,
+          4352,
+          640,
+          96,
+          18176,
+          17920,
+          17920
+        ],
+        "after": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "summaries": [
+      {
+        "run_id": "2ad00e37-37fa-4501-9315-9f8853b6376b",
+        "n_paths": 2000,
+        "seed": 42,
+        "bytes": 4238000
+      },
+      {
+        "run_id": "65076910-e715-40f3-9f64-23a8f3a4fc17",
+        "n_paths": 32,
+        "seed": 44,
+        "bytes": 67808
+      }
+    ],
+    "replays": [],
+    "failures": []
+  }
+}

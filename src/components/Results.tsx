@@ -174,12 +174,6 @@ export default function Results({ run }: { run: CompletedRun }) {
           <p className="eyebrow">{t('results.eyebrow')}</p>
           <h2>{t('results.title')}</h2>
         </div>
-        <span className="chip">
-          {t('results.paths', {
-            paths: a.n_paths.toLocaleString(intlLocale),
-            seconds: (run.execution.elapsed_ms! / 1000).toFixed(2),
-          })}
-        </span>
       </div>
       <div className="metric-grid">
         <article className="metric">
