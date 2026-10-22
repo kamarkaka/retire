@@ -7,27 +7,28 @@ import { number } from './format';
 import { pretty } from './Builder';
 import { useI18n } from '../i18n/context';
 import { labelFor } from '../i18n/core';
-const selectedFields = [
-  'year',
-  'age_A',
-  'age_B',
-  'starting_liquid_usd',
-  'starting_net_worth_cny',
-  'spend_excluding_medical_cny',
-  'medical_total_cny',
-  'annual_investment_return',
-  'fx',
-  'tax_us_A',
-  'tax_cn_A',
-  'liquid_usd',
-  'net_worth_cny_real',
-  'shortfall_cny',
-];
+function selectedFieldsFor(usDomicile: boolean, twoPeople: boolean): string[] {
+  return [
+    'year',
+    'age_A',
+    ...(twoPeople ? ['age_B'] : []),
+    'starting_net_worth_usd',
+    'spend_excluding_medical_cny',
+    usDomicile ? 'medical_total_usd' : 'medical_total_cny',
+    'annual_investment_return',
+    ...(usDomicile ? [] : ['fx']),
+    'tax_us_A',
+    ...(usDomicile ? [] : ['tax_cn_A']),
+    'net_worth_usd_real',
+  ];
+}
 const labels: Record<string, string> = {
+  starting_net_worth_usd: 'Starting net worth USD',
   starting_liquid_usd: 'Starting liquid USD',
   starting_net_worth_cny: 'Starting net worth CNY',
   spend_excluding_medical_cny: 'Spend CNY (excluding medical)',
   medical_total_cny: 'Medical CNY',
+  medical_total_usd: 'Medical USD',
   annual_investment_return: 'Overall annual investment return',
   spend_cny: 'Ordinary spend CNY',
   medical_cny: 'Medical CNY',
@@ -36,6 +37,7 @@ const labels: Record<string, string> = {
   tax_cn_A: 'China income tax A',
   liquid_usd: 'Ending liquid USD',
   net_worth_cny_real: 'Ending net worth CNY (today’s money)',
+  net_worth_usd_real: 'Ending net worth USD (today’s money)',
 };
 const nonMoneyFields = new Set([
   'year',
@@ -98,9 +100,26 @@ export default function Ledger({ run }: { run: CompletedRun }) {
       job?.cancel();
     };
   }, [run, path]);
-  const fields = all ? LEDGER_CSV_FIELDS : selectedFields,
+  const usDomicile = run.request.scenario.people.domicile === 'US',
+    twoPeople = run.request.scenario.people.B !== undefined;
+  const fields = all
+      ? LEDGER_CSV_FIELDS
+      : selectedFieldsFor(usDomicile, twoPeople),
     detail = replay?.years[selected],
     rows = replay?.years.length ?? 0;
+  // Derived USD columns divide the CNY report by the year's opening FX.
+  const cellValue = (ti: number, f: string): number => {
+    if (!replay) return NaN;
+    if (f === 'starting_net_worth_usd')
+      return (
+        ledgerValue(replay, ti, 'starting_net_worth_cny') / replay.market.fx[ti]
+      );
+    if (f === 'medical_total_usd')
+      return (
+        ledgerValue(replay, ti, 'medical_total_cny') / replay.market.fx[ti]
+      );
+    return ledgerValue(replay, ti, f);
+  };
   return (
     <section className="panel ledger-panel">
       <div className="section-title">
@@ -234,11 +253,7 @@ export default function Ledger({ run }: { run: CompletedRun }) {
                     >
                       {fields.map((f) => (
                         <td key={f} data-field={f}>
-                          {displayValue(
-                            f,
-                            ledgerValue(replay, ti, f),
-                            intlLocale,
-                          )}
+                          {displayValue(f, cellValue(ti, f), intlLocale)}
                         </td>
                       ))}
                     </tr>

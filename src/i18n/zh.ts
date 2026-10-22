@@ -508,8 +508,10 @@ const zhLabels: Record<string, string> = {
   fx_quota_flag: '换汇额度标记',
   starting_liquid_usd: '期初流动美元',
   starting_net_worth_cny: '期初净资产（人民币）',
+  starting_net_worth_usd: '期初净资产（美元）',
   spend_excluding_medical_cny: '支出（人民币，不含医疗）',
   medical_total_cny: '医疗合计（人民币）',
+  medical_total_usd: '医疗合计（美元）',
   annual_investment_return: '年度综合投资回报',
 };
 

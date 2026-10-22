@@ -10,7 +10,13 @@ import {
 } from '../../src/config/constructors';
 import { hashObject } from '../../src/model/canonical';
 import { LEDGER_FIELDS, LI } from '../../src/model/layout';
-import { saveDownload, complete, record, saveDraftText } from './helpers';
+import {
+  saveDownload,
+  complete,
+  record,
+  saveDraftText,
+  uploadDraft,
+} from './helpers';
 test('M03 M04 M10: production worker and ledger use observed NYU/FRED returns', async ({
   page,
 }, info) => {
@@ -298,11 +304,11 @@ test('M08: a 50-year planning config uses historical returns and integer money d
     '50 active years',
   );
   for (const label of [
-    'Starting liquid USD',
-    'Starting net worth CNY',
+    'Starting net worth USD',
     'Spend CNY (excluding medical)',
     'Medical CNY',
     'Overall annual investment return',
+    'Ending net worth USD (today’s money)',
   ])
     await expect(
       page.getByRole('columnheader', { name: label, exact: true }),
@@ -320,9 +326,10 @@ test('M08: a 50-year planning config uses historical returns and integer money d
   await expect(
     firstRow.locator('[data-field=annual_investment_return]'),
   ).toHaveText('11.09%');
-  await expect(firstRow.locator('[data-field=starting_liquid_usd]')).toHaveText(
-    '2,390,573',
-  );
+  await expect(
+    firstRow.locator('[data-field=starting_net_worth_usd]'),
+  ).toHaveText('2,390,573');
+  await expect(firstRow.locator('[data-field=age_B]')).toHaveText('40');
   await expect(firstRow.locator('[data-field=fx]')).toHaveText('6.69');
   await page.getByRole('button', { name: 'Last active year' }).click();
   await expect(page.getByTestId('year-provenance')).toContainText(
@@ -370,6 +377,41 @@ test('M08: a 50-year planning config uses historical returns and integer money d
     true,
   );
   expect(rows.at(-1)?.[headers.indexOf('age_B')]).toBe('89');
+});
+test('M09: one-person US ledger shows USD columns and hides second-person and China columns', async ({
+  page,
+}) => {
+  const d = createControlDraft();
+  delete d.people!.B;
+  d.people!.domicile = 'US';
+  d.simulation!.n_paths = 1;
+  d.simulation!.max_age = 41;
+  await page.goto('/');
+  await uploadDraft(page, d);
+  await complete(page, 1);
+  await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
+  const table = page.getByRole('table', {
+    name: 'Year ledger',
+    exact: true,
+  });
+  await expect(page.getByTestId('ledger-ready')).toContainText(
+    '2 active years',
+  );
+  await expect(
+    page.getByRole('columnheader', { name: 'Medical USD', exact: true }),
+  ).toBeVisible();
+  for (const field of [
+    'age_B',
+    'starting_liquid_usd',
+    'starting_net_worth_cny',
+    'medical_total_cny',
+    'fx',
+    'tax_cn_A',
+    'liquid_usd',
+    'net_worth_cny_real',
+    'shortfall_cny',
+  ])
+    await expect(table.locator(`[data-field=${field}]`)).toHaveCount(0);
 });
 test('M02 M06: invalid upload preserves draft and actual missing inputs block any configuration', async ({
   page,
