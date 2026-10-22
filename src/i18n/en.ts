@@ -196,6 +196,13 @@ const enUI = {
   'tutorial.medicalSpending':
     'Medical spending included above, {ccy} (optional)',
   'tutorial.medicalSpendingAria': 'Medical spending {ccy}',
+  'tutorial.shockCheck': 'Include unexpected medical shocks',
+  'tutorial.shockAmount': 'Typical shock amount, {ccy}',
+  'tutorial.shockAmountAria': 'Typical shock amount {ccy}',
+  'tutorial.careCheck': 'Include late-life care',
+  'tutorial.careStartAge': 'Care start age',
+  'tutorial.careMonthly': 'Monthly care cost, {ccy}',
+  'tutorial.careMonthlyAria': 'Monthly care cost {ccy}',
   'tutorial.q3': 'How much is saved outside retirement accounts?',
   'tutorial.investmentSavings': 'Non-retirement investments, USD',
   'tutorial.investmentSavingsAria': 'Non-retirement investments USD',
@@ -217,6 +224,9 @@ const enUI = {
   'tutorial.reviewHousehold': '{household} retiring in {domicile}.',
   'tutorial.reviewSpending': 'Spending {amount} {ccy} per year{medical}.',
   'tutorial.reviewMedical': ', including {amount} {ccy} medical',
+  'tutorial.reviewShock': 'Unexpected medical shocks around {amount} {ccy}.',
+  'tutorial.reviewCare':
+    'Late-life care from age {age} at {amount} {ccy} per month.',
   'tutorial.reviewSavings':
     'Non-retirement investments {balance} USD; retirement {pre} USD pre-tax and {after} USD after-tax.',
   'tutorial.reviewHorizon':

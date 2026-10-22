@@ -45,6 +45,15 @@ test('M02 M10: question-based guided setup builds a runnable configuration in a 
   await dialog
     .getByLabel('Medical spending CNY', { exact: true })
     .fill('38000');
+  await dialog.getByLabel('Include unexpected medical shocks').check();
+  await dialog
+    .getByLabel('Typical shock amount CNY', { exact: true })
+    .fill('60000');
+  await dialog.getByLabel('Include late-life care').check();
+  await dialog.getByLabel('Care start age', { exact: true }).fill('85');
+  await dialog
+    .getByLabel('Monthly care cost CNY', { exact: true })
+    .fill('8000');
   await dialog.getByRole('button', { name: 'Next', exact: false }).click();
   await expect(dialog.getByText('Step 4 of 7', { exact: true })).toBeVisible();
   await dialog
@@ -70,6 +79,12 @@ test('M02 M10: question-based guided setup builds a runnable configuration in a 
   await dialog.getByRole('button', { name: 'Next', exact: false }).click();
   await expect(dialog.getByText('Step 7 of 7', { exact: true })).toBeVisible();
   await expect(dialog.getByText('Two people retiring in China.')).toBeVisible();
+  await expect(
+    dialog.getByText('Unexpected medical shocks around 60,000 CNY.'),
+  ).toBeVisible();
+  await expect(
+    dialog.getByText('Late-life care from age 85 at 8,000 CNY per month.'),
+  ).toBeVisible();
   await dialog
     .getByRole('button', { name: 'Start simulation', exact: true })
     .click();
@@ -100,6 +115,11 @@ test('M02 M10: question-based guided setup builds a runnable configuration in a 
       'pre_tax',
     ]);
     expect(parsed.value.withdrawals).not.toHaveProperty('surplus_account');
+    expect(parsed.value.medical!.shock_enabled).toBe(true);
+    expect(parsed.value.medical!.shock_median).toBe(60000);
+    expect(parsed.value.medical!.late_life_care!.enabled).toBe(true);
+    expect(parsed.value.medical!.late_life_care!.start_age).toBe(85);
+    expect(parsed.value.medical!.late_life_care!.monthly).toBe(8000);
   }
   await page.reload();
   await page

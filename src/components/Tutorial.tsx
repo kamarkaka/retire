@@ -145,6 +145,12 @@ export default function Tutorial({
       next = assign(next, ['simulation', 'max_age'], 110);
     if (next !== draft) onChange(next);
   }, [step]);
+  // Shocks default to enabled, so opt out explicitly until the user opts in.
+  useEffect(() => {
+    if (step !== 2) return;
+    if (draft.medical?.shock_enabled === undefined)
+      onChange(assign(draft, ['medical', 'shock_enabled'], false));
+  }, [step]);
   const startYear = draft.simulation?.start_year ?? currentYear;
   const birthOk = (id: 'A' | 'B') => {
     const birth = draft.people?.[id]?.birth_year,
@@ -155,7 +161,12 @@ export default function Tutorial({
     typeof draft.people?.[id]?.us_citizen === 'boolean';
   const ccy = draft.people?.domicile === 'US' ? 'USD' : 'CNY',
     annual = draft.budget?.annual,
-    medical = draft.budget?.included_health;
+    medical = draft.budget?.included_health,
+    shockOn = draft.medical?.shock_enabled === true,
+    shockMedian = draft.medical?.shock_median,
+    careOn = draft.medical?.late_life_care?.enabled === true,
+    careAge = draft.medical?.late_life_care?.start_age,
+    careMonthly = draft.medical?.late_life_care?.monthly;
   const balanceOf = (name: string) =>
     draft.accounts?.find((a) => a.name === name)?.balance;
   const balance = balanceOf('brokerage'),
@@ -173,7 +184,13 @@ export default function Tutorial({
       Number.isFinite(annual) &&
       annual >= 0 &&
       (medical === undefined ||
-        (Number.isFinite(medical) && medical >= 0 && medical <= annual)),
+        (Number.isFinite(medical) && medical >= 0 && medical <= annual)) &&
+      (!shockOn || amountOk(shockMedian)) &&
+      (!careOn ||
+        (Number.isInteger(careAge) &&
+          (careAge ?? 0) >= 0 &&
+          (careAge ?? 0) <= 200 &&
+          amountOk(careMonthly))),
     amountOk(balance),
     amountOk(preTax) && amountOk(afterTax),
     Number.isInteger(draft.simulation?.start_year) &&
@@ -304,6 +321,88 @@ export default function Tutorial({
                   }
                 />
               </label>
+              <label className="wizard-check">
+                <input
+                  type="checkbox"
+                  checked={shockOn}
+                  onChange={(e) =>
+                    onChange(
+                      assign(
+                        draft,
+                        ['medical', 'shock_enabled'],
+                        e.target.checked,
+                      ),
+                    )
+                  }
+                />
+                {t('tutorial.shockCheck')}
+              </label>
+              {shockOn && (
+                <div className="wizard-sub">
+                  <label>
+                    {t('tutorial.shockAmount', { ccy })}
+                    <NumberInput
+                      aria-label={t('tutorial.shockAmountAria', { ccy })}
+                      value={shockMedian}
+                      onChange={(v) =>
+                        onChange(assign(draft, ['medical', 'shock_median'], v))
+                      }
+                    />
+                  </label>
+                </div>
+              )}
+              <label className="wizard-check">
+                <input
+                  type="checkbox"
+                  checked={careOn}
+                  onChange={(e) =>
+                    onChange(
+                      assign(
+                        draft,
+                        ['medical', 'late_life_care', 'enabled'],
+                        e.target.checked,
+                      ),
+                    )
+                  }
+                />
+                {t('tutorial.careCheck')}
+              </label>
+              {careOn && (
+                <div className="wizard-sub">
+                  <label>
+                    {t('tutorial.careStartAge')}
+                    <NumberInput
+                      aria-label={t('tutorial.careStartAge')}
+                      value={careAge}
+                      onChange={(v) =>
+                        onChange(
+                          assign(
+                            draft,
+                            ['medical', 'late_life_care', 'start_age'],
+                            v,
+                          ),
+                        )
+                      }
+                    />
+                  </label>
+                  <label>
+                    {t('tutorial.careMonthly', { ccy })}
+                    <NumberInput
+                      aria-label={t('tutorial.careMonthlyAria', { ccy })}
+                      value={careMonthly}
+                      onChange={(v) =>
+                        onChange(
+                          assign(
+                            draft,
+                            ['medical', 'late_life_care', 'monthly'],
+                            v,
+                          ),
+                        )
+                      }
+                    />
+                  </label>
+                </div>
+              )}
             </>
           )}
           {step === 3 && (
@@ -396,6 +495,23 @@ export default function Tutorial({
                       : '',
                 })}
               </li>
+              {shockOn && (
+                <li>
+                  {t('tutorial.reviewShock', {
+                    amount: (shockMedian ?? 0).toLocaleString(intlLocale),
+                    ccy,
+                  })}
+                </li>
+              )}
+              {careOn && (
+                <li>
+                  {t('tutorial.reviewCare', {
+                    age: careAge ?? 0,
+                    amount: (careMonthly ?? 0).toLocaleString(intlLocale),
+                    ccy,
+                  })}
+                </li>
+              )}
               <li>
                 {t('tutorial.reviewSavings', {
                   balance: (balance ?? 0).toLocaleString(intlLocale),
