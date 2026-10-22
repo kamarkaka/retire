@@ -11,8 +11,8 @@
     "delivered_chunks": [
       192,
       0,
-      64,
-      128
+      128,
+      64
     ],
     "held_chunks": 0,
     "transfers": [],

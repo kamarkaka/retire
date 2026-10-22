@@ -171,6 +171,73 @@ function YearModal({
             </tr>
           </tbody>
         </table>
+        {members.some(
+          (id) => scenario.people[id]!.us_income_tax_status === 'resident',
+        ) && (
+          <>
+            <h3>{t('modal.agiTitle')}</h3>
+            {members
+              .filter(
+                (id) =>
+                  scenario.people[id]!.us_income_tax_status === 'resident',
+              )
+              .map((id) => {
+                const d = (detail.tax_detail[id] ?? {}) as Record<
+                    string,
+                    unknown
+                  >,
+                  income = detail.income[id],
+                  interest = income.interest_us,
+                  pensions = income.trad_own + income.trad_inherited,
+                  qd = income.qualified_dividends,
+                  lt = num(d.lt_gain),
+                  lossDed = num(d.loss_deduction),
+                  agi = num(d.agi),
+                  rentalOther = agi + lossDed - qd - lt - interest - pensions;
+                return (
+                  <div key={id}>
+                    <h4>{t('modal.person', { id })}</h4>
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>{t('modal.interest')}</td>
+                          <td>{money(interest, intlLocale)}</td>
+                        </tr>
+                        <tr>
+                          <td>{t('modal.pension')}</td>
+                          <td>{money(pensions, intlLocale)}</td>
+                        </tr>
+                        <tr>
+                          <td>{t('modal.rentalOther')}</td>
+                          <td>{money(rentalOther, intlLocale)}</td>
+                        </tr>
+                        <tr>
+                          <td>{t('modal.lossDeduction')}</td>
+                          <td>{money(-lossDed, intlLocale)}</td>
+                        </tr>
+                        <tr>
+                          <td>{t('modal.qd')}</td>
+                          <td>{money(qd, intlLocale)}</td>
+                        </tr>
+                        <tr>
+                          <td>{t('modal.ltGains')}</td>
+                          <td>{money(lt, intlLocale)}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>{t('modal.agi')}</strong>
+                          </td>
+                          <td>
+                            <strong>{money(agi, intlLocale)}</strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                );
+              })}
+          </>
+        )}
         <h3>{t('modal.usTax')}</h3>
         {members.map((id) => {
           const status = scenario.people[id]!.us_income_tax_status,

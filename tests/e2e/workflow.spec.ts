@@ -361,6 +361,9 @@ test('M08: a 50-year planning config uses historical returns and integer money d
   await expect(modal).toContainText('Nonresident alien');
   await expect(modal).toContainText('Cash interest');
   await expect(
+    modal.getByText('Adjusted gross income (USD)', { exact: false }),
+  ).toHaveCount(0);
+  await expect(
     modal.getByText('China income tax (CNY)', { exact: false }),
   ).toHaveCount(0);
   await page.getByRole('button', { name: 'Close', exact: true }).click();
@@ -728,6 +731,8 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
   await expect(modal).toContainText('US tax resident');
   await expect(modal).toContainText('Nonresident alien');
   await expect(modal).toContainText('Taxable income (base)');
+  await expect(modal).toContainText('Adjusted gross income (USD)');
+  await expect(modal).toContainText('Rental, property & passive (net)');
   await expect(modal).toContainText('Effective rate');
   await expect(modal).toContainText('China income tax (CNY)');
   await expect(modal).toContainText('Tax due');
