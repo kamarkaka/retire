@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { fieldTree, type SchemaNode } from '../config/schema';
-import { createExampleDraft, fixedAccounts } from '../config/constructors';
+import { fixedAccounts } from '../config/constructors';
 import type { DraftScenario } from '../model/types';
 import { FIXED_ACCOUNT_ORDER } from '../model/types';
 import RandomSeedButton from './RandomSeedButton';
@@ -684,34 +684,8 @@ function MarketEditor({
       ),
     },
   ];
-  const setMarket = (patch: Record<string, unknown>) =>
-    onChange(assign(draft, ['market'], { ...draft.market, ...patch }));
   return (
     <div className="config-groups">
-      <div className="toolbar" role="group" aria-label={t('market.presets')}>
-        <button
-          type="button"
-          className="secondary"
-          onClick={() => setMarket({ ...createExampleDraft().market })}
-        >
-          {t('market.sampleDefaults')}
-        </button>
-        <button
-          type="button"
-          className="secondary"
-          onClick={() =>
-            setMarket({
-              fx_sigma: 0,
-              fx_drift: 0,
-              fx_real_trend: 0,
-              home_cpi_sigma: 0,
-            })
-          }
-        >
-          {t('market.stablePrices')}
-        </button>
-      </div>
-      <p className="muted">{t('market.presetsHint')}</p>
       {groups.map((group) => {
         const advanced = ADVANCED_MARKET[group.id] ?? [],
           core = Object.fromEntries(

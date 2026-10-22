@@ -120,11 +120,6 @@ const zhUI1 = {
   'market.inflation': '通胀',
   'market.fx': '汇率',
   'market.advanced': '高级{label}',
-  'market.presets': '市场预设',
-  'market.sampleDefaults': '示例默认值',
-  'market.stablePrices': '稳定价格',
-  'market.presetsHint':
-    '示例默认值恢复示例自带的市场假设。稳定价格关闭通胀与汇率波动，但保留历史回报抽样。',
   'accounts.brokerage': '非退休流动资产',
   'accounts.preTax': '税前退休储蓄',
   'accounts.afterTax': '税后退休储蓄',

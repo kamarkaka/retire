@@ -125,11 +125,6 @@ const enUI = {
   'market.inflation': 'Inflation',
   'market.fx': 'FX',
   'market.advanced': 'Advanced {label}',
-  'market.presets': 'Market presets',
-  'market.sampleDefaults': 'Sample defaults',
-  'market.stablePrices': 'Stable prices',
-  'market.presetsHint':
-    "Sample defaults restore the shipped example's market assumptions. Stable prices turns off inflation and FX volatility while keeping historical return sampling.",
   'accounts.brokerage': 'Non-retirement liquid assets',
   'accounts.preTax': 'Pre-tax retirement savings',
   'accounts.afterTax': 'After-tax retirement savings',
