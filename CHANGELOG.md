@@ -6,6 +6,26 @@ adds an entry here, newest first.
 
 ## Unreleased
 
+(nothing yet)
+
+## 0.2.0 — 2026-10-22
+
+Market customization plus a higher-fidelity default run (`linux/amd64`).
+
+### Markets
+
+- New History era presets: pick a sampling window — full history
+  1928–2025, postwar 1946–2025, modern 1980–2025, high-inflation
+  1966–1982, or crisis periods (Great Depression 1929–1939, dot-com/GFC
+  2000–2009) — instead of always sampling the full history.
+- New Outlook shift knob: a single annual-return adjustment applied to
+  stocks and bonds for optimistic/pessimistic scenarios; cash and
+  inflation are untouched.
+- Removed the low-value Sample defaults and Stable prices buttons under
+  Markets, inflation & FX.
+
+### Simulation
+
 - Default simulation paths raised from 200 to 5000 for tighter result
   distributions; the shipped sample config uses 5000 as well.
 
