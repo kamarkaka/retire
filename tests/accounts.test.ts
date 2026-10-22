@@ -114,9 +114,57 @@ describe('fixed three accounts with derived ownership', () => {
     expect(r.byAsset.us_stocks).toBeCloseTo(50000 * m.us_stocks[0], 8);
     expect(r.byAsset.us_bonds).toBeCloseTo(30000 * m.us_bonds[0], 8);
     expect(r.byAsset.usd_cash).toBeCloseTo(20000 * m.usd_cash[0], 8);
+    expect(r.openingByAsset).toEqual({
+      us_stocks: 50000,
+      us_bonds: 30000,
+      usd_cash: 20000,
+    });
     expect(
       r.byAsset.us_stocks + r.byAsset.us_bonds + r.byAsset.usd_cash,
     ).toBeCloseTo(r.growth, 8);
+  });
+  it('reports only brokerage yields as currently taxable', () => {
+    const s = control(),
+      m = generateMarketPath(s, references, 0);
+    s.market.income_yield_us_stocks = 0.02;
+    s.market.income_yield_us_bonds = 0.05;
+    const brokerage = {
+      name: 'b',
+      type: 'brokerage',
+      balance: 100000,
+      allocation: { us_stocks: 0.5, us_bonds: 0.3, usd_cash: 0.2 },
+    } as BrokerageAccountConfig;
+    const r = growAccount(
+      brokerage,
+      initialAccount(brokerage, false),
+      s,
+      0,
+      m,
+      ledgers(),
+    );
+    expect(r.taxable.us_stocks).toBeCloseTo(50000 * 0.02, 8);
+    expect(r.taxable.us_bonds).toBeCloseTo(30000 * 0.05, 8);
+    expect(r.taxable.usd_cash).toBeCloseTo(20000 * m.usd_cash[0], 8);
+    const retirement = {
+      name: 'p',
+      type: 'pre_tax',
+      balance: 100000,
+      allocation: { us_stocks: 0.5, us_bonds: 0.3, usd_cash: 0.2 },
+    } as RetirementAccountConfig;
+    const deferred = growAccount(
+      retirement,
+      initialAccount(retirement, false),
+      s,
+      0,
+      m,
+      ledgers(),
+    );
+    expect(deferred.taxable).toEqual({
+      us_stocks: 0,
+      us_bonds: 0,
+      usd_cash: 0,
+    });
+    expect(deferred.growth).toBeCloseTo(r.growth, 8);
   });
   it('sells bonds at zero gain while stocks realize gains', () => {
     const s = control(),

@@ -155,12 +155,23 @@ export function growAccount(
     us_bonds: 0,
     usd_cash: 0,
   };
+  const taxable: Record<AssetClass, number> = {
+    us_stocks: 0,
+    us_bonds: 0,
+    usd_cash: 0,
+  };
+  const openingByAsset: Record<AssetClass, number> = {
+    us_stocks: 0,
+    us_bonds: 0,
+    usd_cash: 0,
+  };
   for (const key of ASSETS) {
     const value = state.values[key] ?? 0,
       returnValue = market[key][t];
     opening += value;
     growth += value * returnValue;
     byAsset[key] += value * returnValue;
+    openingByAsset[key] += value;
     state.values[key] = value * (1 + returnValue);
     if (config.type !== 'brokerage' || value === 0) continue;
     const yieldRate =
@@ -170,6 +181,7 @@ export function growAccount(
             ? s.market.income_yield_us_stocks
             : s.market.income_yield_us_bonds,
       earnings = value * yieldRate;
+    taxable[key] += earnings;
     state.bases[key] = (state.bases[key] ?? 0) + earnings;
     if (key === 'us_stocks') {
       attribute(income, state.shares, 'qualified_dividends', earnings);
@@ -180,7 +192,7 @@ export function growAccount(
       attribute(income, state.shares, 'nra_exempt_interest', earnings);
     }
   }
-  return { opening, growth, byAsset };
+  return { opening, growth, byAsset, taxable, openingByAsset };
 }
 export function rebalance(
   config: AccountConfig,

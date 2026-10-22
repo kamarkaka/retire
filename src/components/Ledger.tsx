@@ -101,11 +101,44 @@ function YearModal({
     scenario = run.request.scenario,
     members: PersonId[] = scenario.people.B ? ['A', 'B'] : ['A'],
     china = scenario.people.domicile === 'China';
+  const isResident = (id: PersonId) =>
+      scenario.people[id]!.us_income_tax_status === 'resident',
+    residents = members.filter(isResident);
+  // Per-resident AGI parts. rentalOther is the ordinary-income residual:
+  // rental received after passive limits plus property gains minus released
+  // amounts, which the engine does not retain separately.
+  const agiParts = (id: PersonId) => {
+    const d = (detail.tax_detail[id] ?? {}) as Record<string, unknown>,
+      income = detail.income[id],
+      interest = income.interest_us,
+      pensions = income.trad_own + income.trad_inherited,
+      qd = income.qualified_dividends,
+      lt = num(d.lt_gain),
+      lossDed = num(d.loss_deduction),
+      agi = num(d.agi);
+    return {
+      interest,
+      pensions,
+      qd,
+      lt,
+      lossDed,
+      agi,
+      rentalOther: agi + lossDed - qd - lt - interest - pensions,
+    };
+  };
   const fxOpen = replay.market.fx[ti],
     fxClose = ledgerValue(replay, ti, 'fx'),
     usdClose = ledgerValue(replay, ti, 'usd_index');
   const gains = detail.investment_gain,
-    gainTotal = gains.us_stocks + gains.us_bonds + gains.usd_cash;
+    gainTotal = gains.us_stocks + gains.us_bonds + gains.usd_cash,
+    opening = detail.investment_opening,
+    baseTotal = opening.us_stocks + opening.us_bonds + opening.usd_cash,
+    taxNow = detail.investment_taxable,
+    stockPriceGain = gains.us_stocks - taxNow.us_stocks,
+    stockPriceReturn =
+      opening.us_stocks !== 0 ? stockPriceGain / opening.us_stocks : NaN,
+    realized = detail.income.A.cap_gain + detail.income.B.cap_gain,
+    taxTotal = taxNow.us_stocks + taxNow.us_bonds + taxNow.usd_cash + realized;
   const equityClose = ledgerValue(replay, ti, 'property_equity_usd'),
     equityOpen =
       detail.report.starting_net_worth_cny / fxOpen -
@@ -142,100 +175,124 @@ function YearModal({
           <thead>
             <tr>
               <th></th>
-              <th>{t('modal.gain')}</th>
+              <th>{t('modal.base')}</th>
               <th>{t('modal.return')}</th>
+              <th>{t('modal.gain')}</th>
+              <th>{t('modal.taxableNow')}</th>
+              <th>{t('modal.deferred')}</th>
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td>{t('modal.stocks')}</td>
+              <td>{money(opening.us_stocks, intlLocale)}</td>
+              <td>{pct(stockPriceReturn)}</td>
+              <td>{money(stockPriceGain, intlLocale)}</td>
+              <td>{money(0, intlLocale)}</td>
+              <td>{money(stockPriceGain, intlLocale)}</td>
+            </tr>
+            <tr>
+              <td>{t('modal.dividends')}</td>
+              <td>—</td>
+              <td></td>
+              <td>{money(taxNow.us_stocks, intlLocale)}</td>
+              <td>{money(taxNow.us_stocks, intlLocale)}</td>
+              <td>{money(0, intlLocale)}</td>
+            </tr>
             {(
               [
-                ['modal.stocks', 'us_stocks'],
                 ['modal.bonds', 'us_bonds'],
                 ['modal.cash', 'usd_cash'],
               ] as const
             ).map(([key, asset]) => (
               <tr key={asset}>
                 <td>{t(key)}</td>
-                <td>{money(gains[asset], intlLocale)}</td>
+                <td>{money(opening[asset], intlLocale)}</td>
                 <td>{pct(replay.market[asset][ti])}</td>
+                <td>{money(gains[asset], intlLocale)}</td>
+                <td>{money(taxNow[asset], intlLocale)}</td>
+                <td>{money(gains[asset] - taxNow[asset], intlLocale)}</td>
               </tr>
             ))}
+            <tr>
+              <td>{t('modal.realized')}</td>
+              <td>—</td>
+              <td></td>
+              <td>—</td>
+              <td>{money(realized, intlLocale)}</td>
+              <td>—</td>
+            </tr>
             <tr>
               <td>
                 <strong>{t('modal.total')}</strong>
               </td>
               <td>
-                <strong>{money(gainTotal, intlLocale)}</strong>
+                <strong>{money(baseTotal, intlLocale)}</strong>
               </td>
               <td></td>
+              <td>
+                <strong>{money(gainTotal, intlLocale)}</strong>
+              </td>
+              <td>
+                <strong>{money(taxTotal, intlLocale)}</strong>
+              </td>
+              <td>
+                <strong>
+                  {money(gainTotal - taxTotal + realized, intlLocale)}
+                </strong>
+              </td>
             </tr>
           </tbody>
         </table>
-        {members.some(
-          (id) => scenario.people[id]!.us_income_tax_status === 'resident',
-        ) && (
+        <p className="ledger-explanation">{t('modal.householdNote')}</p>
+        {residents.length > 0 && (
           <>
             <h3>{t('modal.agiTitle')}</h3>
-            {members
-              .filter(
-                (id) =>
-                  scenario.people[id]!.us_income_tax_status === 'resident',
-              )
-              .map((id) => {
-                const d = (detail.tax_detail[id] ?? {}) as Record<
-                    string,
-                    unknown
-                  >,
-                  income = detail.income[id],
-                  interest = income.interest_us,
-                  pensions = income.trad_own + income.trad_inherited,
-                  qd = income.qualified_dividends,
-                  lt = num(d.lt_gain),
-                  lossDed = num(d.loss_deduction),
-                  agi = num(d.agi),
-                  rentalOther = agi + lossDed - qd - lt - interest - pensions;
-                return (
-                  <div key={id}>
-                    <h4>{t('modal.person', { id })}</h4>
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>{t('modal.interest')}</td>
-                          <td>{money(interest, intlLocale)}</td>
-                        </tr>
-                        <tr>
-                          <td>{t('modal.pension')}</td>
-                          <td>{money(pensions, intlLocale)}</td>
-                        </tr>
-                        <tr>
-                          <td>{t('modal.rentalOther')}</td>
-                          <td>{money(rentalOther, intlLocale)}</td>
-                        </tr>
-                        <tr>
-                          <td>{t('modal.lossDeduction')}</td>
-                          <td>{money(-lossDed, intlLocale)}</td>
-                        </tr>
-                        <tr>
-                          <td>{t('modal.qd')}</td>
-                          <td>{money(qd, intlLocale)}</td>
-                        </tr>
-                        <tr>
-                          <td>{t('modal.ltGains')}</td>
-                          <td>{money(lt, intlLocale)}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <strong>{t('modal.agi')}</strong>
-                          </td>
-                          <td>
-                            <strong>{money(agi, intlLocale)}</strong>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                );
-              })}
+            {residents.map((id) => {
+              const { interest, pensions, qd, lt, lossDed, agi, rentalOther } =
+                agiParts(id);
+              return (
+                <div key={id}>
+                  <h4>{t('modal.person', { id })}</h4>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>{t('modal.interest')}</td>
+                        <td>{money(interest, intlLocale)}</td>
+                      </tr>
+                      <tr>
+                        <td>{t('modal.pension')}</td>
+                        <td>{money(pensions, intlLocale)}</td>
+                      </tr>
+                      <tr>
+                        <td>{t('modal.rentalOther')}</td>
+                        <td>{money(rentalOther, intlLocale)}</td>
+                      </tr>
+                      <tr>
+                        <td>{t('modal.lossDeduction')}</td>
+                        <td>{money(-lossDed, intlLocale)}</td>
+                      </tr>
+                      <tr>
+                        <td>{t('modal.qd')}</td>
+                        <td>{money(qd, intlLocale)}</td>
+                      </tr>
+                      <tr>
+                        <td>{t('modal.ltGains')}</td>
+                        <td>{money(lt, intlLocale)}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>{t('modal.agi')}</strong>
+                        </td>
+                        <td>
+                          <strong>{money(agi, intlLocale)}</strong>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              );
+            })}
           </>
         )}
         <h3>{t('modal.usTax')}</h3>
@@ -466,7 +523,11 @@ function YearModal({
             </tr>
             <tr>
               <td>{t('modal.stocks')}</td>
-              <td>{money(gains.us_stocks, intlLocale)}</td>
+              <td>{money(stockPriceGain, intlLocale)}</td>
+            </tr>
+            <tr>
+              <td>{t('modal.dividends')}</td>
+              <td>{money(taxNow.us_stocks, intlLocale)}</td>
             </tr>
             <tr>
               <td>{t('modal.bonds')}</td>

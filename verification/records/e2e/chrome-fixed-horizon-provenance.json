@@ -11,7 +11,7 @@
     "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
     "result_layout_version": "retire-results-v1",
     "ledger_report_version": "retire-ledger-report-v1",
-    "build_version": "0.1.0+ec1096217dee90090313ed96969d3d2f8834b419631e86f24270a5f15dc5fa1e",
+    "build_version": "0.1.0+37cad48bdb3ae624124d2b13395e90524a2bb5cea1e552eb1e9b93b171f307bb",
     "scenario_sha256": "47b122116fde2d013ed137ad0a1bc7f318df7fb872ff16f4e944f7e7d7a54940",
     "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
     "reference_versions": {
@@ -284,6 +284,16 @@
           "us_bonds": 21812.010530174615,
           "usd_cash": 463.8663514006647
         },
+        "investment_taxable": {
+          "us_stocks": 9784.07057125774,
+          "us_bonds": 18676.724148500445,
+          "usd_cash": 463.8663514006647
+        },
+        "investment_opening": {
+          "us_stocks": 1602420.5548431547,
+          "us_bonds": 846210.2774215774,
+          "usd_cash": 122070.09247385913
+        },
         "phases": [
           "start",
           "property strategies",
@@ -480,6 +490,16 @@
           "us_stocks": 23635.213090001016,
           "us_bonds": -75298.79024387314,
           "usd_cash": 5785.654216382835
+        },
+        "investment_taxable": {
+          "us_stocks": 10611.611462628234,
+          "us_bonds": 20256.40949900626,
+          "usd_cash": 5785.654216382835
+        },
+        "investment_opening": {
+          "us_stocks": 1782551.0599415603,
+          "us_bonds": 936941.8630180922,
+          "usd_cash": 132394.83332683833
         },
         "phases": [
           "start",
@@ -678,6 +698,16 @@
           "us_bonds": 212385.58667603502,
           "usd_cash": 7127.981036910163
         },
+        "investment_taxable": {
+          "us_stocks": 10093.932761146096,
+          "us_bonds": 19268.217290587538,
+          "usd_cash": 7127.981036910163
+        },
+        "investment_opening": {
+          "us_stocks": 1726579.8178436446,
+          "us_bonds": 904508.2218653357,
+          "usd_cash": 125936.0607227944
+        },
         "phases": [
           "start",
           "property strategies",
@@ -874,6 +904,16 @@
           "us_stocks": 507523.88012182317,
           "us_bonds": 16688.400697051882,
           "usd_cash": 8144.633767417407
+        },
+        "investment_taxable": {
+          "us_stocks": 12675.77829214444,
+          "us_bonds": 24196.678959511908,
+          "usd_cash": 8144.633767417407
+        },
+        "investment_opening": {
+          "us_stocks": 2237664.3027447336,
+          "us_bonds": 1168158.3128783696,
+          "usd_cash": 158148.2284935419
         },
         "phases": [
           "start",

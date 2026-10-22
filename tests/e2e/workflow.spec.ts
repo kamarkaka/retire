@@ -731,8 +731,29 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
   await expect(modal).toContainText('US tax resident');
   await expect(modal).toContainText('Nonresident alien');
   await expect(modal).toContainText('Taxable income (base)');
+  await expect(modal).toContainText('Taxable now');
+  await expect(modal).toContainText('Tax-deferred');
+  await expect(modal).toContainText('Realized gains on sales');
+  await expect(modal).toContainText('Stock price gains');
+  const invTable = modal.locator('table').first();
+  await expect(
+    invTable.getByRole('columnheader', { name: 'Base', exact: true }),
+  ).toBeVisible();
+  // Basis x return equals the booked gain on the unsplit bonds row,
+  // within the display rounding of the percent and money cells.
+  const bondsCells = invTable
+    .locator('tbody tr', { hasText: 'Bonds' })
+    .locator('td');
+  const plain = (s: string | null) => Number((s ?? '').replace(/,/g, '')),
+    basis = plain(await bondsCells.nth(1).textContent()),
+    pctText = (await bondsCells.nth(2).textContent())!,
+    gain = plain(await bondsCells.nth(3).textContent());
+  expect(Math.abs(basis * (parseFloat(pctText) / 100) - gain)).toBeLessThan(
+    basis * 0.00005 + 1,
+  );
   await expect(modal).toContainText('Adjusted gross income (USD)');
   await expect(modal).toContainText('Rental, property & passive (net)');
+  await expect(modal).toContainText('Household total for all members.');
   await expect(modal).toContainText('Effective rate');
   await expect(modal).toContainText('China income tax (CNY)');
   await expect(modal).toContainText('Tax due');
