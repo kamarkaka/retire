@@ -11,7 +11,7 @@
     "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
     "result_layout_version": "retire-results-v1",
     "ledger_report_version": "retire-ledger-report-v1",
-    "build_version": "0.1.0+42e3df23040b4be6a6a0d36d67790ccf244b5b1c9353ed3d8234ae264df06cf8",
+    "build_version": "0.1.0+32ef82acbf4e8c3feb182476f3f4b970a3b03959012309518bdd8931a2dcddfd",
     "scenario_sha256": "47b122116fde2d013ed137ad0a1bc7f318df7fb872ff16f4e944f7e7d7a54940",
     "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
     "reference_versions": {
@@ -279,6 +279,11 @@
           "shock_cny": 0,
           "late_life_care_cny": 0
         },
+        "investment_gain": {
+          "us_stocks": 304951.479163673,
+          "us_bonds": 21812.010530174615,
+          "usd_cash": 463.8663514006647
+        },
         "phases": [
           "start",
           "property strategies",
@@ -470,6 +475,11 @@
           "base_cny": 39096.339671813235,
           "shock_cny": 0,
           "late_life_care_cny": 0
+        },
+        "investment_gain": {
+          "us_stocks": 23635.213090001016,
+          "us_bonds": -75298.79024387314,
+          "usd_cash": 5785.654216382835
         },
         "phases": [
           "start",
@@ -663,6 +673,11 @@
           "shock_cny": 0,
           "late_life_care_cny": 13160.397045110307
         },
+        "investment_gain": {
+          "us_stocks": 642204.7974592012,
+          "us_bonds": 212385.58667603502,
+          "usd_cash": 7127.981036910163
+        },
         "phases": [
           "start",
           "property strategies",
@@ -854,6 +869,11 @@
           "base_cny": 46348.669126649016,
           "shock_cny": 0,
           "late_life_care_cny": 13734.599360944674
+        },
+        "investment_gain": {
+          "us_stocks": 507523.88012182317,
+          "us_bonds": 16688.400697051882,
+          "usd_cash": 8144.633767417407
         },
         "phases": [
           "start",

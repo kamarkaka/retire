@@ -150,11 +150,17 @@ export function growAccount(
 ) {
   let opening = 0,
     growth = 0;
+  const byAsset: Record<AssetClass, number> = {
+    us_stocks: 0,
+    us_bonds: 0,
+    usd_cash: 0,
+  };
   for (const key of ASSETS) {
     const value = state.values[key] ?? 0,
       returnValue = market[key][t];
     opening += value;
     growth += value * returnValue;
+    byAsset[key] += value * returnValue;
     state.values[key] = value * (1 + returnValue);
     if (config.type !== 'brokerage' || value === 0) continue;
     const yieldRate =
@@ -174,7 +180,7 @@ export function growAccount(
       attribute(income, state.shares, 'nra_exempt_interest', earnings);
     }
   }
-  return { opening, growth };
+  return { opening, growth, byAsset };
 }
 export function rebalance(
   config: AccountConfig,

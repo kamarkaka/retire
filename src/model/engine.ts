@@ -68,6 +68,7 @@ export interface DetailedYear {
     shock_cny: number;
     late_life_care_cny: number;
   };
+  investment_gain: Record<'us_stocks' | 'us_bonds' | 'usd_cash', number>;
   phases: readonly string[];
   income: Record<PersonId, IncomeLedger>;
   accounts: AccountState[];
@@ -413,6 +414,7 @@ function runPath(
       growth = 0,
       reportInvested = 0,
       reportGrowth = 0;
+    const reportGains = { us_stocks: 0, us_bonds: 0, usd_cash: 0 };
     for (let i = 0; i < accounts.length; i++) {
       const r = growAccount(s.accounts[i], accounts[i], s, t, market, income);
       invested += r.opening;
@@ -420,6 +422,8 @@ function runPath(
       if (trace) {
         reportInvested += r.opening;
         reportGrowth += r.growth;
+        for (const key of ['us_stocks', 'us_bonds', 'usd_cash'] as const)
+          reportGains[key] += r.byAsset[key];
       }
     }
     priorReturn = invested > 0 ? growth / invested : NaN;
@@ -650,6 +654,7 @@ function runPath(
           shock_cny: cost.medical_shock * h2cny,
           late_life_care_cny: cost.late_life_care * h2cny,
         },
+        investment_gain: { ...reportGains },
         phases: YEAR_PHASES,
         income: structuredClone(income),
         accounts: structuredClone(accounts),

@@ -2,30 +2,30 @@
   "status": "PASS",
   "hash_scope": "first 1000 complete paths, all chart/Float64/Int32/flag buffers; replay paths 0, 17 and 999 full ledgers",
   "one": {
-    "run_id": "f99ccf9a-935d-424d-9541-5a98e8dd1c28",
+    "run_id": "86e5086e-836e-4ecb-aa00-061b60353e96",
     "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
     "os": "MacIntel",
     "hardware_concurrency": 2,
     "worker_count": 1,
     "chunk_size": 64,
-    "started_at": "2026-10-22T20:08:40.929Z",
+    "started_at": "2026-10-22T20:36:36.613Z",
     "memory_estimate_bytes": 104729944,
     "memory_estimate_scope": "Known simulation buffers, worker workspaces, pinned results, scratch and 96 MiB reserve; excludes browser overhead and JavaScript heaps. This is not an OS process memory cap.",
-    "finished_at": "2026-10-22T20:08:42.682Z",
-    "elapsed_ms": 1752.7999999523163
+    "finished_at": "2026-10-22T20:36:38.312Z",
+    "elapsed_ms": 1698.7000000476837
   },
   "four": {
-    "run_id": "592b7457-7b25-472b-9872-eb9fcff3fd4e",
+    "run_id": "57f98d49-dc7f-45f6-b322-706b09eed26e",
     "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
     "os": "MacIntel",
     "hardware_concurrency": 5,
     "worker_count": 4,
     "chunk_size": 64,
-    "started_at": "2026-10-22T20:08:43.282Z",
+    "started_at": "2026-10-22T20:36:38.949Z",
     "memory_estimate_bytes": 107579888,
     "memory_estimate_scope": "Known simulation buffers, worker workspaces, pinned results, scratch and 96 MiB reserve; excludes browser overhead and JavaScript heaps. This is not an OS process memory cap.",
-    "finished_at": "2026-10-22T20:08:43.871Z",
-    "elapsed_ms": 588.5
+    "finished_at": "2026-10-22T20:36:39.537Z",
+    "elapsed_ms": 588.2000000476837
   },
   "replay_hashes": {
     "26": "c4e9c2ea044efec860336099dff795e67d9627c30895adcc53811b1309d16831",
@@ -57,8 +57,8 @@
       896,
       960,
       192,
-      128,
       64,
+      128,
       256,
       320,
       384,
@@ -79,17 +79,17 @@
       384,
       320,
       448,
-      0,
-      576,
       512,
+      576,
+      0,
       640,
       704,
-      832,
       768,
+      832,
       896,
       960,
-      1088,
       1024,
+      1088,
       1152,
       1216,
       1280,
@@ -173,7 +173,7 @@
     ],
     "summaries": [
       {
-        "run_id": "f99ccf9a-935d-424d-9541-5a98e8dd1c28",
+        "run_id": "86e5086e-836e-4ecb-aa00-061b60353e96",
         "n_paths": 1000,
         "seed": 42,
         "bytes": 2119000,
@@ -185,7 +185,7 @@
         }
       },
       {
-        "run_id": "592b7457-7b25-472b-9872-eb9fcff3fd4e",
+        "run_id": "57f98d49-dc7f-45f6-b322-706b09eed26e",
         "n_paths": 1000,
         "seed": 42,
         "bytes": 2119000,
@@ -197,7 +197,7 @@
         }
       },
       {
-        "run_id": "d77222aa-95ea-457e-b228-27f690d5bfbb",
+        "run_id": "4eb4df3c-9f6e-4048-80ac-8e5c25a24952",
         "n_paths": 2000,
         "seed": 42,
         "bytes": 4238000,

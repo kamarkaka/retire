@@ -3,14 +3,14 @@
   "times": [
     {
       "action": "draft edit",
-      "ms": 7
+      "ms": 6
     },
     {
       "action": "tab switch",
       "ms": 50
     }
   ],
-  "cancel_ms": 28,
+  "cancel_ms": 22,
   "method": "Real worker computation and main-thread controls; delay analysis message delivery to hold summarizing phase and deliver old data after termination.",
   "evidence": {
     "live": 0,
@@ -28,29 +28,29 @@
       320,
       384,
       448,
-      512,
       576,
+      512,
       640,
       704,
       768,
       832,
-      896,
       960,
+      896,
       1024,
       1088,
       1152,
       1216,
       1280,
       1344,
-      1472,
       1408,
+      1472,
       1536,
       1600,
       1664,
       1728,
       1792,
-      1856,
       1984,
+      1856,
       1920,
       0
     ],
@@ -101,13 +101,13 @@
     ],
     "summaries": [
       {
-        "run_id": "2ad00e37-37fa-4501-9315-9f8853b6376b",
+        "run_id": "d60a0d8a-85cb-4465-8766-e7d98d999a86",
         "n_paths": 2000,
         "seed": 42,
         "bytes": 4238000
       },
       {
-        "run_id": "65076910-e715-40f3-9f64-23a8f3a4fc17",
+        "run_id": "b7404f37-15d2-42b5-b633-cad657ea4608",
         "n_paths": 32,
         "seed": 44,
         "bytes": 67808

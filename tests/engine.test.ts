@@ -62,6 +62,11 @@ describe('M07–M08 real model year loop', () => {
       expect(r.years[49].phases).toHaveLength(10);
       expect(r.ledger[49 * LEDGER_FIELDS.length + LI.alive_A]).toBe(1);
       expect(r.ledger[49 * LEDGER_FIELDS.length + LI.alive_B]).toBe(1);
+      // All-cash controls isolate the cash leg of the per-asset gain split.
+      const gains = r.years[0].investment_gain;
+      expect(gains.us_stocks).toBe(0);
+      expect(gains.us_bonds).toBe(0);
+      expect(Number.isFinite(gains.usd_cash)).toBe(true);
     });
   }
   it('stops after the last funded year when net assets reach exactly zero', () => {

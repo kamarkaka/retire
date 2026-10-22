@@ -93,6 +93,31 @@ describe('fixed three accounts with derived ownership', () => {
     expect(cash.nra_exempt_interest).toBeCloseTo(expected, 8);
     expect(cash.qualified_dividends).toBe(0);
   });
+  it('reports growth broken down by asset class', () => {
+    const s = control(),
+      m = generateMarketPath(s, references, 0),
+      income = ledgers();
+    const config = {
+      name: 'b',
+      type: 'brokerage',
+      balance: 100000,
+      allocation: { us_stocks: 0.5, us_bonds: 0.3, usd_cash: 0.2 },
+    } as BrokerageAccountConfig;
+    const r = growAccount(
+      config,
+      initialAccount(config, false),
+      s,
+      0,
+      m,
+      income,
+    );
+    expect(r.byAsset.us_stocks).toBeCloseTo(50000 * m.us_stocks[0], 8);
+    expect(r.byAsset.us_bonds).toBeCloseTo(30000 * m.us_bonds[0], 8);
+    expect(r.byAsset.usd_cash).toBeCloseTo(20000 * m.usd_cash[0], 8);
+    expect(
+      r.byAsset.us_stocks + r.byAsset.us_bonds + r.byAsset.usd_cash,
+    ).toBeCloseTo(r.growth, 8);
+  });
   it('sells bonds at zero gain while stocks realize gains', () => {
     const s = control(),
       income = ledgers();

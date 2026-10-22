@@ -347,6 +347,24 @@ test('M08: a 50-year planning config uses historical returns and integer money d
   await expect(page.getByTestId('year-provenance')).toContainText(
     '"medical_detail"',
   );
+  const modal = page.getByTestId('year-modal');
+  await expect(modal).toContainText('Year 2075 details');
+  await expect(
+    modal.getByRole('heading', { name: 'Investments (USD)' }),
+  ).toBeVisible();
+  await expect(
+    modal.getByRole('heading', { name: 'US income tax (USD)' }),
+  ).toBeVisible();
+  await expect(
+    modal.getByRole('heading', { name: 'Ending net worth walk' }),
+  ).toBeVisible();
+  await expect(modal).toContainText('Nonresident alien');
+  await expect(modal).toContainText('Cash interest');
+  await expect(
+    modal.getByText('China income tax (CNY)', { exact: false }),
+  ).toHaveCount(0);
+  await page.getByRole('button', { name: 'Close', exact: true }).click();
+  await expect(modal).toHaveCount(0);
   const csv = (
       await saveDownload(
         page,
@@ -701,6 +719,26 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
   }
   await expect(rows.last().locator('[data-field=age_A]')).toHaveText('64');
   await expect(rows.last().locator('[data-field=age_B]')).toHaveText('62');
+  const endCell = await rows
+    .last()
+    .locator('[data-field=net_worth_usd_real]')
+    .textContent();
+  await rows.last().click();
+  const modal = page.getByTestId('year-modal');
+  await expect(modal).toContainText('US tax resident');
+  await expect(modal).toContainText('Nonresident alien');
+  await expect(modal).toContainText('Taxable income (base)');
+  await expect(modal).toContainText('Effective rate');
+  await expect(modal).toContainText('China income tax (CNY)');
+  await expect(modal).toContainText('Tax due');
+  await expect(
+    modal
+      .locator('tr', { hasText: 'Ending net worth (USD, today’s money)' })
+      .locator('td')
+      .last(),
+  ).toHaveText(endCell!);
+  await page.getByRole('button', { name: 'Close', exact: true }).click();
+  await expect(modal).toHaveCount(0);
   const provenance = JSON.parse(
     (
       await saveDownload(
