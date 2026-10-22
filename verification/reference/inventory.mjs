@@ -84,6 +84,7 @@ export const marketDefaults = {
   sample_start: 1928,
   sample_end: 2025,
   block_mean_years: 8,
+  outlook_shift: 0,
   home_cpi_mean: 0.017,
   home_cpi_phi: 0.3,
   home_cpi_sigma: 0.018,
@@ -160,7 +161,7 @@ field('schema_version', 'integer', 'version', '9.2', {
   constraints: 'Exactly 1; missing requires legacy migration preview.',
 });
 field('simulation.start_year', 'integer', 'calendar year', '3.2');
-optional('simulation.n_paths', 'integer', 'paths', '9.2', 2000, {
+optional('simulation.n_paths', 'integer', 'paths', '9.2', 5000, {
   constraints: '1...100000 inclusive; exact; memory preflight may reject.',
 });
 optional('simulation.seed', 'integer', 'uint32', '9.2', 42, {
@@ -204,6 +205,7 @@ const constraints = {
   sample_start: 'Within active history; window >=10 years.',
   sample_end: 'Within active history; >=sample_start+9.',
   block_mean_years: '>=1.',
+  outlook_shift: '-0.1...0.1; added to sampled US stock/bond returns.',
   fx_spot: '>0.',
   fx_fair_value: '>0.',
   fx_adjust_speed: '0...1.',

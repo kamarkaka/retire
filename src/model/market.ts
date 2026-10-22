@@ -97,6 +97,20 @@ export function buildMarket(
     const row = usRows[rowIds[t]],
       year = s.simulation.start_year + t;
     for (const k of SERIES) p[k][t] = row[k];
+    // Outlook shift: express a hotter/cooler view on risk assets without
+    // changing volatility, sequences, inflation, or cash returns.
+    p.us_stocks[t] += m.outlook_shift;
+    p.us_bonds[t] += m.outlook_shift;
+    requireFactor(1 + p.us_stocks[t], true, {
+      series: 'us_stocks',
+      path_id: pathId,
+      year,
+    });
+    requireFactor(1 + p.us_bonds[t], true, {
+      series: 'us_bonds',
+      path_id: pathId,
+      year,
+    });
     const cn =
       m.home_cpi_mean +
       m.home_cpi_phi * (previous - m.home_cpi_mean) +

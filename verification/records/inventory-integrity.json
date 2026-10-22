@@ -1,6 +1,6 @@
 {
   "kind": "Independent inventory integrity; current product/browser execution is reported separately",
-  "checked_at": "2026-10-21T23:08:13.286Z",
+  "checked_at": "2026-10-22T23:46:17.127Z",
   "node": "v24.22.0",
   "checks": [
     {
@@ -14,7 +14,7 @@
       "name": "unique field paths",
       "status": "PASS",
       "detail": {
-        "count": 77
+        "count": 78
       }
     },
     {
@@ -117,7 +117,7 @@
       "name": "all current fields have plain-English help",
       "status": "PASS",
       "detail": {
-        "count": 77
+        "count": 78
       }
     },
     {

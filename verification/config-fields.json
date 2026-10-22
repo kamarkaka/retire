@@ -52,7 +52,7 @@
       "internal_path": "simulation.n_paths",
       "serialize_path": "simulation.n_paths",
       "omission": "optional; omission uses declared default",
-      "default": 2000,
+      "default": 5000,
       "default_kind": "documented",
       "constraints": "1...100000 inclusive; exact; memory preflight may reject.",
       "gates": [],
@@ -137,6 +137,22 @@
       "constraints": ">=1.",
       "gates": [],
       "description": "The average length of consecutive historical years kept together before the simulation jumps to another historical starting point. Longer blocks preserve more of the sequences seen during booms and crises. This is an average, rather than a fixed block length."
+    },
+    {
+      "path": "market.outlook_shift",
+      "type": "number",
+      "unit": "annual decimal rate",
+      "spec_section": "4.3–4.6",
+      "builder_section": "Markets, inflation & FX / Markets",
+      "builder_control": "numeric",
+      "internal_path": "market.outlook_shift",
+      "serialize_path": "market.outlook_shift",
+      "omission": "optional; omission uses declared default",
+      "default": 0,
+      "default_kind": "documented",
+      "constraints": "-0.1...0.1; added to sampled US stock/bond returns.",
+      "gates": [],
+      "description": "A yearly shift added to sampled US stock and bond returns, expressing a view that markets will run hotter or cooler than history. Zero replays history unchanged. Enter a decimal: 0.02 adds two percentage points a year. Volatility, crash sequences, inflation and cash returns are unchanged."
     },
     {
       "path": "market.home_cpi_mean",

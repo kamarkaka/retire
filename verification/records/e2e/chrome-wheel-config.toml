@@ -55,6 +55,7 @@ home_cpi_start = 0.001
 income_yield_us_bonds = 0.003
 income_yield_us_stocks = 0.003
 medical_excess_inflation = 0.02
+outlook_shift = 0
 sample_end = 2025
 sample_start = 1928
 
@@ -110,7 +111,7 @@ value = 900000
 
 [simulation]
 max_age = 110
-n_paths = 200
+n_paths = 5000
 seed = 42
 start_year = 2027
 

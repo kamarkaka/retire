@@ -120,6 +120,17 @@ const zhUI1 = {
   'market.inflation': '通胀',
   'market.fx': '汇率',
   'market.advanced': '高级{label}',
+  'market.era': '历史时期',
+  'market.eraHint':
+    '抽样窗口（位于高级中）的快捷方式。“自定义”表示当前年份与任一预设都不匹配。',
+  'market.eraFull': '完整历史（1928–2025）',
+  'market.eraPostwar': '战后（1946–2025）',
+  'market.eraModern': '现代（1980–2025）',
+  'market.eraHighInflation': '高通胀（1966–1982）',
+  'market.eraDepression': '大萧条（1929–1939）',
+  'market.eraCrashes': '互联网泡沫与2008（2000–2009）',
+  'market.eraRecent': '近年（2000–2025）',
+  'market.eraCustom': '自定义区间',
   'accounts.brokerage': '非退休流动资产',
   'accounts.preTax': '税前退休储蓄',
   'accounts.afterTax': '税后退休储蓄',
@@ -472,6 +483,7 @@ const zhLabels: Record<string, string> = {
   mortgage_years_left: '房贷剩余年限',
   n_paths: '路径数',
   name: '名称',
+  outlook_shift: '前景偏移',
   proceeds_account: '收款账户',
   property_tax_annual: '房产税（年）',
   real_growth: '实际增长',
@@ -659,6 +671,12 @@ const zhFields: Record<string, FieldText> = {
       '可抽样的最晚历史年份。与抽样起始年共同决定历史结果池；不决定退休终点年份，也不预测未来回报。',
     omission: OPTIONAL,
     constraints: '须在有效历史内；不小于起始年 +9。',
+  },
+  'market.outlook_shift': {
+    description:
+      '叠加在抽样美股与美债回报上的年度偏移，用于表达市场将比历史更热或更冷的观点。0 表示完全回放历史。以小数输入：0.02 表示每年加两个百分点。波动率、危机序列、通胀与现金回报不变。',
+    omission: OPTIONAL,
+    constraints: '-0.1...0.1；叠加于抽样股债回报。',
   },
   'market.block_mean_years': {
     description:

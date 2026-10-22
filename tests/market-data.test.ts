@@ -212,6 +212,51 @@ it('M05 M06: sourced stock/bond income is taxed as income and reinvested, withou
   );
 });
 
+it('M03: outlook shift moves sampled stock/bond returns without touching cash or inflation', () => {
+  const base = createExampleDraft();
+  delete (base.market as Record<string, unknown>).outlook_shift;
+  const shifted = createExampleDraft();
+  shifted.market!.outlook_shift = 0.02;
+  const scenarios = [base, shifted].map((d) => {
+    const v = validateScenario(d, references);
+    if (!v.ok) throw new Error(JSON.stringify(v.issues));
+    return v.value.scenario;
+  });
+  expect(scenarios[0].market.outlook_shift).toBe(0);
+  const [plain, hot] = scenarios.map((s) =>
+    generateMarketPath(s, references, 0),
+  );
+  for (const t of [0, 1, 2, 10, 40]) {
+    expect(hot.us_stocks[t] - plain.us_stocks[t]).toBeCloseTo(0.02, 12);
+    expect(hot.us_bonds[t] - plain.us_bonds[t]).toBeCloseTo(0.02, 12);
+    expect(hot.usd_cash[t]).toBe(plain.usd_cash[t]);
+    expect(hot.us_cpi[t]).toBe(plain.us_cpi[t]);
+  }
+});
+
+it('M03: sampling eras filter the historical window', () => {
+  const d = createExampleDraft(),
+    v = validateScenario(d, references);
+  if (!v.ok) throw new Error(JSON.stringify(v.issues));
+  const full = prepareMarket(v.value.scenario, references);
+  expect(full[0].year).toBe(1928);
+  const recent = structuredClone(v.value.scenario);
+  recent.market.sample_start = 2000;
+  recent.market.sample_end = 2025;
+  for (const r of prepareMarket(recent, references)) {
+    expect(r.year).toBeGreaterThanOrEqual(2000);
+    expect(r.year).toBeLessThanOrEqual(2025);
+  }
+  const bad = createExampleDraft();
+  bad.market!.outlook_shift = 0.5;
+  const issues = validateScenario(bad, references);
+  expect(issues.ok).toBe(false);
+  if (!issues.ok)
+    expect(issues.issues.some((i) => i.path === 'market.outlook_shift')).toBe(
+      true,
+    );
+});
+
 it('M03 M11: the refresh gateway accepts only a parameter-free public-data GET and can recover from a source failure', async () => {
   let calls = 0;
   const middleware = marketDataMiddleware(async () => {

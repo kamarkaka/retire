@@ -16,7 +16,7 @@ test('M01 M11: production subdirectory uses static assets and a locally uploaded
   await page
     .getByLabel('Upload configuration file')
     .setInputFiles(resolve('examples/sample.toml'));
-  await complete(page, 200);
+  await complete(page, 5000);
   const manifest = JSON.parse(
     (
       await saveDownload(
@@ -26,7 +26,7 @@ test('M01 M11: production subdirectory uses static assets and a locally uploaded
       )
     ).text,
   );
-  expect(manifest.scientific.n_paths).toBe(200);
+  expect(manifest.scientific.n_paths).toBe(5000);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
   await expect(
     page.getByRole('table', { name: 'Year ledger', exact: true }),

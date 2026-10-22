@@ -11,8 +11,8 @@
     "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
     "result_layout_version": "retire-results-v1",
     "ledger_report_version": "retire-ledger-report-v1",
-    "build_version": "0.1.0+fe17fa3e2dd9d7ce7ff629d9edeb62bb6aaaed0d640e31c6adc72325788da376",
-    "scenario_sha256": "68277e17d95f14b2f98a2011ff3e84a9192d247cee16f0800b113db444d681b7",
+    "build_version": "0.1.0+1576550ebc7493057d3461eb120036e70bc6b0e39e5d034cdf06731c734fd928",
+    "scenario_sha256": "df539486c965b771e930050175102e135db53267c676cfa4b6014c023066d930",
     "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
     "reference_versions": {
       "history": "nyu-fred-1928-2025-v1",
@@ -29,7 +29,7 @@
       "market_data": "5c945c9a3d1c7a7e992d86bc8d65c2ed946154164b6b15f88db3cc43ef7af885"
     },
     "seed": 42,
-    "n_paths": 200,
+    "n_paths": 5000,
     "start_year": 2027,
     "start_age_A": 41,
     "start_age_B": 41,
@@ -51,8 +51,8 @@
     "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
     "result_layout_version": "retire-results-v1",
     "ledger_report_version": "retire-ledger-report-v1",
-    "build_version": "0.1.0+fe17fa3e2dd9d7ce7ff629d9edeb62bb6aaaed0d640e31c6adc72325788da376",
-    "scenario_sha256": "ba6d49556363077820273f3ddea50f3e16093c8019c0fef519c6cfc83c53ff8a",
+    "build_version": "0.1.0+1576550ebc7493057d3461eb120036e70bc6b0e39e5d034cdf06731c734fd928",
+    "scenario_sha256": "d028b25b7d2e6cbc1d4787608ac3786de7f912d2b027b0110ed082ab37b16fe7",
     "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
     "reference_versions": {
       "history": "nyu-fred-1928-2025-v1",
@@ -69,7 +69,7 @@
       "market_data": "5c945c9a3d1c7a7e992d86bc8d65c2ed946154164b6b15f88db3cc43ef7af885"
     },
     "seed": 42,
-    "n_paths": 200,
+    "n_paths": 5000,
     "start_year": 2027,
     "start_age_A": 41,
     "start_age_B": 41,
@@ -80,110 +80,110 @@
     "verified_source_ids": []
   },
   "comparison": {
-    "n_paths": 200,
+    "n_paths": 5000,
     "direction": "current_minus_baseline",
     "deltas": {
       "terminal_net_worth_cny_real": {
-        "p10": 37843627.1103352,
-        "p50": 58812295.59855798,
-        "p90": 92279085.48496498,
-        "paired_count": 200
+        "p10": 36814023.807444215,
+        "p50": 57779162.49611652,
+        "p90": 91441055.62911148,
+        "paired_count": 5000
       },
       "terminal_net_worth_usd_real": {
-        "p10": 5169419.68866943,
-        "p50": 8152727.08842453,
-        "p90": 12071144.563583367,
-        "paired_count": 200
+        "p10": 4949248.394326973,
+        "p50": 8147805.633135684,
+        "p90": 12868017.872618146,
+        "paired_count": 5000
       },
       "net_worth_at_A85_cny_real": {
-        "p10": 5485455.962435949,
-        "p50": 7736174.415081285,
-        "p90": 11573099.151037956,
-        "paired_count": 200
+        "p10": 5326730.9323159605,
+        "p50": 7742390.132427618,
+        "p90": 11402708.639505124,
+        "paired_count": 5000
       },
       "net_worth_at_A85_usd_real": {
-        "p10": 690482.5915137131,
-        "p50": 1072294.3534694035,
-        "p90": 1611582.8745654742,
-        "paired_count": 200
+        "p10": 701543.6346605637,
+        "p50": 1086501.4108982766,
+        "p90": 1608503.365335397,
+        "paired_count": 5000
       },
       "terminal_income_due_cny_real": {
-        "p10": -0.0020092181597621294,
-        "p50": 0.0005371446688391436,
-        "p90": 0.010071119488294446,
-        "paired_count": 200
+        "p10": -0.002779291984626105,
+        "p50": 0.00047719501429262364,
+        "p90": 0.007269830340165723,
+        "paired_count": 5000
       },
       "terminal_income_due_usd_real": {
-        "p10": -0.000235472126831958,
-        "p50": 0.00006408473355051125,
-        "p90": 0.0013990588450702775,
-        "paired_count": 200
+        "p10": -0.0004316870564651964,
+        "p50": 0.00006676943088882608,
+        "p90": 0.0010070143912447157,
+        "paired_count": 5000
       },
       "terminal_signed_net_cny_real": {
-        "p10": 37843627.110168695,
-        "p50": 58812295.590006754,
-        "p90": 92279085.48362224,
-        "paired_count": 200
+        "p10": 36814023.80788504,
+        "p50": 57779162.4929319,
+        "p90": 91441055.62296368,
+        "paired_count": 5000
       },
       "terminal_net_heirs_cny_real": {
-        "p10": 37843627.110168695,
-        "p50": 58812295.590006754,
-        "p90": 92279085.48362224,
-        "paired_count": 200
+        "p10": 36814023.80788504,
+        "p50": 57779162.4929319,
+        "p90": 91441055.62296368,
+        "paired_count": 5000
       },
       "terminal_net_heirs_usd_real": {
-        "p10": 5169419.688830271,
-        "p50": 8152727.086843142,
-        "p90": 12071144.563437164,
-        "paired_count": 200
+        "p10": 4949248.393961955,
+        "p50": 8147805.635064935,
+        "p90": 12868017.87250265,
+        "paired_count": 5000
       },
       "lifetime_income_tax_cash_cny_real": {
-        "p10": 4815998.063722346,
-        "p50": 7682663.094288201,
-        "p90": 11782801.003877308,
-        "paired_count": 200
+        "p10": 4263432.453747937,
+        "p50": 7744997.72816429,
+        "p90": 12786540.636846859,
+        "paired_count": 5000
       },
       "lifetime_income_tax_cash_usd_real": {
-        "p10": 646119.3416208416,
-        "p50": 1064570.5449008797,
-        "p90": 1671245.5317046419,
-        "paired_count": 200
+        "p10": 570815.4682564312,
+        "p50": 1079720.245572845,
+        "p90": 1801839.2967737399,
+        "paired_count": 5000
       },
       "initial_included_recurring_cny": {
         "p10": 0,
         "p50": 0,
         "p90": 0,
-        "paired_count": 200
+        "paired_count": 5000
       },
       "initial_health_cny": {
         "p10": 0,
         "p50": 0,
         "p90": 0,
-        "paired_count": 200
+        "paired_count": 5000
       },
       "portfolio_growth_factor": {
-        "p10": -31.867960613080868,
-        "p50": -6.71915775263696,
-        "p90": 0.14484973537863988,
-        "paired_count": 200
+        "p10": -32.99623648059598,
+        "p50": -6.776746396555836,
+        "p90": 0.4568326312010188,
+        "paired_count": 5000
       },
       "terminal_fx": {
         "p10": 0,
         "p50": 0,
         "p90": 0,
-        "paired_count": 200
+        "paired_count": 5000
       },
       "terminal_home_index": {
         "p10": 0,
         "p50": 0,
         "p90": 0,
-        "paired_count": 200
+        "paired_count": 5000
       },
       "terminal_usd_index": {
         "p10": 0,
         "p50": 0,
         "p90": 0,
-        "paired_count": 200
+        "paired_count": 5000
       }
     }
   }

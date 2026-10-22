@@ -47,7 +47,7 @@ test('M02 M03 M10: buttons and inputs sharing a row render at one height', async
     seed.locator('input'),
     seed.getByRole('button'),
   ]);
-  await complete(page, 200);
+  await complete(page, 5000);
   const exports = page.locator('.export-toolbar');
   measured.export_toolbar = await expectSameRow(
     page,
@@ -86,7 +86,7 @@ test('M02 M03 M10: buttons and inputs sharing a row render at one height', async
   await page
     .getByRole('button', { name: 'Pin completed run', exact: true })
     .click();
-  await complete(page, 200);
+  await complete(page, 5000);
   await page.getByRole('button', { name: 'Compare', exact: true }).click();
   await expect(page.getByTestId('comparison-compatibility')).toContainText(':');
   const compare = page.getByRole('button', {

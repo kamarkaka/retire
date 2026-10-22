@@ -9,7 +9,7 @@ npm ci
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173/`. Choose **Load sample config**, then **Run simulation**. The sample runs 200 paths, starts in 2027 with A/B born 1986, and has a maximum 70-year horizon. It stops earlier if net assets reach zero or below. A is Female/US citizen; B is Male/non-US citizen; the household domicile is China.
+Open `http://127.0.0.1:5173/`. Choose **Load sample config**, then **Run simulation**. The sample runs 5000 paths, starts in 2027 with A/B born 1986, and has a maximum 70-year horizon. It stops earlier if net assets reach zero or below. A is Female/US citizen; B is Male/non-US citizen; the household domicile is China.
 
 ## Refresh market data
 

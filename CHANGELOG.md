@@ -6,7 +6,8 @@ adds an entry here, newest first.
 
 ## Unreleased
 
-(nothing yet)
+- Default simulation paths raised from 200 to 5000 for tighter result
+  distributions; the shipped sample config uses 5000 as well.
 
 ## 0.1.0 — 2026-10-22
 

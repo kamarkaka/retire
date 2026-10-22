@@ -98,7 +98,7 @@ value = 900000
 
 [simulation]
 max_age = 110
-n_paths = 200
+n_paths = 5000
 seed = 42
 start_year = 2027
 

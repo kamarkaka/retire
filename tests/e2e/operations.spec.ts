@@ -207,7 +207,7 @@ test('M10: immutable current/run exports, matched-path deltas and pinned replay'
   await observeWorkers(page, { floats: true, hashes: true });
   await page.goto('/');
   await page.getByRole('button', { name: 'Load sample config' }).click();
-  await complete(page, 200);
+  await complete(page, 5000);
   const baseline = await saveDownload(
     page,
     'Download run config',
@@ -244,7 +244,7 @@ test('M10: immutable current/run exports, matched-path deltas and pinned replay'
     b.value.medical!.age_growth = a.value.medical!.age_growth;
     expect(b.value).toEqual(a.value);
   }
-  await complete(page, 200);
+  await complete(page, 5000);
   await page.getByRole('button', { name: 'Compare', exact: true }).click();
   await expect(page.getByTestId('comparison-compatibility')).toContainText(
     'Paired:',
@@ -262,13 +262,13 @@ test('M10: immutable current/run exports, matched-path deltas and pinned replay'
     evidence = await workerEvidence(page),
     values = evidence.summaries.slice(0, 2).map((s) => s.floats!);
   const differences = Array.from(
-    { length: 200 },
+    { length: 5000 },
     (_, id) =>
       values[1][id * FLOAT_FIELDS.length + FI.terminal_net_heirs_cny_real] -
       values[0][id * FLOAT_FIELDS.length + FI.terminal_net_heirs_cny_real],
   ).sort((x, y) => x - y);
   const q = (p: number) => {
-    const index = 199 * p,
+    const index = 4999 * p,
       low = Math.floor(index);
     return (
       differences[low] +
@@ -279,7 +279,7 @@ test('M10: immutable current/run exports, matched-path deltas and pinned replay'
     p10: q(0.1),
     p50: q(0.5),
     p90: q(0.9),
-    paired_count: 200,
+    paired_count: 5000,
   });
   expect(q(0.5)).not.toBe(0);
   await page
@@ -287,7 +287,7 @@ test('M10: immutable current/run exports, matched-path deltas and pinned replay'
     .click();
   await page.getByRole('button', { name: 'Simulation', exact: true }).click();
   await page.getByLabel('simulation.seed', { exact: true }).fill('43');
-  await complete(page, 200);
+  await complete(page, 5000);
   await page.getByRole('button', { name: 'Compare', exact: true }).click();
   await expect(page.getByTestId('comparison-compatibility')).toContainText(
     'Unpaired:',

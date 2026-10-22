@@ -30,13 +30,15 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
     },
   ];
   // Fixed account identities are not rendered; allocation cells are concise
-  // inputs without hover help.
+  // inputs without hover help. The era dropdown is a UI shortcut for the
+  // sampling window, not a config field; its help is asserted separately.
   const hidden = new Set(['accounts[].name', 'accounts[].type']),
     concise = new Set([
       'accounts[].allocation.us_stocks',
       'accounts[].allocation.us_bonds',
       'accounts[].allocation.usd_cash',
-    ]);
+    ]),
+    shortcuts = new Set(['market.era']);
   await page.goto('/');
   await uploadDraft(page, draft);
   await expect(
@@ -93,6 +95,10 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
     counts[section] = controls.length;
     for (const control of controls) {
       expect(control.path).toBeTruthy();
+      if (shortcuts.has(control.path!)) {
+        expect(control.description).toContain('sampling window');
+        continue;
+      }
       let path = control.path!.replace(/\[\d+\]/g, '[]');
       if (!inventory.fields.some((f) => f.path === path))
         path = path.replace(/(?:\[\])+$/, '');
@@ -394,4 +400,57 @@ test('M02 M10: budget labels name medical spending and shocks fold like late-lif
   await expect(
     care.getByLabel('medical.late_life_care.monthly', { exact: true }),
   ).toBeVisible();
+});
+
+test('M02 M03 M10: history era presets set the sampling window and outlook shift runs', async ({
+  page,
+}, info) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  const draft = createExampleDraft();
+  draft.simulation!.n_paths = 2;
+  draft.simulation!.max_age = 41;
+  await page.goto('/');
+  await uploadDraft(page, draft);
+  await page
+    .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
+    .click();
+  const era = page.getByLabel('market.era', { exact: true });
+  await expect(era).toHaveValue('full');
+  await era.selectOption('recent');
+  await expect(
+    page.getByLabel('market.sample_start', { exact: true }),
+  ).toHaveValue('2000');
+  await expect(
+    page.getByLabel('market.sample_end', { exact: true }),
+  ).toHaveValue('2025');
+  await era.selectOption('depression');
+  await expect(era).toHaveValue('depression');
+  await expect(
+    page.getByLabel('market.sample_start', { exact: true }),
+  ).toHaveValue('1929');
+  await expect(
+    page.getByLabel('market.sample_end', { exact: true }),
+  ).toHaveValue('1939');
+  await era.selectOption('crashes');
+  await expect(
+    page.getByLabel('market.sample_start', { exact: true }),
+  ).toHaveValue('2000');
+  await expect(
+    page.getByLabel('market.sample_end', { exact: true }),
+  ).toHaveValue('2009');
+  const outlook = page.getByLabel('market.outlook_shift', { exact: true });
+  await outlook.fill('0.02');
+  await expect(outlook).toHaveValue('0.02');
+  await page.getByLabel('market.sample_start', { exact: true }).fill('1950');
+  await expect(era).toHaveValue('custom');
+  await complete(page, 2);
+  const config = await saveDownload(
+    page,
+    'Download run config',
+    `${info.project.name}-era-outlook.toml`,
+  );
+  expect(config.text).toContain('outlook_shift = 0.02');
+  expect(config.text).toContain('sample_start = 1950');
+  expect(errors).toEqual([]);
 });

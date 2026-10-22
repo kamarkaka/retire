@@ -215,7 +215,7 @@ test('M02 M09 M10: sample builder → worker run → ledger/export → reload/up
     `${info.project.name}-sample-draft.toml`,
   );
   expect(draft.text).toContain('Test-only local note 南京 🏡');
-  await complete(page, 200);
+  await complete(page, 5000);
   await expect(
     page.getByRole('img', { name: 'Household wealth percentile chart' }),
   ).toBeVisible();
@@ -225,9 +225,9 @@ test('M02 M09 M10: sample builder → worker run → ledger/export → reload/up
       `${info.project.name}-sample-manifest.json`,
     ),
     a = JSON.parse(first.text);
-  expect(a.scientific.n_paths).toBe(200);
+  expect(a.scientific.n_paths).toBe(5000);
   expect(a.scientific.horizon).toBe(70);
-  expect(a.aggregate.retained_bytes).toBe(423800);
+  expect(a.aggregate.retained_bytes).toBe(10595000);
   expect(a.aggregate.success_probability).toBeGreaterThanOrEqual(0);
   const config = await saveDownload(
     page,
@@ -253,7 +253,7 @@ test('M02 M09 M10: sample builder → worker run → ledger/export → reload/up
     page.getByRole('button', { name: 'Load sample config' }),
   ).toBeVisible();
   await page.getByLabel('Upload configuration file').setInputFiles(config.path);
-  await complete(page, 200);
+  await complete(page, 5000);
   const second = await saveDownload(
       page,
       'Download run manifest',
@@ -497,7 +497,7 @@ test('M06 M08: shipped example and a property-sale/securities-loss case complete
   await page
     .getByLabel('Upload configuration file')
     .setInputFiles(resolve('examples/sample.toml'));
-  await complete(page, 200);
+  await complete(page, 5000);
   const d = createExampleDraft();
   d.simulation!.n_paths = 16;
   d.simulation!.max_age = 62;

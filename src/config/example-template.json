@@ -2,7 +2,7 @@
   "schema_version": 1,
   "simulation": {
     "start_year": 2027,
-    "n_paths": 200,
+    "n_paths": 5000,
     "seed": 42,
     "max_age": 110
   },

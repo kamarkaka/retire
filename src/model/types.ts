@@ -24,6 +24,7 @@ export interface MarketConfig {
   sample_start: number;
   sample_end: number;
   block_mean_years: number;
+  outlook_shift: number;
   home_cpi_mean: number;
   home_cpi_phi: number;
   home_cpi_sigma: number;

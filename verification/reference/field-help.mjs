@@ -16,6 +16,8 @@ const descriptions = {
     'The latest historical year that can be sampled. Together with Sample start, this sets the pool of past outcomes; it does not set the final retirement year or predict future returns.',
   'market.block_mean_years':
     'The average length of consecutive historical years kept together before the simulation jumps to another historical starting point. Longer blocks preserve more of the sequences seen during booms and crises. This is an average, rather than a fixed block length.',
+  'market.outlook_shift':
+    'A yearly shift added to sampled US stock and bond returns, expressing a view that markets will run hotter or cooler than history. Zero replays history unchanged. Enter a decimal: 0.02 adds two percentage points a year. Volatility, crash sequences, inflation and cash returns are unchanged.',
   'market.home_cpi_mean':
     'The long-run annual home-economy inflation assumption. Home-domicile spending follows the resulting home price index. Enter a decimal: 0.04 means 4% a year. Ignored when the domicile is the US, whose inflation replays history.',
   'market.home_cpi_phi':

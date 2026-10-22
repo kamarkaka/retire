@@ -638,6 +638,15 @@ const ADVANCED_MARKET: Record<string, string[]> = {
     'fx_quota_usd_per_person',
   ],
 };
+const ERAS = [
+  ['full', 1928, 2025, 'market.eraFull'],
+  ['postwar', 1946, 2025, 'market.eraPostwar'],
+  ['modern', 1980, 2025, 'market.eraModern'],
+  ['high_inflation', 1966, 1982, 'market.eraHighInflation'],
+  ['depression', 1929, 1939, 'market.eraDepression'],
+  ['crashes', 2000, 2009, 'market.eraCrashes'],
+  ['recent', 2000, 2025, 'market.eraRecent'],
+] as const;
 function MarketEditor({
   draft,
   onChange,
@@ -657,7 +666,8 @@ function MarketEditor({
             ([key]) =>
               !key.startsWith('fx_') &&
               !key.startsWith('home_cpi_') &&
-              key !== 'medical_excess_inflation',
+              key !== 'medical_excess_inflation' &&
+              key !== 'outlook_shift',
           ),
         ),
       },
@@ -684,8 +694,53 @@ function MarketEditor({
       ),
     },
   ];
+  const era =
+    ERAS.find(
+      ([, start, end]) =>
+        draft.market?.sample_start === start &&
+        draft.market?.sample_end === end,
+    )?.[0] ?? 'custom';
   return (
     <div className="config-groups">
+      <div className="field-grid">
+        <ConfigField
+          path="market.era"
+          label={t('market.era')}
+          description={t('market.eraHint')}
+        >
+          {(attributes) => (
+            <select
+              {...attributes}
+              aria-label="market.era"
+              value={era}
+              onChange={(e) => {
+                const preset = ERAS.find(([id]) => id === e.target.value);
+                if (preset)
+                  onChange(
+                    assign(draft, ['market'], {
+                      ...draft.market,
+                      sample_start: preset[1],
+                      sample_end: preset[2],
+                    }),
+                  );
+              }}
+            >
+              {ERAS.map(([id, , , key]) => (
+                <option key={id} value={id}>
+                  {t(key)}
+                </option>
+              ))}
+              <option value="custom">{t('market.eraCustom')}</option>
+            </select>
+          )}
+        </ConfigField>
+        <Editor
+          node={market.children.outlook_shift}
+          keys={['market', 'outlook_shift']}
+          draft={draft}
+          onChange={onChange}
+        />
+      </div>
       {groups.map((group) => {
         const advanced = ADVANCED_MARKET[group.id] ?? [],
           core = Object.fromEntries(

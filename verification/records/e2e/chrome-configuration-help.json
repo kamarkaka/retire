@@ -1,10 +1,10 @@
 {
   "status": "PASS",
-  "field_definitions": 77,
-  "leaf_definitions": 75,
+  "field_definitions": 78,
+  "leaf_definitions": 76,
   "controls_by_section": {
     "Simulation": 4,
-    "Markets, inflation & FX": 19,
+    "Markets, inflation & FX": 21,
     "People": 9,
     "Budget": 15,
     "Accounts": 14,

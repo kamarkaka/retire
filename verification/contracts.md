@@ -1,6 +1,6 @@
 # Current model and configuration contracts
 
-Date2026-10-18. The browser app is implemented; human acceptance checklists are retired. [The spec](../plan/2026-10-18-retirement-sim-design.md), [42-step plan](../plan/2026-10-18-retirement-sim.md), [types](contracts.d.ts), [77-field matrix](config-field-matrix.md) and [result layout](result-layout.json) define the current contract. Original M00 notes/oracles remain independent historical evidence.
+Date2026-10-18. The browser app is implemented; human acceptance checklists are retired. [The spec](../plan/2026-10-18-retirement-sim-design.md), [42-step plan](../plan/2026-10-18-retirement-sim.md), [types](contracts.d.ts), [78-field matrix](config-field-matrix.md) and [result layout](result-layout.json) define the current contract. Original M00 notes/oracles remain independent historical evidence.
 
 ## 1. Ownership and boundaries
 

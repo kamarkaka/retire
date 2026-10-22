@@ -55,6 +55,7 @@ home_cpi_start = 0.001
 income_yield_us_bonds = 0.06
 income_yield_us_stocks = 0.02
 medical_excess_inflation = 0.02
+outlook_shift = 0
 sample_end = 2025
 sample_start = 1928
 

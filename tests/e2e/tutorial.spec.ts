@@ -90,7 +90,7 @@ test('M02 M10: question-based guided setup builds a runnable configuration in a 
     .click();
   await expect(dialog).toHaveCount(0);
   await expect(page.getByTestId('run-status')).toContainText(
-    'Completed 2,000 paths',
+    'Completed 5,000 paths',
     { timeout: 60_000 },
   );
   await expect(page.getByTestId('success-probability')).toBeVisible();

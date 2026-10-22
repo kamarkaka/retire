@@ -198,6 +198,7 @@ export function validateScenario(
       add('market.sample_end', 'Select at least 10 years');
     if (!(m.block_mean_years! >= 1))
       add('market.block_mean_years', 'Must be at least 1');
+    range(m.outlook_shift, -0.1, 0.1, 'market.outlook_shift');
     for (const k of ['fx_spot', 'fx_fair_value'] as const)
       if (!(m[k]! > 0)) add(`market.${k}`, 'Must be positive');
     for (const k of [
