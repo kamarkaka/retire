@@ -1,5 +1,5 @@
 import { test, expect } from './fixtures';
-import { record, saveDownload } from './helpers';
+import { record, saveDraftText } from './helpers';
 import { parseScenario } from '../../src/config/config';
 
 test('M02 M10: question-based guided setup builds a runnable configuration in a modal', async ({
@@ -79,9 +79,8 @@ test('M02 M10: question-based guided setup builds a runnable configuration in a 
     { timeout: 60_000 },
   );
   await expect(page.getByTestId('success-probability')).toBeVisible();
-  const config = await saveDownload(
+  const config = await saveDraftText(
       page,
-      'Download current config',
       `${info.project.name}-guided-setup.toml`,
     ),
     parsed = parseScenario(config.text);

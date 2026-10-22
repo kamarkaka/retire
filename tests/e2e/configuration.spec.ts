@@ -1,5 +1,11 @@
 import { test, expect } from './fixtures';
-import { complete, record, saveDownload, uploadDraft } from './helpers';
+import {
+  complete,
+  record,
+  saveDownload,
+  uploadDraft,
+  saveDraftText,
+} from './helpers';
 import { createExampleDraft } from '../../src/config/constructors';
 import type { DraftScenario } from '../../src/model/types';
 import { parseScenario } from '../../src/config/config';
@@ -189,9 +195,8 @@ test('M02 M10: wheel cannot step focused decimal inputs, including account alloc
   await check('accounts[1].allocation.us_stocks', '0.003');
   await page.getByRole('button', { name: 'Properties', exact: true }).click();
   await check('properties[0].maintenance_annual', '0.003');
-  const exported = await saveDownload(
+  const exported = await saveDraftText(
       page,
-      'Download current config',
       `${info.project.name}-wheel-config.toml`,
     ),
     parsed = parseScenario(exported.text);
@@ -265,9 +270,8 @@ test('M02 M05 M09 M10: fixed three accounts, export/run/reload, and legacy holdi
     page.getByRole('button', { name: 'Run simulation', exact: false }),
     validation || 'Run readiness',
   ).toBeEnabled();
-  const config = await saveDownload(
+  const config = await saveDraftText(
     page,
-    'Download current config',
     `${info.project.name}-simplified-accounts.toml`,
   );
   expect(config.text).not.toContain('holdings');

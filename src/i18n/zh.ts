@@ -31,7 +31,7 @@ const zhUI1 = {
 
   'workspace.configChip': '配置',
   'workspace.hint': '下载以保存 · 重新加载需再次上传',
-  'workspace.backToStart': '返回开始页',
+  'workspace.backToStart': '← 返回开始页',
   'workspace.newBlank': '新建空白',
   'workspace.downloadConfig': '下载当前配置',
 

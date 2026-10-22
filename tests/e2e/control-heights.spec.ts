@@ -32,17 +32,15 @@ test('M02 M03 M10: buttons and inputs sharing a row render at one height', async
     .getByRole('button', { name: 'Load sample config', exact: false })
     .click();
   const workspace = page.locator('.workspace-toolbar');
-  measured.workspace_toolbar = await expectSameRow(page, 'workspace toolbar', [
-    workspace.getByRole('button', {
-      name: 'Upload configuration',
-      exact: true,
-    }),
+  const back = workspace.getByRole('button', {
+    name: '← Back to start',
+    exact: true,
+  });
+  await expect(back).toBeVisible();
+  await expect(
     workspace.getByRole('button', { name: 'New blank', exact: true }),
-    workspace.getByRole('button', {
-      name: 'Download current config',
-      exact: true,
-    }),
-  ]);
+  ).toHaveCount(0);
+  measured.workspace_toolbar = await rowHeights([back]);
   await page.getByRole('button', { name: 'Simulation', exact: true }).click();
   const seed = page.locator('.seed-control').first();
   measured.seed_row = await expectSameRow(page, 'simulation seed row', [

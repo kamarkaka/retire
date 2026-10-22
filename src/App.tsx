@@ -307,9 +307,9 @@ export default function App() {
         {(!draft || showStart) && (
           <>
             {draft && (
-              <div className="toolbar">
+              <div className="workspace-toolbar">
                 <button
-                  className="text-button"
+                  className="secondary"
                   onClick={() => setShowStart(false)}
                 >
                   {t('start.backToConfig')}
@@ -369,45 +369,19 @@ export default function App() {
             </section>
           </>
         )}
-        <MarketData references={references} onApply={applyData} />
         {draft && !showStart && (
           <>
             <div className="workspace-toolbar">
-              <div>
-                <span className="chip">{t('workspace.configChip')}</span>
-                <span className="muted">{t('workspace.hint')}</span>
-              </div>
-              <div className="toolbar">
-                <button
-                  className="secondary"
-                  onClick={() => {
-                    setTutorial(false);
-                    setTutorialDraft(null);
-                    setShowStart(true);
-                  }}
-                >
-                  {t('workspace.backToStart')}
-                </button>
-                <button
-                  className="secondary"
-                  onClick={() => fileInput.current?.click()}
-                >
-                  {t('actions.uploadConfig')}
-                </button>
-                <button
-                  className="secondary"
-                  onClick={() => load(createEmptyDraft())}
-                >
-                  {t('workspace.newBlank')}
-                </button>
-                <button
-                  className="secondary"
-                  disabled={!normalized?.ok}
-                  onClick={() => downloadLocal('retire-draft.toml', preview)}
-                >
-                  {t('workspace.downloadConfig')}
-                </button>
-              </div>
+              <button
+                className="secondary"
+                onClick={() => {
+                  setTutorial(false);
+                  setTutorialDraft(null);
+                  setShowStart(true);
+                }}
+              >
+                {t('workspace.backToStart')}
+              </button>
             </div>
             {summary && (
               <div className="plan-strip">
@@ -691,6 +665,7 @@ export default function App() {
             <p>{t('error.preserved')}</p>
           </section>
         )}
+        <MarketData references={references} onApply={applyData} />
         <footer>
           <span>{t('footer.line1')}</span>
           <span>{t('footer.line2')}</span>

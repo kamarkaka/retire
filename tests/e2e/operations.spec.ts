@@ -1,5 +1,11 @@
 import { test, expect } from './fixtures';
-import { complete, saveDownload, uploadDraft, record } from './helpers';
+import {
+  complete,
+  saveDownload,
+  uploadDraft,
+  record,
+  saveDraftText,
+} from './helpers';
 import { observeWorkers, workerEvidence } from './worker-observer';
 import { createExampleDraft } from '../../src/config/constructors';
 import { parseScenario } from '../../src/config/config';
@@ -204,9 +210,8 @@ test('M10: immutable current/run exports, matched-path deltas and pinned replay'
     .click();
   await page.getByRole('button', { name: 'Budget', exact: true }).click();
   await page.getByLabel('medical.age_growth', { exact: true }).fill('0.01');
-  const current = await saveDownload(
+  const current = await saveDraftText(
     page,
-    'Download current config',
     `${info.project.name}-edited-draft.toml`,
   );
   await page.getByRole('button', { name: 'Results', exact: true }).click();

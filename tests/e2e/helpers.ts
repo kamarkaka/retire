@@ -19,6 +19,16 @@ export async function saveDownload(page: Page, button: string, name: string) {
   await download.saveAs(path);
   return { path, text: await readFile(path, 'utf8') };
 }
+export async function saveDraftText(page: Page, name: string) {
+  await page
+    .getByRole('button', { name: 'Configuration', exact: true })
+    .click();
+  const text = (await page.locator('.toml-panel pre').textContent()) ?? '',
+    path = resolve(`verification/records/e2e/${name}`);
+  await mkdir(resolve('verification/records/e2e'), { recursive: true });
+  await writeFile(path, text);
+  return { path, text };
+}
 export async function complete(page: Page, paths: number, timeout = 60_000) {
   await page
     .getByRole('button', { name: 'Run simulation', exact: false })

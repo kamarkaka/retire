@@ -32,7 +32,7 @@ const enUI = {
 
   'workspace.configChip': 'Configuration',
   'workspace.hint': 'Download to save · reload requires re-upload',
-  'workspace.backToStart': 'Back to start',
+  'workspace.backToStart': '← Back to start',
   'workspace.newBlank': 'New blank',
   'workspace.downloadConfig': 'Download current config',
 

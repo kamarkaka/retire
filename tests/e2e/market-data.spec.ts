@@ -1,9 +1,16 @@
 import { test, expect } from './fixtures';
-import { complete, uploadDraft, saveDownload, record } from './helpers';
+import {
+  complete,
+  uploadDraft,
+  saveDownload,
+  record,
+  saveDraftText,
+} from './helpers';
 import {
   createControlDraft,
   createExampleDraft,
 } from '../../src/config/constructors';
+import { parseScenario } from '../../src/config/config';
 import { references } from '../../src/reference/bundle';
 import { marketDataHash } from '../../src/reference/market-data';
 import type { MarketDataSnapshot } from '../../src/reference/market-data';
@@ -42,16 +49,16 @@ test('M03 M11: the app loads server market data with a parameter-free public-dat
   d.simulation!.n_paths = 2;
   await uploadDraft(page, d);
   const data = references.market_data!;
-  const after = JSON.parse(
-    (await saveDownload(page, 'Download current config', 'live.toml')).text,
-  );
-  expect(after.market.income_yield_us_stocks).toBe(
+  const after = parseScenario((await saveDraftText(page, 'live.toml')).text);
+  expect(after.ok).toBe(true);
+  if (!after.ok) throw new Error(JSON.stringify(after.issues));
+  expect(after.value.market!.income_yield_us_stocks).toBe(
     data.income_yields.us_stocks.value,
   );
-  expect(after.market.income_yield_us_bonds).toBe(
+  expect(after.value.market!.income_yield_us_bonds).toBe(
     data.income_yields.us_bonds.value,
   );
-  expect(after.market.fx_spot).toBe(data.latest.usd_cny.value);
+  expect(after.value.market!.fx_spot).toBe(data.latest.usd_cny.value);
   await complete(page, 2);
   await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
   await expect(page.getByTestId('ledger-ready')).toContainText('Path 49');
@@ -132,12 +139,12 @@ test('M03 M11: completed runs pin their market data; new server data affects onl
   );
   // The re-uploaded draft picks up the new server data on load.
   await uploadDraft(page, d);
-  const after = JSON.parse(
-    (await saveDownload(page, 'Download current config', 'live.toml')).text,
-  );
-  expect(after.market.income_yield_us_stocks).toBe(0.02);
-  expect(after.market.income_yield_us_bonds).toBe(0.06);
-  expect(after.market.fx_spot).toBe(7.5);
+  const after = parseScenario((await saveDraftText(page, 'live.toml')).text);
+  expect(after.ok).toBe(true);
+  if (!after.ok) throw new Error(JSON.stringify(after.issues));
+  expect(after.value.market!.income_yield_us_stocks).toBe(0.02);
+  expect(after.value.market!.income_yield_us_bonds).toBe(0.06);
+  expect(after.value.market!.fx_spot).toBe(7.5);
   await complete(page, 2);
   const newManifest = JSON.parse(
     (
@@ -190,9 +197,8 @@ test('M03 M10: failed and malformed server data preserve data and the editable c
     .getByRole('button', { name: 'Load sample config', exact: false })
     .click();
   const initial = (
-    await saveDownload(
+    await saveDraftText(
       page,
-      'Download current config',
       `${info.project.name}-market-refresh-failure-before.toml`,
     )
   ).text;
@@ -205,9 +211,8 @@ test('M03 M10: failed and malformed server data preserve data and the editable c
     .click();
   expect(
     (
-      await saveDownload(
+      await saveDraftText(
         page,
-        'Download current config',
         `${info.project.name}-market-refresh-failure-after.toml`,
       )
     ).text,

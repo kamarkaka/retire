@@ -10,7 +10,7 @@ import {
 } from '../../src/config/constructors';
 import { hashObject } from '../../src/model/canonical';
 import { LEDGER_FIELDS, LI } from '../../src/model/layout';
-import { saveDownload, complete, record } from './helpers';
+import { saveDownload, complete, record, saveDraftText } from './helpers';
 test('M03 M04 M10: production worker and ledger use observed NYU/FRED returns', async ({
   page,
 }, info) => {
@@ -157,9 +157,8 @@ test('M02 M08 M10: all configs share calculations and legacy kinds are rejected'
   await expect(
     page.getByRole('button', { name: 'Run simulation', exact: false }),
   ).toBeEnabled();
-  const config = await saveDownload(
+  const config = await saveDraftText(
     page,
-    'Download current config',
     `${info.project.name}-unified-current.toml`,
   );
   expect(config.text).not.toMatch(
@@ -203,9 +202,8 @@ test('M02 M09 M10: sample builder → worker run → ledger/export → reload/up
   await page
     .getByLabel('properties[0].id', { exact: true })
     .fill('Test-only local note 南京 🏡');
-  const draft = await saveDownload(
+  const draft = await saveDraftText(
     page,
-    'Download current config',
     `${info.project.name}-sample-draft.toml`,
   );
   expect(draft.text).toContain('Test-only local note 南京 🏡');
@@ -606,9 +604,8 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
   await page.getByRole('button', { name: 'Simulation', exact: true }).click();
   await page.getByLabel('simulation.max_age', { exact: true }).fill('62');
   await page.getByLabel('simulation.n_paths', { exact: true }).fill('16');
-  const exported = await saveDownload(
+  const exported = await saveDraftText(
       page,
-      'Download current config',
       `${info.project.name}-fixed-horizon.toml`,
     ),
     parsed = parseScenario(exported.text);
@@ -742,9 +739,8 @@ test('M02 M10: household size toggles the second person and keeps one domicile',
   await expect(page.getByLabel('people.domicile', { exact: true })).toHaveValue(
     'China',
   );
-  const exported = await saveDownload(
+  const exported = await saveDraftText(
       page,
-      'Download current config',
       `${info.project.name}-single-person.toml`,
     ),
     parsed = parseScenario(exported.text);
@@ -800,9 +796,8 @@ test('M02 M10: decimal rate typing survives edits, export and a run', async ({
   await signed.pressSequentially('0.003');
   await expect(signed).toHaveValue('-0.003');
   await signed.fill('0');
-  const saved = await saveDownload(
+  const saved = await saveDraftText(
       page,
-      'Download current config',
       `${info.project.name}-decimal-rates.toml`,
     ),
     parsed = parseScenario(saved.text);
@@ -969,9 +964,8 @@ test('M02 M10: random seed button covers both range endpoints and preserves comp
   expect(Number.isInteger(seed)).toBe(true);
   expect(seed).toBeGreaterThanOrEqual(0);
   expect(seed).toBeLessThanOrEqual(4294967295);
-  const current = await saveDownload(
+  const current = await saveDraftText(
       page,
-      'Download current config',
       `${info.project.name}-random-seed.toml`,
     ),
     parsed = parseScenario(current.text);
@@ -1028,7 +1022,7 @@ test('M02 M10: start page stays reachable after loading and preserves the draft'
   await page.goto('/');
   await page.getByRole('button', { name: 'Load sample config' }).click();
   await page
-    .getByRole('button', { name: 'Back to start', exact: true })
+    .getByRole('button', { name: '← Back to start', exact: true })
     .click();
   await expect(page.getByLabel('Start a configuration')).toBeVisible();
   await expect(
@@ -1045,10 +1039,10 @@ test('M02 M10: start page stays reachable after loading and preserves the draft'
   if (!entry || !market) throw new Error('Expected visible start sections');
   expect(entry.y + entry.height).toBeLessThanOrEqual(market.y);
   await page
-    .getByRole('button', { name: 'Back to configuration', exact: true })
+    .getByRole('button', { name: '← Back to configuration', exact: true })
     .click();
   await expect(page.locator('.workspace-toolbar')).toBeVisible();
   await expect(
-    page.getByRole('button', { name: 'Back to start', exact: true }),
+    page.getByRole('button', { name: '← Back to start', exact: true }),
   ).toBeVisible();
 });
