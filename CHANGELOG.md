@@ -8,6 +8,26 @@ adds an entry here, newest first.
 
 (nothing yet)
 
+## 0.3.0 — 2026-10-23
+
+Configuration simplification pass (`linux/amd64`). Saved configs keep
+loading; hidden values are derived automatically.
+
+### Simpler configuration
+
+- US income-tax status is now derived from citizenship and property
+  ownership from household size — both inputs removed from the UI, along
+  with the retired sex field and the Schema tab.
+- Advanced market, inflation, FX, and medical-shock options now render
+  collapsed; rarely touched knobs (China inflation internals,
+  liquidation-sale triggers, proceeds account) moved to advanced.
+- Removed the page footer.
+
+### Other
+
+- Header version badge reads the release version automatically, so it
+  always matches the Docker tag.
+
 ## 0.2.0 — 2026-10-22
 
 Market customization plus a higher-fidelity default run (`linux/amd64`).
