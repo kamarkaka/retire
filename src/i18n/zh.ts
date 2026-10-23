@@ -88,9 +88,6 @@ const zhUI1 = {
   'error.readFile': '无法读取本地文件：{detail}',
   'error.tooLarge': '配置超过 2 MiB',
 
-  'footer.line1': '输入可携带，假设全透明。',
-  'footer.line2': '本地文件 · 浏览器计算 · 不自动保存',
-
   'builder.sections': '配置分区',
   'section.simulation': '模拟设置',
   'section.people': '人员',

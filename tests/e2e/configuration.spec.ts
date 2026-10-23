@@ -32,7 +32,18 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
   // Fixed account identities are not rendered; allocation cells are concise
   // inputs without hover help. The era dropdown is a UI shortcut for the
   // sampling window, not a config field; its help is asserted separately.
-  const hidden = new Set(['accounts[].name', 'accounts[].type']),
+  // Tax status is derived from citizenship, sex is retired, property share
+  // is derived from household size, and the schema version tab is hidden.
+  const hidden = new Set([
+      'accounts[].name',
+      'accounts[].type',
+      'people.A.sex',
+      'people.B.sex',
+      'people.A.us_income_tax_status',
+      'people.B.us_income_tax_status',
+      'properties[].share_A',
+      'schema_version',
+    ]),
     concise = new Set([
       'accounts[].allocation.us_stocks',
       'accounts[].allocation.us_bonds',
@@ -59,7 +70,6 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
     'Budget',
     'Accounts',
     'Properties',
-    'Schema',
   ]) {
     await page.getByRole('button', { name: section, exact: true }).click();
     await page
@@ -120,6 +130,9 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
   );
   await page
     .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
+    .click();
+  await page
+    .locator('section[aria-labelledby="market-group-fx"] summary')
     .click();
   const spread = page.getByLabel('market.fx_spread', { exact: true });
   await spread.hover();
@@ -189,6 +202,9 @@ test('M02 M10: wheel cannot step focused decimal inputs, including account alloc
   };
   await page
     .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
+    .click();
+  await page
+    .locator('section[aria-labelledby="market-group-fx"] summary')
     .click();
   for (const path of [
     'market.fx_spread',
@@ -385,18 +401,22 @@ test('M02 M10: budget labels name medical spending and shocks fold like late-lif
   });
   await expect(
     shocks.getByLabel('medical.shock_median', { exact: true }),
-  ).toBeVisible();
-  await shocks.locator('summary').click();
-  await expect(
-    shocks.getByLabel('medical.shock_median', { exact: true }),
   ).toBeHidden();
   await shocks.locator('summary').click();
   await expect(
     shocks.getByLabel('medical.shock_median', { exact: true }),
   ).toBeVisible();
+  await shocks.locator('summary').click();
+  await expect(
+    shocks.getByLabel('medical.shock_median', { exact: true }),
+  ).toBeHidden();
   const care = medical.locator('details', {
     has: page.getByText('Late life care', { exact: true }),
   });
+  await expect(
+    care.getByLabel('medical.late_life_care.monthly', { exact: true }),
+  ).toBeHidden();
+  await care.locator('summary').click();
   await expect(
     care.getByLabel('medical.late_life_care.monthly', { exact: true }),
   ).toBeVisible();
@@ -414,6 +434,9 @@ test('M02 M03 M10: history era presets set the sampling window and outlook shift
   await uploadDraft(page, draft);
   await page
     .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
+    .click();
+  await page
+    .locator('section[aria-labelledby="market-group-markets"] summary')
     .click();
   const era = page.getByLabel('market.era', { exact: true });
   await expect(era).toHaveValue('full');

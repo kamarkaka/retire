@@ -19,8 +19,8 @@
       "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
       "result_layout_version": "retire-results-v1",
       "ledger_report_version": "retire-ledger-report-v1",
-      "build_version": "0.1.0+1576550ebc7493057d3461eb120036e70bc6b0e39e5d034cdf06731c734fd928",
-      "scenario_sha256": "df539486c965b771e930050175102e135db53267c676cfa4b6014c023066d930",
+      "build_version": "0.2.0+a2e0fc88e39c62e258a15075c1557997998cd7bf335ed755cae1077614a9b37f",
+      "scenario_sha256": "9926743b7a37f589b0c29768d48a57933f8862df964b48146b98220ae63291b1",
       "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
       "reference_versions": {
         "history": "nyu-fred-1928-2025-v1",
@@ -59,8 +59,8 @@
       "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
       "result_layout_version": "retire-results-v1",
       "ledger_report_version": "retire-ledger-report-v1",
-      "build_version": "0.1.0+1576550ebc7493057d3461eb120036e70bc6b0e39e5d034cdf06731c734fd928",
-      "scenario_sha256": "d028b25b7d2e6cbc1d4787608ac3786de7f912d2b027b0110ed082ab37b16fe7",
+      "build_version": "0.2.0+a2e0fc88e39c62e258a15075c1557997998cd7bf335ed755cae1077614a9b37f",
+      "scenario_sha256": "e302d6f93c930c7fbf6d9829b7738ebbb9172d21af5c60148778c6dc90a87f9e",
       "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
       "reference_versions": {
         "history": "nyu-fred-1928-2025-v1",

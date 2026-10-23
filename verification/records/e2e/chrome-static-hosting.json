@@ -8,12 +8,12 @@
       "body": null
     },
     {
-      "url": "http://127.0.0.1:4173/retire/assets/index--2jtifZ5.js",
+      "url": "http://127.0.0.1:4173/retire/assets/index-C0ov7l3u.js",
       "method": "GET",
       "body": null
     },
     {
-      "url": "http://127.0.0.1:4173/retire/assets/index-CkFalew2.css",
+      "url": "http://127.0.0.1:4173/retire/assets/index-Te-6-ohb.css",
       "method": "GET",
       "body": null
     },
@@ -23,32 +23,32 @@
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/ce8411cf-8470-480d-bb4d-f46d518d077f",
+      "url": "blob:http://127.0.0.1:4173/3299ea9c-97dd-42d0-938c-51388cff4ff0",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/62c14d40-0b3a-48f7-90b7-555949dc72c8",
+      "url": "blob:http://127.0.0.1:4173/edc2ad48-d015-40bf-b41d-c78d8239cece",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/fdc9b7bc-42ca-45a1-b9c3-6f4b0e8e4a94",
+      "url": "blob:http://127.0.0.1:4173/ecb8f6c8-fb6b-429b-b2c7-eebc63b31c08",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/e546cd3f-21bf-4a9a-a9bf-6c2b1b6b0d29",
+      "url": "blob:http://127.0.0.1:4173/350dfd6c-36c1-4cf3-b671-f66a2ac25955",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/5f4f4fd7-fbab-4ae1-b241-ce1cd3788fcc",
+      "url": "blob:http://127.0.0.1:4173/a29128de-7286-4a48-80be-79b89c059c00",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/cc7146f3-94c0-42c2-abb5-efa3d252da8f",
+      "url": "blob:http://127.0.0.1:4173/fb883958-b884-47aa-aa7c-2c261162ff5e",
       "method": "GET",
       "body": null
     },
@@ -58,12 +58,12 @@
       "body": null
     },
     {
-      "url": "http://127.0.0.1:4173/assets/index--2jtifZ5.js",
+      "url": "http://127.0.0.1:4173/assets/index-C0ov7l3u.js",
       "method": "GET",
       "body": null
     },
     {
-      "url": "http://127.0.0.1:4173/assets/index-CkFalew2.css",
+      "url": "http://127.0.0.1:4173/assets/index-Te-6-ohb.css",
       "method": "GET",
       "body": null
     },
@@ -87,8 +87,8 @@
       "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
       "result_layout_version": "retire-results-v1",
       "ledger_report_version": "retire-ledger-report-v1",
-      "build_version": "0.1.0+1576550ebc7493057d3461eb120036e70bc6b0e39e5d034cdf06731c734fd928",
-      "scenario_sha256": "df539486c965b771e930050175102e135db53267c676cfa4b6014c023066d930",
+      "build_version": "0.2.0+a2e0fc88e39c62e258a15075c1557997998cd7bf335ed755cae1077614a9b37f",
+      "scenario_sha256": "9926743b7a37f589b0c29768d48a57933f8862df964b48146b98220ae63291b1",
       "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
       "reference_versions": {
         "history": "nyu-fred-1928-2025-v1",
@@ -116,17 +116,17 @@
       "verified_source_ids": []
     },
     "execution": {
-      "run_id": "731da037-c590-49d6-a385-c4b989b0f793",
+      "run_id": "185eae0f-e06f-43c1-b87d-5ae22e11dfdf",
       "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
       "os": "MacIntel",
       "hardware_concurrency": 14,
       "worker_count": 4,
       "chunk_size": 64,
-      "started_at": "2026-10-22T23:49:35.893Z",
+      "started_at": "2026-10-23T02:17:03.902Z",
       "memory_estimate_bytes": 120752888,
       "memory_estimate_scope": "Known simulation buffers, worker workspaces, pinned results, scratch and 96 MiB reserve; excludes browser overhead and JavaScript heaps. This is not an OS process memory cap.",
-      "finished_at": "2026-10-22T23:49:37.635Z",
-      "elapsed_ms": 1742.4000000953674
+      "finished_at": "2026-10-23T02:17:09.221Z",
+      "elapsed_ms": 5319.700000047684
     },
     "market_data": {
       "format_version": "retire-market-data-v1",

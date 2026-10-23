@@ -11,12 +11,10 @@
     "domicile": "China",
     "A": {
       "birth_year": 1986,
-      "sex": "F",
       "us_citizen": true
     },
     "B": {
       "birth_year": 1986,
-      "sex": "M",
       "us_citizen": false
     }
   },

@@ -11,8 +11,8 @@
     "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
     "result_layout_version": "retire-results-v1",
     "ledger_report_version": "retire-ledger-report-v1",
-    "build_version": "0.1.0+1576550ebc7493057d3461eb120036e70bc6b0e39e5d034cdf06731c734fd928",
-    "scenario_sha256": "de0f8e827fc8cbdf828a013b38c315d0f4a6c240067d0e6af724e0eb63accebf",
+    "build_version": "0.2.0+a2e0fc88e39c62e258a15075c1557997998cd7bf335ed755cae1077614a9b37f",
+    "scenario_sha256": "6230f253bc4472fc7132c17b19f48fb051561b8564e1d6e4571599fbccb4c365",
     "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
     "reference_versions": {
       "history": "nyu-fred-1928-2025-v1",

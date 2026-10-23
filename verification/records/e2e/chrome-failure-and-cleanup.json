@@ -9,10 +9,10 @@
     "stale_deliveries": 0,
     "native_chunks": 4,
     "delivered_chunks": [
+      128,
       0,
-      192,
       64,
-      128
+      192
     ],
     "held_chunks": 0,
     "transfers": [],

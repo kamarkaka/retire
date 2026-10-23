@@ -77,13 +77,11 @@ domicile = "China"
 
 [people.A]
 birth_year = 1966
-sex = "F"
 us_citizen = true
 us_income_tax_status = "resident"
 
 [people.B]
 birth_year = 1968
-sex = "M"
 us_citizen = false
 us_income_tax_status = "nonresident"
 

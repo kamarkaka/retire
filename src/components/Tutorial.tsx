@@ -106,13 +106,8 @@ export default function Tutorial({
     );
   };
   const setCitizen = (id: 'A' | 'B', citizen: boolean) =>
-    onChange(
-      assign(
-        assign(draft, ['people', id, 'us_citizen'], citizen),
-        ['people', id, 'us_income_tax_status'],
-        citizen ? 'resident' : 'nonresident',
-      ),
-    );
+    // Tax status is derived from citizenship during normalization.
+    onChange(assign(draft, ['people', id, 'us_citizen'], citizen));
   const setBalance = (balance: number | undefined) =>
     onChange(
       upsertAccount(draft, {

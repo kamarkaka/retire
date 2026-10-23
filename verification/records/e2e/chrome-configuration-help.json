@@ -1,15 +1,14 @@
 {
   "status": "PASS",
   "field_definitions": 78,
-  "leaf_definitions": 76,
+  "leaf_definitions": 70,
   "controls_by_section": {
     "Simulation": 4,
     "Markets, inflation & FX": 21,
-    "People": 9,
+    "People": 5,
     "Budget": 15,
     "Accounts": 14,
-    "Properties": 21,
-    "Schema": 1
+    "Properties": 20
   },
   "hover": true,
   "keyboard_focus_and_escape": true,

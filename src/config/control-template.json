@@ -30,15 +30,11 @@
   "people": {
     "A": {
       "birth_year": 1986,
-      "us_citizen": true,
-      "us_income_tax_status": "resident",
-      "sex": "F"
+      "us_citizen": true
     },
     "B": {
       "birth_year": 1986,
-      "us_citizen": false,
-      "us_income_tax_status": "nonresident",
-      "sex": "M"
+      "us_citizen": false
     },
     "domicile": "China"
   },

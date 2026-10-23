@@ -77,7 +77,6 @@ domicile = "China"
 
 [people.A]
 birth_year = 1986
-sex = "F"
 us_citizen = true
 us_income_tax_status = "resident"
 

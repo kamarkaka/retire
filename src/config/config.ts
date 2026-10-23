@@ -60,7 +60,19 @@ function defaultNode(node: SchemaNode, value: unknown, path: string): unknown {
 export function normalizeScenario(draft: DraftScenario): Result<DraftScenario> {
   const checked = checkDraft(draft);
   if (!checked.ok) return checked;
-  const normalized = defaultNode(fieldTree, checked.value, '') as DraftScenario;
+  const pre = checked.value as DraftScenario;
+  // Hidden household facts, derived before defaults fill anything else.
+  // Explicit values are preserved so hand-written TOML still validates strictly.
+  for (const id of ['A', 'B'] as const) {
+    const p = pre.people?.[id];
+    if (p && p.us_income_tax_status === undefined) {
+      if (p.us_citizen === true) p.us_income_tax_status = 'resident';
+      else if (p.us_citizen === false) p.us_income_tax_status = 'nonresident';
+    }
+  }
+  if (pre.properties && pre.people?.B === undefined)
+    for (const p of pre.properties) if (p.share_A === undefined) p.share_A = 1;
+  const normalized = defaultNode(fieldTree, pre, '') as DraftScenario;
   return { ok: true, value: normalized };
 }
 export function parseScenario(text: string): Result<DraftScenario> {

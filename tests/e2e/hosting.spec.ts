@@ -2,6 +2,7 @@ import { test, expect } from './fixtures';
 import { complete, saveDownload, record } from './helpers';
 import { resolve } from 'node:path';
 import { spawn } from 'node:child_process';
+import pkg from '../../package.json' with { type: 'json' };
 
 test('M01 M11: production subdirectory uses static assets and a locally uploaded sample', async ({
   page,
@@ -121,4 +122,14 @@ test('M01: development-only literal oracle harness and detached worker probe', a
       await exited;
     }
   }
+});
+
+test('M01: header version matches the package release and the footer is gone', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.header-right .version')).toHaveText(
+    `v${pkg.version}`,
+  );
+  await expect(page.locator('footer')).toHaveCount(0);
 });

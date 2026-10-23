@@ -93,9 +93,6 @@ const enUI = {
   'error.readFile': 'Could not read local file: {detail}',
   'error.tooLarge': 'Configuration exceeds 2 MiB',
 
-  'footer.line1': 'Portable inputs. Transparent assumptions.',
-  'footer.line2': 'Local files · browser computation · no automatic saving',
-
   'builder.sections': 'Configuration sections',
   'section.simulation': 'Simulation',
   'section.people': 'People',

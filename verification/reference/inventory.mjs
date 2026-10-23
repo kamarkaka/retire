@@ -248,7 +248,8 @@ for (const person of ['A', 'B']) {
     constraints: 'Start age 18...100; actual 1986 annualized placeholder.',
   });
   optional(`${p}.sex`, 'enum M|F', 'descriptive', '5.1', null, {
-    omission: 'optional descriptive value; no effect on calculations',
+    omission:
+      'retired from the UI; accepted when present but no effect on calculations',
     default_kind: 'none',
     constraints:
       'M=male, F=female; lifespan uses the same fixed horizon for the household.',
@@ -263,6 +264,8 @@ for (const person of ['A', 'B']) {
     '9.2',
     {
       gates: ['H-STATUS', 'L-RESIDENCY'],
+      omission:
+        'derived from us_citizen when omitted; explicit contradictions still block Run',
       constraints:
         'Citizen/resident or noncitizen/nonresident supported; resident alien cannot use NRA.',
     },
@@ -473,6 +476,9 @@ for (const k of [
           : 'See spec §§5.8/9.2; money>=0, valid factors, fractions in[0,1].',
   };
   if (k === 'strategy') opts.unit = 'sale strategy';
+  if (k === 'share_A')
+    opts.omission =
+      'derived from household size when omitted (1 solo, 0.5 joint); hidden from the Builder';
   if (Object.hasOwn(propertyDefault, k))
     optional(`properties[].${k}`, type, unit, '5.8', propertyDefault[k], opts);
   else field(`properties[].${k}`, type, unit, '5.8', opts);

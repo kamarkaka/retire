@@ -43,7 +43,7 @@ export function createControlDraft(): DraftScenario {
 export function createHouseholdDraft(): DraftScenario {
   const d = createControlDraft();
   d.simulation = { ...d.simulation, n_paths: 2000, max_age: 110 };
-  d.people!.B!.us_income_tax_status = 'unresolved';
+  delete d.people!.B!.us_income_tax_status;
   const basic = () => ({ allocation: { usd_cash: 1 } });
   d.accounts = [
     { name: 'brokerage', type: 'brokerage', balance: 3700000, ...basic() },

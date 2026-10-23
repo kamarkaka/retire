@@ -372,3 +372,37 @@ it.each<[string, (d: DraftScenario) => void]>([
   expect(result.ok).toBe(false);
   if (!result.ok) expect(result.issues.some((i) => i.path === path)).toBe(true);
 });
+
+it('M02 derives hidden household facts from citizenship and household size', () => {
+  const joint = createExampleDraft();
+  delete joint.people!.A!.us_income_tax_status;
+  delete joint.people!.B!.us_income_tax_status;
+  delete joint.properties![0].share_A;
+  const n = normalizeScenario(joint);
+  expect(n.ok).toBe(true);
+  if (!n.ok) throw new Error(JSON.stringify(n.issues));
+  expect(n.value.people!.A!.us_income_tax_status).toBe('resident');
+  expect(n.value.people!.B!.us_income_tax_status).toBe('nonresident');
+  expect(n.value.properties![0].share_A).toBe(0.5);
+  expect(validateScenario(joint, references).ok).toBe(true);
+
+  const solo = createExampleDraft();
+  delete solo.people!.B;
+  delete solo.people!.A!.us_income_tax_status;
+  delete solo.properties![0].share_A;
+  const s = normalizeScenario(solo);
+  expect(s.ok).toBe(true);
+  if (!s.ok) throw new Error(JSON.stringify(s.issues));
+  expect(s.value.properties![0].share_A).toBe(1);
+  expect(validateScenario(solo, references).ok).toBe(true);
+
+  // Explicit contradictions in hand-written TOML still block the run.
+  const bad = createExampleDraft();
+  bad.people!.A!.us_income_tax_status = 'nonresident';
+  const v = validateScenario(bad, references);
+  expect(v.ok).toBe(false);
+  if (v.ok) throw new Error('citizen/nonresident should fail');
+  expect(v.issues.some((i) => i.path === 'people.A.us_income_tax_status')).toBe(
+    true,
+  );
+});

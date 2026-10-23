@@ -42,6 +42,7 @@ import { money } from './components/format';
 import { SimulationError } from './model/errors';
 import MarketData from './components/MarketData';
 import ConfigField from './components/ConfigField';
+import { BUILD_DISPLAY_VERSION } from './build-info';
 import Tutorial from './components/Tutorial';
 import LanguageSwitcher from './i18n/LanguageSwitcher';
 import { useI18n } from './i18n/context';
@@ -283,7 +284,7 @@ export default function App() {
             <span />
             {t('header.localBadge')}
           </span>
-          <span className="version">v0.1</span>
+          <span className="version">v{BUILD_DISPLAY_VERSION}</span>
         </div>
       </header>
       <main>
@@ -675,10 +676,6 @@ export default function App() {
           </section>
         )}
         <MarketData references={references} onApply={applyData} />
-        <footer>
-          <span>{t('footer.line1')}</span>
-          <span>{t('footer.line2')}</span>
-        </footer>
       </main>
     </>
   );

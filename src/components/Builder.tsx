@@ -17,7 +17,6 @@ const sectionKeys = [
   'accounts',
   'properties',
   'market',
-  'schema_version',
 ] as const;
 const sectionLabels: Record<string, MessageKey> = {
   simulation: 'section.simulation',
@@ -246,9 +245,13 @@ function Editor({
         'hoa_monthly',
         'rent_real_growth',
         'selling_cost',
+        'sell_liquid_years',
+        'proceeds_account',
       ];
-      const core = children.filter(([k]) => !advanced.includes(k)),
-        extra = children.filter(([k]) => advanced.includes(k));
+      // share_A is derived from household size (1 solo, 0.5 joint); never shown.
+      const shown = children.filter(([k]) => k !== 'share_A'),
+        core = shown.filter(([k]) => !advanced.includes(k)),
+        extra = shown.filter(([k]) => advanced.includes(k));
       return (
         <div className="field-grid">
           {core.map(renderChild)}
@@ -421,15 +424,7 @@ function Editor({
               .split('|')
               .map((v) => (
                 <option key={v} value={v}>
-                  {enumLabel(
-                    lang,
-                    v,
-                    keys[0] === 'people' && keys.at(-1) === 'sex'
-                      ? v === 'F'
-                        ? 'Female'
-                        : 'Male'
-                      : pretty(v),
-                  )}
+                  {enumLabel(lang, v, pretty(v))}
                 </option>
               ))}
           </select>
@@ -518,6 +513,9 @@ function HouseholdSizeToggle({
     </div>
   );
 }
+// Derived/retired person facts, hidden from the Builder. Tax status is derived
+// from citizenship during normalization; sex has no model effect.
+const HIDDEN_PERSON_KEYS = new Set(['us_income_tax_status', 'sex']);
 function PeopleEditor({
   draft,
   onChange,
@@ -525,10 +523,27 @@ function PeopleEditor({
   draft: DraftScenario;
   onChange: (d: DraftScenario) => void;
 }) {
+  const people = fieldTree.children.people,
+    visible = (node: SchemaNode | undefined): SchemaNode | undefined =>
+      node && {
+        ...node,
+        children: Object.fromEntries(
+          Object.entries(node.children).filter(
+            ([key]) => !HIDDEN_PERSON_KEYS.has(key),
+          ),
+        ),
+      };
   return (
     <>
       <Editor
-        node={fieldTree.children.people}
+        node={{
+          ...people,
+          children: {
+            ...people.children,
+            A: visible(people.children.A)!,
+            ...(people.children.B ? { B: visible(people.children.B)! } : {}),
+          },
+        }}
         keys={['people']}
         draft={draft}
         onChange={onChange}
@@ -592,7 +607,7 @@ function BudgetEditor({
               onChange={onChange}
             />
           ))}
-          <details className="subsection" open>
+          <details className="subsection">
             <summary>{t('budget.shocks')}</summary>
             <Editor
               node={shocks}
@@ -601,7 +616,7 @@ function BudgetEditor({
               onChange={onChange}
             />
           </details>
-          <details className="subsection" open>
+          <details className="subsection">
             <summary>
               {labelFor(lang, 'late_life_care', pretty('late_life_care'))}
             </summary>
@@ -628,7 +643,12 @@ function BudgetEditor({
 }
 const ADVANCED_MARKET: Record<string, string[]> = {
   markets: ['sample_start', 'sample_end', 'block_mean_years'],
-  inflation: ['home_cpi_phi', 'home_cpi_sigma'],
+  inflation: [
+    'home_cpi_mean',
+    'home_cpi_phi',
+    'home_cpi_sigma',
+    'home_cpi_start',
+  ],
   fx: [
     'fx_adjust_speed',
     'fx_sigma',
@@ -766,7 +786,7 @@ function MarketEditor({
               draft={draft}
               onChange={onChange}
             />
-            <details className="subsection" open>
+            <details className="subsection">
               <summary>
                 {t('market.advanced', { label: group.label.toLowerCase() })}
               </summary>

@@ -478,10 +478,10 @@ test('M02 M06: invalid upload preserves draft and actual missing inputs block an
   ).toBeDisabled();
   await expect(page.getByText('Validation and open gates')).toBeVisible();
   await expect(page.locator('.validation')).toContainText(
-    'Resolve income residency',
+    'properties[0].cost_basis',
   );
   await expect(page.locator('.validation')).toContainText(
-    'properties[0].cost_basis',
+    'properties[0].depreciation_taken',
   );
   await expect(page.getByLabel('simulation.kind', { exact: true })).toHaveCount(
     0,
@@ -559,6 +559,11 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
   await page
     .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
     .click();
+  // Advanced groups render collapsed; open them before asserting visibility.
+  for (const id of ['markets', 'inflation', 'fx'])
+    await page
+      .locator(`section[aria-labelledby="market-group-${id}"] summary`)
+      .click();
   for (const [group, paths] of [
     [
       'Markets',
@@ -628,7 +633,10 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
     ).toHaveValue('1986');
     await expect(
       page.getByLabel(`people.${id}.sex`, { exact: true }),
-    ).toHaveValue(id === 'A' ? 'F' : 'M');
+    ).toHaveCount(0);
+    await expect(
+      page.getByLabel(`people.${id}.us_income_tax_status`, { exact: true }),
+    ).toHaveCount(0);
     await expect(
       page.getByLabel(`people.${id}.domicile`, { exact: true }),
     ).toHaveCount(0);
@@ -660,6 +668,12 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
   await page.getByLabel('people.A.birth_year', { exact: true }).fill('1966');
   await page.getByLabel('people.B.birth_year', { exact: true }).fill('1968');
   await page.getByRole('button', { name: 'Budget', exact: true }).click();
+  await page
+    .locator('.builder-section details', {
+      has: page.getByText('Late life care', { exact: true }),
+    })
+    .locator('summary')
+    .click();
   await page
     .getByLabel('medical.late_life_care.enabled', { exact: true })
     .check();
@@ -818,8 +832,8 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
     both_alive_every_year: true,
     example_people: {
       domicile: 'China',
-      A: { birth_year: 1986, sex: 'F', us_citizen: true },
-      B: { birth_year: 1986, sex: 'M', us_citizen: false },
+      A: { birth_year: 1986, us_citizen: true },
+      B: { birth_year: 1986, us_citizen: false },
     },
     market_groups: ['Markets', 'Inflation', 'FX'],
     disabled_ss_fields_hidden: true,
