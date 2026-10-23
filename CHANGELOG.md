@@ -8,6 +8,17 @@ adds an entry here, newest first.
 
 (nothing yet)
 
+## 0.3.1 — 2026-10-23
+
+Small refinement (`linux/amd64`).
+
+### Year ledger
+
+- Two-person simulations now show total US income tax and total China
+  income tax columns summing both members, instead of person A's bill
+  only. One-person ledgers are unchanged; the detail modal and CSV
+  export keep per-person breakdowns.
+
 ## 0.3.0 — 2026-10-23
 
 Configuration simplification pass (`linux/amd64`). Saved configs keep
