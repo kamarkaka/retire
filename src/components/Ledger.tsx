@@ -18,8 +18,8 @@ function selectedFieldsFor(usDomicile: boolean, twoPeople: boolean): string[] {
     usDomicile ? 'medical_total_usd' : 'medical_total_cny',
     'annual_investment_return',
     ...(usDomicile ? [] : ['fx']),
-    'tax_us_A',
-    ...(usDomicile ? [] : ['tax_cn_A']),
+    ...(twoPeople ? ['tax_us_total'] : ['tax_us_A']),
+    ...(usDomicile ? [] : [twoPeople ? 'tax_cn_total' : 'tax_cn_A']),
     'net_worth_usd_real',
   ];
 }
@@ -36,6 +36,8 @@ const labels: Record<string, string> = {
   portfolio_return: 'USD portfolio return',
   tax_us_A: 'US income tax A',
   tax_cn_A: 'China income tax A',
+  tax_us_total: 'US income tax (total)',
+  tax_cn_total: 'China income tax (total)',
   liquid_usd: 'Ending liquid USD',
   net_worth_cny_real: 'Ending net worth CNY (today’s money)',
   net_worth_usd_real: 'Ending net worth USD (today’s money)',
@@ -684,6 +686,16 @@ export default function Ledger({ run }: { run: CompletedRun }) {
     if (f === 'medical_total_usd')
       return (
         ledgerValue(replay, ti, 'medical_total_cny') / replay.market.fx[ti]
+      );
+    if (f === 'tax_us_total')
+      return (
+        ledgerValue(replay, ti, 'tax_us_A') +
+        ledgerValue(replay, ti, 'tax_us_B')
+      );
+    if (f === 'tax_cn_total')
+      return (
+        ledgerValue(replay, ti, 'tax_cn_A') +
+        ledgerValue(replay, ti, 'tax_cn_B')
       );
     return ledgerValue(replay, ti, f);
   };

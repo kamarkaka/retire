@@ -11,7 +11,7 @@
     "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
     "result_layout_version": "retire-results-v1",
     "ledger_report_version": "retire-ledger-report-v1",
-    "build_version": "0.2.0+a2e0fc88e39c62e258a15075c1557997998cd7bf335ed755cae1077614a9b37f",
+    "build_version": "0.3.0+b1da03cf3f73ac62ef14d895822f4a9aac0d84f2b209d625eac68afa10b11ecf",
     "scenario_sha256": "6230f253bc4472fc7132c17b19f48fb051561b8564e1d6e4571599fbccb4c365",
     "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
     "reference_versions": {

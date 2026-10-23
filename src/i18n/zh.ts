@@ -542,6 +542,8 @@ const zhLabels: Record<string, string> = {
   tax_us_B: '美国所得税 B',
   tax_cn_A: '中国所得税 A',
   tax_cn_B: '中国所得税 B',
+  tax_us_total: '美国所得税（合计）',
+  tax_cn_total: '中国所得税（合计）',
   liquid_usd: '期末流动美元',
   cny_cash_cny: '人民币现金（人民币）',
   property_equity_usd: '房产净值（美元）',

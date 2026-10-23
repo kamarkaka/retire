@@ -315,7 +315,7 @@ test('M08: a 50-year planning config uses historical returns and integer money d
     'Spend CNY (excluding medical)',
     'Medical USD',
     'Overall annual investment return',
-    'US income tax A',
+    'US income tax (total)',
     'Ending net worth USD (today’s money)',
   ])
     await expect(
@@ -724,8 +724,8 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
       'starting_net_worth_usd',
       'spend_excluding_medical_cny',
       'medical_total_cny',
-      'tax_us_A',
-      'tax_cn_A',
+      'tax_us_total',
+      'tax_cn_total',
       'net_worth_usd_real',
     ])
       await expect(rows.nth(t).locator(`[data-field=${key}]`)).toHaveText(
@@ -736,6 +736,34 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
   }
   await expect(rows.last().locator('[data-field=age_A]')).toHaveText('64');
   await expect(rows.last().locator('[data-field=age_B]')).toHaveText('62');
+  // Displayed totals equal the per-person CSV bills, within display rounding.
+  const csv = (
+    await saveDownload(
+      page,
+      'Download ledger CSV',
+      `${info.project.name}-tax-totals.csv`,
+    )
+  ).text
+    .split('\n')
+    .filter((line) => line && !line.startsWith('#'));
+  const headers = csv[0].split(','),
+    first = csv[1].split(','),
+    at = (h: string) => Number(first[headers.indexOf(h)]),
+    shown = async (field: string) =>
+      Number(
+        (await rows
+          .first()
+          .locator(`[data-field=${field}]`)
+          .textContent())!.replaceAll(',', ''),
+      );
+  expect(await shown('tax_us_total')).toBeCloseTo(
+    at('tax_us_A') + at('tax_us_B'),
+    0,
+  );
+  expect(await shown('tax_cn_total')).toBeCloseTo(
+    at('tax_cn_A') + at('tax_cn_B'),
+    0,
+  );
   const endCell = await rows
     .last()
     .locator('[data-field=net_worth_usd_real]')
