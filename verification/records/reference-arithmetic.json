@@ -5,10 +5,10 @@
     "fixtures/oracles.json": "9b00ddb5ec4a470dae4cf648a9ac9e9300b6bd02c1fa895d3e727f90015fdc6a",
     "fixtures/tax-tables.spec.json": "7435ef322b027f987ea162857133b2bc38f9e086c83a84fe10c76417fd9ea267",
     "reference/recalculate.mjs": "04151c2831a605897b126872cb28a58dac54b9084a5c2a65f35126f853f7d13b",
-    "../plan/2026-10-18-retirement-sim-design.md": "9f5a9f25ae2f6e52ea41d4ff5c683b5178cbcbce39c0c187ab47bf0502a758a6"
+    "../plan/2026-10-18-retirement-sim-design.md": "339b28f0c29b0c8497731d2a9711f40d84a8e3954b256b1349ebb7f9ab6443bc"
   },
   "reference_imports_product_model": false,
-  "checked_at": "2026-10-21T04:41:30.112Z",
+  "checked_at": "2026-10-26T18:27:34.347Z",
   "counts": {
     "reference_pass": 55,
     "reference_fail": 0,

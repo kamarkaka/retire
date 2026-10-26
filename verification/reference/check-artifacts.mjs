@@ -157,7 +157,7 @@ const ledgerMatch = spec
   .match(/`year, age_A,[^`]+`/);
 const specLedger = ledgerMatch[0].slice(1, -1).split(', ');
 check(
-  'ledger exact37-field spec order',
+  'ledger exact38-field spec order',
   JSON.stringify(specLedger) === JSON.stringify(layout.ledger_fields),
   { count: layout.ledger_fields.length },
 );

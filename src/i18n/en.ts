@@ -279,6 +279,25 @@ const enUI = {
   'results.terminalDue': 'Median ending income tax due',
   'results.taxNote':
     'Taxes are computed and paid each simulated year. Both people remain alive; no estate tax, inheritance or death-related basis reset is simulated. The broader tax/source audit remains open.',
+  'solver.eyebrow': 'What would it take',
+  'solver.title': 'Reaching a higher success rate',
+  'solver.hint':
+    'Each answer reruns your simulation with the same market paths while changing one thing. This can take a few minutes; you can cancel any time.',
+  'solver.assetsTitle': 'Extra investable assets needed',
+  'solver.assetsHint':
+    'Additional USD added to non-retirement liquid assets, on top of what you have today.',
+  'solver.spendTitle': 'Annual spending budget for the target',
+  'solver.spendHint':
+    'Total yearly budget in household currency with medical expenses unchanged. A below-medical answer means even zero discretionary spending is not enough.',
+  'solver.target': 'Success target',
+  'solver.result': 'Needed',
+  'solver.solve': 'Calculate',
+  'solver.cancel': 'Cancel',
+  'solver.solving': 'Solving… {progress}',
+  'solver.solvingTarget': 'Solving… {progress}',
+  'solver.queued': 'Waiting',
+  'solver.error': 'Solver failed; please retry.',
+  'solver.unachievable': 'Not achievable by spending cuts alone',
   'chart.median': 'Median',
   'chart.p10': '10th',
   'chart.p90': '90th',
@@ -340,7 +359,8 @@ const enUI = {
   'modal.tax': 'Tax',
   'modal.rentalProp': 'Rental & property',
   'modal.dividends': 'Dividends',
-  'modal.pension': 'Pensions',
+  'modal.pension': 'Retirement distributions',
+  'modal.pensionIncome': 'Pension / annuity',
   'modal.securities': 'Securities gains',
   'modal.interest': 'Interest',
   'modal.rent': 'Rent',
@@ -421,6 +441,12 @@ const enUI = {
   'assumptions.taxTitle': 'Tax and supported classifications',
   'assumptions.taxBody':
     'The model supports citizen/resident and noncitizen/nonresident. A retained green card requires the applicable resident branch; it is never silently treated as NRA. Tax stays simple: all-long-term netting with loss carryforward, property gains at LTCG rates, no state tax, and same-year payment with a same-year China credit. Section 1231 loss history and lookback ordering are removed.',
+  'assumptions.pensionTitle': 'Pension and annuity income',
+  'assumptions.pensionBody':
+    'Each person can receive a yearly pension or annuity from a start age, optionally rising with US inflation. It arrives as spendable USD cash, is taxed as ordinary US income (flat NRA rate for nonresidents), and is never taxed by China. Payments run every year through the planning horizon.',
+  'assumptions.flexTitle': 'Flexible spending',
+  'assumptions.flexBody':
+    'When enabled, the non-medical budget flexes with the prior year’s portfolio return: up years draw a random raise up to the raise limit, down years a random cut up to the cut limit, so good years never under-spend and bad years never over-spend. Medical spending, shocks, care and one-time costs never flex. The yearly multiplier is shown in the ledger.',
   'assumptions.registry': 'Source registry · {open} open',
   'assumptions.snapshot': 'Current scientific snapshot',
   'assumptions.configHash': 'Current configuration hash:',

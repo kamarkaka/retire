@@ -79,6 +79,10 @@ export default function Assumptions({
       <p>{t('assumptions.fxBody')}</p>
       <h3>{t('assumptions.taxTitle')}</h3>
       <p>{t('assumptions.taxBody')}</p>
+      <h3>{t('assumptions.pensionTitle')}</h3>
+      <p>{t('assumptions.pensionBody')}</p>
+      <h3>{t('assumptions.flexTitle')}</h3>
+      <p>{t('assumptions.flexBody')}</p>
       <details>
         <summary>
           {t('assumptions.registry', {

@@ -1,5 +1,5 @@
 export const LEDGER_FIELDS =
-  `year age_A age_B alive_A alive_B fx home_index usd_index spend_plan_cny spend_cny medical_cny medical_base_cny medical_shock_cny one_time_cny included_consumption_cny additional_consumption_cny rent_cash_usd rmd_usd portfolio_return withdraw_usd withdraw_cny convert_usd tax_us_A tax_us_B tax_cn_A tax_cn_B liquid_usd cny_cash_cny property_equity_usd net_worth_cny net_worth_cny_real liquid_cny_real net_worth_usd_real shortfall_cny forced_sale sale_failed fx_quota_flag`.split(
+  `year age_A age_B alive_A alive_B fx home_index usd_index spend_plan_cny spend_cny medical_cny medical_base_cny medical_shock_cny one_time_cny included_consumption_cny additional_consumption_cny rent_cash_usd rmd_usd portfolio_return withdraw_usd withdraw_cny convert_usd tax_us_A tax_us_B tax_cn_A tax_cn_B liquid_usd cny_cash_cny property_equity_usd net_worth_cny net_worth_cny_real liquid_cny_real net_worth_usd_real shortfall_cny forced_sale sale_failed fx_quota_flag spend_mult`.split(
     ' ',
   );
 export const CHART_FIELDS =

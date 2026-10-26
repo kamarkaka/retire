@@ -1,7 +1,7 @@
 {
   "kind": "Independent inventory integrity; current product/browser execution is reported separately",
-  "checked_at": "2026-10-23T01:44:40.862Z",
-  "node": "v24.22.0",
+  "checked_at": "2026-10-26T18:54:05.338Z",
+  "node": "v26.5.0",
   "checks": [
     {
       "name": "unique case IDs",
@@ -14,7 +14,7 @@
       "name": "unique field paths",
       "status": "PASS",
       "detail": {
-        "count": 78
+        "count": 87
       }
     },
     {
@@ -117,14 +117,14 @@
       "name": "all current fields have plain-English help",
       "status": "PASS",
       "detail": {
-        "count": 78
+        "count": 87
       }
     },
     {
-      "name": "ledger exact37-field spec order",
+      "name": "ledger exact38-field spec order",
       "status": "PASS",
       "detail": {
-        "count": 37
+        "count": 38
       }
     },
     {

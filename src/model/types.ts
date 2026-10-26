@@ -42,11 +42,17 @@ export interface MarketConfig {
   income_yield_us_stocks: number;
   income_yield_us_bonds: number;
 }
+export interface PensionConfig {
+  annual: number; // USD per year in today's money; 0 = no pension.
+  start_age: number; // First payout year is the year the person reaches this age.
+  cola: boolean; // True follows US CPI; false pays the nominal amount every year.
+}
 export interface PersonConfig {
   birth_year: number;
   sex?: 'M' | 'F'; // Descriptive only; everyone uses the fixed planning horizon.
   us_citizen: boolean;
   us_income_tax_status: TaxStatus;
+  pension: PensionConfig;
 }
 export interface HouseholdPeople {
   domicile: 'US' | 'China'; // One domicile country for the whole household.
@@ -152,7 +158,13 @@ export interface ScenarioConfig {
       real_growth: number;
     };
   };
-  budget: { annual: number; included_health: number };
+  budget: {
+    annual: number;
+    included_health: number;
+    flex_enabled: boolean;
+    flex_cut: number; // Max spend cut after a down year, fraction 0...1.
+    flex_raise: number; // Max spend raise after an up year, fraction 0...1.
+  };
   one_time: OneTimeConfig[];
   accounts: AccountConfig[];
   withdrawals: {
@@ -278,6 +290,7 @@ export interface MarketPath {
 }
 export interface PathDraws {
   medical_occurrence: Record<PersonId, Float64Array>;
+  spend_flex: Float64Array;
 }
 export type IncomeField =
   | 'interest_us'
@@ -288,6 +301,7 @@ export type IncomeField =
   | 'cap_gain'
   | 'trad_own'
   | 'trad_inherited'
+  | 'pension'
   | 'roth'
   | 'early_trad'
   | 'rental_net'

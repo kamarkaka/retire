@@ -11,7 +11,7 @@ import type {
 import { cleanResidual } from './errors';
 export const ASSETS: AssetClass[] = ['us_stocks', 'us_bonds', 'usd_cash'];
 export const INCOME_FIELDS =
-  `interest_us dividends qualified_dividends nra_dividends nra_exempt_interest cap_gain trad_own trad_inherited roth early_trad rental_net rent_gross ordinary_property_gain ltcg_property property_gain_cny passive_released`.split(
+  `interest_us dividends qualified_dividends nra_dividends nra_exempt_interest cap_gain trad_own trad_inherited pension roth early_trad rental_net rent_gross ordinary_property_gain ltcg_property property_gain_cny passive_released`.split(
     ' ',
   ) as (keyof IncomeLedger)[];
 export function emptyIncome(): IncomeLedger {

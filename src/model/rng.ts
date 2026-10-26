@@ -61,11 +61,13 @@ export function makeDraws(
 ): PathDraws {
   const seed = s.simulation.seed;
   const person = <T>(f: (id: 'A' | 'B') => T) => ({ A: f('A'), B: f('B') });
+  const flex = uniformStream(seed, pathId, 'spend_flex');
   return {
     medical_occurrence: person((id) => {
       const u = uniformStream(seed, pathId, 'medical_occurrence', id);
       return Float64Array.from({ length: horizon }, () => u());
     }),
+    spend_flex: Float64Array.from({ length: horizon }, () => flex()),
   };
 }
 export function bootstrapIndices(

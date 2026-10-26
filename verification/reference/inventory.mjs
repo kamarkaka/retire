@@ -270,6 +270,19 @@ for (const person of ['A', 'B']) {
         'Citizen/resident or noncitizen/nonresident supported; resident alien cannot use NRA.',
     },
   );
+  optional(`${p}.pension.annual`, 'number', 'USD/year today', '5.4', 0, {
+    gates: ['H-PENSION'],
+    constraints:
+      'Annual pension or annuity payout in today’s USD; 0 means none.',
+  });
+  optional(`${p}.pension.start_age`, 'integer', 'age', '5.4', 65, {
+    gates: ['H-PENSION'],
+    constraints: 'First payout year is the year this age is reached; 0...120.',
+  });
+  optional(`${p}.pension.cola`, 'boolean', 'classification', '5.4', true, {
+    gates: ['H-PENSION'],
+    constraints: 'On follows US CPI; off pays the same nominal dollars yearly.',
+  });
 }
 
 for (const [k, v] of Object.entries({
@@ -349,6 +362,18 @@ optional(
       '>=0; single annual base medical budget for the household; included in annual once, before optional shocks/care.',
   },
 );
+optional('budget.flex_enabled', 'boolean', 'classification', '5.2', false, {
+  gates: ['H-BUDGET'],
+  constraints: 'On lets the non-medical budget flex with portfolio years.',
+});
+optional('budget.flex_cut', 'number', 'fraction', '5.2', 0.15, {
+  gates: ['H-BUDGET'],
+  constraints: '0...1; max non-medical spend cut after a down year.',
+});
+optional('budget.flex_raise', 'number', 'fraction', '5.2', 0.15, {
+  gates: ['H-BUDGET'],
+  constraints: '0...1; max non-medical spend raise after an up year.',
+});
 
 field('one_time[].name', 'string', 'label', '5.2');
 field('one_time[].year', 'integer', 'calendar year', '5.2');

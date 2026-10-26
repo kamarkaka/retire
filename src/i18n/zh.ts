@@ -267,6 +267,24 @@ const zhUI2 = {
   'results.terminalDue': '终点应缴所得税中位数',
   'results.taxNote':
     '每年计算并缴纳税款。两人都依然存活；不模拟遗产税、继承或死亡导致的成本重置。更广泛的税务与来源审计仍未完结。',
+  'solver.eyebrow': '需要什么条件',
+  'solver.title': '达到更高的成功率',
+  'solver.hint':
+    '每个答案都用相同的市场路径重新运行模拟，只改变一项。这可能需要几分钟；可随时取消。',
+  'solver.assetsTitle': '需要追加的可投资资产',
+  'solver.assetsHint': '在现有资产基础上，向非退休流动资产追加的美元金额。',
+  'solver.spendTitle': '达到目标所需的年度支出预算',
+  'solver.spendHint':
+    '按家庭货币计的年度总预算，医疗费用不变。低于医疗费的答案意味着即使零可支配支出也不够。',
+  'solver.target': '成功率目标',
+  'solver.result': '需要',
+  'solver.solve': '计算',
+  'solver.cancel': '取消',
+  'solver.solving': '计算中… {progress}',
+  'solver.solvingTarget': '计算中… {progress}',
+  'solver.queued': '等待中',
+  'solver.error': '求解失败，请重试。',
+  'solver.unachievable': '仅靠削减支出无法达到',
   'chart.median': '中位数',
   'chart.p10': '10%',
   'chart.p90': '90%',
@@ -327,7 +345,8 @@ const zhUI2 = {
   'modal.tax': '税额',
   'modal.rentalProp': '租金和房产',
   'modal.dividends': '股息',
-  'modal.pension': '养老金',
+  'modal.pension': '退休账户支取',
+  'modal.pensionIncome': '养老金 / 年金',
   'modal.securities': '证券收益',
   'modal.interest': '利息',
   'modal.rent': '租金',
@@ -407,6 +426,12 @@ const zhUI2 = {
   'assumptions.taxTitle': '税务与支持的分类',
   'assumptions.taxBody':
     '模型支持公民/居民与非公民/非居民。保留的绿卡适用相应的居民分支，从不静默视为 NRA。税务保持简单：全长期净额结算加亏损结转，房产收益按长期资本利得税率，无州税，当年缴纳加当年 中国税收抵免。第 1231 条损失历史与回溯排序已移除。',
+  'assumptions.pensionTitle': '养老金与年金收入',
+  'assumptions.pensionBody':
+    '每人可从起始年龄起领取年度养老金或年金，可选随美国通胀上调。给付作为可支出美元资金到账，按美国普通所得征税（非居民按统一税率），中国永不征税。给付每年发放，直至规划终点。',
+  'assumptions.flexTitle': '弹性支出',
+  'assumptions.flexBody':
+    '开启后，非医疗预算随上年组合回报浮动：上涨年份随机上浮（不超过上限），下跌年份随机下调（不超过下限），好年不省、差年不多花。医疗支出、冲击、护理与一次性支出永不浮动。年度乘数显示在账簿中。',
   'assumptions.registry': '来源登记 · {open} 项未完',
   'assumptions.snapshot': '当前科学快照',
   'assumptions.configHash': '当前配置哈希：',
@@ -445,6 +470,7 @@ const zhLabels: Record<string, string> = {
   balance: '余额',
   birth_year: '出生年份',
   block_mean_years: '分块平均年数',
+  cola: '通胀调整',
   cost_basis: '成本基础',
   currency: '货币',
   depreciation_taken: '已提折旧',
@@ -459,6 +485,9 @@ const zhLabels: Record<string, string> = {
   fx_sigma: '汇率波动率',
   fx_spot: '即期汇率',
   fx_spread: '换汇点差',
+  flex_cut: '支出下限',
+  flex_enabled: '支出浮动',
+  flex_raise: '支出上限',
   hoa_monthly: '物业费（月）',
   home_cpi_mean: '本国 CPI 均值',
   home_cpi_phi: '本国 CPI 持续性',
@@ -481,6 +510,7 @@ const zhLabels: Record<string, string> = {
   n_paths: '路径数',
   name: '名称',
   outlook_shift: '前景偏移',
+  pension: '养老金 / 年金',
   proceeds_account: '收款账户',
   property_tax_annual: '房产税（年）',
   real_growth: '实际增长',
@@ -524,6 +554,7 @@ const zhLabels: Record<string, string> = {
   fx: '汇率',
   home_index: '本国价格指数',
   usd_index: '美元价格指数',
+  spend_mult: '支出乘数',
   spend_plan_cny: '计划支出（人民币）',
   spend_cny: '日常支出（人民币）',
   medical_cny: '医疗（人民币）',
@@ -811,6 +842,24 @@ const zhFields: Record<string, FieldText> = {
     omission: REQUIRED,
     constraints: '支持公民/居民或非公民/非居民；居民外籍人士不得用 NRA。',
   },
+  'people.A.pension.annual': {
+    description:
+      '成员 A 每年的养老金或年金给付（按今日美元计），开始后作为可支出资金收取。按美国普通所得征税，本模型中中国永不征税。填 0 表示没有养老金。',
+    omission: OPTIONAL,
+    constraints: '按今日美元计的年给付额；0 表示无。',
+  },
+  'people.A.pension.start_age': {
+    description:
+      '成员 A 的养老金或年金开始给付的年龄；在达到该年龄的当年首次发放。此后每年给付，直至规划终点。',
+    omission: OPTIONAL,
+    constraints: '达到该年龄的当年首次发放；0 至 120。',
+  },
+  'people.A.pension.cola': {
+    description:
+      '成员 A 的养老金或年金是否每年随美国通胀上调。开启则跟随生活成本；关闭则每年发放相同的名义金额。',
+    omission: OPTIONAL,
+    constraints: '开启跟随美国 CPI；关闭每年名义金额不变。',
+  },
   'people.B.birth_year': {
     description:
       '成员 B 的出生年份。年龄按日历年而非确切生日计算，决定退休账户支取、医疗冲击概率、福利时点，以及由谁设定最高年龄终点。',
@@ -834,6 +883,24 @@ const zhFields: Record<string, FieldText> = {
       '成员 B 的美国所得税待遇。居民适用模型的美国居民所得与投资税规则；非居民使用支持的非居民类别。未确定则阻止运行。仅凭公民身份不能确定非公民的所得税居民身份。',
     omission: REQUIRED,
     constraints: '支持公民/居民或非公民/非居民；居民外籍人士不得用 NRA。',
+  },
+  'people.B.pension.annual': {
+    description:
+      '成员 B 每年的养老金或年金给付（按今日美元计），开始后作为可支出资金收取。按美国普通所得征税，本模型中中国永不征税。填 0 表示没有养老金。',
+    omission: OPTIONAL,
+    constraints: '按今日美元计的年给付额；0 表示无。',
+  },
+  'people.B.pension.start_age': {
+    description:
+      '成员 B 的养老金或年金开始给付的年龄；在达到该年龄的当年首次发放。此后每年给付，直至规划终点。',
+    omission: OPTIONAL,
+    constraints: '达到该年龄的当年首次发放；0 至 120。',
+  },
+  'people.B.pension.cola': {
+    description:
+      '成员 B 的养老金或年金是否每年随美国通胀上调。开启则跟随生活成本；关闭则每年发放相同的名义金额。',
+    omission: OPTIONAL,
+    constraints: '开启跟随美国 CPI；关闭每年名义金额不变。',
   },
   'medical.age_growth': {
     description:
@@ -906,6 +973,24 @@ const zhFields: Record<string, FieldText> = {
     omission: OPTIONAL,
     constraints:
       '≥0；家庭单一年度基础医疗预算；计入年度额一次，在冲击/护理之前。',
+  },
+  'budget.flex_enabled': {
+    description:
+      '允许非医疗预算随组合表现浮动。上年上涨时支出可上浮至上限，下跌时可下调至下限。医疗支出、冲击、护理与一次性支出永不浮动。',
+    omission: OPTIONAL,
+    constraints: '开启后非医疗预算随组合年份浮动。',
+  },
+  'budget.flex_cut': {
+    description:
+      '下跌年份后非医疗预算的最大下调比例（小数）：0.15 表示支出可降至计划的 85%。每个下跌年份在零与该上限之间随机抽取下调幅度。',
+    omission: OPTIONAL,
+    constraints: '0 至 1；下跌年份后的最大下调比例。',
+  },
+  'budget.flex_raise': {
+    description:
+      '上涨年份后非医疗预算的最大上浮比例（小数）：0.15 表示支出可升至计划的 115%。每个上涨年份在零与该上限之间随机抽取上浮幅度。',
+    omission: OPTIONAL,
+    constraints: '0 至 1；上涨年份后的最大上浮比例。',
   },
   'one_time[].name': {
     description: '该一次性支出的标签，如搬迁或购车。标签便于识别，不影响计算。',

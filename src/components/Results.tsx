@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { CompletedRun } from '../workers/pool';
 import Chart from './Chart';
+import Solver from './Solver';
 import { money, percent } from './format';
 import { useI18n } from '../i18n/context';
 import type { EChartsCoreOption } from 'echarts/core';
@@ -274,6 +275,7 @@ export default function Results({ run }: { run: CompletedRun }) {
         </div>
         <p className="muted">{t('results.taxNote')}</p>
       </article>
+      <Solver run={run} />
     </section>
   );
 }

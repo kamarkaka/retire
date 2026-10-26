@@ -36,6 +36,9 @@ usd_cash = 0.1
 
 [budget]
 annual = 250000
+flex_cut = 0.15
+flex_enabled = false
+flex_raise = 0.15
 included_health = 38000
 
 [market]
@@ -81,10 +84,20 @@ birth_year = 1986
 us_citizen = true
 us_income_tax_status = "resident"
 
+[people.A.pension]
+annual = 0
+cola = true
+start_age = 65
+
 [people.B]
 birth_year = 1986
 us_citizen = false
 us_income_tax_status = "nonresident"
+
+[people.B.pension]
+annual = 0
+cola = true
+start_age = 65
 
 [simulation]
 max_age = 110

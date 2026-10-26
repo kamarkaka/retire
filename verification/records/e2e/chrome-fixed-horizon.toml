@@ -35,6 +35,9 @@ usd_cash = 0
 
 [budget]
 annual = 312000
+flex_cut = 0.15
+flex_enabled = false
+flex_raise = 0.15
 included_health = 36000
 
 [market]
@@ -80,10 +83,20 @@ birth_year = 1966
 us_citizen = true
 us_income_tax_status = "resident"
 
+[people.A.pension]
+annual = 0
+cola = true
+start_age = 65
+
 [people.B]
 birth_year = 1968
 us_citizen = false
 us_income_tax_status = "nonresident"
+
+[people.B.pension]
+annual = 0
+cola = true
+start_age = 65
 
 [[properties]]
 cost_basis = 600000

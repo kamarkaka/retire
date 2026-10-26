@@ -11,8 +11,8 @@
     "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
     "result_layout_version": "retire-results-v1",
     "ledger_report_version": "retire-ledger-report-v1",
-    "build_version": "0.2.0+a2e0fc88e39c62e258a15075c1557997998cd7bf335ed755cae1077614a9b37f",
-    "scenario_sha256": "4d1a84f5a99e129697822311fa41bca540bcd5ba8d9789b16fca21984f340ece",
+    "build_version": "0.3.1+d863747832e885e4493e4286302b70fc85f7ad1413c54b191b9a33dfd5c12489",
+    "scenario_sha256": "08c249123c98832115db47dd98dca69dac76a1112bab01cf64793f39b4f26647",
     "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
     "reference_versions": {
       "history": "nyu-fred-1928-2025-v1",
@@ -40,17 +40,17 @@
     "verified_source_ids": []
   },
   "execution": {
-    "run_id": "b9656758-e492-48ee-ba33-42cb4ba2568d",
+    "run_id": "fc5b5192-9c45-4b6d-a713-33c8beb75644",
     "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
     "os": "MacIntel",
     "hardware_concurrency": 14,
     "worker_count": 4,
     "chunk_size": 64,
-    "started_at": "2026-10-23T02:21:41.658Z",
+    "started_at": "2026-10-26T18:53:35.709Z",
     "memory_estimate_bytes": 107173887,
     "memory_estimate_scope": "Known simulation buffers, worker workspaces, pinned results, scratch and 96 MiB reserve; excludes browser overhead and JavaScript heaps. This is not an OS process memory cap.",
-    "finished_at": "2026-10-23T02:21:43.855Z",
-    "elapsed_ms": 2197.2999999523163
+    "finished_at": "2026-10-26T18:53:36.297Z",
+    "elapsed_ms": 588
   },
   "market_data": {
     "format_version": "retire-market-data-v1",

@@ -30,6 +30,7 @@ These are financial/factual requirements, not a Simulation checklist or legal-ve
 | H-MEDICAL | Aggregate included38k, premiums/social contributions/out-of-pocket care, shocks, care amount/start/growth | Adopt actual medical assumptions once in Budget; configure additional care and any insurance/shock needs. No People medical base or recurring list. |
 | H-PROPERTY | Rent, mortgage service/term, basis/ownership, operating costs/taxes and sale assumptions | Statements/schedules; aggregate731k debt does not establish annual payments. Zero rent is only a sensitivity. |
 | H-SSA | Social Security exclusion | No benefits are ever paid and there are no inputs; no survivor entitlement. |
+| H-PENSION | Pension/annuity annual payout, start age and COLA per person | Statements or benefit letters; payments are ordinary US income, never China-taxed, and run to the horizon. |
 
 `LEGAL-ALL` labels applicable broad source work, not a runnable-input flag. The current public registry is [src/reference/source-gates.json](../src/reference/source-gates.json); the frozen [18-row M00 registry](source-gates.json) is historical. Checked2025 IRS §1250 subset evidence is separate from broader unverified rules.
 

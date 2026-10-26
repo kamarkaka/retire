@@ -502,6 +502,60 @@
       "description": "The US income-tax treatment for person A. Resident applies the model’s US resident income and investment tax rules; Nonresident uses its supported nonresident categories. Unresolved blocks a run. Citizenship alone does not establish a noncitizen’s income-tax residency."
     },
     {
+      "path": "people.A.pension.annual",
+      "type": "number",
+      "unit": "USD/year today",
+      "spec_section": "5.4",
+      "builder_section": "People",
+      "builder_control": "numeric",
+      "internal_path": "people.A.pension.annual",
+      "serialize_path": "people.A.pension.annual",
+      "omission": "optional; omission uses declared default",
+      "default": 0,
+      "default_kind": "documented",
+      "constraints": "Annual pension or annuity payout in today’s USD; 0 means none.",
+      "gates": [
+        "H-PENSION"
+      ],
+      "description": "Person A’s yearly pension or annuity payout in today’s USD, received as spendable cash once payments start. It is taxed as ordinary US income and never taxed by China in this model. Enter 0 for no pension."
+    },
+    {
+      "path": "people.A.pension.start_age",
+      "type": "integer",
+      "unit": "age",
+      "spec_section": "5.4",
+      "builder_section": "People",
+      "builder_control": "numeric",
+      "internal_path": "people.A.pension.start_age",
+      "serialize_path": "people.A.pension.start_age",
+      "omission": "optional; omission uses declared default",
+      "default": 65,
+      "default_kind": "documented",
+      "constraints": "First payout year is the year this age is reached; 0...120.",
+      "gates": [
+        "H-PENSION"
+      ],
+      "description": "The age at which person A’s pension or annuity starts paying; the first payout arrives in the year that age is reached. Payments continue every year through the planning horizon."
+    },
+    {
+      "path": "people.A.pension.cola",
+      "type": "boolean",
+      "unit": "classification",
+      "spec_section": "5.4",
+      "builder_section": "People",
+      "builder_control": "checkbox",
+      "internal_path": "people.A.pension.cola",
+      "serialize_path": "people.A.pension.cola",
+      "omission": "optional; omission uses declared default",
+      "default": true,
+      "default_kind": "documented",
+      "constraints": "On follows US CPI; off pays the same nominal dollars yearly.",
+      "gates": [
+        "H-PENSION"
+      ],
+      "description": "Whether person A’s pension or annuity rises with US inflation each year. On tracks the cost of living; off pays the same nominal dollars every year."
+    },
+    {
       "path": "people.B.birth_year",
       "type": "integer",
       "unit": "calendar year",
@@ -572,6 +626,60 @@
         "L-RESIDENCY"
       ],
       "description": "The US income-tax treatment for person B. Resident applies the model’s US resident income and investment tax rules; Nonresident uses its supported nonresident categories. Unresolved blocks a run. Citizenship alone does not establish a noncitizen’s income-tax residency."
+    },
+    {
+      "path": "people.B.pension.annual",
+      "type": "number",
+      "unit": "USD/year today",
+      "spec_section": "5.4",
+      "builder_section": "People",
+      "builder_control": "numeric",
+      "internal_path": "people.B.pension.annual",
+      "serialize_path": "people.B.pension.annual",
+      "omission": "optional; omission uses declared default",
+      "default": 0,
+      "default_kind": "documented",
+      "constraints": "Annual pension or annuity payout in today’s USD; 0 means none.",
+      "gates": [
+        "H-PENSION"
+      ],
+      "description": "Person B’s yearly pension or annuity payout in today’s USD, received as spendable cash once payments start. It is taxed as ordinary US income and never taxed by China in this model. Enter 0 for no pension."
+    },
+    {
+      "path": "people.B.pension.start_age",
+      "type": "integer",
+      "unit": "age",
+      "spec_section": "5.4",
+      "builder_section": "People",
+      "builder_control": "numeric",
+      "internal_path": "people.B.pension.start_age",
+      "serialize_path": "people.B.pension.start_age",
+      "omission": "optional; omission uses declared default",
+      "default": 65,
+      "default_kind": "documented",
+      "constraints": "First payout year is the year this age is reached; 0...120.",
+      "gates": [
+        "H-PENSION"
+      ],
+      "description": "The age at which person B’s pension or annuity starts paying; the first payout arrives in the year that age is reached. Payments continue every year through the planning horizon."
+    },
+    {
+      "path": "people.B.pension.cola",
+      "type": "boolean",
+      "unit": "classification",
+      "spec_section": "5.4",
+      "builder_section": "People",
+      "builder_control": "checkbox",
+      "internal_path": "people.B.pension.cola",
+      "serialize_path": "people.B.pension.cola",
+      "omission": "optional; omission uses declared default",
+      "default": true,
+      "default_kind": "documented",
+      "constraints": "On follows US CPI; off pays the same nominal dollars yearly.",
+      "gates": [
+        "H-PENSION"
+      ],
+      "description": "Whether person B’s pension or annuity rises with US inflation each year. On tracks the cost of living; off pays the same nominal dollars every year."
     },
     {
       "path": "medical.age_growth",
@@ -770,6 +878,60 @@
         "H-MEDICAL"
       ],
       "description": "The combined annual base medical budget for both people in today’s CNY. It is already included in Annual CNY, so it is not added to that budget again. This part grows with medical price inflation and aging; the rest of the budget grows with China inflation."
+    },
+    {
+      "path": "budget.flex_enabled",
+      "type": "boolean",
+      "unit": "classification",
+      "spec_section": "5.2",
+      "builder_section": "Budget",
+      "builder_control": "checkbox",
+      "internal_path": "budget.flex_enabled",
+      "serialize_path": "budget.flex_enabled",
+      "omission": "optional; omission uses declared default",
+      "default": false,
+      "default_kind": "documented",
+      "constraints": "On lets the non-medical budget flex with portfolio years.",
+      "gates": [
+        "H-BUDGET"
+      ],
+      "description": "Lets the non-medical budget flex with portfolio years. After an up year spending can rise up to the raise limit; after a down year it can fall to the cut limit. Medical spending, shocks, care and one-time costs never flex."
+    },
+    {
+      "path": "budget.flex_cut",
+      "type": "number",
+      "unit": "fraction",
+      "spec_section": "5.2",
+      "builder_section": "Budget",
+      "builder_control": "numeric",
+      "internal_path": "budget.flex_cut",
+      "serialize_path": "budget.flex_cut",
+      "omission": "optional; omission uses declared default",
+      "default": 0.15,
+      "default_kind": "documented",
+      "constraints": "0...1; max non-medical spend cut after a down year.",
+      "gates": [
+        "H-BUDGET"
+      ],
+      "description": "The largest fraction the non-medical budget can fall after a down year, as a decimal: 0.15 means spending can drop to 85% of plan. Each down year draws a random cut between none and this limit."
+    },
+    {
+      "path": "budget.flex_raise",
+      "type": "number",
+      "unit": "fraction",
+      "spec_section": "5.2",
+      "builder_section": "Budget",
+      "builder_control": "numeric",
+      "internal_path": "budget.flex_raise",
+      "serialize_path": "budget.flex_raise",
+      "omission": "optional; omission uses declared default",
+      "default": 0.15,
+      "default_kind": "documented",
+      "constraints": "0...1; max non-medical spend raise after an up year.",
+      "gates": [
+        "H-BUDGET"
+      ],
+      "description": "The largest fraction the non-medical budget can rise after an up year, as a decimal: 0.15 means spending can rise to 115% of plan. Each up year draws a random raise between none and this limit."
     },
     {
       "path": "one_time[].name",

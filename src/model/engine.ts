@@ -13,7 +13,7 @@ import type {
 } from './types';
 import { generateMarketPath } from './market';
 import { makeDraws } from './rng';
-import { consumption } from './consumption';
+import { consumption, flexMultiplier } from './consumption';
 import {
   initialAccount,
   accountBalance,
@@ -346,9 +346,21 @@ function runPath(
               p.sell_liquid_years * annualCny);
         if (trigger) trySale(i, false);
       }
-    // 3. Rent and RMD cash; no need is deducted yet.
+    // 3. Rent, RMD and pension cash; no need is deducted yet.
     let rent = 0,
-      rmd = 0;
+      rmd = 0,
+      pension = 0;
+    for (const id of ['A', 'B'] as const) {
+      const person = s.people[id];
+      if (!person) continue;
+      const cfg = person.pension,
+        age = year - person.birth_year;
+      if (cfg && cfg.annual > 0 && age >= cfg.start_age) {
+        const amount = cfg.annual * (cfg.cola ? market.usd_index[t] : 1);
+        pension += amount;
+        income[id].pension += amount;
+      }
+    }
     for (let i = 0; i < properties.length; i++)
       if (properties[i].held) {
         const cash = propertyCash(
@@ -390,11 +402,19 @@ function runPath(
         rmd += actual;
         withdrawUsd += actual;
       }
-    cashUsd = rent + rmd;
+    cashUsd = rent + rmd + pension;
     const propertyCashNeed = Math.max(0, -cashUsd);
     cashUsd = Math.max(0, cashUsd);
     // 4. Requested consumption and separately reported budget scope.
-    const cost = consumption(s, t, market, draws, pathId);
+    const spendMult = s.budget.flex_enabled
+      ? flexMultiplier(
+          priorReturn,
+          draws.spend_flex[t],
+          s.budget.flex_cut,
+          s.budget.flex_raise,
+        )
+      : 1;
+    const cost = consumption(s, t, market, draws, pathId, spendMult);
     if (t === 0) {
       const usd = s.people.domicile === 'US';
       summary.floats[FI.initial_included_recurring_cny] =
@@ -630,6 +650,7 @@ function runPath(
       forced_sale: Number(forced),
       sale_failed: Number(saleFailed),
       fx_quota_flag: Number(quota),
+      spend_mult: spendMult,
     };
     for (let f = 0; f < LEDGER_FIELDS.length; f++) {
       const value = row[LEDGER_FIELDS[f]];

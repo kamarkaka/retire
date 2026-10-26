@@ -2,35 +2,35 @@
   "status": "PASS",
   "hash_scope": "first 1000 complete paths, all chart/Float64/Int32/flag buffers; replay paths 0, 17 and 999 full ledgers",
   "one": {
-    "run_id": "5dc7c81f-e79c-4f9a-9ada-58820eb9daf5",
+    "run_id": "10d5d556-cc5c-4275-b6d6-1dd9032e5db3",
     "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
     "os": "MacIntel",
     "hardware_concurrency": 2,
     "worker_count": 1,
     "chunk_size": 64,
-    "started_at": "2026-10-23T02:17:43.979Z",
+    "started_at": "2026-10-26T18:52:41.644Z",
     "memory_estimate_bytes": 104729944,
     "memory_estimate_scope": "Known simulation buffers, worker workspaces, pinned results, scratch and 96 MiB reserve; excludes browser overhead and JavaScript heaps. This is not an OS process memory cap.",
-    "finished_at": "2026-10-23T02:17:47.785Z",
-    "elapsed_ms": 3806.0999999046326
+    "finished_at": "2026-10-26T18:52:43.365Z",
+    "elapsed_ms": 1721.0999999046326
   },
   "four": {
-    "run_id": "09752296-5f29-48f2-bd8a-9b1d5487d37d",
+    "run_id": "acd4672f-eadc-43cc-94f5-7142ab6800e6",
     "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
     "os": "MacIntel",
     "hardware_concurrency": 5,
     "worker_count": 4,
     "chunk_size": 64,
-    "started_at": "2026-10-23T02:17:48.992Z",
+    "started_at": "2026-10-26T18:52:43.981Z",
     "memory_estimate_bytes": 107579888,
     "memory_estimate_scope": "Known simulation buffers, worker workspaces, pinned results, scratch and 96 MiB reserve; excludes browser overhead and JavaScript heaps. This is not an OS process memory cap.",
-    "finished_at": "2026-10-23T02:17:50.907Z",
-    "elapsed_ms": 1915.1000001430511
+    "finished_at": "2026-10-26T18:52:44.591Z",
+    "elapsed_ms": 610.3999998569489
   },
   "replay_hashes": {
-    "26": "c4e9c2ea044efec860336099dff795e67d9627c30895adcc53811b1309d16831",
-    "587": "23bf68c44f46f3d50ed3b6d77651b2b999047bce781bffc549dccd5c8fbd3e7d",
-    "891": "3538c50c0d8f775a3a0d27bb1e9450c79d98146e372c5cf64de153fbf6c8dac0"
+    "26": "02b8375f9320156726a95737a1cc7f8f5f91a2364e3dbe2d550ec397e8ecfbf8",
+    "587": "b8abaaae2061e394f8a40248b6199839ac3328794409bd34881a478d7d5f2318",
+    "891": "9f6a23176631839ace428c3944224f48b5752cd75eff135a5036ea9a073dd5d3"
   },
   "evidence": {
     "live": 0,
@@ -59,50 +59,50 @@
       192,
       64,
       128,
-      0,
       256,
       384,
       320,
       448,
+      0,
       512,
-      640,
       576,
+      640,
       704,
       768,
-      960,
-      896,
       832,
+      896,
+      960,
       192,
       64,
       128,
-      0,
       256,
       320,
       384,
       448,
       512,
       576,
+      0,
       640,
       704,
       768,
       832,
       896,
       960,
-      1024,
       1088,
+      1024,
       1152,
-      1216,
       1280,
+      1216,
       1344,
       1408,
       1472,
       1536,
       1600,
-      1728,
       1664,
+      1728,
       1792,
-      1984,
       1856,
+      1984,
       1920
     ],
     "held_chunks": 0,
@@ -173,7 +173,7 @@
     ],
     "summaries": [
       {
-        "run_id": "5dc7c81f-e79c-4f9a-9ada-58820eb9daf5",
+        "run_id": "10d5d556-cc5c-4275-b6d6-1dd9032e5db3",
         "n_paths": 1000,
         "seed": 42,
         "bytes": 2119000,
@@ -185,7 +185,7 @@
         }
       },
       {
-        "run_id": "09752296-5f29-48f2-bd8a-9b1d5487d37d",
+        "run_id": "acd4672f-eadc-43cc-94f5-7142ab6800e6",
         "n_paths": 1000,
         "seed": 42,
         "bytes": 2119000,
@@ -197,7 +197,7 @@
         }
       },
       {
-        "run_id": "bdc1bd68-a86d-40f9-aedb-f82e105c37a2",
+        "run_id": "277758d4-e4f8-44ac-8fce-a7a14f60fed8",
         "n_paths": 2000,
         "seed": 42,
         "bytes": 4238000,
@@ -212,35 +212,35 @@
     "replays": [
       {
         "path_id": 891,
-        "hash": "3538c50c0d8f775a3a0d27bb1e9450c79d98146e372c5cf64de153fbf6c8dac0"
+        "hash": "9f6a23176631839ace428c3944224f48b5752cd75eff135a5036ea9a073dd5d3"
       },
       {
         "path_id": 587,
-        "hash": "23bf68c44f46f3d50ed3b6d77651b2b999047bce781bffc549dccd5c8fbd3e7d"
+        "hash": "b8abaaae2061e394f8a40248b6199839ac3328794409bd34881a478d7d5f2318"
       },
       {
         "path_id": 26,
-        "hash": "c4e9c2ea044efec860336099dff795e67d9627c30895adcc53811b1309d16831"
+        "hash": "02b8375f9320156726a95737a1cc7f8f5f91a2364e3dbe2d550ec397e8ecfbf8"
       },
       {
         "path_id": 891,
-        "hash": "3538c50c0d8f775a3a0d27bb1e9450c79d98146e372c5cf64de153fbf6c8dac0"
+        "hash": "9f6a23176631839ace428c3944224f48b5752cd75eff135a5036ea9a073dd5d3"
       },
       {
         "path_id": 891,
-        "hash": "3538c50c0d8f775a3a0d27bb1e9450c79d98146e372c5cf64de153fbf6c8dac0"
+        "hash": "9f6a23176631839ace428c3944224f48b5752cd75eff135a5036ea9a073dd5d3"
       },
       {
         "path_id": 587,
-        "hash": "23bf68c44f46f3d50ed3b6d77651b2b999047bce781bffc549dccd5c8fbd3e7d"
+        "hash": "b8abaaae2061e394f8a40248b6199839ac3328794409bd34881a478d7d5f2318"
       },
       {
         "path_id": 26,
-        "hash": "c4e9c2ea044efec860336099dff795e67d9627c30895adcc53811b1309d16831"
+        "hash": "02b8375f9320156726a95737a1cc7f8f5f91a2364e3dbe2d550ec397e8ecfbf8"
       },
       {
         "path_id": 891,
-        "hash": "3538c50c0d8f775a3a0d27bb1e9450c79d98146e372c5cf64de153fbf6c8dac0"
+        "hash": "9f6a23176631839ace428c3944224f48b5752cd75eff135a5036ea9a073dd5d3"
       }
     ],
     "failures": []

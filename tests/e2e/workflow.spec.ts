@@ -379,7 +379,7 @@ test('M08: a 50-year planning config uses historical returns and integer money d
       .filter((l) => l && !l.startsWith('#')),
     headers = csv[0].split(','),
     rows = csv.slice(1).map((l) => l.split(','));
-  expect(headers).toHaveLength(42);
+  expect(headers).toHaveLength(43);
   expect(headers).not.toContain('firpta_withheld_usd');
   expect(rows).toHaveLength(50);
   expect(Number(rows[0][headers.indexOf('withdraw_usd')])).toBeCloseTo(
@@ -417,6 +417,7 @@ test('M09: one-person US ledger shows USD columns and hides second-person and Ch
   const d = createControlDraft();
   delete d.people!.B;
   d.people!.domicile = 'US';
+  d.people!.A!.pension = { annual: 60000, start_age: 40, cola: false };
   d.simulation!.n_paths = 1;
   d.simulation!.max_age = 41;
   await page.goto('/');
@@ -428,6 +429,12 @@ test('M09: one-person US ledger shows USD columns and hides second-person and Ch
     exact: true,
   });
   await expect(table.locator('tbody tr')).toHaveCount(2);
+  await table.locator('tbody tr').first().click();
+  const modal = page.getByTestId('year-modal');
+  await expect(
+    modal.locator('tr', { hasText: 'Pension / annuity' }),
+  ).toContainText('60,000');
+  await page.keyboard.press('Escape');
   await expect(
     page.getByRole('columnheader', { name: 'Medical USD', exact: true }),
   ).toBeVisible();
@@ -443,6 +450,97 @@ test('M09: one-person US ledger shows USD columns and hides second-person and Ch
     'shortfall_cny',
   ])
     await expect(table.locator(`[data-field=${field}]`)).toHaveCount(0);
+});
+test('M09: flexible spending shows a bounded multiplier column only when enabled', async ({
+  page,
+}) => {
+  const d = createControlDraft();
+  d.budget!.flex_enabled = true;
+  d.budget!.flex_cut = 0.2;
+  d.budget!.flex_raise = 0.15;
+  d.simulation!.n_paths = 1;
+  d.simulation!.max_age = 45;
+  await page.goto('/');
+  await uploadDraft(page, d);
+  await complete(page, 1);
+  await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
+  const table = page.getByRole('table', {
+    name: 'Year ledger',
+    exact: true,
+  });
+  await expect(
+    page.getByRole('columnheader', {
+      name: 'Spending multiplier',
+      exact: true,
+    }),
+  ).toBeVisible();
+  const cells = table.locator('tbody tr [data-field=spend_mult]');
+  await expect(cells.first()).toHaveText('×1.00');
+  for (let i = 0; i < (await cells.count()); i++) {
+    const text = (await cells.nth(i).textContent())!,
+      value = Number(text.slice(1));
+    expect(text).toMatch(/^×\d\.\d\d$/);
+    expect(value).toBeGreaterThanOrEqual(0.8);
+    expect(value).toBeLessThanOrEqual(1.15);
+  }
+  const plain = createControlDraft();
+  plain.simulation!.n_paths = 1;
+  plain.simulation!.max_age = 45;
+  await page.goto('/');
+  await uploadDraft(page, plain);
+  await complete(page, 1);
+  await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
+  await expect(
+    page.getByRole('columnheader', {
+      name: 'Spending multiplier',
+      exact: true,
+    }),
+  ).toHaveCount(0);
+});
+test('M10: asset and spending solvers return monotone target answers', async ({
+  page,
+}) => {
+  test.setTimeout(300000);
+  const d = createControlDraft();
+  d.simulation!.n_paths = 10;
+  d.simulation!.max_age = 45;
+  d.budget!.annual = 2600000;
+  await page.goto('/');
+  await uploadDraft(page, d);
+  await complete(page, 10);
+  await page.getByRole('button', { name: 'Results', exact: true }).click();
+  const read = async (kind: string): Promise<(number | null)[]> => {
+    const card = page.getByTestId(`solver-${kind}`);
+    await card.getByRole('button', { name: 'Calculate', exact: true }).click();
+    for (const target of ['0.5', '0.9', '0.99', '1']) {
+      const cell = card.locator(`tr[data-target="${target}"] td`).nth(1);
+      await expect(cell, `solver ${kind} target ${target}`).toHaveText(
+        /(\$|¥|Not achievable|无法)/,
+        { timeout: 240000 },
+      );
+    }
+    return Promise.all(
+      ['0.5', '0.9', '0.99', '1'].map(async (target) => {
+        const text = (await card
+          .locator(`tr[data-target="${target}"] td`)
+          .nth(1)
+          .textContent())!;
+        if (/beyond|>|Not achievable|无法/.test(text)) return null;
+        return Number(text.replace(/[^0-9.-]/g, ''));
+      }),
+    );
+  };
+  const assets = await read('assets');
+  for (let i = 1; i < assets.length; i++)
+    if (assets[i] !== null && assets[i - 1] !== null)
+      expect(assets[i]!).toBeGreaterThanOrEqual(assets[i - 1]!);
+  // 2/10 success forces real bisection: higher targets need added assets.
+  expect(assets.some((v) => v !== null && v > 0)).toBe(true);
+  const spending = await read('spending');
+  for (let i = 1; i < spending.length; i++)
+    if (spending[i] !== null && spending[i - 1] !== null)
+      expect(spending[i]!).toBeLessThanOrEqual(spending[i - 1]!);
+  expect(spending.some((v) => v !== null && v < 2600000)).toBe(true);
 });
 test('M02 M06: invalid upload preserves draft and actual missing inputs block any configuration', async ({
   page,
@@ -926,6 +1024,9 @@ test('M02 M10: decimal rate typing survives edits, export and a run', async ({
       ).toHaveCount(0);
   await page
     .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
+    .click();
+  await page
+    .locator('section[aria-labelledby="market-group-fx"] summary')
     .click();
   const keys = ['income_yield_us_stocks', 'income_yield_us_bonds'] as const;
   for (const key of ['cny_cash_real_rate', 'cny_cash_floor'])

@@ -38,6 +38,8 @@ function defaultNode(node: SchemaNode, value: unknown, path: string): unknown {
         if (k === 'rule_of_55' && obj.type !== 'pre_tax') continue;
         if (k === 'allow_early_trad' && obj.type !== 'pre_tax') continue;
       }
+      // B absent = one-person household; defaults must not materialize B.
+      if (path === 'people' && k === 'B' && obj.B === undefined) continue;
       const next = defaultNode(n, obj[k], path ? `${path}.${k}` : k);
       if (
         next !== undefined &&
@@ -249,6 +251,8 @@ export function validateScenario(
     const path = `people.${id}`,
       age = s?.start_year! - p.birth_year!;
     range(age, 18, 100, `${path}.birth_year`);
+    range(p.pension?.annual, 0, Number.MAX_VALUE, `${path}.pension.annual`);
+    range(p.pension?.start_age, 0, 120, `${path}.pension.start_age`);
     if (p.us_income_tax_status === 'unresolved')
       add(path, 'Resolve income residency', 'unsupported_status');
     if (p.us_citizen && p.us_income_tax_status !== 'resident')
@@ -354,6 +358,8 @@ export function validateScenario(
     range(v.amount, 0, Number.MAX_VALUE, `one_time[${i}].amount`),
   );
   range(d.budget?.annual, 0, Number.MAX_VALUE, 'budget.annual');
+  range(d.budget?.flex_cut, 0, 1, 'budget.flex_cut');
+  range(d.budget?.flex_raise, 0, 1, 'budget.flex_raise');
   range(
     d.budget?.included_health,
     0,

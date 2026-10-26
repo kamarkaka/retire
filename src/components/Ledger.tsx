@@ -8,12 +8,17 @@ import { number } from './format';
 import { pretty } from './Builder';
 import { useI18n } from '../i18n/context';
 import { labelFor } from '../i18n/core';
-function selectedFieldsFor(usDomicile: boolean, twoPeople: boolean): string[] {
+function selectedFieldsFor(
+  usDomicile: boolean,
+  twoPeople: boolean,
+  flexEnabled: boolean,
+): string[] {
   return [
     'year',
     'age_A',
     ...(twoPeople ? ['age_B'] : []),
     'starting_net_worth_usd',
+    ...(flexEnabled ? ['spend_mult'] : []),
     'spend_excluding_medical_cny',
     usDomicile ? 'medical_total_usd' : 'medical_total_cny',
     'annual_investment_return',
@@ -25,6 +30,7 @@ function selectedFieldsFor(usDomicile: boolean, twoPeople: boolean): string[] {
 }
 const labels: Record<string, string> = {
   starting_net_worth_usd: 'Starting net worth USD',
+  spend_mult: 'Spending multiplier',
   starting_liquid_usd: 'Starting liquid USD',
   starting_net_worth_cny: 'Starting net worth CNY',
   spend_excluding_medical_cny: 'Spend CNY (excluding medical)',
@@ -71,6 +77,8 @@ function pct(value: number): string {
 function displayValue(field: string, value: number, locale: string): string {
   if (field === 'annual_investment_return' || field === 'portfolio_return')
     return pct(value);
+  if (field === 'spend_mult')
+    return Number.isFinite(value) ? `×${value.toFixed(2)}` : '—';
   if (nonMoneyFields.has(field)) return number(value, locale);
   return money(value, locale);
 }
@@ -114,6 +122,7 @@ function YearModal({
       income = detail.income[id],
       interest = income.interest_us,
       pensions = income.trad_own + income.trad_inherited,
+      pensionIncome = income.pension,
       qd = income.qualified_dividends,
       lt = num(d.lt_gain),
       lossDed = num(d.loss_deduction),
@@ -121,11 +130,13 @@ function YearModal({
     return {
       interest,
       pensions,
+      pensionIncome,
       qd,
       lt,
       lossDed,
       agi,
-      rentalOther: agi + lossDed - qd - lt - interest - pensions,
+      rentalOther:
+        agi + lossDed - qd - lt - interest - pensions - pensionIncome,
     };
   };
   const fxOpen = replay.market.fx[ti],
@@ -251,8 +262,16 @@ function YearModal({
           <>
             <h3>{t('modal.agiTitle')}</h3>
             {residents.map((id) => {
-              const { interest, pensions, qd, lt, lossDed, agi, rentalOther } =
-                agiParts(id);
+              const {
+                interest,
+                pensions,
+                pensionIncome,
+                qd,
+                lt,
+                lossDed,
+                agi,
+                rentalOther,
+              } = agiParts(id);
               return (
                 <div key={id}>
                   <h4>{t('modal.person', { id })}</h4>
@@ -265,6 +284,10 @@ function YearModal({
                       <tr>
                         <td>{t('modal.pension')}</td>
                         <td>{money(pensions, intlLocale)}</td>
+                      </tr>
+                      <tr>
+                        <td>{t('modal.pensionIncome')}</td>
+                        <td>{money(pensionIncome, intlLocale)}</td>
                       </tr>
                       <tr>
                         <td>{t('modal.rentalOther')}</td>
@@ -639,7 +662,8 @@ export default function Ledger({ run }: { run: CompletedRun }) {
     };
   }, [run, path]);
   const usDomicile = run.request.scenario.people.domicile === 'US',
-    twoPeople = run.request.scenario.people.B !== undefined;
+    twoPeople = run.request.scenario.people.B !== undefined,
+    flexEnabled = run.request.scenario.budget.flex_enabled === true;
   const segKeys = ['worst', 'p10', 'median'] as const,
     segIndex = segKeys.findIndex(
       (k) => run.aggregate.representative_paths[k] === path,
@@ -673,7 +697,7 @@ export default function Ledger({ run }: { run: CompletedRun }) {
     for (const button of group.querySelectorAll('button')) ro.observe(button);
     return () => ro.disconnect();
   });
-  const fields = selectedFieldsFor(usDomicile, twoPeople),
+  const fields = selectedFieldsFor(usDomicile, twoPeople, flexEnabled),
     detail = replay?.years[selected],
     rows = replay?.years.length ?? 0;
   // Derived USD columns divide the CNY report by the year's opening FX.

@@ -60,19 +60,35 @@ export function lateLifeCareCost(
 }
 // Budget and medical amounts are in household currency (USD for US domicile, CNY for China),
 // inflated by the matching price index. Funding needs split out by currency below.
+// Flexible spending keys off the prior year's nominal portfolio return: up
+// years draw a raise in [1, 1+raise], down years a cut in [1-cut, 1], so a
+// good year never under-spends and a bad year never over-spends.
+export function flexMultiplier(
+  priorReturn: number,
+  u: number,
+  cut: number,
+  raise: number,
+): number {
+  if (!Number.isFinite(priorReturn)) return 1;
+  return priorReturn > 0 ? 1 + u * raise : 1 - u * cut;
+}
 export function consumption(
   s: ScenarioConfig,
   t: number,
   market: MarketPath,
   draws: PathDraws,
   pathId?: number,
+  spendMult = 1,
 ) {
   const year = s.simulation.start_year + t,
     fx = market.fx[t],
     usd = s.people.domicile === 'US';
   const index = usd ? market.usd_index[t] : market.home_index[t],
     medIndex = usd ? market.usd_medical_index[t] : market.home_medical_index[t];
-  const spend = Math.max(0, s.budget.annual - s.budget.included_health) * index;
+  // A below-medical budget is negative discretionary spend: the household
+  // saves the difference by withdrawing less, which the spending solver uses.
+  const spend =
+    (s.budget.annual - s.budget.included_health) * index * spendMult;
   const medicalBase = medicalBaseCost(
     s.budget.included_health,
     t,

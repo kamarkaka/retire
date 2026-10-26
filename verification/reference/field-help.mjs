@@ -72,6 +72,12 @@ const descriptions = {
     'The household’s total base annual budget in today’s CNY, including the medical amount entered below. Ordinary spending is this amount minus Included health CNY. Medical is counted once. Optional medical shocks, care, one-time expenses and income taxes can require additional money.',
   'budget.included_health':
     'The combined annual base medical budget for both people in today’s CNY. It is already included in Annual CNY, so it is not added to that budget again. This part grows with medical price inflation and aging; the rest of the budget grows with China inflation.',
+  'budget.flex_enabled':
+    'Lets the non-medical budget flex with portfolio years. After an up year spending can rise up to the raise limit; after a down year it can fall to the cut limit. Medical spending, shocks, care and one-time costs never flex.',
+  'budget.flex_cut':
+    'The largest fraction the non-medical budget can fall after a down year, as a decimal: 0.15 means spending can drop to 85% of plan. Each down year draws a random cut between none and this limit.',
+  'budget.flex_raise':
+    'The largest fraction the non-medical budget can rise after an up year, as a decimal: 0.15 means spending can rise to 115% of plan. Each up year draws a random raise between none and this limit.',
   'one_time[].name':
     'A label for this one-time expense, such as relocation or a car purchase. The label helps you identify it and does not change the calculation.',
   'one_time[].year':
@@ -141,6 +147,9 @@ for (const person of ['A', 'B']) {
     sex: `Person ${person}’s descriptive sex. Everyone remains alive to the same planning endpoint, so this choice does not change lifespan, medical probabilities or financial calculations.`,
     us_citizen: `Whether person ${person} is a US citizen. Citizenship is checked against the chosen US income-tax status. A citizen must use Resident treatment; a noncitizen must explicitly resolve their tax-residency status.`,
     us_income_tax_status: `The US income-tax treatment for person ${person}. Resident applies the model’s US resident income and investment tax rules; Nonresident uses its supported nonresident categories. Unresolved blocks a run. Citizenship alone does not establish a noncitizen’s income-tax residency.`,
+    'pension.annual': `Person ${person}’s yearly pension or annuity payout in today’s USD, received as spendable cash once payments start. It is taxed as ordinary US income and never taxed by China in this model. Enter 0 for no pension.`,
+    'pension.start_age': `The age at which person ${person}’s pension or annuity starts paying; the first payout arrives in the year that age is reached. Payments continue every year through the planning horizon.`,
+    'pension.cola': `Whether person ${person}’s pension or annuity rises with US inflation each year. On tracks the cost of living; off pays the same nominal dollars every year.`,
   };
   for (const [key, text] of Object.entries(help))
     descriptions[prefix + key] = text;

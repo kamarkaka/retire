@@ -252,6 +252,7 @@ export function calculateUS(
     income.interest_us +
     income.trad_own +
     income.trad_inherited +
+    income.pension +
     income.qualified_dividends +
     capital.lt_gain;
   const rental = rentalTreatment(
@@ -265,6 +266,7 @@ export function calculateUS(
     income.interest_us +
     income.trad_own +
     income.trad_inherited +
+    income.pension +
     rental.allowed +
     income.ordinary_property_gain -
     income.passive_released;
@@ -291,7 +293,8 @@ export function calculateUS(
       early_trad: income.early_trad,
     };
     const result = residentTax(i, tables);
-    const pensionExcluded = income.trad_own + income.trad_inherited;
+    const pensionExcluded =
+      income.trad_own + income.trad_inherited + income.pension;
     const eligible = Math.min(
       result.income_tax,
       residentTax(
@@ -316,7 +319,7 @@ export function calculateUS(
       property_lt: income.ltcg_property,
       prior_capital_loss: priorLoss,
       dividends: income.nra_dividends,
-      own_pension: income.trad_own,
+      own_pension: income.trad_own + income.pension,
       inherited_pension: income.trad_inherited,
       cap_gains: Math.max(0, income.cap_gain),
       early_trad: income.early_trad,

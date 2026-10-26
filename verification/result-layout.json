@@ -37,7 +37,8 @@
     "shortfall_cny",
     "forced_sale",
     "sale_failed",
-    "fx_quota_flag"
+    "fx_quota_flag",
+    "spend_mult"
   ],
   "chart_fields": [
     "alive_A",
