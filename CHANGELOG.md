@@ -8,6 +8,36 @@ adds an entry here, newest first.
 
 (nothing yet)
 
+## 0.4.0 — 2026-10-26
+
+New income, spending, and planning features (`linux/amd64`). Saved
+configs keep loading; new options default to off.
+
+### Pension and annuity income
+
+- Each person can now receive a yearly pension or annuity from a start
+  age, optionally rising with US inflation. Payments arrive as spendable
+  cash, are taxed as ordinary US income, and are never taxed by China.
+- The year-detail modal splits retirement-account distributions from
+  pension/annuity income in the AGI breakdown.
+
+### Flexible spending
+
+- Optional guardrails on the non-medical budget: after an up year
+  spending can rise to a configurable raise limit, after a down year it
+  can fall to a cut limit, with a random multiplier each year that never
+  over-spends bad years or under-spends good years.
+- The yearly spending multiplier is shown in the year ledger; medical
+  spending, shocks, care, and one-time costs never flex.
+
+### What-would-it-take solvers
+
+- New Results section answers two questions at 50/90/99/100% success:
+  how much extra to add to non-retirement assets, and what annual
+  spending budget to set with medical expenses unchanged.
+- Answers rerun the same market paths, show progress with cancel, and
+  degrade honestly when a target is out of reach.
+
 ## 0.3.1 — 2026-10-23
 
 Small refinement (`linux/amd64`).
