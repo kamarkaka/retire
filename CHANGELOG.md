@@ -8,6 +8,15 @@ adds an entry here, newest first.
 
 (nothing yet)
 
+## 0.5.2 — 2026-10-29
+
+Favicon and brand mark only (`linux/amd64`). No configuration,
+simulation, or tax behavior changes; saved configs are unaffected.
+
+- The Reflex favicon now uses the green theme color (`#1f6259`) instead
+  of brand purple, and the same mark replaces the hand-drawn R in the
+  header brand tile.
+
 ## 0.5.1 — 2026-10-29
 
 Favicon only (`linux/amd64`). No configuration, simulation, or tax
