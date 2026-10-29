@@ -8,7 +8,7 @@
       "body": null
     },
     {
-      "url": "http://127.0.0.1:4173/retire/assets/index-Dr2eiGqf.js",
+      "url": "http://127.0.0.1:4173/retire/assets/index-Df3XoMwF.js",
       "method": "GET",
       "body": null
     },
@@ -23,32 +23,37 @@
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/157cfe2c-9278-4d23-9974-60d48bb3f837",
+      "url": "http://127.0.0.1:4173/retire/assets/favicon-BYxzZeXy.svg",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/dba9372e-df1b-4e47-80a2-74a259ddee8e",
+      "url": "blob:http://127.0.0.1:4173/343c9366-44ba-4877-8489-1c9ae818c499",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/3f7f5f03-65e8-41d0-884d-e366504d3f57",
+      "url": "blob:http://127.0.0.1:4173/1dbcacca-a7e0-40e9-a1db-b757849ea05a",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/b5ae9f4c-2d44-42b2-9f78-b59c57bd0d7a",
+      "url": "blob:http://127.0.0.1:4173/593735f3-da49-4626-8a14-95720b565f8e",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/35c54632-dcbe-470a-992f-ebc253dd60fb",
+      "url": "blob:http://127.0.0.1:4173/8fd3e3dd-9b32-4e26-95d3-d8c425a8dbef",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/5fc6b91f-ca1a-4766-8987-fcdd21b9bf20",
+      "url": "blob:http://127.0.0.1:4173/5da607a0-9ab3-4a14-8376-41f48363a4e0",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "url": "blob:http://127.0.0.1:4173/a420375e-5261-484a-8135-c9e60ad8592d",
       "method": "GET",
       "body": null
     },
@@ -58,7 +63,7 @@
       "body": null
     },
     {
-      "url": "http://127.0.0.1:4173/assets/index-Dr2eiGqf.js",
+      "url": "http://127.0.0.1:4173/assets/index-Df3XoMwF.js",
       "method": "GET",
       "body": null
     },
@@ -69,6 +74,11 @@
     },
     {
       "url": "http://127.0.0.1:4173/api/market-data",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "url": "http://127.0.0.1:4173/assets/favicon-BYxzZeXy.svg",
       "method": "GET",
       "body": null
     }
@@ -87,7 +97,7 @@
       "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
       "result_layout_version": "retire-results-v1",
       "ledger_report_version": "retire-ledger-report-v1",
-      "build_version": "0.4.0+1c3d6a6e6189a7969ed159ed38859734b47424383c005a17bc3702b99d2fc011",
+      "build_version": "0.5.0+ae16c5808861c34ec3234778f5448ea1924d993ccd269886814e30c196e46b7e",
       "scenario_sha256": "26ddb19e7169008c557779bdd57e9543de85f34498824db00a1af8fd4b844477",
       "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
       "reference_versions": {
@@ -116,17 +126,17 @@
       "verified_source_ids": []
     },
     "execution": {
-      "run_id": "87e732aa-c7b6-40f5-8b51-ba61961fdcb6",
+      "run_id": "7377372f-4b51-47a4-ac4c-ff833d49c300",
       "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
       "os": "MacIntel",
       "hardware_concurrency": 14,
       "worker_count": 4,
       "chunk_size": 64,
-      "started_at": "2026-10-28T22:28:29.016Z",
+      "started_at": "2026-10-29T17:43:10.242Z",
       "memory_estimate_bytes": 120752888,
       "memory_estimate_scope": "Known simulation buffers, worker workspaces, pinned results, scratch and 96 MiB reserve; excludes browser overhead and JavaScript heaps. This is not an OS process memory cap.",
-      "finished_at": "2026-10-28T22:28:30.713Z",
-      "elapsed_ms": 1697.8999999985099
+      "finished_at": "2026-10-29T17:43:11.958Z",
+      "elapsed_ms": 1716.9000000059605
     },
     "market_data": {
       "format_version": "retire-market-data-v1",

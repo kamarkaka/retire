@@ -19,7 +19,7 @@
       "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
       "result_layout_version": "retire-results-v1",
       "ledger_report_version": "retire-ledger-report-v1",
-      "build_version": "0.4.0+1c3d6a6e6189a7969ed159ed38859734b47424383c005a17bc3702b99d2fc011",
+      "build_version": "0.5.0+ae16c5808861c34ec3234778f5448ea1924d993ccd269886814e30c196e46b7e",
       "scenario_sha256": "26ddb19e7169008c557779bdd57e9543de85f34498824db00a1af8fd4b844477",
       "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
       "reference_versions": {
@@ -59,7 +59,7 @@
       "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
       "result_layout_version": "retire-results-v1",
       "ledger_report_version": "retire-ledger-report-v1",
-      "build_version": "0.4.0+1c3d6a6e6189a7969ed159ed38859734b47424383c005a17bc3702b99d2fc011",
+      "build_version": "0.5.0+ae16c5808861c34ec3234778f5448ea1924d993ccd269886814e30c196e46b7e",
       "scenario_sha256": "e3d572460c140b4155aa6032f83d9fab8c16663181738dce45614681a7e46483",
       "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
       "reference_versions": {
