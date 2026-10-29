@@ -8,6 +8,14 @@ adds an entry here, newest first.
 
 (nothing yet)
 
+## 0.5.1 — 2026-10-29
+
+Favicon only (`linux/amd64`). No configuration, simulation, or tax
+behavior changes; saved configs are unaffected.
+
+- The browser tab now shows the Reflex brand mark (Simple Icons, brand
+  purple) as a hashed SVG favicon served from the app itself.
+
 ## 0.5.0 — 2026-10-28
 
 Guided setup redesign with Easy/Power modes, plus market and simulation
