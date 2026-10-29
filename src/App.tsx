@@ -18,6 +18,7 @@ import {
   MAX_CONFIG_BYTES,
 } from './config/config';
 import { hashObject } from './model/canonical';
+import { randomSeed } from './components/RandomSeedButton';
 import { references as bundledReferences } from './reference/bundle';
 import {
   applyMarketData,
@@ -44,6 +45,8 @@ import MarketData from './components/MarketData';
 import ConfigField from './components/ConfigField';
 import { BUILD_DISPLAY_VERSION } from './build-info';
 import Tutorial from './components/Tutorial';
+import ModeSelect from './components/ModeSelect';
+import AdvancedGuide from './components/AdvancedGuide';
 import LanguageSwitcher from './i18n/LanguageSwitcher';
 import { useI18n } from './i18n/context';
 type Tab = 'configuration' | 'results' | 'ledger' | 'assumptions' | 'compare';
@@ -64,6 +67,10 @@ export default function App() {
     [tutorial, setTutorial] = useState(false),
     [tutorialStep, setTutorialStep] = useState(0),
     [tutorialDraft, setTutorialDraft] = useState<DraftScenario | null>(null),
+    [modeSelect, setModeSelect] = useState(false),
+    [advanced, setAdvanced] = useState(false),
+    [advancedStep, setAdvancedStep] = useState(0),
+    [advancedDraft, setAdvancedDraft] = useState<DraftScenario | null>(null),
     [pendingAutoRun, setPendingAutoRun] = useState(false),
     [builderSection, setBuilderSection] = useState('simulation'),
     [showStart, setShowStart] = useState(true);
@@ -146,10 +153,37 @@ export default function App() {
     );
   };
   const startTutorial = () => {
-    setTutorialStep(0);
+    setModeSelect(true);
+  };
+  const pickMode = (mode: 'basic' | 'advanced') => {
+    setModeSelect(false);
     setBuilderSection('simulation');
-    setTutorialDraft(createEmptyDraft());
-    setTutorial(true);
+    if (mode === 'basic') {
+      setTutorialStep(0);
+      setTutorialDraft(createEmptyDraft());
+      setTutorial(true);
+    } else {
+      setAdvancedStep(0);
+      // A blank household starts with one person; an empty second person
+      // only appears through the add-person control. Strip it here, at
+      // draft creation, rather than in a mount effect whose stale clone
+      // could overwrite an early edit on step 1.
+      const advancedDraft = createEmptyDraft();
+      const second = advancedDraft.people?.B;
+      if (second && Object.keys(second).length === 0)
+        delete (advancedDraft.people as Record<string, unknown>).B;
+      // Domicile defaults to US on Step 1; the user can switch to China.
+      if (advancedDraft.people) advancedDraft.people.domicile = 'US';
+      // A fresh Power setup draws a new seed, so reloading the page does
+      // not repeat seed 42. The seed stays put for the session; Step 8
+      // still shows it and its dice button can redraw it.
+      advancedDraft.simulation = {
+        ...advancedDraft.simulation,
+        seed: randomSeed(),
+      };
+      setAdvancedDraft(advancedDraft);
+      setAdvanced(true);
+    }
   };
   const finishTutorial = () => {
     if (tutorialDraft) load(tutorialDraft);
@@ -160,6 +194,16 @@ export default function App() {
   const exitTutorial = () => {
     setTutorialDraft(null);
     setTutorial(false);
+  };
+  const finishAdvanced = () => {
+    if (advancedDraft) load(advancedDraft);
+    setAdvancedDraft(null);
+    setAdvanced(false);
+    setPendingAutoRun(true);
+  };
+  const exitAdvanced = () => {
+    setAdvancedDraft(null);
+    setAdvanced(false);
   };
   const stageText = (text: string) => {
     const result = parseScenario(text);
@@ -319,22 +363,6 @@ export default function App() {
             )}
             <section className="entry-grid" aria-label={t('entry.grid')}>
               <article className="entry-card">
-                <div className="entry-icon">↗</div>
-                <h2>{t('entry.example.title')}</h2>
-                <p>{t('entry.example.body')}</p>
-                <div className="entry-actions">
-                  <button className="secondary" onClick={example}>
-                    {t('entry.example.load')} <span>→</span>
-                  </button>
-                  <button
-                    className="text-button"
-                    onClick={() => load(createControlDraft())}
-                  >
-                    {t('entry.example.control')}
-                  </button>
-                </div>
-              </article>
-              <article className="entry-card">
                 <div className="entry-icon">✎</div>
                 <h2>{t('entry.guided.title')}</h2>
                 <p>{t('entry.guided.body')}</p>
@@ -347,6 +375,22 @@ export default function App() {
                     onClick={() => load(createEmptyDraft())}
                   >
                     {t('entry.guided.blank')}
+                  </button>
+                </div>
+              </article>
+              <article className="entry-card">
+                <div className="entry-icon">↗</div>
+                <h2>{t('entry.example.title')}</h2>
+                <p>{t('entry.example.body')}</p>
+                <div className="entry-actions">
+                  <button className="secondary" onClick={example}>
+                    {t('entry.example.load')} <span>→</span>
+                  </button>
+                  <button
+                    className="text-button"
+                    onClick={() => load(createControlDraft())}
+                  >
+                    {t('entry.example.control')}
                   </button>
                 </div>
               </article>
@@ -378,6 +422,8 @@ export default function App() {
                 onClick={() => {
                   setTutorial(false);
                   setTutorialDraft(null);
+                  setAdvanced(false);
+                  setAdvancedDraft(null);
                   setShowStart(true);
                 }}
               >
@@ -651,6 +697,9 @@ export default function App() {
             )}
           </>
         )}
+        {modeSelect && (
+          <ModeSelect onPick={pickMode} onClose={() => setModeSelect(false)} />
+        )}
         {tutorial && tutorialDraft && (
           <Tutorial
             draft={tutorialDraft}
@@ -659,6 +708,16 @@ export default function App() {
             onStep={setTutorialStep}
             onExit={exitTutorial}
             onFinish={finishTutorial}
+          />
+        )}
+        {advanced && advancedDraft && (
+          <AdvancedGuide
+            draft={advancedDraft}
+            onChange={setAdvancedDraft}
+            step={advancedStep}
+            onStep={setAdvancedStep}
+            onExit={exitAdvanced}
+            onFinish={finishAdvanced}
           />
         )}
         {(importIssues.length > 0 || error) && (

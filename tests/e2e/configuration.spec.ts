@@ -33,7 +33,12 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
   // inputs without hover help. The era dropdown is a UI shortcut for the
   // sampling window, not a config field; its help is asserted separately.
   // Tax status is derived from citizenship, sex is retired, property share
-  // is derived from household size, and the schema version tab is hidden.
+  // is derived from household size, the property id is internal, the
+  // property label and the one-time name live in their list headers, sale
+  // proceeds always land in Non-retirement liquid assets, and the schema
+  // version tab is hidden. The one-time currency is a dropdown prefix on
+  // the amount input: it maps to its field but has no field of its own,
+  // so it skips the hover-help shape checks below.
   const hidden = new Set([
       'accounts[].name',
       'accounts[].type',
@@ -41,9 +46,14 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
       'people.B.sex',
       'people.A.us_income_tax_status',
       'people.B.us_income_tax_status',
+      'one_time[].name',
+      'properties[].id',
+      'properties[].label',
+      'properties[].proceeds_account',
       'properties[].share_A',
       'schema_version',
     ]),
+    prefixed = new Set(['one_time[].currency']),
     concise = new Set([
       'accounts[].allocation.us_stocks',
       'accounts[].allocation.us_bonds',
@@ -114,6 +124,10 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
         path = path.replace(/(?:\[\])+$/, '');
       const field = inventory.fields.find((f) => f.path === path);
       expect(field, `Unmapped input ${control.path}`).toBeDefined();
+      if (prefixed.has(path)) {
+        paths.add(path);
+        continue;
+      }
       if (!concise.has(path)) {
         expect(control.info).toBe(`About ${control.path}`);
         expect(control.label).toBe(control.id);
@@ -131,29 +145,31 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
   await page
     .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
     .click();
-  await page
-    .locator('section[aria-labelledby="market-group-fx"] summary')
-    .click();
-  const spread = page.getByLabel('market.fx_spread', { exact: true });
-  await spread.hover();
+  // Advanced FX options start open; the spread help below lives there.
+  await expect(
+    page.locator('section[aria-labelledby="market-group-fx"] details'),
+  ).toHaveJSProperty('open', true);
+  const spreadInfo = page.getByRole('button', {
+    name: 'About market.fx_spread',
+    exact: true,
+  });
+  await spreadInfo.hover();
   await expect(page.getByRole('tooltip')).toBeVisible();
   await expect(page.getByRole('tooltip')).toContainText('0.003 means 0.3%');
   await page.keyboard.press('Escape');
   await expect(page.getByRole('tooltip')).toHaveCount(0);
-  await spread.focus();
+  await spreadInfo.focus();
   await expect(page.getByRole('tooltip')).toBeVisible();
   await page.keyboard.press('Escape');
-  await expect(spread).toBeFocused();
-  await page
-    .getByRole('button', { name: 'About market.fx_spread', exact: true })
-    .click();
+  await expect(spreadInfo).toBeFocused();
+  await spreadInfo.click();
   await expect(page.getByRole('tooltip')).toBeVisible();
   await page.mouse.move(1, 1);
   await expect(page.getByRole('tooltip')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('tooltip')).toHaveCount(0);
   await page.setViewportSize({ width: 375, height: 640 });
-  await spread.hover();
+  await spreadInfo.hover();
   const bounds = await page.getByRole('tooltip').boundingBox();
   expect(bounds).not.toBeNull();
   expect(bounds!.x).toBeGreaterThanOrEqual(11);
@@ -162,7 +178,9 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
   expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(629);
   await page.keyboard.press('Escape');
   await page.getByText('Portable TOML configuration', { exact: true }).click();
-  await page.getByLabel('TOML editor', { exact: true }).focus();
+  await page
+    .getByRole('button', { name: 'About TOML editor', exact: true })
+    .focus();
   await expect(page.getByRole('tooltip')).toContainText(
     'Editing this text alone does not change the draft',
   );
@@ -203,9 +221,9 @@ test('M02 M10: wheel cannot step focused decimal inputs, including account alloc
   await page
     .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
     .click();
-  await page
-    .locator('section[aria-labelledby="market-group-fx"] summary')
-    .click();
+  await expect(
+    page.locator('section[aria-labelledby="market-group-fx"] details'),
+  ).toHaveJSProperty('open', true);
   for (const path of [
     'market.fx_spread',
     'market.income_yield_us_stocks',
@@ -266,6 +284,9 @@ test('M02 M05 M09 M10: fixed three accounts, export/run/reload, and legacy holdi
     page.getByText('Owned evenly by both people').first(),
   ).toBeVisible();
   const balance = page.getByLabel('accounts[0].balance', { exact: true });
+  await expect(
+    page.locator('[data-config-field="accounts[0].balance"] .currency-symbol'),
+  ).toHaveText('$');
   await balance.fill('1300000');
   await expect(balance).toHaveValue('1300000');
   for (const [key, value] of [
@@ -385,8 +406,16 @@ test('M02 M10: budget labels name medical spending and shocks fold like late-lif
   await page.getByRole('button', { name: 'Load sample config' }).click();
   await page.getByRole('button', { name: 'Budget', exact: true }).click();
   await expect(
-    page.getByText('Annual CNY (includes medical)', { exact: true }),
+    page.getByText('Annual (includes medical)', { exact: true }),
   ).toBeVisible();
+  await expect(
+    page.locator('[data-config-field="budget.annual"] .currency-symbol'),
+  ).toHaveText('¥');
+  await expect(
+    page.locator(
+      '[data-config-field="budget.included_health"] .currency-symbol',
+    ),
+  ).toHaveText('¥');
   const medical = page.locator('.config-group', {
     has: page.getByRole('heading', { name: 'Medical', exact: true }),
   });
@@ -435,9 +464,9 @@ test('M02 M03 M10: history era presets set the sampling window and outlook shift
   await page
     .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
     .click();
-  await page
-    .locator('section[aria-labelledby="market-group-markets"] summary')
-    .click();
+  await expect(
+    page.locator('section[aria-labelledby="market-group-markets"] details'),
+  ).toHaveJSProperty('open', true);
   const era = page.getByLabel('market.era', { exact: true });
   await expect(era).toHaveValue('full');
   await era.selectOption('recent');

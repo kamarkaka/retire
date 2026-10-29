@@ -36,7 +36,7 @@ export const en: Localization = {
   ui: { ...enUI },
   fields: {},
   labels: {},
-  enums: {},
+  enums: { US: 'United States', ppp: 'PPP' },
   units: {},
 };
 

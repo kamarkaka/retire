@@ -207,9 +207,16 @@ test('M02 M09 M10: sample builder → worker run → ledger/export → reload/up
     page.getByRole('button', { name: 'Run simulation', exact: false }),
   ).toBeEnabled();
   await page.getByRole('button', { name: 'Properties', exact: true }).click();
-  await page
-    .getByLabel('properties[0].id', { exact: true })
-    .fill('Test-only local note 南京 🏡');
+  await page.getByRole('button', { name: 'Property 1', exact: true }).click();
+  const labelInput = page.getByLabel('properties[0].label', { exact: true });
+  await labelInput.fill('Test-only local note 南京 🏡');
+  await labelInput.press('Enter');
+  await expect(
+    page.getByRole('button', {
+      name: 'Test-only local note 南京 🏡',
+      exact: true,
+    }),
+  ).toBeVisible();
   const draft = await saveDraftText(
     page,
     `${info.project.name}-sample-draft.toml`,
@@ -657,11 +664,11 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
   await page
     .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
     .click();
-  // Advanced groups render collapsed; open them before asserting visibility.
+  // Advanced groups render open; assert that before visibility.
   for (const id of ['markets', 'inflation', 'fx'])
-    await page
-      .locator(`section[aria-labelledby="market-group-${id}"] summary`)
-      .click();
+    await expect(
+      page.locator(`section[aria-labelledby="market-group-${id}"] details`),
+    ).toHaveJSProperty('open', true);
   for (const [group, paths] of [
     [
       'Markets',
@@ -1025,9 +1032,9 @@ test('M02 M10: decimal rate typing survives edits, export and a run', async ({
   await page
     .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
     .click();
-  await page
-    .locator('section[aria-labelledby="market-group-fx"] summary')
-    .click();
+  await expect(
+    page.locator('section[aria-labelledby="market-group-fx"] details'),
+  ).toHaveJSProperty('open', true);
   const keys = ['income_yield_us_stocks', 'income_yield_us_bonds'] as const;
   for (const key of ['cny_cash_real_rate', 'cny_cash_floor'])
     await expect(page.getByLabel(`market.${key}`, { exact: true })).toHaveCount(

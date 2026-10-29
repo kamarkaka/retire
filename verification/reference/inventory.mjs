@@ -99,7 +99,7 @@ export const marketDefaults = {
   fx_spread: 0.003,
   fx_quota_usd_per_person: 50000,
   medical_excess_inflation: 0.02,
-  income_yield_us_stocks: 0.01335854176478289,
+  income_yield_us_stocks: 0.01336,
   income_yield_us_bonds: 0.051,
 };
 
@@ -225,7 +225,7 @@ for (const f of fields)
 for (const f of fields)
   if (f.path === 'market.income_yield_us_stocks')
     f.constraints =
-      '0...1; NYU 2025 dividends / beginning-year S&P level = 0.01335854176478289; splits total return, does not add return.';
+      '0...1; NYU 2025 dividends / beginning-year S&P level = 0.01336; splits total return, does not add return.';
 for (const f of fields)
   if (f.path === 'market.income_yield_us_bonds')
     f.constraints =
@@ -254,8 +254,10 @@ for (const person of ['A', 'B']) {
     constraints:
       'M=male, F=female; lifespan uses the same fixed horizon for the household.',
   });
-  field(`${p}.us_citizen`, 'boolean', 'classification', '1.2', {
+  optional(`${p}.us_citizen`, 'boolean', 'classification', '1.2', false, {
     gates: ['H-STATUS', 'L-RESIDENCY'],
+    omission: 'unchecked means non-citizen; explicit answer not required',
+    constraints: 'Citizens are US tax residents; non-citizens use NRA branch.',
   });
   field(
     `${p}.us_income_tax_status`,
@@ -417,14 +419,30 @@ optional(
       'Declared early access; verify exception and penalty treatment.',
   },
 );
-field(
+optional(
   'withdrawals.last_resort_property_sale',
   'boolean',
   'sale policy',
   '5.7',
+  true,
   {
     gates: ['H-PROPERTY'],
-    constraints: 'Household no-sale=false, even when property strategy=hold.',
+    constraints:
+      'Omission uses the declared default; unchecking disables last-resort sales.',
+  },
+);
+
+optional(
+  'properties[].label',
+  'string',
+  'label/reference/provenance',
+  '5.8',
+  null,
+  {
+    gates: ['H-PROPERTY'],
+    omission: 'optional; omit to leave the property unnamed',
+    default_kind: 'none',
+    constraints: 'Free text for display only; never affects the simulation.',
   },
 );
 
@@ -434,7 +452,6 @@ const propertyDefault = {
   rent_real_growth: 0,
   selling_cost: 0.06,
   sell_year: 0,
-  sell_liquid_years: 0,
   proceeds_account: 'brokerage',
 };
 for (const k of [
@@ -456,18 +473,17 @@ for (const k of [
   'selling_cost',
   'strategy',
   'sell_year',
-  'sell_liquid_years',
   'proceeds_account',
 ]) {
   const type = ['id', 'proceeds_account'].includes(k)
     ? 'string'
     : k === 'strategy'
-      ? 'enum hold|sell_year|sell_when_liquid_below'
+      ? 'enum hold|sell_year'
       : ['mortgage_years_left', 'sell_year'].includes(k)
         ? 'integer'
         : 'number';
   const unit =
-    k === 'mortgage_years_left' || k === 'sell_liquid_years'
+    k === 'mortgage_years_left'
       ? 'years'
       : k === 'sell_year'
         ? 'calendar year'

@@ -274,8 +274,7 @@ function runPath(
         income[id].passive_released += state.owners[id].suspended_loss;
         state.owners[id].suspended_loss = 0;
       }
-      if (quote.cash > 0)
-        depositUsd(quote.cash, byName.get(p.proceeds_account)!);
+      if (quote.cash > 0) depositUsd(quote.cash, byName.get('brokerage')!);
       forced ||= isForced;
       return true;
     }
@@ -333,18 +332,9 @@ function runPath(
     // 2. Whole-property strategies use opening values and actual feasible closing cash.
     for (let i = 0; i < properties.length; i++)
       if (properties[i].held) {
-        const p = s.properties[i],
-          liquid = valueWealth(market.fx[t]);
-        const annualCny =
-          s.people.domicile === 'US'
-            ? s.budget.annual * market.usd_index[t] * market.fx[t]
-            : s.budget.annual * market.home_index[t];
-        const trigger =
-          (p.strategy === 'sell_year' && year >= p.sell_year) ||
-          (p.strategy === 'sell_when_liquid_below' &&
-            liquid.usd * market.fx[t] + liquid.cny <
-              p.sell_liquid_years * annualCny);
-        if (trigger) trySale(i, false);
+        const p = s.properties[i];
+        if (p.strategy === 'sell_year' && year >= p.sell_year)
+          trySale(i, false);
       }
     // 3. Rent, RMD and pension cash; no need is deducted yet.
     let rent = 0,

@@ -91,6 +91,7 @@ export type FixedAccountName = (typeof FIXED_ACCOUNT_ORDER)[number];
 export type AccountConfig = BrokerageAccountConfig | RetirementAccountConfig;
 export interface PropertyConfig {
   id: string; // US real property only; all owners use citizen treatment (no FIRPTA).
+  label?: string; // Editor-only reminder, such as the address; never affects the simulation.
   share_A: number;
   value: number;
   cost_basis: number;
@@ -106,9 +107,8 @@ export interface PropertyConfig {
   hoa_monthly: number;
   rent_real_growth: number;
   selling_cost: number;
-  strategy: 'hold' | 'sell_year' | 'sell_when_liquid_below';
+  strategy: 'hold' | 'sell_year';
   sell_year: number;
-  sell_liquid_years: number;
   proceeds_account: string;
 }
 export interface TaxTables {

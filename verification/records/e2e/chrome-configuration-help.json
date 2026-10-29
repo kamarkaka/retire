@@ -1,21 +1,21 @@
 {
   "status": "PASS",
   "field_definitions": 87,
-  "leaf_definitions": 79,
+  "leaf_definitions": 75,
   "controls_by_section": {
     "Simulation": 4,
     "Markets, inflation & FX": 21,
     "People": 11,
-    "Budget": 18,
+    "Budget": 17,
     "Accounts": 14,
-    "Properties": 20
+    "Properties": 17
   },
   "hover": true,
   "keyboard_focus_and_escape": true,
   "click_to_pin": true,
   "mobile_bounds": {
     "x": 12,
-    "y": 109.3125,
+    "y": 140.3125,
     "width": 351,
     "height": 156.78125
   }

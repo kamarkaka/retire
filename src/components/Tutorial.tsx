@@ -152,9 +152,8 @@ export default function Tutorial({
       age = typeof birth === 'number' ? startYear - birth : NaN;
     return Number.isInteger(birth) && age >= 18 && age <= 100;
   };
-  const citizenOk = (id: 'A' | 'B') =>
-    typeof draft.people?.[id]?.us_citizen === 'boolean';
   const ccy = draft.people?.domicile === 'US' ? 'USD' : 'CNY',
+    symbol = ccy === 'USD' ? '$' : '¥',
     annual = draft.budget?.annual,
     medical = draft.budget?.included_health,
     shockOn = draft.medical?.shock_enabled === true,
@@ -172,9 +171,7 @@ export default function Tutorial({
   const maxAge = draft.simulation?.max_age;
   const valid = [
     draft.people?.domicile === 'US' || draft.people?.domicile === 'China',
-    birthOk('A') &&
-      citizenOk('A') &&
-      (size === 1 || (birthOk('B') && citizenOk('B'))),
+    birthOk('A') && (size === 1 || birthOk('B')),
     typeof annual === 'number' &&
       Number.isFinite(annual) &&
       annual >= 0 &&
@@ -203,330 +200,452 @@ export default function Tutorial({
   const person = (id: 'A' | 'B', label: string) => (
     <fieldset className="wizard-person">
       <legend>{label}</legend>
-      <label>
-        {t('tutorial.birthYear')}
-        <NumberInput
-          aria-label={t('tutorial.personBirth', { id })}
-          value={draft.people?.[id]?.birth_year}
-          onChange={(v) =>
-            onChange(assign(draft, ['people', id, 'birth_year'], v))
-          }
-        />
-      </label>
-      <Toggle
-        label={t('tutorial.citizenship', { id })}
-        options={[
-          { value: 'citizen', label: t('tutorial.citizen') },
-          { value: 'noncitizen', label: t('tutorial.nonCitizen') },
-        ]}
-        value={
-          draft.people?.[id]?.us_citizen === undefined
-            ? undefined
-            : draft.people[id]!.us_citizen
-              ? 'citizen'
-              : 'noncitizen'
-        }
-        onPick={(v) => setCitizen(id, v === 'citizen')}
-      />
+      <div className="person-row">
+        <label className="birth-year-row">
+          {t('tutorial.birthYear')}
+          <NumberInput
+            aria-label={t('tutorial.personBirth', { id })}
+            inputMode="numeric"
+            value={draft.people?.[id]?.birth_year}
+            onChange={(v) => {
+              let year = v;
+              if (typeof year === 'number' && Number.isFinite(year)) {
+                year = Math.trunc(year);
+                while (year > 9999) year = Math.trunc(year / 10);
+              }
+              onChange(assign(draft, ['people', id, 'birth_year'], year));
+            }}
+          />
+        </label>
+        <label className="check-button">
+          <input
+            type="checkbox"
+            aria-label={t('tutorial.citizenship', { id })}
+            checked={draft.people?.[id]?.us_citizen === true}
+            onChange={(event) => setCitizen(id, event.target.checked)}
+          />
+          <span className="check-box" aria-hidden="true" />
+          <span>{t('tutorial.citizen')}</span>
+        </label>
+      </div>
     </fieldset>
   );
   return (
     <div className="modal-overlay">
       <section
-        className="modal-dialog"
+        className="modal-dialog narrow"
         role="dialog"
         aria-modal="true"
         aria-label={t('tutorial.dialog')}
       >
-        <div className="section-title">
-          <div>
-            <p className="eyebrow">{t('tutorial.eyebrow')}</p>
-            <h2>
-              {step < 6
-                ? t('tutorial.question', {
-                    step: step + 1,
-                    name: t(STEP_KEYS[step]),
-                  })
-                : t('tutorial.reviewTitle')}
-            </h2>
+        <div className={confirmExit ? 'modal-stack modal-blur' : 'modal-stack'}>
+          <div className="section-title">
+            <div>
+              <h2>
+                {step < 6
+                  ? t('tutorial.question', {
+                      step: step + 1,
+                      total: STEP_KEYS.length - 1,
+                      name: t(STEP_KEYS[step]),
+                    })
+                  : t('tutorial.reviewTitle')}
+              </h2>
+            </div>
+            <button
+              type="button"
+              className="modal-close"
+              onClick={() => setConfirmExit(true)}
+              aria-label={t('tutorial.exit')}
+            >
+              ✕
+            </button>
           </div>
-          <span className="chip">
-            {t('tutorial.stepOf', { step: step + 1, total: STEP_KEYS.length })}
-          </span>
-        </div>
-        <div key={step} className="wizard-body">
-          {step === 0 && (
-            <>
-              <p>{t('tutorial.q0household')}</p>
-              <Toggle
-                label={t('household.group')}
-                options={[
-                  { value: 'one', label: t('household.one') },
-                  { value: 'two', label: t('household.two') },
-                ]}
-                value={size === 1 ? 'one' : 'two'}
-                onPick={(v) => setSize(v === 'one' ? 1 : 2)}
-              />
-              <p>{t('tutorial.q0domicile')}</p>
-              <Toggle
-                label={t('tutorial.domicile')}
-                options={['US', 'China'].map((v) => ({
-                  value: v,
-                  label: enumLabel(lang, v, v),
-                }))}
-                value={draft.people?.domicile}
-                onPick={(v) =>
-                  onChange(assign(draft, ['people', 'domicile'], v))
-                }
-              />
-              <p className="muted">{t('tutorial.domicileNote')}</p>
-            </>
-          )}
-          {step === 1 && (
-            <>
-              <p>{t('tutorial.q1')}</p>
-              {person(
-                'A',
-                size === 1 ? t('tutorial.you') : t('tutorial.personA'),
-              )}
-              {size === 2 && person('B', t('tutorial.personB'))}
-            </>
-          )}
-          {step === 2 && (
-            <>
-              <p>{t('tutorial.q2')}</p>
-              <label>
-                {t('tutorial.annualSpending', { ccy })}
-                <NumberInput
-                  aria-label={t('tutorial.annualSpendingAria', { ccy })}
-                  autoFocus
-                  value={annual}
-                  onChange={(v) =>
-                    onChange(assign(draft, ['budget', 'annual'], v))
+          <div key={step} className="wizard-body">
+            {step === 0 && (
+              <>
+                <p>{t('tutorial.q0household')}</p>
+                <Toggle
+                  label={t('household.group')}
+                  options={[
+                    { value: 'one', label: t('household.one') },
+                    { value: 'two', label: t('household.two') },
+                  ]}
+                  value={size === 1 ? 'one' : 'two'}
+                  onPick={(v) => setSize(v === 'one' ? 1 : 2)}
+                />
+                <p>{t('tutorial.q0domicile')}</p>
+                <Toggle
+                  label={t('tutorial.domicile')}
+                  options={['US', 'China'].map((v) => ({
+                    value: v,
+                    label: enumLabel(lang, v, v),
+                  }))}
+                  value={draft.people?.domicile}
+                  onPick={(v) =>
+                    onChange(assign(draft, ['people', 'domicile'], v))
                   }
                 />
-              </label>
-              <label>
-                {t('tutorial.medicalSpending', { ccy })}
-                <NumberInput
-                  aria-label={t('tutorial.medicalSpendingAria', { ccy })}
-                  value={medical}
-                  onChange={(v) =>
-                    onChange(assign(draft, ['budget', 'included_health'], v))
-                  }
-                />
-              </label>
-              <label className="wizard-check">
-                <input
-                  type="checkbox"
-                  checked={shockOn}
-                  onChange={(e) =>
-                    onChange(
-                      assign(
+                <p className="muted">{t('tutorial.domicileNote')}</p>
+              </>
+            )}
+            {step === 1 && (
+              <>
+                <p>{t('tutorial.q1')}</p>
+                {person(
+                  'A',
+                  size === 1 ? t('tutorial.you') : t('tutorial.personA'),
+                )}
+                {size === 2 && person('B', t('tutorial.personB'))}
+              </>
+            )}
+            {step === 2 && (
+              <>
+                <p>{t('tutorial.q2')}</p>
+                <label className="field-row">
+                  {t('tutorial.annualSpending')}
+                  <span className="currency-field">
+                    <span className="currency-symbol" aria-hidden="true">
+                      {symbol}
+                    </span>
+                    <NumberInput
+                      aria-label={t('tutorial.annualSpendingAria', { ccy })}
+                      autoFocus
+                      inputMode="numeric"
+                      value={annual}
+                      onChange={(v) =>
+                        onChange(assign(draft, ['budget', 'annual'], v))
+                      }
+                    />
+                  </span>
+                </label>
+                <div className="field-group">
+                  <label className="field-row">
+                    {t('tutorial.medicalSpending')}
+                    <span className="currency-field">
+                      <span className="currency-symbol" aria-hidden="true">
+                        {symbol}
+                      </span>
+                      <NumberInput
+                        aria-label={t('tutorial.medicalSpendingAria', { ccy })}
+                        inputMode="numeric"
+                        value={medical}
+                        onChange={(v) =>
+                          onChange(
+                            assign(draft, ['budget', 'included_health'], v),
+                          )
+                        }
+                      />
+                    </span>
+                  </label>
+                  <p className="field-note">{t('tutorial.medicalNote')}</p>
+                </div>
+                <label className="check-button">
+                  <input
+                    type="checkbox"
+                    checked={shockOn}
+                    onChange={(e) => {
+                      let next = assign(
                         draft,
                         ['medical', 'shock_enabled'],
                         e.target.checked,
-                      ),
-                    )
-                  }
-                />
-                {t('tutorial.shockCheck')}
-              </label>
-              {shockOn && (
-                <div className="wizard-sub">
-                  <label>
-                    {t('tutorial.shockAmount', { ccy })}
-                    <NumberInput
-                      aria-label={t('tutorial.shockAmountAria', { ccy })}
-                      value={shockMedian}
-                      onChange={(v) =>
-                        onChange(assign(draft, ['medical', 'shock_median'], v))
-                      }
-                    />
-                  </label>
-                </div>
-              )}
-              <label className="wizard-check">
-                <input
-                  type="checkbox"
-                  checked={careOn}
-                  onChange={(e) =>
-                    onChange(
-                      assign(
+                      );
+                      // Pre-fill the schema default so the revealed input is
+                      // never blank; the user can still adjust it.
+                      if (
+                        e.target.checked &&
+                        draft.medical?.shock_median === undefined
+                      )
+                        next = assign(next, ['medical', 'shock_median'], 50000);
+                      onChange(next);
+                    }}
+                  />
+                  <span className="check-box" aria-hidden="true" />
+                  <span>{t('tutorial.shockCheck')}</span>
+                </label>
+                {shockOn && (
+                  <div className="wizard-sub">
+                    <label className="field-row">
+                      {t('tutorial.shockAmount')}
+                      <span className="currency-field">
+                        <span className="currency-symbol" aria-hidden="true">
+                          {symbol}
+                        </span>
+                        <NumberInput
+                          aria-label={t('tutorial.shockAmountAria', { ccy })}
+                          inputMode="numeric"
+                          value={shockMedian}
+                          onChange={(v) =>
+                            onChange(
+                              assign(draft, ['medical', 'shock_median'], v),
+                            )
+                          }
+                        />
+                      </span>
+                    </label>
+                  </div>
+                )}
+                <label className="check-button">
+                  <input
+                    type="checkbox"
+                    checked={careOn}
+                    onChange={(e) => {
+                      let next = assign(
                         draft,
                         ['medical', 'late_life_care', 'enabled'],
                         e.target.checked,
-                      ),
-                    )
-                  }
-                />
-                {t('tutorial.careCheck')}
-              </label>
-              {careOn && (
-                <div className="wizard-sub">
-                  <label>
-                    {t('tutorial.careStartAge')}
-                    <NumberInput
-                      aria-label={t('tutorial.careStartAge')}
-                      value={careAge}
-                      onChange={(v) =>
-                        onChange(
-                          assign(
-                            draft,
+                      );
+                      // Pre-fill sensible starting points; the user can adjust.
+                      if (e.target.checked) {
+                        const care = draft.medical?.late_life_care;
+                        if (care?.start_age === undefined)
+                          next = assign(
+                            next,
                             ['medical', 'late_life_care', 'start_age'],
-                            v,
-                          ),
-                        )
-                      }
-                    />
-                  </label>
-                  <label>
-                    {t('tutorial.careMonthly', { ccy })}
-                    <NumberInput
-                      aria-label={t('tutorial.careMonthlyAria', { ccy })}
-                      value={careMonthly}
-                      onChange={(v) =>
-                        onChange(
-                          assign(
-                            draft,
+                            85,
+                          );
+                        if (care?.monthly === undefined)
+                          next = assign(
+                            next,
                             ['medical', 'late_life_care', 'monthly'],
-                            v,
-                          ),
-                        )
+                            ccy === 'USD' ? 5000 : 8000,
+                          );
                       }
+                      onChange(next);
+                    }}
+                  />
+                  <span className="check-box" aria-hidden="true" />
+                  <span>{t('tutorial.careCheck')}</span>
+                </label>
+                {careOn && (
+                  <div className="wizard-sub">
+                    <label className="field-row">
+                      {t('tutorial.careStartAge')}
+                      <NumberInput
+                        aria-label={t('tutorial.careStartAge')}
+                        inputMode="numeric"
+                        value={careAge}
+                        onChange={(v) =>
+                          onChange(
+                            assign(
+                              draft,
+                              ['medical', 'late_life_care', 'start_age'],
+                              v,
+                            ),
+                          )
+                        }
+                      />
+                    </label>
+                    <label className="field-row">
+                      {t('tutorial.careMonthly')}
+                      <span className="currency-field">
+                        <span className="currency-symbol" aria-hidden="true">
+                          {symbol}
+                        </span>
+                        <NumberInput
+                          aria-label={t('tutorial.careMonthlyAria', { ccy })}
+                          inputMode="numeric"
+                          value={careMonthly}
+                          onChange={(v) =>
+                            onChange(
+                              assign(
+                                draft,
+                                ['medical', 'late_life_care', 'monthly'],
+                                v,
+                              ),
+                            )
+                          }
+                        />
+                      </span>
+                    </label>
+                  </div>
+                )}
+              </>
+            )}
+            {step === 3 && (
+              <>
+                <p>{t('tutorial.q3')}</p>
+                <label className="field-row">
+                  {t('tutorial.investmentSavings')}
+                  <span className="currency-field">
+                    <span className="currency-symbol" aria-hidden="true">
+                      $
+                    </span>
+                    <NumberInput
+                      aria-label={t('tutorial.investmentSavingsAria')}
+                      autoFocus
+                      inputMode="numeric"
+                      value={balance}
+                      onChange={setBalance}
                     />
+                  </span>
+                </label>
+                <p className="muted">{t('tutorial.savingsNote')}</p>
+              </>
+            )}
+            {step === 4 && (
+              <>
+                <p>{t('tutorial.q4')}</p>
+                <div className="field-group">
+                  <label className="field-row">
+                    {t('tutorial.preTax')}
+                    <span className="currency-field">
+                      <span className="currency-symbol" aria-hidden="true">
+                        $
+                      </span>
+                      <NumberInput
+                        aria-label={t('tutorial.preTaxAria')}
+                        autoFocus
+                        inputMode="numeric"
+                        value={preTax}
+                        onChange={(v) => setRetirement('pre_tax', v)}
+                      />
+                    </span>
                   </label>
+                  <p className="field-note">{t('tutorial.preTaxNote')}</p>
                 </div>
-              )}
-            </>
-          )}
-          {step === 3 && (
-            <>
-              <p>{t('tutorial.q3')}</p>
-              <label>
-                {t('tutorial.investmentSavings')}
-                <NumberInput
-                  aria-label={t('tutorial.investmentSavingsAria')}
-                  autoFocus
-                  value={balance}
-                  onChange={setBalance}
-                />
-              </label>
-              <p className="muted">{t('tutorial.savingsNote')}</p>
-            </>
-          )}
-          {step === 4 && (
-            <>
-              <p>{t('tutorial.q4')}</p>
-              <label>
-                {t('tutorial.preTax')}
-                <NumberInput
-                  aria-label={t('tutorial.preTaxAria')}
-                  autoFocus
-                  value={preTax}
-                  onChange={(v) => setRetirement('pre_tax', v)}
-                />
-              </label>
-              <label>
-                {t('tutorial.afterTax')}
-                <NumberInput
-                  aria-label={t('tutorial.afterTaxAria')}
-                  value={afterTax}
-                  onChange={(v) => setRetirement('after_tax', v)}
-                />
-              </label>
-              <p className="muted">{t('tutorial.retirementNote')}</p>
-            </>
-          )}
-          {step === 5 && (
-            <>
-              <p>{t('tutorial.q5')}</p>
-              <label>
-                {t('tutorial.startYear')}
-                <NumberInput
-                  aria-label={t('tutorial.startYear')}
-                  autoFocus
-                  value={draft.simulation?.start_year}
-                  onChange={(v) =>
-                    onChange(assign(draft, ['simulation', 'start_year'], v))
-                  }
-                />
-              </label>
-              <label>
-                {t('tutorial.throughAge')}
-                <NumberInput
-                  aria-label={t('tutorial.throughAge')}
-                  value={maxAge}
-                  onChange={(v) =>
-                    onChange(assign(draft, ['simulation', 'max_age'], v))
-                  }
-                />
-              </label>
-              <p className="muted">{t('tutorial.horizonNote')}</p>
-            </>
-          )}
-          {step === 6 && (
-            <ul className="wizard-review">
-              <li>
-                {t('tutorial.reviewHousehold', {
-                  household: t(size === 1 ? 'household.one' : 'household.two'),
-                  domicile: enumLabel(
-                    lang,
-                    draft.people?.domicile ?? '',
-                    draft.people?.domicile ?? '',
-                  ),
-                })}
-              </li>
-              <li>
-                {t('tutorial.reviewSpending', {
-                  amount: (annual ?? 0).toLocaleString(intlLocale),
-                  ccy,
-                  medical:
-                    (medical ?? 0) > 0
-                      ? t('tutorial.reviewMedical', {
-                          amount: medical!.toLocaleString(intlLocale),
-                          ccy,
-                        })
-                      : '',
-                })}
-              </li>
-              {shockOn && (
+                <div className="field-group">
+                  <label className="field-row">
+                    {t('tutorial.afterTax')}
+                    <span className="currency-field">
+                      <span className="currency-symbol" aria-hidden="true">
+                        $
+                      </span>
+                      <NumberInput
+                        aria-label={t('tutorial.afterTaxAria')}
+                        inputMode="numeric"
+                        value={afterTax}
+                        onChange={(v) => setRetirement('after_tax', v)}
+                      />
+                    </span>
+                  </label>
+                  <p className="field-note">{t('tutorial.afterTaxNote')}</p>
+                </div>
+                <p className="muted">{t('tutorial.retirementNote')}</p>
+              </>
+            )}
+            {step === 5 && (
+              <>
+                <p>{t('tutorial.q5')}</p>
+                <label className="field-row">
+                  {t('tutorial.startYear')}
+                  <NumberInput
+                    aria-label={t('tutorial.startYear')}
+                    autoFocus
+                    inputMode="numeric"
+                    value={draft.simulation?.start_year}
+                    onChange={(v) => {
+                      let year = v;
+                      if (typeof year === 'number' && Number.isFinite(year)) {
+                        year = Math.trunc(year);
+                        while (year > 9999) year = Math.trunc(year / 10);
+                      }
+                      onChange(
+                        assign(draft, ['simulation', 'start_year'], year),
+                      );
+                    }}
+                  />
+                </label>
+                <label className="field-row">
+                  {t('tutorial.throughAge')}
+                  <NumberInput
+                    aria-label={t('tutorial.throughAge')}
+                    inputMode="numeric"
+                    value={maxAge}
+                    onChange={(v) =>
+                      onChange(assign(draft, ['simulation', 'max_age'], v))
+                    }
+                  />
+                </label>
+                <p className="muted">{t('tutorial.horizonNote')}</p>
+              </>
+            )}
+            {step === 6 && (
+              <ul className="wizard-review">
                 <li>
-                  {t('tutorial.reviewShock', {
-                    amount: (shockMedian ?? 0).toLocaleString(intlLocale),
-                    ccy,
+                  {t('tutorial.reviewHousehold', {
+                    household: t(
+                      size === 1 ? 'household.one' : 'household.two',
+                    ),
+                    domicile: enumLabel(
+                      lang,
+                      draft.people?.domicile ?? '',
+                      draft.people?.domicile ?? '',
+                    ),
                   })}
                 </li>
-              )}
-              {careOn && (
                 <li>
-                  {t('tutorial.reviewCare', {
-                    age: careAge ?? 0,
-                    amount: (careMonthly ?? 0).toLocaleString(intlLocale),
+                  {t('tutorial.reviewSpending', {
+                    amount: (annual ?? 0).toLocaleString(intlLocale),
                     ccy,
+                    medical:
+                      (medical ?? 0) > 0
+                        ? t('tutorial.reviewMedical', {
+                            amount: medical!.toLocaleString(intlLocale),
+                            ccy,
+                          })
+                        : '',
                   })}
                 </li>
-              )}
-              <li>
-                {t('tutorial.reviewSavings', {
-                  balance: (balance ?? 0).toLocaleString(intlLocale),
-                  pre: (preTax ?? 0).toLocaleString(intlLocale),
-                  after: (afterTax ?? 0).toLocaleString(intlLocale),
-                })}
-              </li>
-              <li>
-                {t('tutorial.reviewHorizon', {
-                  start: startYear,
-                  age: maxAge ?? 0,
-                })}
-              </li>
-            </ul>
-          )}
+                {shockOn && (
+                  <li>
+                    {t('tutorial.reviewShock', {
+                      amount: (shockMedian ?? 0).toLocaleString(intlLocale),
+                      ccy,
+                    })}
+                  </li>
+                )}
+                {careOn && (
+                  <li>
+                    {t('tutorial.reviewCare', {
+                      age: careAge ?? 0,
+                      amount: (careMonthly ?? 0).toLocaleString(intlLocale),
+                      ccy,
+                    })}
+                  </li>
+                )}
+                <li>
+                  {t('tutorial.reviewSavings', {
+                    balance: (balance ?? 0).toLocaleString(intlLocale),
+                    pre: (preTax ?? 0).toLocaleString(intlLocale),
+                    after: (afterTax ?? 0).toLocaleString(intlLocale),
+                  })}
+                </li>
+                <li>
+                  {t('tutorial.reviewHorizon', {
+                    start: startYear,
+                    age: maxAge ?? 0,
+                  })}
+                </li>
+              </ul>
+            )}
+          </div>
+          <div className="toolbar">
+            <button
+              className="secondary"
+              disabled={step === 0}
+              onClick={() => onStep(step - 1)}
+            >
+              {t('tutorial.back')}
+            </button>
+            {step < STEP_KEYS.length - 1 ? (
+              <button
+                className="primary"
+                disabled={!valid}
+                onClick={() => onStep(step + 1)}
+              >
+                {t('tutorial.next')} <span>→</span>
+              </button>
+            ) : (
+              <button className="primary" onClick={onFinish}>
+                {t('tutorial.finish')}
+              </button>
+            )}
+          </div>
         </div>
-        {confirmExit && <p className="danger">{t('tutorial.confirmExit')}</p>}
-        <div className="toolbar">
-          {confirmExit ? (
-            <>
+        {confirmExit && (
+          <div className="exit-confirm" role="alertdialog">
+            <p>{t('tutorial.confirmExit')}</p>
+            <div className="toolbar">
               <button
                 className="primary"
                 autoFocus
@@ -537,40 +656,9 @@ export default function Tutorial({
               <button className="secondary danger" onClick={onExit}>
                 {t('tutorial.discardExit')}
               </button>
-            </>
-          ) : (
-            <>
-              <button
-                className="secondary"
-                disabled={step === 0}
-                onClick={() => onStep(step - 1)}
-              >
-                {t('tutorial.back')}
-              </button>
-              {step < STEP_KEYS.length - 1 ? (
-                <button
-                  className="primary"
-                  disabled={!valid}
-                  onClick={() => onStep(step + 1)}
-                >
-                  {t('tutorial.next')} <span>→</span>
-                </button>
-              ) : (
-                <button className="primary" onClick={onFinish}>
-                  {t('tutorial.finish')}
-                </button>
-              )}
-              {step < 6 ? (
-                <button
-                  className="secondary push-right"
-                  onClick={() => setConfirmExit(true)}
-                >
-                  {t('tutorial.exit')}
-                </button>
-              ) : null}
-            </>
-          )}
-        </div>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );

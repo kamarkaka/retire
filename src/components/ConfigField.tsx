@@ -1,5 +1,7 @@
 import {
+  createContext,
   useCallback,
+  useContext,
   useEffect,
   useId,
   useLayoutEffect,
@@ -23,10 +25,18 @@ interface Props {
   }) => ReactNode;
 }
 
-// Keep a single explanation visible, including when hovering another field while one is focused.
+// Keep a single explanation visible; opening another dismisses the first.
 let activeHelp: { id: string; dismiss: () => void } | undefined;
 
-/** Plain-English field help on hover, keyboard focus, or an explicit info-button tap. */
+/**
+ * Guide mode strips process metadata (units, omission footnotes) from
+ * embedded editors so power-guide steps read cleanly. Full help stays one
+ * click away behind the info buttons. Default false (Builder shows all).
+ */
+export const GuideModeContext = createContext(false);
+export const useGuideMode = () => useContext(GuideModeContext);
+
+/** Plain-English field help on info-button hover, keyboard focus, or tap. */
 export default function ConfigField({
   path,
   label,
@@ -37,6 +47,7 @@ export default function ConfigField({
   children,
 }: Props) {
   const { t } = useI18n();
+  const guide = useGuideMode();
   const id = useId(),
     controlId = `${id}-input`,
     helpId = `${id}-help`;
@@ -137,34 +148,33 @@ export default function ConfigField({
       data-config-field={path}
       // Bubble after the control's edit handler; capture-phase updates can reset controlled text.
       onChange={dismiss}
-      onMouseEnter={() => {
-        hovered.current = true;
-        show();
-      }}
-      onMouseLeave={() => {
-        hovered.current = false;
-        scheduleClose();
-      }}
-      onFocusCapture={() => {
-        focused.current = true;
-        show();
-      }}
-      onBlurCapture={(event) => {
-        if (field.current?.contains(event.relatedTarget as Node)) return;
-        focused.current = false;
-        scheduleClose();
-      }}
     >
       <div className="field-heading">
         <label className="field-label" htmlFor={controlId}>
           <span>{label}</span>
-          {unit && <small>{unit}</small>}
+          {unit && !guide && <small>{unit}</small>}
         </label>
         <button
           className="field-info"
           type="button"
           aria-label={t('configField.about', { path })}
           aria-describedby={helpId}
+          onMouseEnter={() => {
+            hovered.current = true;
+            show();
+          }}
+          onMouseLeave={() => {
+            hovered.current = false;
+            scheduleClose();
+          }}
+          onFocus={() => {
+            focused.current = true;
+            show();
+          }}
+          onBlur={() => {
+            focused.current = false;
+            scheduleClose();
+          }}
           onClick={() => {
             if (pinned.current) dismiss();
             else {
@@ -177,7 +187,7 @@ export default function ConfigField({
         </button>
       </div>
       {children({ id: controlId, 'aria-describedby': helpId })}
-      {footnote && <small className="field-help">{footnote}</small>}
+      {footnote && !guide && <small className="field-help">{footnote}</small>}
       {!open && (
         <span id={helpId} className="sr-only">
           {description}

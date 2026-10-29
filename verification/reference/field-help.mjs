@@ -130,12 +130,12 @@ const descriptions = {
     'Annual rent growth beyond US inflation. Enter 0 for rent that only follows inflation, or 0.01 for another 1% per year. Negative values model rent lagging behind inflation.',
   'properties[].selling_cost':
     'Sale costs as a fraction of the property’s gross sale price. Enter 0.06 for 6%. These costs reduce closing cash and the net price used to calculate the sale gain; mortgage repayment is separate.',
+  'properties[].label':
+    'An optional reminder name for this property, such as its address. It is only shown in the editor and never affects the simulation.',
   'properties[].strategy':
-    'Hold keeps the property unless last-resort sales are enabled and cash is needed. Sell year attempts a sale in the specified calendar year. Sell when liquid below attempts one when liquid assets fall below the configured number of annual spending years. A path that ends earlier cannot make a later sale.',
+    'Hold keeps the property unless last-resort sales are enabled and cash is needed. Sell year attempts a sale in the specified calendar year. A path that ends earlier cannot make a later sale.',
   'properties[].sell_year':
     'The first calendar year to attempt selling this property when its strategy is Sell year. If a sale cannot close, the model can try again in later years while the property is held. Other strategies ignore this setting, and a path that has ended cannot make a sale.',
-  'properties[].sell_liquid_years':
-    'For Sell when liquid below, the liquid-asset threshold expressed as years of the China-inflation-adjusted base annual budget. A value of 3 triggers below three times that year’s base budget. Extra medical growth, care and one-time expenses do not raise this threshold.',
   'properties[].proceeds_account':
     'The account that receives cash from a successful property sale after closing costs and mortgage payoff. Defaults to Non-retirement liquid assets. Later tax settlement may require further withdrawals.',
 };

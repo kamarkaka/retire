@@ -93,6 +93,39 @@ describe('M02 portable draft configuration', () => {
         .ok,
     ).toBe(false);
   });
+  it('defaults last-resort sales on, routes proceeds to brokerage, and rejects the retired liquid-below sale', () => {
+    const empty = normalizeScenario(createEmptyDraft());
+    expect(empty.ok).toBe(true);
+    if (empty.ok)
+      expect(empty.value.withdrawals?.last_resort_property_sale).toBe(true);
+    const optedOut = createEmptyDraft();
+    optedOut.withdrawals = { last_resort_property_sale: false };
+    const kept = normalizeScenario(optedOut);
+    expect(kept.ok).toBe(true);
+    if (kept.ok)
+      expect(kept.value.withdrawals?.last_resort_property_sale).toBe(false);
+    const routed = createExampleDraft();
+    routed.properties![0].proceeds_account = 'pre_tax';
+    const normalized = normalizeScenario(routed);
+    expect(normalized.ok).toBe(true);
+    if (normalized.ok)
+      expect(normalized.value.properties![0].proceeds_account).toBe(
+        'brokerage',
+      );
+    routed.properties![0].label = '123 Main St';
+    const relabeled = parseScenario(exportScenario(routed));
+    expect(relabeled.ok).toBe(true);
+    if (relabeled.ok)
+      expect(relabeled.value.properties![0].label).toBe('123 Main St');
+    expect(
+      parseScenario(
+        'schema_version=1\n[[properties]]\nstrategy="sell_when_liquid_below"',
+      ).ok,
+    ).toBe(false);
+    expect(
+      parseScenario('schema_version=1\n[[properties]]\nsell_liquid_years=3').ok,
+    ).toBe(false);
+  });
   it('canonicalizes keys by UTF16, preserves array order, distinguishes omissions and zero', () => {
     expect(
       canonicalScenarioText({ z: 1, a: [3, 2], n: -0, x: undefined }),

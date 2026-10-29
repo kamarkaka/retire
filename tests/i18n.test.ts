@@ -74,6 +74,10 @@ describe('data-driven lookups', () => {
     expect(unitFor('zh', 'unknown unit')).toBe('unknown unit');
     expect(labelFor('zh', 'seed', 'Seed')).toBe('随机种子');
   });
+
+  it('shows PPP for the FX purchasing-power-parity mode', () => {
+    expect(enumLabel('en', 'ppp', 'Ppp')).toBe('PPP');
+  });
 });
 
 describe.each(

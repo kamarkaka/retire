@@ -98,7 +98,6 @@ proceeds_account = "brokerage"
 property_tax_annual = 9000
 rent_monthly = 3800
 rent_real_growth = 0
-sell_liquid_years = 0
 sell_year = 0
 selling_cost = 0.06
 share_A = 0.5

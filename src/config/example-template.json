@@ -109,7 +109,6 @@
       "selling_cost": 0.06,
       "strategy": "hold",
       "sell_year": 0,
-      "sell_liquid_years": 0,
       "proceeds_account": "brokerage",
       "maintenance_annual": 12465.6
     }

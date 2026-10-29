@@ -8,12 +8,12 @@
       "body": null
     },
     {
-      "url": "http://127.0.0.1:4173/retire/assets/index-FlCLnwaI.js",
+      "url": "http://127.0.0.1:4173/retire/assets/index-Dr2eiGqf.js",
       "method": "GET",
       "body": null
     },
     {
-      "url": "http://127.0.0.1:4173/retire/assets/index-Te-6-ohb.css",
+      "url": "http://127.0.0.1:4173/retire/assets/index-CEaCsk5q.css",
       "method": "GET",
       "body": null
     },
@@ -23,32 +23,32 @@
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/324c653d-163f-439f-a9dc-1147691815a7",
+      "url": "blob:http://127.0.0.1:4173/157cfe2c-9278-4d23-9974-60d48bb3f837",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/ad13002d-9298-4aba-b537-8f163898942c",
+      "url": "blob:http://127.0.0.1:4173/dba9372e-df1b-4e47-80a2-74a259ddee8e",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/6145e8a8-858b-45ee-9f86-c557c2652255",
+      "url": "blob:http://127.0.0.1:4173/3f7f5f03-65e8-41d0-884d-e366504d3f57",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/4f4dd08f-09aa-4ab2-a06b-c4f2a02045dd",
+      "url": "blob:http://127.0.0.1:4173/b5ae9f4c-2d44-42b2-9f78-b59c57bd0d7a",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/cf8d1fac-47f9-451d-a86f-83e87b9f70d9",
+      "url": "blob:http://127.0.0.1:4173/35c54632-dcbe-470a-992f-ebc253dd60fb",
       "method": "GET",
       "body": null
     },
     {
-      "url": "blob:http://127.0.0.1:4173/3eb3ba39-6baa-4648-8f21-945d375c6a9c",
+      "url": "blob:http://127.0.0.1:4173/5fc6b91f-ca1a-4766-8987-fcdd21b9bf20",
       "method": "GET",
       "body": null
     },
@@ -58,12 +58,12 @@
       "body": null
     },
     {
-      "url": "http://127.0.0.1:4173/assets/index-FlCLnwaI.js",
+      "url": "http://127.0.0.1:4173/assets/index-Dr2eiGqf.js",
       "method": "GET",
       "body": null
     },
     {
-      "url": "http://127.0.0.1:4173/assets/index-Te-6-ohb.css",
+      "url": "http://127.0.0.1:4173/assets/index-CEaCsk5q.css",
       "method": "GET",
       "body": null
     },
@@ -87,8 +87,8 @@
       "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
       "result_layout_version": "retire-results-v1",
       "ledger_report_version": "retire-ledger-report-v1",
-      "build_version": "0.3.1+d863747832e885e4493e4286302b70fc85f7ad1413c54b191b9a33dfd5c12489",
-      "scenario_sha256": "77f88bf3a5b704cb146b5a7968671731f0703e844d79c2033f9408a1cb6ba173",
+      "build_version": "0.4.0+1c3d6a6e6189a7969ed159ed38859734b47424383c005a17bc3702b99d2fc011",
+      "scenario_sha256": "26ddb19e7169008c557779bdd57e9543de85f34498824db00a1af8fd4b844477",
       "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
       "reference_versions": {
         "history": "nyu-fred-1928-2025-v1",
@@ -116,17 +116,17 @@
       "verified_source_ids": []
     },
     "execution": {
-      "run_id": "8441074b-ed4c-47ba-90a6-a5ae4ca2453c",
+      "run_id": "87e732aa-c7b6-40f5-8b51-ba61961fdcb6",
       "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
       "os": "MacIntel",
       "hardware_concurrency": 14,
       "worker_count": 4,
       "chunk_size": 64,
-      "started_at": "2026-10-26T18:52:30.705Z",
+      "started_at": "2026-10-28T22:28:29.016Z",
       "memory_estimate_bytes": 120752888,
       "memory_estimate_scope": "Known simulation buffers, worker workspaces, pinned results, scratch and 96 MiB reserve; excludes browser overhead and JavaScript heaps. This is not an OS process memory cap.",
-      "finished_at": "2026-10-26T18:52:32.473Z",
-      "elapsed_ms": 1767.2000000476837
+      "finished_at": "2026-10-28T22:28:30.713Z",
+      "elapsed_ms": 1697.8999999985099
     },
     "market_data": {
       "format_version": "retire-market-data-v1",

@@ -113,7 +113,6 @@ proceeds_account = "brokerage"
 property_tax_annual = 9000
 rent_monthly = 3800
 rent_real_growth = 0
-sell_liquid_years = 0
 sell_year = 0
 selling_cost = 0.06
 share_A = 0.5
@@ -123,7 +122,7 @@ value = 900000
 [simulation]
 max_age = 110
 n_paths = 16
-seed = 2089299439
+seed = 121039499
 start_year = 2027
 
 [withdrawals]

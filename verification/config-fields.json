@@ -388,9 +388,9 @@
       "internal_path": "market.income_yield_us_stocks",
       "serialize_path": "market.income_yield_us_stocks",
       "omission": "optional; omission uses declared default",
-      "default": 0.01335854176478289,
+      "default": 0.01336,
       "default_kind": "documented",
-      "constraints": "0...1; NYU 2025 dividends / beginning-year S&P level = 0.01335854176478289; splits total return, does not add return.",
+      "constraints": "0...1; NYU 2025 dividends / beginning-year S&P level = 0.01336; splits total return, does not add return.",
       "gates": [],
       "description": "The annual share of a brokerage stock holding treated as reinvested dividends for tax calculations. The rest of the sampled total return is price movement; this yield does not add to the total return. Refresh uses the latest complete NYU year’s dividends divided by the beginning-of-year S&P 500 level. Enter a decimal: 0.013 means 1.3%."
     },
@@ -472,10 +472,10 @@
       "builder_control": "checkbox",
       "internal_path": "people.A.us_citizen",
       "serialize_path": "people.A.us_citizen",
-      "omission": "required; blank stays omitted and blocks Run",
-      "default": null,
-      "default_kind": "none",
-      "constraints": "Strict known key; finite numbers; integers must be safe integers; see spec §9.2.",
+      "omission": "unchecked means non-citizen; explicit answer not required",
+      "default": false,
+      "default_kind": "documented",
+      "constraints": "Citizens are US tax residents; non-citizens use NRA branch.",
       "gates": [
         "H-STATUS",
         "L-RESIDENCY"
@@ -598,10 +598,10 @@
       "builder_control": "checkbox",
       "internal_path": "people.B.us_citizen",
       "serialize_path": "people.B.us_citizen",
-      "omission": "required; blank stays omitted and blocks Run",
-      "default": null,
-      "default_kind": "none",
-      "constraints": "Strict known key; finite numbers; integers must be safe integers; see spec §9.2.",
+      "omission": "unchecked means non-citizen; explicit answer not required",
+      "default": false,
+      "default_kind": "documented",
+      "constraints": "Citizens are US tax residents; non-citizens use NRA branch.",
       "gates": [
         "H-STATUS",
         "L-RESIDENCY"
@@ -1144,14 +1144,32 @@
       "builder_control": "checkbox",
       "internal_path": "withdrawals.last_resort_property_sale",
       "serialize_path": "withdrawals.last_resort_property_sale",
-      "omission": "required; blank stays omitted and blocks Run",
-      "default": null,
-      "default_kind": "none",
-      "constraints": "Household no-sale=false, even when property strategy=hold.",
+      "omission": "optional; omission uses declared default",
+      "default": true,
+      "default_kind": "documented",
+      "constraints": "Omission uses the declared default; unchecking disables last-resort sales.",
       "gates": [
         "H-PROPERTY"
       ],
       "description": "Allow the model to attempt a property sale when account withdrawals cannot meet a cash need, including properties otherwise marked Hold. Turning this off keeps property from being sold solely to cover a shortage. A sale may fail if closing costs, the mortgage and withholding require unaffordable extra cash."
+    },
+    {
+      "path": "properties[].label",
+      "type": "string",
+      "unit": "label/reference/provenance",
+      "spec_section": "5.8",
+      "builder_section": "Schema",
+      "builder_control": "text",
+      "internal_path": "properties[].label",
+      "serialize_path": "properties[].label",
+      "omission": "optional; omit to leave the property unnamed",
+      "default": null,
+      "default_kind": "none",
+      "constraints": "Free text for display only; never affects the simulation.",
+      "gates": [
+        "H-PROPERTY"
+      ],
+      "description": "An optional reminder name for this property, such as its address. It is only shown in the editor and never affects the simulation."
     },
     {
       "path": "properties[].id",
@@ -1443,7 +1461,7 @@
     },
     {
       "path": "properties[].strategy",
-      "type": "enum hold|sell_year|sell_when_liquid_below",
+      "type": "enum hold|sell_year",
       "unit": "sale strategy",
       "spec_section": "5.8",
       "builder_section": "Schema",
@@ -1457,7 +1475,7 @@
       "gates": [
         "H-PROPERTY"
       ],
-      "description": "Hold keeps the property unless last-resort sales are enabled and cash is needed. Sell year attempts a sale in the specified calendar year. Sell when liquid below attempts one when liquid assets fall below the configured number of annual spending years. A path that ends earlier cannot make a later sale."
+      "description": "Hold keeps the property unless last-resort sales are enabled and cash is needed. Sell year attempts a sale in the specified calendar year. A path that ends earlier cannot make a later sale."
     },
     {
       "path": "properties[].sell_year",
@@ -1476,24 +1494,6 @@
         "H-PROPERTY"
       ],
       "description": "The first calendar year to attempt selling this property when its strategy is Sell year. If a sale cannot close, the model can try again in later years while the property is held. Other strategies ignore this setting, and a path that has ended cannot make a sale."
-    },
-    {
-      "path": "properties[].sell_liquid_years",
-      "type": "number",
-      "unit": "years",
-      "spec_section": "5.8",
-      "builder_section": "Schema",
-      "builder_control": "numeric",
-      "internal_path": "properties[].sell_liquid_years",
-      "serialize_path": "properties[].sell_liquid_years",
-      "omission": "optional; omission uses declared default",
-      "default": 0,
-      "default_kind": "documented",
-      "constraints": "See spec §§5.8/9.2; money>=0, valid factors, fractions in[0,1].",
-      "gates": [
-        "H-PROPERTY"
-      ],
-      "description": "For Sell when liquid below, the liquid-asset threshold expressed as years of the China-inflation-adjusted base annual budget. A value of 3 triggers below three times that year’s base budget. Extra medical growth, care and one-time expenses do not raise this threshold."
     },
     {
       "path": "properties[].proceeds_account",

@@ -111,6 +111,5 @@ rent_real_growth = 0
 selling_cost = 0.06
 strategy = "sell_year"
 sell_year = 2026
-sell_liquid_years = 0
 proceeds_account = "brokerage"
 maintenance_annual = 0
