@@ -8,6 +8,47 @@ adds an entry here, newest first.
 
 (nothing yet)
 
+## 0.5.0 — 2026-10-28
+
+Guided setup redesign with Easy/Power modes, plus market and simulation
+defaults (`linux/amd64`). Saved configs keep loading, except property
+configs using the retired sell-when-liquid-below strategy, which strict
+parsing now rejects.
+
+### Guided setup
+
+- A mode choice opens guided setup: Easy mode asks six questions, Power
+  mode walks nine steps covering every configuration, with the builder
+  editors embedded, sensible defaults pre-filled, and a one-way choice.
+  The start page stays put until setup finishes, exiting asks for
+  confirmation, and Start simulation runs the simulation right away.
+- The example card now follows the build card; guided setup starts
+  from blank.
+
+### Power-mode fine-tuning
+
+- One-row fields at a shared 44px height, two columns on tablet/desktop
+  and one column on mobile, with inputs filling their cells and help
+  shown only on info-button hover, focus, or tap.
+- Household step: add/remove a second person, birth year and US citizen
+  on one row, pension always expanded, domicile defaulting to United
+  States. Budget, medical, accounts, and simulation steps received
+  matching wording, currency, and gating passes.
+- Property and one-time-cost names are edited by clicking their list
+  headers (Property N / One-time cost N); the separate name and currency
+  fields are gone, and currency is a narrow symbol dropdown on the
+  amount input.
+
+### Markets and simulation defaults
+
+- Blank drafts sample full history (1928–2025) and the era selector says
+  so; the income-yield default for US stocks rounds to 0.01336; market
+  advanced groups start open; the FX mode reads PPP.
+- Each fresh Power setup draws a new random simulation seed instead of
+  the fixed 42.
+- Unchecking US citizen now means non-US citizen and no longer blocks
+  setup with a missing value.
+
 ## 0.4.0 — 2026-10-26
 
 New income, spending, and planning features (`linux/amd64`). Saved
