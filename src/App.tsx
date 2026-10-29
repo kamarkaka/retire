@@ -311,12 +311,9 @@ export default function App() {
             aria-hidden="true"
           >
             <rect width="32" height="32" rx="10" fill="#1f6259" />
-            <path
-              d="M9 23V10h6a4 4 0 0 1 0 8H9m6 0 6 5"
-              stroke="#fff"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
+            <g transform="translate(4 4)" fill="#fff">
+              <path d="M17 15v9h5v-9zM2 0v24h5v-9h10v-5H7V5h10v5h5V0z" />
+            </g>
           </svg>
           <span>
             retire<span className="brand-dot">.</span>

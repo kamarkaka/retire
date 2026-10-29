@@ -11,7 +11,7 @@
     "stopping_policy": "younger-max-age-or-nonpositive-net-worth",
     "result_layout_version": "retire-results-v1",
     "ledger_report_version": "retire-ledger-report-v1",
-    "build_version": "0.5.0+ae16c5808861c34ec3234778f5448ea1924d993ccd269886814e30c196e46b7e",
+    "build_version": "0.5.1+bea6bda7c527b2aba502e43f1d2a169bcc646d35cfa477a0b9ff0a33dd707b95",
     "scenario_sha256": "fa668cacdf0a75cdd5da8ed03f6b73e3af5344a7727a6b9f034e8e98dd19f9be",
     "effective_tax_tables_sha256": "ca540b3975182c3e553dcbfe13e3f1379257600f2fbf8fcf89752330394cb219",
     "reference_versions": {
@@ -40,17 +40,17 @@
     "verified_source_ids": []
   },
   "execution": {
-    "run_id": "5415d950-d1d7-4fa0-aa9f-f8e24165299a",
+    "run_id": "9bf418a4-73e4-43b9-9c92-c99fda09b033",
     "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
     "os": "MacIntel",
     "hardware_concurrency": 14,
     "worker_count": 4,
     "chunk_size": 64,
-    "started_at": "2026-10-29T17:44:28.135Z",
+    "started_at": "2026-10-29T19:54:13.684Z",
     "memory_estimate_bytes": 100765552,
     "memory_estimate_scope": "Known simulation buffers, worker workspaces, pinned results, scratch and 96 MiB reserve; excludes browser overhead and JavaScript heaps. This is not an OS process memory cap.",
-    "finished_at": "2026-10-29T17:44:28.161Z",
-    "elapsed_ms": 26.100000001490116
+    "finished_at": "2026-10-29T19:54:13.710Z",
+    "elapsed_ms": 26.299999997019768
   },
   "market_data": {
     "format_version": "retire-market-data-v1",

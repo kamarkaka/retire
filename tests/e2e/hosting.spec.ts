@@ -142,5 +142,5 @@ test('M01: header version matches the package release and the footer is gone', a
   expect(response.headers()['content-type']).toContain('image/svg+xml');
   const iconBody = await response.text();
   expect(iconBody).toContain('Reflex');
-  expect(iconBody).toContain('#6E56CF');
+  expect(iconBody).toContain('#1f6259');
 });
