@@ -8,6 +8,41 @@ adds an entry here, newest first.
 
 (nothing yet)
 
+## 0.6.0 — 2026-10-29
+
+Consistent type and spacing, configuration forms matching guided setup,
+and start-page polish (`linux/amd64`). No simulation, configuration, or
+tax behavior changes; saved configs are unaffected.
+
+### Consistent type and spacing
+
+- Bundled Inter with `PingFang SC` and `Microsoft YaHei` fallbacks;
+  Eyebrow, Caption, and Small unified at 11px, all form controls at
+  16px, and the `--ink` accent token defined.
+- Spacing consolidated onto a 4/8/12/16/20/24/32/40px scale with
+  unified page gutters, folded 6px/10px values, and a 6/10/12px radius
+  scale. Check fields keep a 44px minimum height.
+
+### Configuration forms
+
+- Builder forms now share the guided setup's styling and behavior:
+  shared 44px field styling, embedded guide editors, the 650px
+  breakpoint, and 24px field/group gaps, with fresh-blank defaults (US
+  domicile, current-year start, max age 110, random seed, one person).
+- Section navigation titles enlarged to 14px; duplicated simulation
+  title removed; run bar stays visible while scrolling.
+- Budget shocks and late-life care can no longer fold away and show
+  greyed out when unchecked; account balances fill half a row on
+  desktop; people are added with a `+` button, as in Power mode.
+
+### Start page
+
+- Hero eyebrow removed and hero copy reworded to lead with spending,
+  health costs, taxes, inflation, and the market.
+- The 50-year planning example link is removed from the example card.
+- The three main buttons now share one baseline, their icons are
+  larger (56px), and card contents are centered.
+
 ## 0.5.2 — 2026-10-29
 
 Favicon and brand mark only (`linux/amd64`). No configuration,

@@ -622,7 +622,7 @@ test('M02 M10: type scale uses bundled Inter, 11px floor, and 16px controls', as
   page,
 }) => {
   await page.goto('/');
-  await expect(page.locator('.eyebrow')).toHaveCSS('font-size', '11px');
+  await expect(page.locator('.eyebrow')).toHaveCount(0);
   const bodyFont = await page.evaluate(
     () => getComputedStyle(document.body).fontFamily,
   );

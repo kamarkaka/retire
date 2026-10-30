@@ -1311,3 +1311,17 @@ test('M02 M10: start page stays reachable after loading and preserves the draft'
     page.getByRole('button', { name: '← Back to start', exact: true }),
   ).toBeVisible();
 });
+
+test('M02 M10: the three start cards share one primary-button baseline', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const tops = await page.evaluate(() =>
+    [...document.querySelectorAll('.entry-card')].map((card) => {
+      const button = card.querySelector('.entry-actions button');
+      return button?.getBoundingClientRect().top ?? NaN;
+    }),
+  );
+  expect(tops).toHaveLength(3);
+  expect(Math.max(...tops) - Math.min(...tops)).toBeLessThanOrEqual(1);
+});

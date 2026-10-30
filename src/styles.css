@@ -287,24 +287,29 @@ h1 {
   border-radius: var(--radius-lg);
   background: var(--surface);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
   gap: var(--space-xl);
   min-height: 300px;
+  text-align: center;
 }
 .entry-icon {
   color: var(--green);
-  font-size: 24px;
-  width: 42px;
-  height: 42px;
+  font-size: 32px;
+  width: 56px;
+  height: 56px;
   background: var(--surface-pale);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   text-align: center;
-  line-height: 40px;
+  line-height: 54px;
 }
 .entry-card h2 {
   font-size: var(--fs-heading);
+}
+.entry-card h2,
+.entry-card p {
+  align-self: stretch;
 }
 .entry-card p {
   font-size: var(--fs-small);
@@ -316,7 +321,7 @@ h1 {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-xl);
 }
 .entry-card .primary,

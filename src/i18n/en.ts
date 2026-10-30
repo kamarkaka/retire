@@ -7,10 +7,9 @@ const enUI = {
   'header.localBadge': 'Runs on your device',
   'language.label': 'Language',
 
-  'hero.eyebrow': 'YOUR NEXT CHAPTER, IN NUMBERS',
   'hero.title': 'A clearer view of retirement.',
   'hero.copy':
-    'Explore how spending, taxes, inflation, health costs and the exchange rate shape your plan over a lifetime.',
+    'Explore how spending, health costs, taxes, inflation and the market shape your plan over a lifetime.',
 
   'start.backToConfig': '← Back to configuration',
   'entry.grid': 'Start a configuration',
@@ -18,7 +17,6 @@ const enUI = {
   'entry.example.body':
     'A complete scenario with accounts, property, tax and market assumptions ready to explore.',
   'entry.example.load': 'Load sample config',
-  'entry.example.control': 'Use a 50-year planning example',
   'entry.guided.title': 'Guided setup',
   'entry.guided.body':
     'Answer a few questions and we build your starting configuration.',

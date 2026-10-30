@@ -4,11 +4,7 @@ import type {
   FieldIssue,
   PublicReferenceBundle,
 } from './model/types';
-import {
-  createExampleDraft,
-  createControlDraft,
-  createEmptyDraft,
-} from './config/constructors';
+import { createExampleDraft, createEmptyDraft } from './config/constructors';
 import {
   normalizeScenario,
   parseScenario,
@@ -336,7 +332,6 @@ export default function App() {
       </header>
       <main>
         <section className="hero">
-          <p className="eyebrow">{t('hero.eyebrow')}</p>
           <h1>{t('hero.title')}</h1>
           <p className="hero-copy">{t('hero.copy')}</p>
         </section>
@@ -389,12 +384,10 @@ export default function App() {
                   <button className="secondary" onClick={example}>
                     {t('entry.example.load')} <span>→</span>
                   </button>
-                  <button
-                    className="text-button"
-                    onClick={() => load(createControlDraft())}
-                  >
-                    {t('entry.example.control')}
-                  </button>
+                  {/* Reserves one link row so all three main buttons align */}
+                  <span className="text-button entry-spacer" aria-hidden="true">
+                    &nbsp;
+                  </span>
                 </div>
               </article>
               <article className="entry-card">

@@ -9,9 +9,8 @@ const zhUI1 = {
   'header.localBadge': '本地运行',
   'language.label': '语言',
 
-  'hero.eyebrow': '用数字规划人生下半场',
   'hero.title': '更清晰地看见退休生活。',
-  'hero.copy': '探索支出、税收、通胀、医疗费用和汇率如何影响您一生的规划。',
+  'hero.copy': '探索支出、医疗费用、税收、通胀和市场如何影响您一生的规划。',
 
   'start.backToConfig': '← 返回配置',
   'entry.grid': '开始配置',
@@ -19,7 +18,6 @@ const zhUI1 = {
   'entry.example.body':
     '一个完整方案，账户、房产、税务与市场假设俱全，可直接探索。',
   'entry.example.load': '加载示例配置',
-  'entry.example.control': '使用 50 年规划示例',
   'entry.guided.title': '引导式设置',
   'entry.guided.body': '回答几个问题，我们为您生成初始配置。',
   'entry.guided.start': '开始引导设置',
