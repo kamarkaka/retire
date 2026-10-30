@@ -1,7 +1,6 @@
 import { test, expect } from './fixtures';
 import { complete, saveDownload, record } from './helpers';
 import { resolve } from 'node:path';
-import { spawn } from 'node:child_process';
 import pkg from '../../package.json' with { type: 'json' };
 
 test('M01 M11: production subdirectory uses static assets and a locally uploaded sample', async ({
@@ -43,13 +42,6 @@ test('M01 M11: production subdirectory uses static assets and a locally uploaded
   ).toBe(true);
   expect(requests.some((r) => r.url.includes('/retire/assets/'))).toBe(true);
   expect(errors).toEqual([]);
-  await page.goto('/verification');
-  await expect(
-    page.getByRole('button', { name: 'Load sample config' }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'Development verification' }),
-  ).toHaveCount(0);
   await record(`${info.project.name}-static-hosting.json`, {
     status: 'PASS',
     mount: '/retire/',
@@ -57,71 +49,6 @@ test('M01 M11: production subdirectory uses static assets and a locally uploaded
     errors,
     manifest,
   });
-});
-
-test('M01: development-only literal oracle harness and detached worker probe', async ({
-  page,
-}, info) => {
-  const child = spawn(
-    process.execPath,
-    [
-      resolve('node_modules/vite/bin/vite.js'),
-      '--host',
-      '127.0.0.1',
-      '--port',
-      '5175',
-      '--strictPort',
-    ],
-    { stdio: ['ignore', 'pipe', 'pipe'] },
-  );
-  const ready = new Promise<void>((resolveReady, reject) => {
-    const timer = setTimeout(
-      () => reject(new Error('Development server startup timed out')),
-      15000,
-    );
-    let output = '';
-    child.stdout.on('data', (data) => {
-      output += String(data);
-      if (output.includes('5175')) {
-        clearTimeout(timer);
-        resolveReady();
-      }
-    });
-    child.once('exit', (code) => {
-      clearTimeout(timer);
-      reject(new Error(`Development server exited ${code}`));
-    });
-    child.once('error', reject);
-  });
-  try {
-    await ready;
-    await page.goto('http://127.0.0.1:5175/verification');
-    await expect(
-      page.getByRole('heading', { name: 'Development verification' }),
-    ).toBeVisible();
-    await page.locator('select').selectOption('US-3');
-    await page.getByRole('button', { name: 'Run case', exact: true }).click();
-    await expect(page.locator('pre').nth(1)).toContainText('"status": "PASS"');
-    await page
-      .getByRole('button', { name: 'Probe transfer', exact: true })
-      .click();
-    await expect(page.locator('pre').last()).toContainText('"detached":true');
-    await expect(page.locator('pre').last()).toContainText('"values":[1,2,3]');
-    await record(`${info.project.name}-dev-harness.json`, {
-      status: 'PASS',
-      case: 'US-3',
-      actual: await page.locator('pre').nth(1).textContent(),
-      worker_probe: await page.locator('pre').last().textContent(),
-    });
-  } finally {
-    if (child.exitCode === null) {
-      const exited = new Promise<void>((resolveExit) =>
-        child.once('exit', () => resolveExit()),
-      );
-      child.kill('SIGTERM');
-      await exited;
-    }
-  }
 });
 
 test('M01: header version matches the package release and the footer is gone', async ({

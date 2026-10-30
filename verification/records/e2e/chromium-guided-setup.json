@@ -1,6 +1,0 @@
-{
-  "status": "PASS",
-  "method": "Seven-question modal builds a runnable draft with investment and retirement accounts; only the Exit button closes it",
-  "steps": 7,
-  "runnable": true
-}

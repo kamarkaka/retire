@@ -1,9 +1,0 @@
-{
-  "status": "PASS",
-  "method": "Actual production worker; brokerage T-bill cash depletes in the third year; zero initial net assets have zero annual rows with no Social Security benefits",
-  "planned_horizon": 4,
-  "first_active_years": 3,
-  "zero_start_active_years": 0,
-  "csv_only_simulated_years": true,
-  "whole_cohort_zero_padding": true
-}

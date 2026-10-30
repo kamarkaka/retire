@@ -16,13 +16,7 @@ export async function applicationInputsHash() {
   async function visit(directory: string) {
     for (const entry of await readdir(directory, { withFileTypes: true })) {
       const path = join(directory, entry.name);
-      if (
-        path === 'src/build-info.ts' ||
-        path === 'src/verification' ||
-        path === 'src/workers/probe.ts' ||
-        path === 'src/workers/probe.worker.ts'
-      )
-        continue;
+      if (path === 'src/build-info.ts' || path === 'src/verification') continue;
       if (entry.isDirectory()) await visit(path);
       else files.push(path);
     }

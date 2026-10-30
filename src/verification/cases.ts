@@ -58,6 +58,8 @@ export interface VerificationCase {
   tolerance: number;
   [key: string]: unknown;
 }
+// Frozen oracle cases superseded by later model revisions. Each case's
+// retirement reason is in git history (tag verification-archive).
 export const RETIRED_CASE_IDS = [
   'EST-1',
   'EST-2',
@@ -100,52 +102,6 @@ export const RETIRED_CASE_IDS = [
   'TERMINAL-DEFICIT',
   'CONVERSION-1',
 ] as readonly string[];
-export function retiredCaseReason(id: string): string {
-  return id === 'CONTROL-DEPLETION'
-    ? 'A path now stops when net assets become nonpositive; the old fixture continued after spending its final dollar to observe a later shortfall.'
-    : id === 'MARKET-PROJECTION'
-      ? 'Market return/inflation rescaling was removed. All product configurations use source rows directly.'
-      : id === 'FLEX-1'
-        ? 'Recurring spending and its flexibility rules were removed.'
-        : id === 'BUDGET-1'
-          ? 'The medical base now has one source, Budget included_health; the former duplicate-entry fixture is obsolete.'
-          : id === 'ACCOUNT-BASIS'
-            ? 'Brokerage cost basis always equals starting balance; partial-basis gain scenarios are no longer expressible.'
-            : id === 'PROPERTY-1231'
-              ? 'Section 1231 loss history and lookback ordering are removed; property sales use the simple split.'
-              : id === 'FIRPTA-1' ||
-                  id === 'FIRPTA-SHARE' ||
-                  id === 'SALE-FAIL' ||
-                  id === 'ENGINE-FIRPTA'
-                ? 'FIRPTA withholding is removed; US properties use citizen treatment for all owners with no closing prepayment.'
-                : id === 'PROPERTY-BOOKS'
-                  ? 'Vacancy and split management/maintenance inputs are removed; expenses use one annual maintenance figure.'
-                  : id === 'CN-1'
-                    ? 'China pension treatment choice is removed; retirement distributions are not taxed in China.'
-                    : id === 'ENGINE-FINAL-TAX' || id === 'ENGINE-PRIOR-TAX'
-                      ? 'Custom flat tax tables are removed with tax overrides; terminal mechanics are re-pinned at bundled reference rates in unit tests.'
-                      : id === 'CONTROL-FX'
-                        ? 'Budget currency follows domicile: a USD budget under drifting FX cannot replicate the frozen fixed-CNY payment stream. The telescoping USD mechanics are re-pinned in unit tests.'
-                        : id === 'US-1' || id === 'US-2' || id === 'NRA-1'
-                          ? 'Social Security benefits and SS taxation are removed; cases with SS inputs no longer apply.'
-                          : id === 'US-4' ||
-                              id === 'US-5' ||
-                              id === 'US-6' ||
-                              id === 'US-7' ||
-                              id === 'US-8'
-                            ? 'Unrecaptured Section 1250 is folded into long-term gains; cases depending on the 25% bucket no longer apply.'
-                            : id === 'CN-2' ||
-                                id === 'CN-PARTIAL' ||
-                                id === 'CN-WITHHOLDING'
-                              ? 'Settlement and FTC allocation mechanics are removed; the China credit is now same-year eligible-paid.'
-                              : id === 'TERMINAL-1' ||
-                                  id === 'TERMINAL-REFUND' ||
-                                  id === 'TERMINAL-DEFICIT'
-                                ? 'Settlement payment-timing mechanics are removed; taxes are paid the same year with a memo for leftovers.'
-                                : id === 'CONVERSION-1'
-                                  ? 'Cash CNY accounts are retired; the product converts USD to CNY inline and has no standalone conversion function.'
-                                  : 'Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed.';
-}
 const configs = { 'control-pv.toml': pv };
 function requestFor(file: keyof typeof configs) {
   const n = normalizeScenario(

@@ -1,6 +1,6 @@
 # Current model and configuration contracts
 
-Date2026-10-18. The browser app is implemented; human acceptance checklists are retired. [The spec](../plan/2026-10-18-retirement-sim-design.md), [42-step plan](../plan/2026-10-18-retirement-sim.md), [types](contracts.d.ts), [78-field matrix](config-field-matrix.md) and [result layout](result-layout.json) define the current contract. Original M00 notes/oracles remain independent historical evidence.
+Date2026-10-18. The browser app is implemented; human acceptance checklists are retired. [The spec](../plan/2026-10-18-retirement-sim-design.md), [types](../src/model/types.ts), [field inventory](../src/config/fields.json) and [result layout](../src/model/layout.ts) define the current contract. The frozen M00 oracles remain in [fixtures/oracles.json](fixtures/oracles.json).
 
 ## 1. Ownership and boundaries
 
@@ -103,8 +103,8 @@ At20,000 paths/T52, retained results are32,300,000 bytes. The sample200/T70 reta
 
 ## 6. Verification and source boundaries
 
-Current `src/reference/source-gates.json` has15 whole-rule unverified rows with scoped2025 IRS capital evidence recorded separately. The original18-row M00 source registry,80-case catalog,55 independent answers, raw pre-fixed-horizon fixtures and preparation reports remain archived.
+Current `src/reference/source-gates.json` has15 whole-rule unverified rows with scoped2025 IRS capital evidence recorded separately. The original 18-row M00 source registry, case catalog, raw pre-fixed-horizon fixtures, preparation reports and milestone evidence are in git history at tag `verification-archive`; the 55 independent answers stay in `fixtures/oracles.json`.
 
-Current product comparison has33 applicable numeric cases and23 RETIRED. MARKET-TIMING excludes its old deposit-rate and FX-stress subfields. Six broader cases remain OPEN and18 structural cases are SUITE with separate browser/unit coverage. Replacement fixed-horizon/medical/care/zero-interest/SS/decimal behaviors have independent literal integration and real Chromium tests.
+`npm test` runs the 16 still-applicable numeric oracle cases against product modules; 40 superseded cases are retired. MARKET-TIMING excludes its old deposit-rate and FX-stress subfields. Replacement fixed-horizon/medical/care/zero-interest/SS/decimal behaviors have independent literal integration and real Chromium tests.
 
-`npm run check` produces current evidence, all42 milestone records and release hashes. It verifies the supported example with observed NYU/FRED history, independent raw-source/population checks and calendar dot-com/2008/2022 replays. Actual household facts, broad primary rules, broader Monte Carlo calibration targets and Safari/process-launch scope remain explicit in [implementation status](implementation-status.md).
+`npm run check` builds the app and runs the unit, data, static-build and browser checks. It verifies the supported example with observed NYU/FRED history, independent raw-source/population checks and calendar dot-com/2008/2022 replays. Actual household facts, broad primary rules, broader Monte Carlo calibration targets and Safari/process-launch scope remain open.

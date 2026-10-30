@@ -9,7 +9,7 @@ import {
 import { createExampleDraft } from '../../src/config/constructors';
 import type { DraftScenario } from '../../src/model/types';
 import { parseScenario } from '../../src/config/config';
-import inventory from '../../verification/config-fields.json' with { type: 'json' };
+import fields from '../../src/config/fields.json' with { type: 'json' };
 
 test('M02 M10: every configuration input has plain-English hover/focus help, including conditional fields and list cells', async ({
   page,
@@ -119,9 +119,9 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
         continue;
       }
       let path = control.path!.replace(/\[\d+\]/g, '[]');
-      if (!inventory.fields.some((f) => f.path === path))
+      if (!fields.some((f) => f.path === path))
         path = path.replace(/(?:\[\])+$/, '');
-      const field = inventory.fields.find((f) => f.path === path);
+      const field = fields.find((f) => f.path === path);
       expect(field, `Unmapped input ${control.path}`).toBeDefined();
       if (prefixed.has(path)) {
         paths.add(path);
@@ -136,7 +136,7 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
     }
   }
   expect([...paths].sort()).toEqual(
-    inventory.fields
+    fields
       .filter((f) => f.type !== 'object[]' && !hidden.has(f.path))
       .map((f) => f.path)
       .sort(),
@@ -185,7 +185,7 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
   );
   await record(`${info.project.name}-configuration-help.json`, {
     status: 'PASS',
-    field_definitions: inventory.fields.length,
+    field_definitions: fields.length,
     leaf_definitions: paths.size,
     controls_by_section: counts,
     hover: true,

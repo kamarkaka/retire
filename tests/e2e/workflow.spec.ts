@@ -16,6 +16,7 @@ import {
   record,
   saveDraftText,
   uploadDraft,
+  OUT,
 } from './helpers';
 test('M03 M04 M10: production worker and ledger use observed NYU/FRED returns', async ({
   page,
@@ -288,7 +289,7 @@ test('M02 M09 M10: sample builder → worker run → ledger/export → reload/up
     })),
   ).toEqual({ keys: ['retire.language'], session: 0 });
   await page.screenshot({
-    path: resolve(`verification/records/e2e/${info.project.name}-results.png`),
+    path: resolve(OUT, `${info.project.name}-results.png`),
     fullPage: true,
   });
 });

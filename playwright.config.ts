@@ -4,10 +4,7 @@ export default defineConfig({
   timeout: 90_000,
   fullyParallel: false,
   workers: 1,
-  reporter: [
-    ['list'],
-    ['json', { outputFile: 'verification/records/browser-results.json' }],
-  ],
+  reporter: [['list']],
   use: { baseURL: 'http://127.0.0.1:4173', trace: 'retain-on-failure' },
   projects: [
     {

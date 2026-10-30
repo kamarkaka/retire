@@ -1,6 +1,6 @@
 import { it, expect } from 'vitest';
 import XLSX from 'xlsx';
-import { mkdtemp, writeFile, readFile, rm, mkdir } from 'node:fs/promises';
+import { mkdtemp, writeFile, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve, join } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -102,20 +102,6 @@ it('M03 imports a real BIFF8 byte stream with explicit units, 98 rows and proven
     expect(provenance.kind).toBe('imported-unverified');
     expect(calibration.moments.us_stocks.mean).toBeCloseTo(0.13, 14);
     expect(calibration.moments.us_stocks.sd).toBeCloseTo(0.02, 14);
-    await mkdir('verification/records/M03', { recursive: true });
-    await writeFile(
-      'verification/records/M03/importer-test.json',
-      JSON.stringify(
-        {
-          status: 'PASS',
-          input: 'generated BIFF8/OLE, synthetic test only',
-          independent_stock_population: { mean: 0.13, stdev: 0.02 },
-          provenance,
-        },
-        null,
-        2,
-      ),
-    );
   } finally {
     await rm(f.root, { recursive: true, force: true });
   }

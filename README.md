@@ -63,19 +63,20 @@ npx playwright install chromium
 npm run check
 ```
 
-The gate runs independent reference arithmetic, type checking, unit/integration tests, data/numeric checks, a production build, all browser workflows, inventory and release records. No manual sign-off is required. All 42 original M00–M11 steps remain indexed in [implementation status](verification/implementation-status.md).
+The gate builds the app (format check, type check, production build), runs the unit/integration tests (including the still-applicable frozen oracle cases), checks the bundled market data against the raw sources, checks the static build, and runs every browser workflow. Downloads, screenshots and evidence from browser tests go to the git-ignored `test-results/`, so test runs leave tracked files alone; only the build refreshes `src/build-info.ts` when the source changes. No manual sign-off is required.
 
 Some individual checks:
 
 ```sh
 npm test
-npm run verify -- --all
 npm run data:verify
 npm run build
 npm run test:e2e
 ```
 
-The development-only harness is at `/verification` on the dev server and is excluded from production. Node 24.22.0 is pinned in the lockfile and `.node-version`; npm scripts use the installed local Node binary. Run manifests include build/configuration/reference hashes and the fixed-lifetime/zero-CNY-interest policies.
+The original M00–M11 milestone records, evidence archive and independent cross-checks were retired on 2026-10-30 and remain in git history at tag `verification-archive`.
+
+Node 24.22.0 is pinned in the lockfile and `.node-version`; npm scripts use the installed local Node binary. Run manifests include build/configuration/reference hashes and the fixed-lifetime/zero-CNY-interest policies.
 
 ## Current evidence scope
 
@@ -83,10 +84,10 @@ The development-only harness is at `/verification` on the dev server and is excl
 - All configurations use unchanged historical return rows, **not a 3% planning target**. Historical stocks compounded at about 10.02% before tax; an annually rebalanced 40% stock / 60% 10-year Treasury reference compounded at about 7.24%. The sample also uses 1.7% mean China inflation; it does not implement the earlier 3%-return/4%-inflation stress case. Calendar dot-com/2008/2022 engine replays are checked separately from the bootstrap forecasts.
 - Tax modeling stays simple on purpose: all-long-term netting with loss carryforward, property gains at LTCG rates, no state tax, no Social Security, and same-year payment with a same-year China credit. The §1250 25% bucket is intentionally not modeled and its former scoped evidence is archived. Broad legal acceptance remains OPEN. Section 1231 loss history and lookback ordering are removed.
 - The actual household draft preserves 5.3M gross financial assets, 2M property / 731k loans, FX 6.69 and 250k CNY with 38k included medical. Missing account bases/property inputs and B's retained-green-card resident-alien income-tax branch still prevent a household forecast; sample B uses an explicit NRA assumption.
-- Original 55 M00 arithmetic answers remain unchanged. The current product runner passes 16 cases, explicitly retires 40 superseded cases and excludes the old deposit-rate and FX-stress subfields from MARKET-TIMING. Six broad cases are OPEN and 18 structural cases are labeled SUITE; replacement requirements have unit/browser evidence.
+- The original 55 independent M00 arithmetic answers remain frozen in `verification/fixtures/oracles.json`. The 16 still-applicable numeric cases run against product modules inside `npm test`; 40 superseded cases are retired, and MARKET-TIMING excludes the old deposit-rate and FX-stress subfields.
 - Chromium uses a single-process workaround on this macOS host. Ordinary child-process/WebKit launch fails before app load; Safari acceptance remains OPEN. On a suitable host use `RETIRE_MULTI_PROCESS=1 npm run test:e2e`; add `RETIRE_TEST_WEBKIT=1` after installing WebKit.
 
-The explicit 20,000-path/T52 benchmark retains 23,980,000 bytes; ordinary sample T70 is separate. The 512 MiB preflight budgets modeled allocations plus reserve, not OS browser memory. [Performance evidence](verification/records/e2e/chromium-performance.json) records six runs, measured RSS and oversized-run rejection without changing N.
+The explicit 20,000-path/T52 benchmark retains 23,980,000 bytes; ordinary sample T70 is separate. The 512 MiB preflight budgets modeled allocations plus reserve, not OS browser memory. The browser performance test records six runs, measured RSS and oversized-run rejection without changing N in `test-results/e2e/`.
 
 ## Static build
 

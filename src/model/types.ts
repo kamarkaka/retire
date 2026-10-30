@@ -347,7 +347,7 @@ export interface HouseholdState {
   first_depletion_t: number | null;
 }
 export interface PathSummaryBuffers {
-  floats: Float64Array; // path-major; exact field order in result-layout.json.
+  floats: Float64Array; // path-major; field order is FLOAT_FIELDS in layout.ts.
   integers: Int32Array; // -1 sentinel for absent depletion; row counts, years, flags separately.
   flags: Uint8Array;
 }

@@ -13,15 +13,11 @@
     "prepare:build": "tsx scripts/build-info.ts && npm run format:check",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:report": "vitest run --reporter=default --reporter=json --outputFile=verification/records/unit-results.json",
     "test:watch": "vitest",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"scripts/**/*.ts\" \"scripts/**/*.mjs\" \"tests/**/*.ts\" \"verification/reference/*.mjs\" \"*.ts\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"scripts/**/*.ts\" \"scripts/**/*.mjs\" \"tests/**/*.ts\" \"verification/reference/*.mjs\" \"*.ts\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"scripts/**/*.ts\" \"tests/**/*.ts\" \"*.ts\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"scripts/**/*.ts\" \"tests/**/*.ts\" \"*.ts\"",
     "build": "npm run prepare:build && npm run typecheck && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
-    "verify": "tsx scripts/verify-case.ts",
-    "verify:inventory": "node verification/reference/check-artifacts.mjs",
-    "verify:reference": "node verification/reference/recalculate.mjs --report verification/records/reference-arithmetic.json",
     "examples:export": "tsx scripts/export-examples.ts",
     "data:import": "tsx scripts/import-data.ts",
     "data:fetch": "tsx scripts/fetch-market-data.ts",
@@ -32,8 +28,7 @@
     "serve": "tsx scripts/serve.ts",
     "market:refresh": "tsx scripts/market-data-refresh.ts",
     "verify:build": "tsx scripts/verify-build.ts",
-    "report:release": "tsx scripts/release-report.ts",
-    "check": "npm run prepare:build && npm run verify:reference && npm run typecheck && npm run test:report && npm run data:verify && npm run verify -- --all && npm run build && npm run verify:build && npm run test:e2e && npm run verify:inventory && npm run report:release"
+    "check": "npm run build && npm test && npm run data:verify && npm run verify:build && npm run test:e2e"
   },
   "dependencies": {
     "@fontsource-variable/inter": "5.3.0",

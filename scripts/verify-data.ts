@@ -9,7 +9,7 @@ import {
 import { hashBytes, hashObject } from '../src/model/canonical';
 import { calibrateHistory, SERIES } from '../src/reference/calibration';
 import type { HistoricalRow } from '../src/model/types';
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { parseMarketData } from '../src/reference/market-data';
 import XLSX from 'xlsx';
@@ -278,11 +278,6 @@ const report = {
   crisis_rows: h.filter((r) => [2000, 2001, 2002, 2008, 2022].includes(r.year)),
   independent_calendar_replays: receipt.calendar_replays,
 };
-await mkdir('verification/records/M03', { recursive: true });
-await writeFile(
-  'verification/records/M03/data-report.json',
-  JSON.stringify(report, null, 2) + '\n',
-);
 console.log(
   JSON.stringify(
     {

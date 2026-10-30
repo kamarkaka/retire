@@ -1,8 +1,0 @@
-[
-  {
-    "method": "GET",
-    "url": "http://127.0.0.1:4173/api/market-data",
-    "body": null,
-    "contentType": "application/json"
-  }
-]

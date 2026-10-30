@@ -1,11 +1,10 @@
-import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
+import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { applicationInputsHash } from './build-inputs';
 import { BUILD_SOURCE_SHA256, BUILD_VERSION } from '../src/build-info';
 const inputs = await applicationInputsHash(),
   checks: { name: string; status: 'PASS' | 'FAIL'; detail: unknown }[] = [],
-  files: { path: string; bytes: number; sha256: string }[] = [],
+  files: { path: string; bytes: number }[] = [],
   texts: string[] = [];
 const check = (name: string, ok: boolean, detail: unknown = {}) =>
   checks.push({ name, status: ok ? 'PASS' : 'FAIL', detail });
@@ -15,11 +14,7 @@ async function visit(dir: string) {
     if (entry.isDirectory()) await visit(path);
     else {
       const bytes = await readFile(path);
-      files.push({
-        path,
-        bytes: bytes.byteLength,
-        sha256: createHash('sha256').update(bytes).digest('hex'),
-      });
+      files.push({ path, bytes: bytes.byteLength });
       texts.push(bytes.toString('utf8'));
     }
   }
@@ -37,14 +32,12 @@ check(
   { build_version: BUILD_VERSION },
 );
 const forbidden = [
-  'Development verification',
-  'Literal M00 oracles',
   'CONTROL-PV',
   'verification/fixtures',
   'Test-only local note 南京 🏡',
 ];
 check(
-  'development harness/oracles/private test notes absent',
+  'oracle cases/fixtures/private test notes absent',
   forbidden.every((text) => !bundle.includes(text)),
   { forbidden },
 );
@@ -67,23 +60,6 @@ for (const file of modelFiles) {
   );
 }
 const status = checks.every((c) => c.status === 'PASS') ? 'PASS' : 'FAIL';
-await mkdir('verification/records', { recursive: true });
-await writeFile(
-  'verification/records/build-results.json',
-  JSON.stringify(
-    {
-      status,
-      checked_at: new Date().toISOString(),
-      build_source_sha256: BUILD_SOURCE_SHA256,
-      build_version: BUILD_VERSION,
-      input_files: inputs.files,
-      files,
-      checks,
-    },
-    null,
-    2,
-  ) + '\n',
-);
 console.log(
   JSON.stringify(
     {

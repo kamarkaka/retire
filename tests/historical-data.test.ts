@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest';
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { references, REFERENCE_PROVENANCE } from '../src/reference/bundle';
 import { prepareMarket, buildMarket } from '../src/model/market';
 import {
@@ -69,7 +69,6 @@ it('M03 M04: every configuration uses the exact source rows, with no return or C
 
 for (const name of ['dotcom', 'gfc', 'stocks_and_bonds_down'])
   it(`M11: actual ${name} calendar rows reproduce independent annual 40/60 Treasury balances`, () => {
-    const evidence: unknown[] = [];
     for (const scope of ['without_spending', 'with_spending'] as const) {
       const expected = accepted.calendar_replays[name][scope],
         d = createControlDraft();
@@ -134,30 +133,5 @@ for (const name of ['dotcom', 'gfc', 'stocks_and_bonds_down'])
           (expected.years.length - 1) * LEDGER_FIELDS.length + LI.liquid_usd
         ],
       ).toBeCloseTo(expected.ending_usd, 8);
-      evidence.push({
-        scope,
-        source_years: expected.years.map((y) => y.source_year),
-        expected,
-        actual: replay.years.map((y, t) => ({
-          opening: y.report.starting_liquid_usd,
-          return: y.report.annual_investment_return,
-          ending: replay.ledger[t * LEDGER_FIELDS.length + LI.liquid_usd],
-        })),
-      });
     }
-    mkdirSync('verification/records/M11', { recursive: true });
-    writeFileSync(
-      `verification/records/M11/historical-${name}.json`,
-      JSON.stringify(
-        {
-          status: 'PASS',
-          source_sha256: REFERENCE_PROVENANCE.source_sha256,
-          scope:
-            'Actual calendar return tape through the year engine; 40% stocks / 60% 10-year Treasuries, annually rebalanced; after-tax account, zero taxes/FX/China inflation, $0 or $10k beginning-year spend',
-          evidence,
-        },
-        null,
-        2,
-      ) + '\n',
-    );
   });
