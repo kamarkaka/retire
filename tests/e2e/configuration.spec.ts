@@ -617,3 +617,42 @@ test('M02 M10: section nav titles use the larger tab size', async ({
     '14px',
   );
 });
+
+test('M02 M10: type scale uses bundled Inter, 11px floor, and 16px controls', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.eyebrow')).toHaveCSS('font-size', '11px');
+  const bodyFont = await page.evaluate(
+    () => getComputedStyle(document.body).fontFamily,
+  );
+  expect(bodyFont).toContain('Inter Variable');
+  expect(bodyFont).toContain('PingFang SC');
+  expect(bodyFont).toContain('Microsoft YaHei');
+  const ink = await page.evaluate(() =>
+    getComputedStyle(document.documentElement).getPropertyValue('--ink').trim(),
+  );
+  expect(ink).not.toBe('');
+  const floor = await page.evaluate(() => {
+    const sizes: number[] = [];
+    document.querySelectorAll('body *').forEach((el) => {
+      const html = el as HTMLElement;
+      if (html.offsetWidth > 0 && html.offsetHeight > 0) {
+        sizes.push(parseFloat(getComputedStyle(html).fontSize));
+      }
+    });
+    return Math.min(...sizes);
+  });
+  expect(floor).toBeGreaterThanOrEqual(11);
+  await page.getByRole('button', { name: 'Load sample config' }).click();
+  await expect(
+    page.getByLabel('simulation.n_paths', { exact: true }),
+  ).toHaveCSS('font-size', '16px');
+  await page
+    .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
+    .click();
+  await expect(page.getByLabel('market.era', { exact: true })).toHaveCSS(
+    'font-size',
+    '16px',
+  );
+});

@@ -36,6 +36,7 @@
     "check": "npm run prepare:build && npm run verify:reference && npm run typecheck && npm run test:report && npm run data:verify && npm run verify -- --all && npm run build && npm run verify:build && npm run test:e2e && npm run verify:inventory && npm run report:release"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "5.3.0",
     "@noble/hashes": "2.4.0",
     "echarts": "6.1.0",
     "react": "19.3.1",
