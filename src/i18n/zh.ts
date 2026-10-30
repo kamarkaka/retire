@@ -1,5 +1,5 @@
-import type { FieldText, Localization } from './core';
-import type { MessageKey } from './en';
+import type { FieldText, Localization } from './core.ts';
+import type { MessageKey } from './en.ts';
 
 /** Simplified Chinese. Missing or extra keys fail the type check below. */
 const zhUI1 = {

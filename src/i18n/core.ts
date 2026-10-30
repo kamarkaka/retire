@@ -1,5 +1,5 @@
-import enUI, { type MessageKey } from './en';
-import { zh } from './zh';
+import enUI, { type MessageKey } from './en.ts';
+import { zh } from './zh.ts';
 
 /** Translated help text for one fields.json path. English is the source. */
 export interface FieldText {
