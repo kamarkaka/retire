@@ -488,55 +488,8 @@ function runPath(
         incomeTaxCashUsdReal += paid.cny / market.fx[t] / market.usd_index[t];
         return paid.cny;
       };
-      unpaidUsd = Math.max(0, priorUs - payUsd(priorUs));
-      unpaidCny = Math.max(0, priorCn - payCny(priorCn));
-      for (let pass = 0; pass < 10; pass++) {
-        let billed = 0;
-        for (const id of members) {
-          const us = calculateUS(
-            s,
-            id,
-            year,
-            market.usd_index[t],
-            s.people.B !== undefined,
-            income[id],
-            capitalLoss[id],
-            suspended(id),
-            tables,
-          );
-          billUs[id] = us.federal;
-          const deltaUs = Math.max(0, us.federal - paidUs[id]);
-          billed += deltaUs;
-          paidUs[id] += payUsd(deltaUs);
-          if (chinaApplies(s, id, t)) {
-            const raw = chinaTax(
-              {
-                dividends: income[id].dividends * market.fx[t],
-                interest: income[id].interest_us * market.fx[t],
-                gross_rent: income[id].rent_gross * market.fx[t],
-                securities_gain: income[id].cap_gain * market.fx[t],
-                property_gain_cny: income[id].property_gain_cny,
-              },
-              tables,
-            );
-            const eligiblePaid =
-                paidUs[id] *
-                (us.federal > 0 ? us.eligible_federal / us.federal : 0),
-              due = applyCredit(
-                raw.before_credit,
-                eligiblePaid * market.fx[t],
-              ).due;
-            billCn[id] = due;
-            taxDetail[`${id}_china`] = raw;
-            const deltaCn = Math.max(0, due - paidCn[id]);
-            billed += deltaCn / market.fx[t];
-            paidCn[id] += payCny(deltaCn);
-          }
-        }
-        if (billed < 1) break;
-      }
-      for (const id of members) {
-        const us = calculateUS(
+      const usTax = (id: PersonId) =>
+        calculateUS(
           s,
           id,
           year,
@@ -547,29 +500,50 @@ function runPath(
           suspended(id),
           tables,
         );
-        capitalLoss[id] = us.carry;
-        updatePassive(id, us.suspended);
-        taxDetail[id] = us.detail;
-        billUs[id] = us.federal;
-        if (chinaApplies(s, id, t)) {
-          const raw = chinaTax(
+      // China tax due after crediting the eligible share of US tax paid so far.
+      const chinaDue = (id: PersonId, us: ReturnType<typeof calculateUS>) => {
+        const fx = market.fx[t],
+          raw = chinaTax(
             {
-              dividends: income[id].dividends * market.fx[t],
-              interest: income[id].interest_us * market.fx[t],
-              gross_rent: income[id].rent_gross * market.fx[t],
-              securities_gain: income[id].cap_gain * market.fx[t],
+              dividends: income[id].dividends * fx,
+              interest: income[id].interest_us * fx,
+              gross_rent: income[id].rent_gross * fx,
+              securities_gain: income[id].cap_gain * fx,
               property_gain_cny: income[id].property_gain_cny,
             },
             tables,
           );
-          billCn[id] = applyCredit(
-            raw.before_credit,
-            paidUs[id] *
-              (us.federal > 0 ? us.eligible_federal / us.federal : 0) *
-              market.fx[t],
-          ).due;
-          taxDetail[`${id}_china`] = raw;
+        taxDetail[`${id}_china`] = raw;
+        const eligiblePaid =
+          paidUs[id] * (us.federal > 0 ? us.eligible_federal / us.federal : 0);
+        return applyCredit(raw.before_credit, eligiblePaid * fx).due;
+      };
+      unpaidUsd = Math.max(0, priorUs - payUsd(priorUs));
+      unpaidCny = Math.max(0, priorCn - payCny(priorCn));
+      for (let pass = 0; pass < 10; pass++) {
+        let billed = 0;
+        for (const id of members) {
+          const us = usTax(id);
+          billUs[id] = us.federal;
+          const deltaUs = Math.max(0, us.federal - paidUs[id]);
+          billed += deltaUs;
+          paidUs[id] += payUsd(deltaUs);
+          if (chinaApplies(s, id, t)) {
+            billCn[id] = chinaDue(id, us);
+            const deltaCn = Math.max(0, billCn[id] - paidCn[id]);
+            billed += deltaCn / market.fx[t];
+            paidCn[id] += payCny(deltaCn);
+          }
         }
+        if (billed < 1) break;
+      }
+      for (const id of members) {
+        const us = usTax(id);
+        capitalLoss[id] = us.carry;
+        updatePassive(id, us.suspended);
+        taxDetail[id] = us.detail;
+        billUs[id] = us.federal;
+        if (chinaApplies(s, id, t)) billCn[id] = chinaDue(id, us);
       }
       for (const id of members) {
         unpaidUsd += Math.max(0, billUs[id] - paidUs[id]);
