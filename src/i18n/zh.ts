@@ -115,7 +115,6 @@ const zhUI1 = {
   'builder.advancedProperty': '房产高级明细',
   'budget.core': '预算',
   'budget.medical': '医疗',
-  'budget.shocks': '冲击',
   'budget.oneTime': '一次性支出',
   'market.markets': '市场',
   'market.inflation': '通胀',

@@ -10,6 +10,7 @@ import {
   MarketEditor,
   MedicalEditor,
   PeopleEditor,
+  PersonCountControl,
   PropertiesEditor,
 } from './Builder';
 import { money } from './format';
@@ -61,43 +62,6 @@ const budgetCore = {
     ),
   ),
 };
-
-function PersonCountControl({
-  draft,
-  onChange,
-}: {
-  draft: DraftScenario;
-  onChange: (d: DraftScenario) => void;
-}) {
-  const { t } = useI18n();
-  if (draft.people?.B === undefined)
-    return (
-      <div className="toolbar">
-        <button
-          type="button"
-          className="secondary"
-          onClick={() => onChange(assign(draft, ['people', 'B'], {}))}
-        >
-          <span aria-hidden="true">+</span> {t('adv.addPerson')}
-        </button>
-      </div>
-    );
-  return (
-    <div className="toolbar">
-      <button
-        type="button"
-        className="secondary danger"
-        onClick={() => {
-          const next = structuredClone(draft);
-          if (next.people) delete (next.people as Record<string, unknown>).B;
-          onChange(next);
-        }}
-      >
-        {t('adv.removePerson')}
-      </button>
-    </div>
-  );
-}
 
 export default function AdvancedGuide({
   draft,

@@ -730,8 +730,11 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
       .evaluateAll((els) => els.map((e) => (e as HTMLOptionElement).value)),
   ).toEqual(['', 'US', 'China']);
   await expect(
-    page.getByRole('button', { name: 'Two people', exact: true }),
-  ).toHaveAttribute('aria-pressed', 'true');
+    page.getByRole('button', { name: 'Remove second person' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Add a second person' }),
+  ).toHaveCount(0);
   for (const id of ['A', 'B']) {
     await expect(
       page.getByLabel(`people.${id}.birth_year`, { exact: true }),
@@ -773,12 +776,6 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
   await page.getByLabel('people.A.birth_year', { exact: true }).fill('1966');
   await page.getByLabel('people.B.birth_year', { exact: true }).fill('1968');
   await page.getByRole('button', { name: 'Budget', exact: true }).click();
-  await page
-    .locator('.builder-section details', {
-      has: page.getByText('Late life care', { exact: true }),
-    })
-    .locator('summary')
-    .click();
   await page
     .getByLabel('medical.late_life_care.enabled', { exact: true })
     .check();
@@ -980,7 +977,7 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
     csv_precision: 'Float64',
   });
 });
-test('M02 M10: household size toggles the second person and keeps one domicile', async ({
+test('M02 M10: add/remove-person control toggles the second person and keeps one domicile', async ({
   page,
 }, info) => {
   await page.goto('/');
@@ -989,10 +986,13 @@ test('M02 M10: household size toggles the second person and keeps one domicile',
   await expect(
     page.getByLabel('people.B.birth_year', { exact: true }),
   ).toHaveValue('1986');
-  await page.getByRole('button', { name: 'One person', exact: true }).click();
+  await page.getByRole('button', { name: 'Remove second person' }).click();
   await expect(
     page.getByLabel('people.B.birth_year', { exact: true }),
   ).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Add a second person' }),
+  ).toBeVisible();
   await expect(page.getByLabel('people.domicile', { exact: true })).toHaveValue(
     'China',
   );
@@ -1006,10 +1006,13 @@ test('M02 M10: household size toggles the second person and keeps one domicile',
     expect(parsed.value.people).not.toHaveProperty('B');
     expect(parsed.value.people!.domicile).toBe('China');
   }
-  await page.getByRole('button', { name: 'Two people', exact: true }).click();
+  await page.getByRole('button', { name: 'Add a second person' }).click();
   await expect(
     page.getByLabel('people.B.birth_year', { exact: true }),
   ).toHaveValue('');
+  await expect(
+    page.getByRole('button', { name: 'Remove second person' }),
+  ).toBeVisible();
   await record(`${info.project.name}-household-size.json`, {
     status: 'PASS',
     single_hides_B: true,

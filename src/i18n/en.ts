@@ -120,7 +120,6 @@ const enUI = {
   'builder.advancedProperty': 'Advanced property details',
   'budget.core': 'Budget',
   'budget.medical': 'Medical',
-  'budget.shocks': 'Shocks',
   'budget.oneTime': 'One-time costs',
   'market.markets': 'Markets',
   'market.inflation': 'Inflation',

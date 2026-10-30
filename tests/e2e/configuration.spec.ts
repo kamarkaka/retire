@@ -399,7 +399,7 @@ test('M02 M05 M09 M10: fixed three accounts, export/run/reload, and legacy holdi
   });
 });
 
-test('M02 M10: budget labels name medical spending and shocks fold like late-life care', async ({
+test('M02 M10: budget labels name medical spending and shocks and care stay unfolded', async ({
   page,
 }) => {
   await page.goto('/');
@@ -425,30 +425,48 @@ test('M02 M10: budget labels name medical spending and shocks fold like late-lif
   await expect(
     medical.getByLabel('budget.included_health', { exact: true }),
   ).toBeVisible();
-  const shocks = medical.locator('details', {
-    has: page.getByText('Shocks', { exact: true }),
-  });
+  await expect(medical.locator('details')).toHaveCount(0);
   await expect(
-    shocks.getByLabel('medical.shock_median', { exact: true }),
-  ).toBeHidden();
-  await shocks.locator('summary').click();
-  await expect(
-    shocks.getByLabel('medical.shock_median', { exact: true }),
+    medical.getByLabel('medical.shock_median', { exact: true }),
   ).toBeVisible();
-  await shocks.locator('summary').click();
   await expect(
-    shocks.getByLabel('medical.shock_median', { exact: true }),
-  ).toBeHidden();
-  const care = medical.locator('details', {
-    has: page.getByText('Late life care', { exact: true }),
-  });
-  await expect(
-    care.getByLabel('medical.late_life_care.monthly', { exact: true }),
-  ).toBeHidden();
-  await care.locator('summary').click();
-  await expect(
-    care.getByLabel('medical.late_life_care.monthly', { exact: true }),
+    medical.getByLabel('medical.late_life_care.monthly', { exact: true }),
   ).toBeVisible();
+});
+
+test('M02 M10: shocks and late-life care stay visible and greyed out when off', async ({
+  page,
+}) => {
+  const draft = createExampleDraft();
+  draft.medical!.shock_enabled = false;
+  draft.medical!.late_life_care!.enabled = false;
+  await page.goto('/');
+  await uploadDraft(page, draft);
+  await page.getByRole('button', { name: 'Budget', exact: true }).click();
+  const medical = page.locator('.config-group', {
+    has: page.getByRole('heading', { name: 'Medical', exact: true }),
+  });
+  await expect(medical.locator('details')).toHaveCount(0);
+  for (const path of [
+    'medical.shock_median',
+    'medical.shock_prob_at_60',
+    'medical.late_life_care.start_age',
+    'medical.late_life_care.monthly',
+  ]) {
+    const input = medical.getByLabel(path, { exact: true });
+    await expect(input).toBeVisible();
+    await expect(input).toBeDisabled();
+    await expect(medical.locator(`[data-config-field="${path}"]`)).toHaveClass(
+      /is-disabled/,
+    );
+  }
+  // The switches themselves stay usable.
+  await expect(
+    medical.getByLabel('medical.shock_enabled', { exact: true }),
+  ).toBeEnabled();
+  await expect(
+    medical.getByLabel('medical.late_life_care.enabled', { exact: true }),
+  ).toBeEnabled();
 });
 
 test('M02 M03 M10: history era presets set the sampling window and outlook shift runs', async ({
@@ -505,4 +523,97 @@ test('M02 M03 M10: history era presets set the sampling window and outlook shift
   expect(config.text).toContain('outlook_shift = 0.02');
   expect(config.text).toContain('sample_start = 1950');
   expect(errors).toEqual([]);
+});
+
+test('M02 M10: configuration forms share the guide field styling', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Load sample config' }).click();
+  // Every section: one-row 44px fields, no unit labels, no footnotes.
+  for (const section of [
+    'Simulation',
+    'People',
+    'Budget',
+    'Accounts',
+    'Properties',
+    'Markets, inflation & FX',
+  ]) {
+    await page.getByRole('button', { name: section, exact: true }).click();
+    await expect(page.locator('.builder-section .field-help')).toHaveCount(0);
+    await expect(
+      page.locator('.builder-section .field-label small'),
+    ).toHaveCount(0);
+  }
+  await page.getByRole('button', { name: 'Simulation', exact: true }).click();
+  const paths = page.locator('[data-config-field="simulation.n_paths"]');
+  await expect(paths).toHaveCSS('flex-direction', 'row');
+  const pathsBox = await page
+    .getByLabel('simulation.n_paths', { exact: true })
+    .boundingBox();
+  expect(Math.round(pathsBox!.height)).toBe(44);
+  await page.getByRole('button', { name: 'People', exact: true }).click();
+  const birth = page.locator('[data-config-field="people.A.birth_year"]');
+  await expect(birth).toHaveCSS('flex-direction', 'row');
+  const birthBox = await page
+    .getByLabel('people.A.birth_year', { exact: true })
+    .boundingBox();
+  expect(Math.round(birthBox!.height)).toBe(44);
+  await page.getByRole('button', { name: 'Budget', exact: true }).click();
+  const annualBox = await page
+    .getByLabel('budget.annual', { exact: true })
+    .boundingBox();
+  expect(Math.round(annualBox!.height)).toBe(42);
+  await page
+    .getByRole('button', { name: 'Markets, inflation & FX', exact: true })
+    .click();
+  const eraBox = await page
+    .getByLabel('market.era', { exact: true })
+    .boundingBox();
+  expect(Math.round(eraBox!.height)).toBe(44);
+  // The duplicated section title is gone: the nav tabs name the section.
+  await expect(page.locator('.builder-section h2')).toHaveCount(0);
+  // Account balances fill half a row on desktop.
+  await page.getByRole('button', { name: 'Accounts', exact: true }).click();
+  const widths = await page
+    .locator('.account-balance-row')
+    .first()
+    .evaluate((row) => {
+      const field = row.querySelector('[data-config-field]');
+      return {
+        row: row.getBoundingClientRect().width,
+        field: field?.getBoundingClientRect().width ?? 0,
+      };
+    });
+  expect(Math.abs(widths.field - (widths.row - 24) / 2)).toBeLessThanOrEqual(2);
+});
+
+test('M02 M10: configuration forms keep two columns until 650px', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Load sample config' }).click();
+  const columns = await page
+    .locator('.builder-section .field-grid')
+    .first()
+    .evaluate(
+      (el) => getComputedStyle(el).gridTemplateColumns.split(' ').length,
+    );
+  expect(columns).toBe(1);
+  const pathsBox = await page
+    .getByLabel('simulation.n_paths', { exact: true })
+    .boundingBox();
+  expect(Math.round(pathsBox!.height)).toBe(44);
+});
+
+test('M02 M10: section nav titles use the larger tab size', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Load sample config' }).click();
+  await expect(page.locator('.section-nav button').first()).toHaveCSS(
+    'font-size',
+    '14px',
+  );
 });

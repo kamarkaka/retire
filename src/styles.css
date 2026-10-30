@@ -329,6 +329,9 @@ h1 {
   letter-spacing: -0.6px;
 }
 .run-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -472,7 +475,7 @@ h1 {
   border: 0;
   background: none;
   padding: 10px 12px;
-  font-size: 12px;
+  font-size: 14px;
   color: #778b7a;
 }
 .section-nav button.selected {
@@ -497,7 +500,7 @@ h1 {
 .field-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px 24px;
+  gap: 24px;
 }
 .field {
   display: flex;
@@ -1070,7 +1073,7 @@ pre {
 .config-groups {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
 }
 .config-group {
   min-width: 0;
@@ -1551,9 +1554,10 @@ pre {
 .field .currency-field select:focus-visible {
   outline: none;
 }
-.modal-dialog.wide .wizard-body .field .currency-field select {
-  /* The shared wizard rule below gives every select flex: 1 1 200px;
-     the prefix must not grow: it stays symbol-sized, content-width. */
+.modal-dialog.wide .wizard-body .field .currency-field select,
+.builder-section .field .currency-field select {
+  /* The field rules below give every select flex: 1 1 200px; the
+     prefix must not grow: it stays symbol-sized, content-width. */
   flex: none;
   width: auto;
   height: 42px;
@@ -1564,6 +1568,7 @@ pre {
   padding: 0 12px;
 }
 .people-editor .field > .currency-field,
+.builder-section .field > .currency-field,
 .modal-dialog.wide .wizard-body .field > .currency-field {
   flex: 1 1 200px;
   min-width: 0;
@@ -1581,7 +1586,8 @@ pre {
   .wizard-body
   .field
   .currency-field
-  input:not([type='checkbox']) {
+  input:not([type='checkbox']),
+.builder-section .field .currency-field input:not([type='checkbox']) {
   height: 42px;
 }
 .wizard-body label.check-button {
@@ -1855,32 +1861,43 @@ pre {
 .wizard-body .field-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+.builder-section .field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 24px;
+}
 .wizard-body .account-balance-row {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .modal-dialog.wide .wizard-body input {
   max-width: none;
 }
-.modal-dialog.wide .wizard-body .field {
+.modal-dialog.wide .wizard-body .field,
+.builder-section .field {
   flex-direction: row;
   align-items: center;
   gap: 12px;
   flex-wrap: nowrap;
 }
-.modal-dialog.wide .wizard-body .field-heading {
+.modal-dialog.wide .wizard-body .field-heading,
+.builder-section .field-heading {
   flex: 0 0 auto;
   min-width: 0;
 }
 .modal-dialog.wide .wizard-body .field input:not([type='checkbox']),
 .modal-dialog.wide .wizard-body .field select,
-.modal-dialog.wide .wizard-body .field textarea {
+.modal-dialog.wide .wizard-body .field textarea,
+.builder-section .field input:not([type='checkbox']),
+.builder-section .field select,
+.builder-section .field textarea {
   flex: 1 1 200px;
   min-width: 0;
   height: 44px;
   font-size: 16px;
 }
 .modal-dialog.wide .wizard-body .field.list-field,
-.modal-dialog.wide .wizard-body .primitive-row .field {
+.modal-dialog.wide .wizard-body .primitive-row .field,
+.builder-section .field.list-field,
+.builder-section .primitive-row .field {
   flex-direction: column;
   align-items: stretch;
 }
@@ -1889,16 +1906,20 @@ pre {
   .primitive-row
   .field
   input:not([type='checkbox']),
-.modal-dialog.wide .wizard-body .primitive-row .field select {
+.modal-dialog.wide .wizard-body .primitive-row .field select,
+.builder-section .primitive-row .field input:not([type='checkbox']),
+.builder-section .primitive-row .field select {
   flex: none;
   height: 36px;
   font-size: 12px;
 }
-.modal-dialog.wide .wizard-body .seed-control {
+.modal-dialog.wide .wizard-body .seed-control,
+.builder-section .seed-control {
   flex: 1 1 200px;
   min-width: 0;
 }
-.modal-dialog.wide .wizard-body .field.check-field {
+.modal-dialog.wide .wizard-body .field.check-field,
+.builder-section .field.check-field {
   border: 1px solid var(--border);
   border-radius: 7px;
   background: #fff;
@@ -1907,16 +1928,19 @@ pre {
     background 0.15s,
     border-color 0.15s;
 }
-.modal-dialog.wide .wizard-body .field.check-field:hover {
+.modal-dialog.wide .wizard-body .field.check-field:hover,
+.builder-section .field.check-field:hover {
   background: #edf3ee;
   border-color: #b4c9ba;
 }
-.modal-dialog.wide .wizard-body .field.check-field:has(input:checked) {
+.modal-dialog.wide .wizard-body .field.check-field:has(input:checked),
+.builder-section .field.check-field:has(input:checked) {
   background: #e8efe3;
   border-color: #cfdcc8;
   color: #2e5e3f;
 }
-.modal-dialog.wide .wizard-body .field.check-field input[type='checkbox'] {
+.modal-dialog.wide .wizard-body .field.check-field input[type='checkbox'],
+.builder-section .field.check-field input[type='checkbox'] {
   appearance: none;
   flex: none;
   align-self: center;
@@ -1929,16 +1953,15 @@ pre {
   cursor: pointer;
   order: -1;
 }
-.modal-dialog.wide
-  .wizard-body
-  .field.check-field:hover
-  input[type='checkbox'] {
+.modal-dialog.wide .wizard-body .field.check-field:hover input[type='checkbox'],
+.builder-section .field.check-field:hover input[type='checkbox'] {
   border-color: #8fae9c;
 }
 .modal-dialog.wide
   .wizard-body
   .field.check-field
-  input[type='checkbox']:checked {
+  input[type='checkbox']:checked,
+.builder-section .field.check-field input[type='checkbox']:checked {
   border-color: var(--green);
   background-color: var(--green);
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2012%2010'%3E%3Cpath%20d='M1%205.5%204.5%209%2011%201'%20fill='none'%20stroke='white'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -1949,12 +1972,14 @@ pre {
 .modal-dialog.wide
   .wizard-body
   .field.check-field
-  input[type='checkbox']:focus-visible {
+  input[type='checkbox']:focus-visible,
+.builder-section .field.check-field input[type='checkbox']:focus-visible {
   outline: 3px solid #9ec8be;
   outline-offset: 2px;
 }
 .people-editor .field.check-field .field-heading,
-.modal-dialog.wide .wizard-body .field.check-field .field-heading {
+.modal-dialog.wide .wizard-body .field.check-field .field-heading,
+.builder-section .field.check-field .field-heading {
   flex: 0 1 auto;
 }
 .field-grid > [data-config-field='budget.flex_enabled'] {
@@ -1984,13 +2009,16 @@ pre {
   cursor: not-allowed;
 }
 @media (max-width: 650px) {
-  .wizard-body .field-grid {
+  .wizard-body .field-grid,
+  .builder-section .field-grid {
     grid-template-columns: 1fr;
   }
-  .wizard-body .account-balance-row {
+  .wizard-body .account-balance-row,
+  .builder-section .account-balance-row {
     grid-template-columns: 1fr;
   }
-  .wizard-body .allocation-inline {
+  .wizard-body .allocation-inline,
+  .builder-section .allocation-inline {
     grid-template-columns: 1fr;
   }
 }

@@ -155,33 +155,39 @@ export default function App() {
   const startTutorial = () => {
     setModeSelect(true);
   };
+  // Every fresh blank draft — guided setup in either mode, or the blank
+  // configuration link — starts from the same defaults the Power guide
+  // used to pre-fill: US domicile, the current-year horizon, and a
+  // freshly drawn seed. Explicit and uploaded values are never touched;
+  // only drafts born blank get these.
+  const freshBlankDraft = (): DraftScenario => {
+    const blank = createEmptyDraft();
+    if (blank.people) blank.people.domicile = 'US';
+    blank.simulation = {
+      ...blank.simulation,
+      start_year: blank.simulation?.start_year ?? new Date().getFullYear(),
+      max_age: blank.simulation?.max_age ?? 110,
+      seed: blank.simulation?.seed ?? randomSeed(),
+    };
+    // A blank household starts with one person; an empty second person
+    // only appears through the add-person control (guide or Builder).
+    // Strip it here, at draft creation, rather than in a mount effect
+    // whose stale clone could overwrite an early edit.
+    const second = blank.people?.B;
+    if (second && Object.keys(second).length === 0)
+      delete (blank.people as Record<string, unknown>).B;
+    return blank;
+  };
   const pickMode = (mode: 'basic' | 'advanced') => {
     setModeSelect(false);
     setBuilderSection('simulation');
     if (mode === 'basic') {
       setTutorialStep(0);
-      setTutorialDraft(createEmptyDraft());
+      setTutorialDraft(freshBlankDraft());
       setTutorial(true);
     } else {
       setAdvancedStep(0);
-      // A blank household starts with one person; an empty second person
-      // only appears through the add-person control. Strip it here, at
-      // draft creation, rather than in a mount effect whose stale clone
-      // could overwrite an early edit on step 1.
-      const advancedDraft = createEmptyDraft();
-      const second = advancedDraft.people?.B;
-      if (second && Object.keys(second).length === 0)
-        delete (advancedDraft.people as Record<string, unknown>).B;
-      // Domicile defaults to US on Step 1; the user can switch to China.
-      if (advancedDraft.people) advancedDraft.people.domicile = 'US';
-      // A fresh Power setup draws a new seed, so reloading the page does
-      // not repeat seed 42. The seed stays put for the session; Step 8
-      // still shows it and its dice button can redraw it.
-      advancedDraft.simulation = {
-        ...advancedDraft.simulation,
-        seed: randomSeed(),
-      };
-      setAdvancedDraft(advancedDraft);
+      setAdvancedDraft(freshBlankDraft());
       setAdvanced(true);
     }
   };
@@ -369,7 +375,7 @@ export default function App() {
                   </button>
                   <button
                     className="text-button"
-                    onClick={() => load(createEmptyDraft())}
+                    onClick={() => load(freshBlankDraft())}
                   >
                     {t('entry.guided.blank')}
                   </button>

@@ -30,8 +30,9 @@ let activeHelp: { id: string; dismiss: () => void } | undefined;
 
 /**
  * Guide mode strips process metadata (units, omission footnotes) from
- * embedded editors so power-guide steps read cleanly. Full help stays one
- * click away behind the info buttons. Default false (Builder shows all).
+ * embedded editors so power-guide steps and configuration forms read
+ * cleanly. Full help stays one click away behind the info buttons.
+ * Default false; both the guide and the Builder provide true.
  */
 export const GuideModeContext = createContext(false);
 export const useGuideMode = () => useContext(GuideModeContext);

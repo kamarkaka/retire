@@ -5,7 +5,7 @@ import type { DraftScenario } from '../model/types';
 import { FIXED_ACCOUNT_ORDER } from '../model/types';
 import RandomSeedButton from './RandomSeedButton';
 import NumberInput from './NumberInput';
-import ConfigField, { useGuideMode } from './ConfigField';
+import ConfigField, { GuideModeContext, useGuideMode } from './ConfigField';
 import { useI18n } from '../i18n/context';
 import type { MessageKey } from '../i18n/en';
 import { enumLabel, fieldText, labelFor, unitFor } from '../i18n/core';
@@ -798,7 +798,7 @@ export function Editor({
     </ConfigField>
   );
 }
-export function HouseholdSizeToggle({
+export function PersonCountControl({
   draft,
   onChange,
 }: {
@@ -806,30 +806,31 @@ export function HouseholdSizeToggle({
   onChange: (d: DraftScenario) => void;
 }) {
   const { t } = useI18n();
-  const size = draft.people?.B === undefined ? 1 : 2;
-  const setSize = (n: number) =>
-    onChange(
-      n === 1
-        ? assign(draft, ['people', 'B'], undefined)
-        : assign(draft, ['people', 'B'], draft.people?.B ?? {}),
-    );
-  return (
-    <div
-      className="toolbar toggle-group"
-      role="group"
-      aria-label={t('household.group')}
-    >
-      {[1, 2].map((n) => (
+  if (draft.people?.B === undefined)
+    return (
+      <div className="toolbar">
         <button
-          key={n}
           type="button"
           className="secondary"
-          aria-pressed={size === n}
-          onClick={() => setSize(n)}
+          onClick={() => onChange(assign(draft, ['people', 'B'], {}))}
         >
-          {n === 1 ? t('household.one') : t('household.two')}
+          <span aria-hidden="true">+</span> {t('adv.addPerson')}
         </button>
-      ))}
+      </div>
+    );
+  return (
+    <div className="toolbar">
+      <button
+        type="button"
+        className="secondary danger"
+        onClick={() => {
+          const next = structuredClone(draft);
+          if (next.people) delete (next.people as Record<string, unknown>).B;
+          onChange(next);
+        }}
+      >
+        {t('adv.removePerson')}
+      </button>
     </div>
   );
 }
@@ -878,9 +879,8 @@ function BudgetEditor({
   draft: DraftScenario;
   onChange: (d: DraftScenario) => void;
 }) {
-  const { t, lang } = useI18n();
-  const budget = fieldTree.children.budget,
-    medical = fieldTree.children.medical;
+  const { t } = useI18n();
+  const budget = fieldTree.children.budget;
   const core = {
     children: Object.fromEntries(
       Object.entries(budget.children).filter(
@@ -888,16 +888,6 @@ function BudgetEditor({
       ),
     ),
   };
-  const shocks = {
-    children: Object.fromEntries(
-      Object.entries(medical.children).filter(([key]) =>
-        key.startsWith('shock'),
-      ),
-    ),
-  };
-  const base = Object.keys(medical.children).filter(
-    (key) => !key.startsWith('shock') && key !== 'late_life_care',
-  );
   return (
     <div className="config-groups">
       <section className="config-group" aria-labelledby="budget-group-core">
@@ -911,43 +901,7 @@ function BudgetEditor({
       </section>
       <section className="config-group" aria-labelledby="budget-group-medical">
         <h3 id="budget-group-medical">{t('budget.medical')}</h3>
-        <div className="field-grid">
-          <Editor
-            node={budget.children.included_health}
-            keys={['budget', 'included_health']}
-            draft={draft}
-            onChange={onChange}
-          />
-          {base.map((key) => (
-            <Editor
-              key={key}
-              node={medical.children[key]}
-              keys={['medical', key]}
-              draft={draft}
-              onChange={onChange}
-            />
-          ))}
-          <details className="subsection">
-            <summary>{t('budget.shocks')}</summary>
-            <Editor
-              node={shocks}
-              keys={['medical']}
-              draft={draft}
-              onChange={onChange}
-            />
-          </details>
-          <details className="subsection">
-            <summary>
-              {labelFor(lang, 'late_life_care', pretty('late_life_care'))}
-            </summary>
-            <Editor
-              node={medical.children.late_life_care}
-              keys={['medical', 'late_life_care']}
-              draft={draft}
-              onChange={onChange}
-            />
-          </details>
-        </div>
+        <MedicalEditor draft={draft} onChange={onChange} />
       </section>
       <section className="config-group" aria-labelledby="budget-group-one-time">
         <h3 id="budget-group-one-time">{t('budget.oneTime')}</h3>
@@ -961,10 +915,10 @@ function BudgetEditor({
     </div>
   );
 }
-// Power-guide Step 3: medical expenses lead, then age growth, shocks, and
-// late-life care laid flat in one grid — no foldable care section, and the
-// care inputs stay visible (greyed out by the leaf gate) instead of hidden.
-// The Builder keeps its own grouped Budget layout; only the guide uses this.
+// Medical expenses lead, then age growth, shocks, and late-life care laid
+// flat in one grid — no foldable sections, and the shock/care inputs stay
+// visible (greyed out by the leaf gate) instead of hidden. Shared by the
+// Power guide (Step 3) and the Builder Budget tab, under its Medical group.
 export function MedicalEditor({
   draft,
   onChange,
@@ -1342,32 +1296,33 @@ export default function Builder({
           </button>
         ))}
       </nav>
-      <section className="builder-section">
-        <div className="section-title">
-          <h2>{t(sectionLabels[section] ?? 'section.simulation')}</h2>
-          {section === 'people' && (
-            <HouseholdSizeToggle draft={draft} onChange={onChange} />
+      <GuideModeContext.Provider value={true}>
+        <section className="builder-section">
+          {section === 'market' ? (
+            <MarketEditor draft={draft} onChange={onChange} />
+          ) : section === 'budget' ? (
+            <BudgetEditor draft={draft} onChange={onChange} />
+          ) : section === 'people' ? (
+            <>
+              <div className="people-editor">
+                <PeopleEditor draft={draft} onChange={onChange} />
+              </div>
+              <PersonCountControl draft={draft} onChange={onChange} />
+            </>
+          ) : section === 'accounts' ? (
+            <AccountsEditor draft={draft} onChange={onChange} />
+          ) : section === 'properties' ? (
+            <PropertiesEditor draft={draft} onChange={onChange} />
+          ) : (
+            <Editor
+              node={fieldTree.children[section]}
+              keys={[section]}
+              draft={draft}
+              onChange={onChange}
+            />
           )}
-        </div>
-        {section === 'market' ? (
-          <MarketEditor draft={draft} onChange={onChange} />
-        ) : section === 'budget' ? (
-          <BudgetEditor draft={draft} onChange={onChange} />
-        ) : section === 'people' ? (
-          <PeopleEditor draft={draft} onChange={onChange} />
-        ) : section === 'accounts' ? (
-          <AccountsEditor draft={draft} onChange={onChange} />
-        ) : section === 'properties' ? (
-          <PropertiesEditor draft={draft} onChange={onChange} />
-        ) : (
-          <Editor
-            node={fieldTree.children[section]}
-            keys={[section]}
-            draft={draft}
-            onChange={onChange}
-          />
-        )}
-      </section>
+        </section>
+      </GuideModeContext.Provider>
     </div>
   );
 }

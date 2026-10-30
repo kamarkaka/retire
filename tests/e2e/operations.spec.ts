@@ -399,3 +399,19 @@ test('M09: later invalid path fails the whole job and five cancel/restarts relea
     message: await page.getByRole('alert').textContent(),
   });
 });
+
+test('M02 M10: run bar stays visible while scrolling the configuration', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Load sample config' }).click();
+  const runBar = page.locator('.run-bar');
+  await expect(runBar).toBeVisible();
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect
+    .poll(async () => Math.abs((await runBar.boundingBox())?.y ?? Number.NaN))
+    .toBeLessThanOrEqual(2);
+  await expect(
+    page.getByRole('button', { name: 'Run simulation', exact: false }),
+  ).toBeVisible();
+});

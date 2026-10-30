@@ -1565,6 +1565,39 @@ test('M02 M10: power-mode seed is redrawn on page reload', async ({ page }) => {
   expect(second).not.toBe(first);
 });
 
+test('M02 M10: blank configurations start with US domicile, current-year horizon, and a random seed', async ({
+  page,
+}) => {
+  const seedFromBlank = async () => {
+    await page
+      .getByRole('button', { name: 'Build from a blank configuration' })
+      .click();
+    await page.getByRole('button', { name: 'Simulation', exact: true }).click();
+    await expect(
+      page.getByLabel('simulation.start_year', { exact: true }),
+    ).toHaveValue(String(new Date().getFullYear()));
+    await expect(
+      page.getByLabel('simulation.max_age', { exact: true }),
+    ).toHaveValue('110');
+    const seed = Number(
+      await page.getByLabel('simulation.seed', { exact: true }).inputValue(),
+    );
+    expect(Number.isInteger(seed)).toBe(true);
+    expect(seed).toBeGreaterThanOrEqual(0);
+    expect(seed).toBeLessThanOrEqual(4294967295);
+    await page.getByRole('button', { name: 'People', exact: true }).click();
+    await expect(
+      page.getByLabel('people.domicile', { exact: true }),
+    ).toHaveValue('US');
+    return seed;
+  };
+  await page.goto('/');
+  const first = await seedFromBlank();
+  await page.reload();
+  const second = await seedFromBlank();
+  expect(second).not.toBe(first);
+});
+
 test('M02 M10: power-mode modal stacks one input per row at 390px', async ({
   page,
 }) => {
