@@ -452,7 +452,6 @@ const propertyDefault = {
   rent_real_growth: 0,
   selling_cost: 0.06,
   sell_year: 0,
-  proceeds_account: 'brokerage',
 };
 for (const k of [
   'id',
@@ -473,15 +472,15 @@ for (const k of [
   'selling_cost',
   'strategy',
   'sell_year',
-  'proceeds_account',
 ]) {
-  const type = ['id', 'proceeds_account'].includes(k)
-    ? 'string'
-    : k === 'strategy'
-      ? 'enum hold|sell_year'
-      : ['mortgage_years_left', 'sell_year'].includes(k)
-        ? 'integer'
-        : 'number';
+  const type =
+    k === 'id'
+      ? 'string'
+      : k === 'strategy'
+        ? 'enum hold|sell_year'
+        : ['mortgage_years_left', 'sell_year'].includes(k)
+          ? 'integer'
+          : 'number';
   const unit =
     k === 'mortgage_years_left'
       ? 'years'
@@ -512,9 +511,7 @@ for (const k of [
     constraints:
       k === 'id'
         ? 'Unique persisted nonempty ID; US real property only, citizen treatment for all owners.'
-        : k === 'proceeds_account'
-          ? 'Existing fixed account name.'
-          : 'See spec §§5.8/9.2; money>=0, valid factors, fractions in[0,1].',
+        : 'See spec §§5.8/9.2; money>=0, valid factors, fractions in[0,1].',
   };
   if (k === 'strategy') opts.unit = 'sale strategy';
   if (k === 'share_A')
@@ -543,8 +540,7 @@ export const containers = {
     'Optional documented algorithm defaults; US series use historical rows directly.',
   one_time: 'Optional empty list.',
   properties: 'Optional empty list.',
-  accounts:
-    'Fixed three in withdraw order: brokerage, after_tax, pre_tax; property proceeds reference validation still applies.',
+  accounts: 'Fixed three in withdraw order: brokerage, after_tax, pre_tax.',
 };
 
 export const ledgerFields =

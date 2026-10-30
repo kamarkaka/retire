@@ -129,13 +129,12 @@ function runPath(
   const surplusIndex = 0,
     byName = new Map(s.accounts.map((a, i) => [a.name, i]));
   const valueWealth = (fx: number) => {
-    // All three fixed accounts are USD denominated; cny stays for layout
-    // compatibility and is always zero.
+    // All three fixed accounts are USD denominated.
     const usd = accounts.reduce((n, a) => n + accountBalance(a), 0);
     const equity = properties
       .filter((p) => p.held)
       .reduce((n, p) => n + p.value - p.mortgage_balance, 0);
-    return { usd, cny: 0, equity, net: (usd + equity) * fx };
+    return { usd, equity, net: (usd + equity) * fx };
   };
   const suspended = (id: PersonId) =>
     properties
@@ -228,7 +227,6 @@ function runPath(
     activeYears++;
     let cashUsd = 0,
       withdrawUsd = 0,
-      withdrawCny = 0,
       convertUsd = 0,
       forced = false,
       saleFailed = false,
@@ -559,11 +557,8 @@ function runPath(
     // A fully funded final age-limit year remains a funding success, even if it spends the last dollar.
     if (exhausted && !atMaxAge && firstDepletion < 0) firstDepletion = t;
     const nominalReal = wealth.net / market.home_index[t + 1],
-      liquidReal =
-        (wealth.usd * market.fx[t + 1] + wealth.cny) / market.home_index[t + 1],
-      usdReal =
-        (wealth.usd + wealth.cny / market.fx[t + 1] + wealth.equity) /
-        market.usd_index[t + 1];
+      liquidReal = (wealth.usd * market.fx[t + 1]) / market.home_index[t + 1],
+      usdReal = (wealth.usd + wealth.equity) / market.usd_index[t + 1];
     if (year - s.people.A.birth_year === 85) {
       at85Cny = nominalReal;
       at85Usd = usdReal;
@@ -580,12 +575,9 @@ function runPath(
       year,
       age_A: year - s.people.A.birth_year,
       age_B: s.people.B ? year - s.people.B.birth_year : -1,
-      alive_A: 1,
-      alive_B: s.people.B ? 1 : 0,
       fx: market.fx[t + 1],
       home_index: market.home_index[t + 1],
       usd_index: market.usd_index[t + 1],
-      spend_plan_cny: cost.plan * h2cny,
       spend_cny: cost.spend * h2cny,
       medical_cny: cost.medical * h2cny,
       medical_base_cny: cost.medical_base * h2cny,
@@ -597,14 +589,12 @@ function runPath(
       rmd_usd: rmd,
       portfolio_return: priorReturn,
       withdraw_usd: withdrawUsd,
-      withdraw_cny: withdrawCny,
       convert_usd: convertUsd,
       tax_us_A: billUs.A,
       tax_us_B: s.people.B ? billUs.B : 0,
       tax_cn_A: billCn.A,
       tax_cn_B: s.people.B ? billCn.B : 0,
       liquid_usd: wealth.usd,
-      cny_cash_cny: wealth.cny,
       property_equity_usd: wealth.equity,
       net_worth_cny: wealth.net,
       net_worth_cny_real: nominalReal,

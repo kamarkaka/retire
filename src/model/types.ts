@@ -1,4 +1,4 @@
-/** Current model contracts with v1 result-layout compatibility. No browser/server dependency. */
+/** Current model contracts. No browser/server dependency. */
 import type { MarketDataSnapshot } from '../reference/market-data.ts';
 export type PersonId = 'A' | 'B';
 export type Currency = 'USD' | 'CNY';
@@ -109,7 +109,6 @@ export interface PropertyConfig {
   selling_cost: number;
   strategy: 'hold' | 'sell_year';
   sell_year: number;
-  proceeds_account: string;
 }
 export interface TaxTables {
   base_year: number;
@@ -241,7 +240,7 @@ export interface ScientificManifest {
   longevity_policy: 'both-alive-to-younger-max-age';
   cny_cash_policy: 'no-interest';
   stopping_policy: 'younger-max-age-or-nonpositive-net-worth';
-  result_layout_version: 'retire-results-v1';
+  result_layout_version: 'retire-results-v2';
   ledger_report_version: 'retire-ledger-report-v1';
   build_version: string;
   scenario_sha256: string;
@@ -295,12 +294,8 @@ export interface PathDraws {
 export type IncomeField =
   | 'interest_us'
   | 'dividends'
-  | 'qualified_dividends'
-  | 'nra_dividends'
-  | 'nra_exempt_interest'
   | 'cap_gain'
   | 'trad_own'
-  | 'trad_inherited'
   | 'pension'
   | 'roth'
   | 'early_trad'
@@ -446,7 +441,6 @@ export interface AggregateSummary {
   n_paths: number;
   success_probability: number;
   forced_sale_probability: number;
-  yearly_alive: Float64Array;
   yearly_alive_not_depleted: Float64Array;
   net_worth_bands: Float32Array;
   liquid_bands: Float32Array;

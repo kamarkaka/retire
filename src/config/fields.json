@@ -1483,23 +1483,5 @@
       "H-PROPERTY"
     ],
     "description": "The first calendar year to attempt selling this property when its strategy is Sell year. If a sale cannot close, the model can try again in later years while the property is held. Other strategies ignore this setting, and a path that has ended cannot make a sale."
-  },
-  {
-    "path": "properties[].proceeds_account",
-    "type": "string",
-    "unit": "label/reference/provenance",
-    "spec_section": "5.8",
-    "builder_section": "Schema",
-    "builder_control": "text",
-    "internal_path": "properties[].proceeds_account",
-    "serialize_path": "properties[].proceeds_account",
-    "omission": "optional; omission uses declared default",
-    "default": "brokerage",
-    "default_kind": "documented",
-    "constraints": "Existing fixed account name.",
-    "gates": [
-      "H-PROPERTY"
-    ],
-    "description": "The account that receives cash from a successful property sale after closing costs and mortgage payoff. Defaults to Non-retirement liquid assets. Later tax settlement may require further withdrawals."
   }
 ]

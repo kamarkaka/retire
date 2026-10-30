@@ -6,7 +6,18 @@ adds an entry here, newest first.
 
 ## Unreleased
 
-(nothing yet)
+Dead result fields removed. No simulation or tax results change; saved
+configs keep loading.
+
+- Ledger CSV drops five columns that were always constant or duplicated:
+  `alive_A`, `alive_B`, `spend_plan_cny` (same as `spend_cny`),
+  `withdraw_cny` and `cny_cash_cny` (always zero). CSV now has 38 columns
+  and run manifests report `retire-results-v2`.
+- `proceeds_account` is retired: sale proceeds always went to
+  non-retirement liquid assets. Older files that still carry it load with
+  the key dropped, and new downloads omit it.
+- Each run keeps about 28% less chart memory, so larger runs fit within
+  the 512 MiB budget.
 
 ## 0.6.0 — 2026-10-29
 

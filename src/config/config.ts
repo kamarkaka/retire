@@ -66,18 +66,8 @@ export function normalizeScenario(draft: DraftScenario): Result<DraftScenario> {
   // Explicit values are preserved so hand-written TOML still validates strictly.
   // Ownership derives before defaults: a missing one-person share must become
   // 1 rather than the joint default, while an explicit 0.5 must still fail.
-  // Sale proceeds always land in Non-retirement liquid assets: a named
-  // fixed account is rerouted there, while an unknown name is left for
-  // validation to reject.
   if (pre.properties && pre.people?.B === undefined)
     for (const p of pre.properties) if (p.share_A === undefined) p.share_A = 1;
-  if (pre.properties)
-    for (const p of pre.properties)
-      if (
-        p.proceeds_account !== undefined &&
-        (FIXED_ACCOUNT_ORDER as readonly string[]).includes(p.proceeds_account)
-      )
-        p.proceeds_account = 'brokerage';
   const normalized = defaultNode(fieldTree, pre, '') as DraftScenario;
   // Tax status derives after defaults so an unchecked citizenship box (which
   // defaults to non-citizen) still resolves to nonresident treatment.
@@ -113,6 +103,12 @@ export function parseScenario(text: string): Result<DraftScenario> {
       ],
     };
   }
+  // Retired proceeds_account: sale proceeds always land in Non-retirement
+  // liquid assets, so older files that still carry the key keep loading.
+  const properties = (data as { properties?: unknown }).properties;
+  if (Array.isArray(properties))
+    for (const p of properties)
+      if (p && typeof p === 'object') delete p.proceeds_account;
   const checked = checkDraft(data);
   if (!checked.ok) return checked;
   if (checked.value.schema_version !== 1)
@@ -308,8 +304,6 @@ export function validateScenario(
       'Accounts must be the fixed three in order: brokerage, after_tax, pre_tax',
       'reference',
     );
-  const existingAccount = (name: string | undefined) =>
-    (accounts.map((a) => a.name) as string[]).includes(name ?? '');
   accounts.forEach((a, i) => {
     const path = `accounts[${i}]`;
     range(a.balance, 0, Number.MAX_VALUE, `${path}.balance`);
@@ -334,12 +328,6 @@ export function validateScenario(
   });
   d.properties?.forEach((p, i) => {
     const path = `properties[${i}]`;
-    if (!existingAccount(p.proceeds_account))
-      add(
-        `${path}.proceeds_account`,
-        'Select one of the three fixed accounts',
-        'reference',
-      );
     for (const k of ['share_A', 'land_share', 'selling_cost'] as const)
       range(p[k], 0, 1, `${path}.${k}`);
     for (const k of [
@@ -430,7 +418,7 @@ export function makeRunRequest(
       longevity_policy: 'both-alive-to-younger-max-age',
       cny_cash_policy: 'no-interest',
       stopping_policy: 'younger-max-age-or-nonpositive-net-worth',
-      result_layout_version: 'retire-results-v1',
+      result_layout_version: 'retire-results-v2',
       ledger_report_version: LEDGER_REPORT_VERSION,
       build_version: BUILD_VERSION,
       scenario_sha256: hashObject(snapshot),

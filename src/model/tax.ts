@@ -146,14 +146,12 @@ export function nonresidentTax(
     prior_capital_loss?: number;
     dividends: number;
     own_pension?: number;
-    inherited_pension?: number;
     cap_gains?: number;
     early_trad?: number;
     filing_status?: FilingStatus;
     price_index?: number;
   },
   tables: TaxTables,
-  inheritedRate = 0.3,
 ) {
   const status = i.filing_status ?? 'mfs',
     cap = capitalNet(
@@ -178,9 +176,7 @@ export function nonresidentTax(
       tables,
     ).income_tax,
     dividends = i.dividends * tables.us.nra.dividends;
-  const pension =
-      (i.own_pension ?? 0) * tables.us.nra.own_pension +
-      (i.inherited_pension ?? 0) * inheritedRate,
+  const pension = (i.own_pension ?? 0) * tables.us.nra.own_pension,
     security = (i.cap_gains ?? 0) * tables.us.nra.cap_gains,
     penalty = (i.early_trad ?? 0) * tables.us.early_penalty;
   return {
@@ -251,9 +247,8 @@ export function calculateUS(
   const roughAGI =
     income.interest_us +
     income.trad_own +
-    income.trad_inherited +
     income.pension +
-    income.qualified_dividends +
+    income.dividends +
     capital.lt_gain;
   const rental = rentalTreatment(
     income.rental_net,
@@ -265,7 +260,6 @@ export function calculateUS(
   const ordinary =
     income.interest_us +
     income.trad_own +
-    income.trad_inherited +
     income.pension +
     rental.allowed +
     income.ordinary_property_gain -
@@ -285,7 +279,7 @@ export function calculateUS(
       filing_status: status,
       price_index: index,
       ordinary,
-      qd: income.qualified_dividends,
+      qd: income.dividends,
       securities_lt: income.cap_gain,
       property_lt: income.ltcg_property,
       prior_capital_loss: priorLoss,
@@ -293,8 +287,7 @@ export function calculateUS(
       early_trad: income.early_trad,
     };
     const result = residentTax(i, tables);
-    const pensionExcluded =
-      income.trad_own + income.trad_inherited + income.pension;
+    const pensionExcluded = income.trad_own + income.pension;
     const eligible = Math.min(
       result.income_tax,
       residentTax(
@@ -318,9 +311,8 @@ export function calculateUS(
       ordinary_property_gain: income.ordinary_property_gain,
       property_lt: income.ltcg_property,
       prior_capital_loss: priorLoss,
-      dividends: income.nra_dividends,
+      dividends: income.dividends,
       own_pension: income.trad_own + income.pension,
-      inherited_pension: income.trad_inherited,
       cap_gains: Math.max(0, income.cap_gain),
       early_trad: income.early_trad,
     },

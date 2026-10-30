@@ -234,7 +234,7 @@ test('M02 M09 M10: sample builder → worker run → ledger/export → reload/up
     a = JSON.parse(first.text);
   expect(a.scientific.n_paths).toBe(5000);
   expect(a.scientific.horizon).toBe(70);
-  expect(a.aggregate.retained_bytes).toBe(10595000);
+  expect(a.aggregate.retained_bytes).toBe(7795000);
   expect(a.aggregate.success_probability).toBeGreaterThanOrEqual(0);
   const config = await saveDownload(
     page,
@@ -386,7 +386,7 @@ test('M08: a 50-year planning config uses historical returns and integer money d
       .filter((l) => l && !l.startsWith('#')),
     headers = csv[0].split(','),
     rows = csv.slice(1).map((l) => l.split(','));
-  expect(headers).toHaveLength(43);
+  expect(headers).toHaveLength(38);
   expect(headers).not.toContain('firpta_withheld_usd');
   expect(rows).toHaveLength(50);
   expect(Number(rows[0][headers.indexOf('withdraw_usd')])).toBeCloseTo(
@@ -925,8 +925,6 @@ test('M02 M08 M10: fixed younger-age horizon, removed Social Security inputs and
     else expect(amount).toBeGreaterThan(0);
     const value = (field: keyof typeof LI) =>
       provenance.replay.ledger[t * LEDGER_FIELDS.length + LI[field]];
-    expect(value('alive_A')).toBe(1);
-    expect(value('alive_B')).toBe(1);
     expect(value('additional_consumption_cny')).toBeCloseTo(
       detail.shock_cny + amount,
       6,

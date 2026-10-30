@@ -136,8 +136,6 @@ const descriptions = {
     'Hold keeps the property unless last-resort sales are enabled and cash is needed. Sell year attempts a sale in the specified calendar year. A path that ends earlier cannot make a later sale.',
   'properties[].sell_year':
     'The first calendar year to attempt selling this property when its strategy is Sell year. If a sale cannot close, the model can try again in later years while the property is held. Other strategies ignore this setting, and a path that has ended cannot make a sale.',
-  'properties[].proceeds_account':
-    'The account that receives cash from a successful property sale after closing costs and mortgage payoff. Defaults to Non-retirement liquid assets. Later tax settlement may require further withdrawals.',
 };
 
 for (const person of ['A', 'B']) {

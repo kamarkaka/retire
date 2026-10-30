@@ -52,8 +52,6 @@ const nonMoneyFields = new Set([
   'year',
   'age_A',
   'age_B',
-  'alive_A',
-  'alive_B',
   'fx',
   'home_index',
   'usd_index',
@@ -121,9 +119,9 @@ function YearModal({
     const d = (detail.tax_detail[id] ?? {}) as Record<string, unknown>,
       income = detail.income[id],
       interest = income.interest_us,
-      pensions = income.trad_own + income.trad_inherited,
+      pensions = income.trad_own,
       pensionIncome = income.pension,
-      qd = income.qualified_dividends,
+      qd = income.dividends,
       lt = num(d.lt_gain),
       lossDed = num(d.loss_deduction),
       agi = num(d.agi);
@@ -413,14 +411,10 @@ function YearModal({
                         ],
                         [
                           'modal.dividends',
-                          income.nra_dividends,
+                          income.dividends,
                           num(d.dividend_tax),
                         ],
-                        [
-                          'modal.pension',
-                          income.trad_own + income.trad_inherited,
-                          num(d.pension_tax),
-                        ],
+                        ['modal.pension', income.trad_own, num(d.pension_tax)],
                         [
                           'modal.securities',
                           Math.max(0, income.cap_gain),

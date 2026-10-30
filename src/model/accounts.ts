@@ -11,7 +11,7 @@ import type {
 import { cleanResidual } from './errors';
 export const ASSETS: AssetClass[] = ['us_stocks', 'us_bonds', 'usd_cash'];
 export const INCOME_FIELDS =
-  `interest_us dividends qualified_dividends nra_dividends nra_exempt_interest cap_gain trad_own trad_inherited pension roth early_trad rental_net rent_gross ordinary_property_gain ltcg_property property_gain_cny passive_released`.split(
+  `interest_us dividends cap_gain trad_own pension roth early_trad rental_net rent_gross ordinary_property_gain ltcg_property property_gain_cny passive_released`.split(
     ' ',
   ) as (keyof IncomeLedger)[];
 export function emptyIncome(): IncomeLedger {
@@ -183,14 +183,12 @@ export function growAccount(
       earnings = value * yieldRate;
     taxable[key] += earnings;
     state.bases[key] = (state.bases[key] ?? 0) + earnings;
-    if (key === 'us_stocks') {
-      attribute(income, state.shares, 'qualified_dividends', earnings);
-      attribute(income, state.shares, 'dividends', earnings);
-      attribute(income, state.shares, 'nra_dividends', earnings);
-    } else {
-      attribute(income, state.shares, 'interest_us', earnings);
-      attribute(income, state.shares, 'nra_exempt_interest', earnings);
-    }
+    attribute(
+      income,
+      state.shares,
+      key === 'us_stocks' ? 'dividends' : 'interest_us',
+      earnings,
+    );
   }
   return { opening, growth, byAsset, taxable, openingByAsset };
 }
@@ -223,17 +221,6 @@ export function rebalance(
   if (config.type === 'brokerage')
     attribute(income, state.shares, 'cap_gain', gain);
   return gain;
-}
-export function conversion(
-  cnyNeed: number,
-  usdNeed: number,
-  fx: number,
-  spread: number,
-) {
-  return {
-    usd_to_fund_cny: cnyNeed / (fx * (1 - spread)),
-    cny_to_fund_usd: usdNeed * fx * (1 + spread),
-  };
 }
 export function rmdAmount(
   balance: number,

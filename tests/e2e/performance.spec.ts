@@ -94,7 +94,7 @@ test('M11: production performance, retained bytes and explicit 100000-path resou
         expect(manifest.scientific.n_paths).toBe(paths);
         expect(ids.has(manifest.execution.run_id)).toBe(false);
         ids.add(manifest.execution.run_id);
-        expect(manifest.aggregate.retained_bytes).toBe(paths * 1615);
+        expect(manifest.aggregate.retained_bytes).toBe(paths * 1199);
         if (paths === 20000)
           expect(manifest.aggregate.retained_bytes).toBeLessThan(50000000);
         rows.push({
@@ -115,6 +115,7 @@ test('M11: production performance, retained bytes and explicit 100000-path resou
     const d = createExampleDraft();
     d.simulation!.start_year = 2026;
     d.simulation!.n_paths = 100000;
+    d.simulation!.max_age = 130;
     d.people!.A!.birth_year = d.people!.B!.birth_year = 1990;
     await uploadDraft(page, d);
     await page
@@ -145,8 +146,8 @@ test('M11: production performance, retained bytes and explicit 100000-path resou
       rows,
       resource_rejection: {
         paths: 100000,
-        horizon: 75,
-        pinned_bytes: 32300000,
+        horizon: 95,
+        pinned_bytes: 23980000,
         message: await page.getByRole('alert').textContent(),
       },
       workers: await workerEvidence(page),

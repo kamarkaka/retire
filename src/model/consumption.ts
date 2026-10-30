@@ -150,7 +150,6 @@ export function consumption(
   const usdTotal = oneTimeUsd + (usd ? spend + medical : 0),
     cnyTotal = oneTimeCny + (usd ? 0 : spend + medical);
   return {
-    plan: spend,
     spend,
     one_time: oneTime,
     one_time_usd: oneTimeUsd,

@@ -93,7 +93,7 @@ describe('M02 portable draft configuration', () => {
         .ok,
     ).toBe(false);
   });
-  it('defaults last-resort sales on, routes proceeds to brokerage, and rejects the retired liquid-below sale', () => {
+  it('defaults last-resort sales on, drops the retired proceeds account on import, and rejects the retired liquid-below sale', () => {
     const empty = normalizeScenario(createEmptyDraft());
     expect(empty.ok).toBe(true);
     if (empty.ok)
@@ -104,16 +104,20 @@ describe('M02 portable draft configuration', () => {
     expect(kept.ok).toBe(true);
     if (kept.ok)
       expect(kept.value.withdrawals?.last_resort_property_sale).toBe(false);
-    const routed = createExampleDraft();
-    routed.properties![0].proceeds_account = 'pre_tax';
-    const normalized = normalizeScenario(routed);
-    expect(normalized.ok).toBe(true);
-    if (normalized.ok)
-      expect(normalized.value.properties![0].proceeds_account).toBe(
-        'brokerage',
+    const legacy = parseScenario(
+      exportScenario(createExampleDraft()).replace(
+        '[[properties]]\n',
+        '[[properties]]\nproceeds_account = "pre_tax"\n',
+      ),
+    );
+    expect(legacy.ok).toBe(true);
+    if (legacy.ok)
+      expect(legacy.value.properties![0]).not.toHaveProperty(
+        'proceeds_account',
       );
-    routed.properties![0].label = '123 Main St';
-    const relabeled = parseScenario(exportScenario(routed));
+    const labeled = createExampleDraft();
+    labeled.properties![0].label = '123 Main St';
+    const relabeled = parseScenario(exportScenario(labeled));
     expect(relabeled.ok).toBe(true);
     if (relabeled.ok)
       expect(relabeled.value.properties![0].label).toBe('123 Main St');

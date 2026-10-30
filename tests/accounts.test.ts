@@ -1,9 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { validateScenario } from '../src/config/config';
-import {
-  createControlDraft,
-  createExampleDraft,
-} from '../src/config/constructors';
+import { createControlDraft } from '../src/config/constructors';
 import {
   initialAccount,
   withdrawAccount,
@@ -77,21 +74,15 @@ describe('fixed three accounts with derived ownership', () => {
       return income.A;
     };
     const stocks = run({ us_stocks: 1 });
-    expect(stocks.qualified_dividends).toBe(2000);
     expect(stocks.dividends).toBe(2000);
-    expect(stocks.nra_dividends).toBe(2000);
     expect(stocks.interest_us).toBe(0);
-    expect(stocks.nra_exempt_interest).toBe(0);
     const bonds = run({ us_bonds: 1 });
     expect(bonds.interest_us).toBe(5000);
-    expect(bonds.nra_exempt_interest).toBe(5000);
-    expect(bonds.qualified_dividends).toBe(0);
-    expect(bonds.nra_dividends).toBe(0);
+    expect(bonds.dividends).toBe(0);
     const cash = run({ usd_cash: 1 }),
       expected = 100000 * m.usd_cash[0];
     expect(cash.interest_us).toBeCloseTo(expected, 8);
-    expect(cash.nra_exempt_interest).toBeCloseTo(expected, 8);
-    expect(cash.qualified_dividends).toBe(0);
+    expect(cash.dividends).toBe(0);
   });
   it('reports growth broken down by asset class', () => {
     const s = control(),
@@ -231,13 +222,6 @@ describe('fixed three accounts with derived ownership', () => {
       reordered.accounts![2]!,
     ];
     expect(validateScenario(reordered, refs).ok).toBe(false);
-    const badProceeds = createExampleDraft();
-    badProceeds.properties![0]!.proceeds_account = 'save';
-    const vProceeds = validateScenario(badProceeds, refs);
-    if (vProceeds.ok) throw new Error('unknown proceeds account should fail');
-    expect(
-      vProceeds.issues.some((i) => i.path === 'properties[0].proceeds_account'),
-    ).toBe(true);
   });
   it('grants pre-tax early access and rejects the flag elsewhere', () => {
     const refs = arithmeticReferences(0.03, 0);

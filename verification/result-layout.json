@@ -1,15 +1,12 @@
 {
-  "version": "retire-results-v1",
+  "version": "retire-results-v2",
   "ledger_fields": [
     "year",
     "age_A",
     "age_B",
-    "alive_A",
-    "alive_B",
     "fx",
     "home_index",
     "usd_index",
-    "spend_plan_cny",
     "spend_cny",
     "medical_cny",
     "medical_base_cny",
@@ -21,14 +18,12 @@
     "rmd_usd",
     "portfolio_return",
     "withdraw_usd",
-    "withdraw_cny",
     "convert_usd",
     "tax_us_A",
     "tax_us_B",
     "tax_cn_A",
     "tax_cn_B",
     "liquid_usd",
-    "cny_cash_cny",
     "property_equity_usd",
     "net_worth_cny",
     "net_worth_cny_real",
@@ -41,8 +36,6 @@
     "spend_mult"
   ],
   "chart_fields": [
-    "alive_A",
-    "alive_B",
     "net_worth_cny_real",
     "liquid_cny_real",
     "net_worth_usd_real",
@@ -93,8 +86,8 @@
     "absent_monetary_cohort": "NaN",
     "empty_aggregate_cohort": null
   },
-  "retained_bytes_per_path_52": 1615,
-  "retained_bytes_20000_paths_52": 32300000,
+  "retained_bytes_per_path_52": 1199,
+  "retained_bytes_20000_paths_52": 23980000,
   "execution_array_budget_bytes": 536870912,
   "ledger_report_version": "retire-ledger-report-v1",
   "replay_report_fields": [
@@ -113,12 +106,9 @@
     "spend_excluding_medical_cny",
     "medical_total_cny",
     "annual_investment_return",
-    "alive_A",
-    "alive_B",
     "fx",
     "home_index",
     "usd_index",
-    "spend_plan_cny",
     "spend_cny",
     "medical_cny",
     "medical_base_cny",
@@ -130,14 +120,12 @@
     "rmd_usd",
     "portfolio_return",
     "withdraw_usd",
-    "withdraw_cny",
     "convert_usd",
     "tax_us_A",
     "tax_us_B",
     "tax_cn_A",
     "tax_cn_B",
     "liquid_usd",
-    "cny_cash_cny",
     "property_equity_usd",
     "net_worth_cny",
     "net_worth_cny_real",
@@ -146,6 +134,7 @@
     "shortfall_cny",
     "forced_sale",
     "sale_failed",
-    "fx_quota_flag"
+    "fx_quota_flag",
+    "spend_mult"
   ]
 }

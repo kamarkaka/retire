@@ -35,7 +35,6 @@ import {
   emptyIncome,
   growAccount,
   rebalance,
-  conversion,
   rmdAmount,
 } from '../model/accounts';
 import { initialProperty, propertyCash, closingQuote } from '../model/property';
@@ -99,6 +98,7 @@ export const RETIRED_CASE_IDS = [
   'TERMINAL-1',
   'TERMINAL-REFUND',
   'TERMINAL-DEFICIT',
+  'CONVERSION-1',
 ] as readonly string[];
 export function retiredCaseReason(id: string): string {
   return id === 'CONTROL-DEPLETION'
@@ -142,7 +142,9 @@ export function retiredCaseReason(id: string): string {
                                   id === 'TERMINAL-REFUND' ||
                                   id === 'TERMINAL-DEFICIT'
                                 ? 'Settlement payment-timing mechanics are removed; taxes are paid the same year with a memo for leftovers.'
-                                : 'Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed.';
+                                : id === 'CONVERSION-1'
+                                  ? 'Cash CNY accounts are retired; the product converts USD to CNY inline and has no standalone conversion function.'
+                                  : 'Both people remain alive until the younger reaches Max age; mortality, survivor and death transitions are removed.';
 }
 const configs = { 'control-pv.toml': pv };
 function requestFor(file: keyof typeof configs) {
@@ -466,8 +468,6 @@ export function runProductCase(c: VerificationCase): {
         },
       };
     }
-    case 'CONVERSION-1':
-      return { actual: conversion(i.cny_need, i.usd_need, i.fx, i.spread) };
     case 'PROPERTY-MORTGAGE': {
       const p = structuredClone(
         firpta.properties[0],
@@ -561,7 +561,6 @@ export function runProductCase(c: VerificationCase): {
           allocation: { us_stocks: 1 },
         },
       ];
-      for (const p of s.properties) p.proceeds_account = 'brokerage';
 
       const calculate = (returns: number[], w: number) => {
         s.budget.annual = w;

@@ -52,9 +52,7 @@ it('M09 Type7, whole-cohort denominators and stable ranking match frozen example
   const copy = { ...req, manifest: { ...req.manifest, horizon: 1 } };
   const r = allocateResults(5, 1);
   for (let id = 0; id < 5; id++) {
-    r.charts[id * CHART_FIELDS.length] = 1;
-    r.charts[id * CHART_FIELDS.length + 1] = 1;
-    r.charts[id * CHART_FIELDS.length + 2] = id === 4 ? NaN : id + 1;
+    r.charts[id * CHART_FIELDS.length] = id === 4 ? NaN : id + 1;
     r.summaries.integers[id * INT_FIELDS.length + II.first_depletion_t] =
       id === 3 ? 0 : -1;
     r.summaries.floats[
@@ -63,7 +61,6 @@ it('M09 Type7, whole-cohort denominators and stable ranking match frozen example
     r.summaries.flags[id * FLAG_FIELDS.length + BI.depleted] = id === 3 ? 1 : 0;
   }
   const a = summarizeResults(copy, r.charts, r.summaries, r.market_samples);
-  expect(a.yearly_alive[0]).toBe(1);
   expect(a.yearly_alive_not_depleted[0]).toBe(0.8);
   expect(a.success_probability).toBe(0.8);
 });

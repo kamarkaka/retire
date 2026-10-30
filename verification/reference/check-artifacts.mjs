@@ -157,13 +157,13 @@ const ledgerMatch = spec
   .match(/`year, age_A,[^`]+`/);
 const specLedger = ledgerMatch[0].slice(1, -1).split(', ');
 check(
-  'ledger exact38-field spec order',
+  'ledger exact33-field spec order',
   JSON.stringify(specLedger) === JSON.stringify(layout.ledger_fields),
   { count: layout.ledger_fields.length },
 );
 check(
-  'seven chart fields are ledger fields',
-  layout.chart_fields.length === 7 &&
+  'five chart fields are ledger fields',
+  layout.chart_fields.length === 5 &&
     layout.chart_fields.every((f) => layout.ledger_fields.includes(f)),
   { chart_fields: layout.chart_fields },
 );
@@ -171,11 +171,11 @@ const summaryBytes =
   8 * layout.summary_float64_fields.length +
   4 * layout.summary_int32_fields.length +
   layout.summary_uint8_fields.length;
-const total = 20000 * (52 * 7 * 4 + summaryBytes);
+const total = 20000 * (52 * 5 * 4 + summaryBytes);
 check(
   'retained20k/T52 bytes below50M',
   total === layout.retained_bytes_20000_paths_52 && total < 50000000,
-  { chart_bytes: 29120000, summary_bytes_per_path: summaryBytes, total },
+  { chart_bytes: 20800000, summary_bytes_per_path: summaryBytes, total },
 );
 check(
   'temporary market samples explicitly budgeted',

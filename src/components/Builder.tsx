@@ -466,15 +466,10 @@ export function Editor({
         'selling_cost',
       ];
       // share_A is derived from household size (1 solo, 0.5 joint), the id
-      // is an internal identifier, sale proceeds always land in
-      // Non-retirement liquid assets, and the label lives in the list
-      // header; none of the four is shown as a field.
+      // is an internal identifier, and the label lives in the list header;
+      // none of the three is shown as a field.
       const shown = children.filter(
-          ([k]) =>
-            k !== 'share_A' &&
-            k !== 'id' &&
-            k !== 'label' &&
-            k !== 'proceeds_account',
+          ([k]) => k !== 'share_A' && k !== 'id' && k !== 'label',
         ),
         core = shown.filter(([k]) => !advanced.includes(k)),
         extra = shown.filter(([k]) => advanced.includes(k));

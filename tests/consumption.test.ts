@@ -22,7 +22,6 @@ import {
   emptyIncome,
   growAccount,
   rebalance,
-  conversion,
 } from '../src/model/accounts';
 import type {
   ScenarioConfig,
@@ -183,8 +182,4 @@ it('M05 average basis, reinvested income, taxable rebalancing and FX funding rec
     ),
   ).toBe(2500);
   expect(c.bases).toMatchObject({ us_stocks: 27500, us_bonds: 35000 });
-  expect(conversion(6690, 1000, 6.69, 0.003)).toEqual({
-    usd_to_fund_cny: 1003.0090270812436,
-    cny_to_fund_usd: 6710.07,
-  });
 });

@@ -71,7 +71,7 @@ Scientific manifests include normalized-scenario/table/reference hashes, build v
 | Cash CNY policy | no-interest |
 | Stopping policy | younger-max-age-or-nonpositive-net-worth |
 | Public market data | retire-market-data-v1 |
-| Result / annual ledger report | retire-results-v1 / retire-ledger-report-v1 |
+| Result / annual ledger report | retire-results-v2 / retire-ledger-report-v1 |
 
 Canonicalization sorts object keys in ordinal UTF-16 order, preserves arrays/strings, serializes finite JSON numbers, omits undefined object leaves and rejects undefined array elements. SHA-256 hashes unindented UTF-8 bytes. Execution environment/worker/timing metadata is separate from scientific inputs.
 
@@ -79,13 +79,13 @@ RNG uses SHA-256 of the tuple(version,seed,pathId,component,entityId), first16 b
 
 ## 4. Horizon and annual accounting
 
-`T = max_age - min(present start ages) + 1` for one or two people. Everyone is alive in every row; the younger ends at Max age, inclusive. The older may exceed it. Max age must be at least the younger start age, or the single start age. An absent Person B reports age_B=-1, alive_B=0 and zero B taxes; one person uses single-filer US schedules while two use married filing separately. Start2026/both40/Max89 gives50 years; start2027/both41/Max110 gives70. There are no death events. T is an upper bound; nonpositive starting net worth stops before cash flows, and nonpositive year-end net worth stops after that year.
+`T = max_age - min(present start ages) + 1` for one or two people. Everyone is alive in every row; the younger ends at Max age, inclusive. The older may exceed it. Max age must be at least the younger start age, or the single start age. An absent Person B reports age_B=-1 and zero B taxes; one person uses single-filer US schedules while two use married filing separately. Start2026/both40/Max89 gives50 years; start2027/both41/Max110 gives70. There are no death events. T is an upper bound; nonpositive starting net worth stops before cash flows, and nonpositive year-end net worth stops after that year.
 
 The ten phases are start, property strategies, rent RMD, consumption, funding living needs, returns, rebalance, compute income taxes, pay income taxes, and ending horizon/ledger. Opening withdrawals earn no current-year return. Net worth is USD accounts + property equity after mortgages at current boundary FX. Paths stop when it is nonpositive. Liquidity shortfalls alone do not stop a positive-net-worth path. Taxes are computed and paid the same year with iteration; leftover unpaid tax is a terminal memo deduction. A fully funded final Max-age year may spend the last dollar without a funding failure. Replays record stop reason/year/index/net worth; later ledger/chart buffer slots are NaN and no future financial years run. Cohort wealth percentiles use zero for stopped paths afterward.
 
 Ordinary spending is `(annual-included_health)*home_index[t]` (USD index when domicile is US). Aggregate medical base is `included_health*(1+age_growth)^t*medical_index[t]`. Shocks use separate person ages/draws; continuing care uses `monthly*12*medical_index[t]*(1+real_growth)^t` from the selected start age. Price and medical indices follow domicile (home vs USD). Care enters Medical/actual total/additional/funding once and never enters included consumption.
 
-Cash account types are retired; the cny_cash_cny and withdraw_cny ledger columns stay zero for layout compatibility. Stock/bond yields decompose sampled total returns into taxable income/reinvested basis rather than extra investment growth.
+Cash account types are retired, and their ledger columns are removed. Stock/bond yields decompose sampled total returns into taxable income/reinvested basis rather than extra investment growth.
 
 Capital netting retains losses/carries with all property gains at LTCG rates; the §1250 25% bucket is intentionally not modeled and its former scoped evidence is archived. Section 1231 history and lookback are removed; broader cross-border source acceptance remains OPEN.
 

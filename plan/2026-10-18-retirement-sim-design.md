@@ -56,6 +56,7 @@
 39. **Plain-English input help:** every configuration input, including conditional controls, list cells, run controls and the TOML editor, has an informational popup on hover or keyboard focus. Info buttons support taps; Escape dismisses help. Explanations describe actual units, interactions and inactive settings without changing calculations.
 40. **Wheel-safe numeric entry:** focused numeric editors ignore mouse-wheel stepping while preserving value and keyboard focus. Decimal text, signed entry and normal keyboard edits remain supported.
 41. **Fixed-by-asset income treatment:** remove holdings sections, named maps and reference fields. Stocks pay qualified dividends, bonds pay coupon interest with zero-gain sales, cash earns money-market interest, and Cash USD earns its rate or the T-bill return. Old holding declarations drop on import and the retired taxable type maps to brokerage.
+42. **Dead layout fields removed (`retire-results-v2`):** drop the constant `alive_A/B`, always-zero `withdraw_cny`/`cny_cash_cny` and duplicate `spend_plan_cny` ledger columns (33 ledger fields, 5 chart fields, 38 CSV columns); collapse the income ledger's three identical dividend amounts into `dividends` and drop the write-only `nra_exempt_interest` and never-set `trad_inherited`. `properties[].proceeds_account` is retired: proceeds always land in brokerage, and older files carrying the key load with it dropped.
 
 
 ---
@@ -459,7 +460,7 @@ Joint ownership is supported only for brokerage and cash accounts. Ownership sha
 - rent and running costs: `rent_monthly, maintenance_annual, property_tax_annual, insurance_annual, hoa_monthly`;
 - growth and noise: `rent_real_growth (0)`; appreciation is deterministic with no premium or idiosyncratic noise;
 - sale costs: `selling_cost (0.06)`. No state tax is modeled;
-- strategy: `strategy, sell_year, sell_liquid_years, proceeds_account`.
+- strategy: `strategy, sell_year, sell_liquid_years`.
 
 **Each year while held:**
 - Gross rent = `12·rent_monthly·US index[t]·(1+rent_real_growth)^t`.
@@ -488,7 +489,7 @@ Joint ownership is supported only for brokerage and cash accounts. Ownership sha
 - Each owner share's adjusted basis = basis − depreciation taken. Gain = share × (value − costs) − adjusted basis.
 - All property gains use LTCG rates before capital netting; the §1250 25% bucket is intentionally not modeled. A net sale loss enters ordinary property income. There is no Section 1231 history or lookback. Property losses are not automatically securities-style capital losses (§6.2).
 - Closing proceeds = value − costs − mortgage balance. There is no FIRPTA withholding: every sale assumes citizen ownership, so the full proceeds are available at closing.
-- Cash available at closing = proceeds. Deposit that amount in `proceeds_account`.
+- Cash available at closing = proceeds. Deposit that amount in Non-retirement liquid assets (`brokerage`).
 - If closing cash is negative, quote the required closing contribution. Execute only if accessible funds can cover it using the normal withdrawal rules; record resulting gains/distributions. Otherwise record `sale_failed`, keep the property and mortgage, realize no gain, and continue the shortfall walk. No automatic bridge loan is assumed.
 - Each owner's gain for China is computed in CNY: `(share·(value − costs) − adjusted basis)·S[t]`, converting the USD gain at the sale-year FX rate. Initial ownership/basis remains unchanged except for normal depreciation and sale.
 - Suspended passive losses on the property are released.
@@ -532,7 +533,7 @@ Continue through all T years after depletion, reporting planned costs, funded am
 
 Each year the engine collects USD amounts for each person:
 
-`interest_us, dividends, qualified_dividends, nra_dividends, nra_exempt_interest, cap_gain (net realized, may be negative), trad_own, trad_inherited, roth, early_trad, rental_net, rent_gross, ordinary_property_gain, ltcg_property, property_gain_cny, passive_released`
+`interest_us, dividends, cap_gain (net realized, may be negative), trad_own, roth, early_trad, rental_net, rent_gross, ordinary_property_gain, ltcg_property, property_gain_cny, passive_released`
 
 - Account income is split by ownership share. Property items are split by owner share.
 - China's calculation converts at `S[t]`, except `property_gain_cny`, which is already in CNY.
@@ -557,7 +558,7 @@ A two-person household files **MFS throughout** because both remain alive; a one
    - A negative `rental_net` is deductible only up to the special allowance. Under MFS the allowance is 0. Under Single it is `25,000 − 0.5·max(0, MAGI − 100,000)`, floored at 0. The rest is suspended.
    - Deduct permitted sale-related `passive_released` in its income year. There are no death-specific passive-loss deductions.
 3. **Social Security removed.** No benefits, inputs or SS taxation exist; former worksheet rules are deleted, not zeroed.
-4. **AGI** = ordinary income after the allowed capital-loss deduction + qualified dividends + `CapitalNet.lt_gain`. Ordinary income includes interest, ordinary fund distributions, `trad_own + trad_inherited`, allowed rental income and ordinary property amounts. Each net capital bucket is included once.
+4. **AGI** = ordinary income after the allowed capital-loss deduction + qualified dividends + `CapitalNet.lt_gain`. Ordinary income includes interest, ordinary fund distributions, `trad_own`, allowed rental income and ordinary property amounts. Each net capital bucket is included once.
 5. **Deduction** = standard deduction only. The 65+ add-on and senior deduction are removed.
 6. **Taxable income:** TI = `max(0, AGI − deduction)`. Regular tax uses the statutory formula below.
 7. **NIIT** = `0.038 · min(NII, max(0, MAGI − threshold))`.
@@ -748,15 +749,15 @@ All configurations share calculation/validation. Missing required values or unsu
 
 ### 7.1 Ledger and annual report
 
-One full-precision row exists for each of the T years. The retained v1 core field order is:
+One full-precision row exists for each of the T years. The v2 core field order is:
 
-`year, age_A, age_B, alive_A, alive_B, fx, home_index, usd_index, spend_plan_cny, spend_cny, medical_cny, medical_base_cny, medical_shock_cny, one_time_cny, included_consumption_cny, additional_consumption_cny, rent_cash_usd, rmd_usd, portfolio_return, withdraw_usd, withdraw_cny, convert_usd, tax_us_A, tax_us_B, tax_cn_A, tax_cn_B, liquid_usd, cny_cash_cny, property_equity_usd, net_worth_cny, net_worth_cny_real, liquid_cny_real, net_worth_usd_real, shortfall_cny, forced_sale, sale_failed, fx_quota_flag, spend_mult`
+`year, age_A, age_B, fx, home_index, usd_index, spend_cny, medical_cny, medical_base_cny, medical_shock_cny, one_time_cny, included_consumption_cny, additional_consumption_cny, rent_cash_usd, rmd_usd, portfolio_return, withdraw_usd, convert_usd, tax_us_A, tax_us_B, tax_cn_A, tax_cn_B, liquid_usd, property_equity_usd, net_worth_cny, net_worth_cny_real, liquid_cny_real, net_worth_usd_real, shortfall_cny, forced_sale, sale_failed, fx_quota_flag, spend_mult`
 
-- Both alive flags stay 1 through the horizon; absent-person B uses the -1/0 sentinels. The former flex/estate/death/SS/state-tax/payment-credit slots are removed, not zero-filled.
+- An absent Person B reports `age_B = -1`. The former alive-flag, planned-spend, CNY-cash, flex/estate/death/SS/state-tax/payment-credit slots are removed, not zero-filled.
 - `spend_cny` is ordinary budget spending; `one_time_cny` is separate. Medical is the single Budget base plus each member's shocks and always-additional continuing care. Provenance contains `medical_detail.base_cny`, `shock_cny` and `late_life_care_cny`.
 - Tax columns record this year's computed bills, paid the same year; China bills are net of the same-year US credit. Leftover unpaid tax is a terminal memo deduction from heirs, not a settlement.
 
-Five reporting values accompany replay/CSV (`retire-ledger-report-v1`, 42 CSV columns):
+Five reporting values accompany replay/CSV (`retire-ledger-report-v1`, 38 CSV columns):
 
 | Field | Meaning |
 |---|---|
@@ -1042,7 +1043,7 @@ The [verification package](../verification/README.md) maintains current declarat
 - `retire-canonical-v1`: recursively sorted ordinal UTF-16 object keys, preserved array/string order, finite JSON numbers, omitted undefined object leaves, rejected undefined array elements; SHA-256 of unindented UTF-8 canonical bytes.
 - `retire-rng-v1` / `retire-draws-v2`: stable bootstrap/CPI/FX/medical/property streams over T, no mortality stream. Switches or financial decisions do not change draw consumption; property IDs and path prefixes are stable.
 - `retire-model-v5.1`: everyone alive to the younger (or single) Max age, single-source Budget medical, continuing always-additional care, zero-interest Cash CNY, direct historical rows and nonpositive-net-worth stopping. The manifest records lifetime, Cash-CNY and stopping policies.
-- `retire-results-v1`: 37 retained core ledger fields, seven chart buffer fields and 17 Float64/5 Int32/3 Uint8 scalar fields (159 summary bytes/path). Former flex/estate/death/SS/state-tax/payment-credit slots are removed; alive flags remain. `retire-ledger-report-v1` adds five replay/CSV fields.
+- `retire-results-v2`: 33 retained core ledger fields, five chart buffer fields and 17 Float64/5 Int32/3 Uint8 scalar fields (159 summary bytes/path). Former alive-flag, planned-spend, CNY-cash, flex/estate/death/SS/state-tax/payment-credit slots are removed. `retire-ledger-report-v1` adds five replay/CSV fields.
 - N=20,000/T=52 retains exactly 32,300,000 bytes; the shipped N=200/T=70 example retains 423,800 bytes. The explicit performance fixture uses T=52. The 512 MiB preflight budgets modeled allocations/reserve, not OS browser RSS.
 - Independent reference arithmetic recomputes all 55 original numeric answers. Current product comparison applies 18 numeric cases, retires 37 obsolete cases and explicitly excludes the original deposit-rate and FX-stress subfields from `MARKET-TIMING`. Current units/browser tests cover replacement requirements without rewriting golden answers.
 - Original [control workbook](../verification/records/M00-2/control-calculations.xlsx), raw fixtures and preparation notes stay archived. Current reports are indexed separately; a retired case is not labeled PASS.

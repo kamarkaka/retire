@@ -44,7 +44,7 @@ Static hosts use the bundled data without a gateway. For reproducibility, downlo
 - Social Security is **excluded from the entire simulation**: no benefits are ever paid and there are no Social Security inputs, so results never include Social Security income.
 - Markets, inflation & FX has **Markets / Inflation / FX** groups. Numeric inputs preserve decimal text such as 0.003. Stock/bond yields are income portions of total returns used for taxable-account income/basis accounting. Custom means/volatilities and FX stress events are removed; old files carrying those fields are rejected on import.
 - **Path stopping:** net worth includes USD accounts and property equity after mortgages, using that boundary's FX. Stop before any cash flows if it starts nonpositive, or at the first nonpositive year end. Taxes are computed and paid each simulated year; any leftover unpaid tax is deducted once at the stop. Ledger/CSV contain only simulated years; later wealth percentiles include stopped paths as zero. Positive property equity can keep a path running after liquid funds are exhausted.
-- **Cash account types are retired.** Former Cash CNY/Cash USD accounts, per-account ownership and the surplus-account selector are removed; the two CNY cash ledger columns stay at zero for layout compatibility. CNY spending is funded by converting USD at opening FX.
+- **Cash account types are retired.** Former Cash CNY/Cash USD accounts, per-account ownership and the surplus-account selector are removed, as are the CNY cash ledger columns. CNY spending is funded by converting USD at opening FX.
 
 Valid files are normalized into current inputs without mutating the upload. Unknown fields, invalid types/nonfinite values, missing required facts and unsupported tax combinations remain errors. Actual input/combination checks control Run; broad source status is reported separately.
 
@@ -54,7 +54,7 @@ The default table shows starting liquid USD, starting nominal net worth CNY, spe
 
 Financial return is balance-weighted across USD financial assets after opening-year flows, valued at opening FX, before personal tax/FX changes; property is excluded. No invested capital produces a missing return.
 
-**Ledger money displays as integers.** FX/indices retain decimals and returns use percentages. Engine decisions, scalar KPIs, provenance and all 42 CSV columns retain full Float64 precision.
+**Ledger money displays as integers.** FX/indices retain decimals and returns use percentages. Engine decisions, scalar KPIs, provenance and all 38 CSV columns retain full Float64 precision.
 
 ## Automated verification
 
@@ -83,10 +83,10 @@ The development-only harness is at `/verification` on the dev server and is excl
 - All configurations use unchanged historical return rows, **not a 3% planning target**. Historical stocks compounded at about 10.02% before tax; an annually rebalanced 40% stock / 60% 10-year Treasury reference compounded at about 7.24%. The sample also uses 1.7% mean China inflation; it does not implement the earlier 3%-return/4%-inflation stress case. Calendar dot-com/2008/2022 engine replays are checked separately from the bootstrap forecasts.
 - Tax modeling stays simple on purpose: all-long-term netting with loss carryforward, property gains at LTCG rates, no state tax, no Social Security, and same-year payment with a same-year China credit. The §1250 25% bucket is intentionally not modeled and its former scoped evidence is archived. Broad legal acceptance remains OPEN. Section 1231 loss history and lookback ordering are removed.
 - The actual household draft preserves 5.3M gross financial assets, 2M property / 731k loans, FX 6.69 and 250k CNY with 38k included medical. Missing account bases/property inputs and B's retained-green-card resident-alien income-tax branch still prevent a household forecast; sample B uses an explicit NRA assumption.
-- Original 55 M00 arithmetic answers remain unchanged. The current product runner passes 18 cases, explicitly retires 38 superseded cases and excludes the old deposit-rate and FX-stress subfields from MARKET-TIMING. Six broad cases are OPEN and 18 structural cases are labeled SUITE; replacement requirements have unit/browser evidence.
+- Original 55 M00 arithmetic answers remain unchanged. The current product runner passes 16 cases, explicitly retires 40 superseded cases and excludes the old deposit-rate and FX-stress subfields from MARKET-TIMING. Six broad cases are OPEN and 18 structural cases are labeled SUITE; replacement requirements have unit/browser evidence.
 - Chromium uses a single-process workaround on this macOS host. Ordinary child-process/WebKit launch fails before app load; Safari acceptance remains OPEN. On a suitable host use `RETIRE_MULTI_PROCESS=1 npm run test:e2e`; add `RETIRE_TEST_WEBKIT=1` after installing WebKit.
 
-The explicit 20,000-path/T52 benchmark retains 32,300,000 bytes; ordinary sample T70 is separate. The 512 MiB preflight budgets modeled allocations plus reserve, not OS browser memory. [Performance evidence](verification/records/e2e/chromium-performance.json) records six runs, measured RSS and oversized-run rejection without changing N.
+The explicit 20,000-path/T52 benchmark retains 23,980,000 bytes; ordinary sample T70 is separate. The 512 MiB preflight budgets modeled allocations plus reserve, not OS browser memory. [Performance evidence](verification/records/e2e/chromium-performance.json) records six runs, measured RSS and oversized-run rejection without changing N.
 
 ## Static build
 

@@ -40,7 +40,6 @@ function property(d: DraftScenario, value: number, mortgage = 0) {
       insurance_annual: 0,
       hoa_monthly: 0,
       strategy: 'hold',
-      proceeds_account: 'brokerage',
     },
   ];
 }
@@ -116,7 +115,6 @@ it('M08 M09: exhausted paths contribute zero to later wealth percentiles and rem
     50, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ]);
   expect(Array.from(aggregate.yearly_alive_not_depleted)).toEqual([1, 0, 0, 0]);
-  expect(Array.from(aggregate.yearly_alive)).toEqual([1, 1, 1, 1]);
 });
 
 it('M08: zero liquid assets alone do not end a path that still has positive property equity', () => {

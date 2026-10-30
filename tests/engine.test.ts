@@ -60,8 +60,6 @@ describe('M07–M08 real model year loop', () => {
       );
       expect(r.ledger).toHaveLength(50 * LEDGER_FIELDS.length);
       expect(r.years[49].phases).toHaveLength(10);
-      expect(r.ledger[49 * LEDGER_FIELDS.length + LI.alive_A]).toBe(1);
-      expect(r.ledger[49 * LEDGER_FIELDS.length + LI.alive_B]).toBe(1);
       // All-cash controls isolate the cash leg of the per-asset gain split.
       const gains = r.years[0].investment_gain;
       expect(gains.us_stocks).toBe(0);
@@ -225,7 +223,6 @@ it('annual ledger reports opening wealth, complete medical costs and a financial
       insurance_annual: 0,
       hoa_monthly: 0,
       strategy: 'hold',
-      proceeds_account: 'brokerage',
     },
   ];
   const v = validateScenario(d, references);
@@ -243,7 +240,6 @@ it('annual ledger reports opening wealth, complete medical costs and a financial
   expect(report.medical_total_cny).toBe(2480);
   expect(report.annual_investment_return).toBeCloseTo(0.03, 12);
   expect(replay.ledger[LI.liquid_usd]).toBeCloseTo(119715.84, 8);
-  expect(replay.ledger[LI.cny_cash_cny]).toBe(0);
   expect(replay.ledger[LI.net_worth_cny]).toBeCloseTo(512147.52, 8);
   expect(replay.years[0].properties[0].owners.A.basis_usd).toBe(40000);
   expect(
@@ -268,40 +264,14 @@ it('both people live through the younger person’s Max age for every seed and p
         compact = simulatePath(req, references, path);
       expect(r.years).toHaveLength(4);
       expect(compact.summary.integers[II.active_years]).toBe(4);
-      for (let t = 0; t < 4; t++) {
-        expect(r.ledger[t * LEDGER_FIELDS.length + LI.alive_A]).toBe(1);
-        expect(r.ledger[t * LEDGER_FIELDS.length + LI.alive_B]).toBe(1);
+      for (let t = 0; t < 4; t++)
         expect(r.years[t]).not.toHaveProperty('deaths');
-      }
       expect(r.ledger[3 * LEDGER_FIELDS.length + LI.age_A]).toBe(64);
       expect(r.ledger[3 * LEDGER_FIELDS.length + LI.age_B]).toBe(62);
       expect(r.years[3].terminal!.income_due_cny).toBeLessThan(1);
     }
   }
 });
-it('retired CNY cash columns stay zero for layout compatibility', () => {
-  const d = createControlDraft();
-  d.simulation!.max_age = 41;
-  d.budget = { annual: 0, included_health: 0 };
-  d.market!.fx_drift = Math.log(1.1);
-  d.accounts![0].balance = 100000;
-  const v = validateScenario(d, references);
-  if (!v.ok) throw new Error(JSON.stringify(v.issues));
-  const req = makeRunRequest(v.value.scenario, references),
-    r = replayPathLedger(req, references, 0);
-  expect(req.manifest.cny_cash_policy).toBe('no-interest');
-  expect(r.years).toHaveLength(2);
-  for (let t = 0; t < 2; t++) {
-    const offset = t * LEDGER_FIELDS.length;
-    expect(r.ledger[offset + LI.cny_cash_cny]).toBe(0);
-    expect(r.ledger[offset + LI.withdraw_cny]).toBe(0);
-  }
-  expect(r.ledger[LEDGER_FIELDS.length + LI.fx]).toBeCloseTo(
-    6.69 * 1.1 ** 2,
-    12,
-  );
-});
-
 it('M08 China credit applies to same-year settled US tax', () => {
   const d = createControlDraft();
   d.simulation!.max_age = 42;
@@ -345,7 +315,6 @@ function lastResortReplay(firstValue: number, secondValue: number) {
     land_share: 0,
     depreciation_taken: 0,
     rent_monthly: 0,
-    proceeds_account: 'brokerage',
   });
   d.properties = [
     home('first_home', firstValue),

@@ -47,7 +47,7 @@ function run(opts: {
       cnA: at(1, LI.tax_cn_A),
       cnB: at(1, LI.tax_cn_B),
     },
-    absent: { ageB: at(1, LI.age_B), aliveB: at(1, LI.alive_B) },
+    absent: { ageB: at(1, LI.age_B) },
   };
 }
 // Reference-table hand derivations (3% arithmetic tape, $5M cash at MFS/single schedules):
@@ -66,7 +66,7 @@ describe('one-or-two-person households with one domicile country', () => {
     expect(r.years).toBe(3);
     expect(r.req.manifest.start_age_B).toBe(-1);
     expect(r.req.manifest.horizon).toBe(3);
-    expect(r.absent).toEqual({ ageB: -1, aliveB: 0 });
+    expect(r.absent).toEqual({ ageB: -1 });
     expect(r.bill.usA).toBeCloseTo(25635.9152, 4);
     expect(r.bill.usB).toBe(0);
     expect(r.bill.cnA).toBe(0);

@@ -60,7 +60,6 @@ export function createHouseholdDraft(): DraftScenario {
       value: 2000000,
       mortgage_balance: 731000,
       strategy: 'hold',
-      proceeds_account: 'brokerage',
     },
   ];
   return d;

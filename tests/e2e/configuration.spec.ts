@@ -49,7 +49,6 @@ test('M02 M10: every configuration input has plain-English hover/focus help, inc
       'one_time[].name',
       'properties[].id',
       'properties[].label',
-      'properties[].proceeds_account',
       'properties[].share_A',
       'schema_version',
     ]),
