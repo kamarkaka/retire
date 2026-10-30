@@ -656,3 +656,58 @@ test('M02 M10: type scale uses bundled Inter, 11px floor, and 16px controls', as
     '16px',
   );
 });
+
+test('M02 M10: spacing uses one scale, unified gutters, and one radius scale', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.app-header')).toHaveCSS('padding-left', '40px');
+  await expect(page.locator('main')).toHaveCSS('padding-left', '40px');
+  await page.getByRole('button', { name: 'Load sample config' }).click();
+  await expect(page.locator('.builder-section')).toHaveCSS(
+    'padding-top',
+    '24px',
+  );
+  const back = page.getByRole('button', { name: 'Back to start' });
+  await expect(back).toHaveCSS('padding-top', '8px');
+  await expect(back).toHaveCSS('border-top-left-radius', '6px');
+  await expect(page.locator('.section-nav')).toHaveCSS('top', '16px');
+  await expect(page.locator('.field-grid').first()).toHaveCSS(
+    'column-gap',
+    '24px',
+  );
+  const folded = await page.evaluate(() => {
+    const bad: string[] = [];
+    document.querySelectorAll('body *').forEach((el) => {
+      const html = el as HTMLElement;
+      if (html.offsetWidth <= 0 || html.offsetHeight <= 0) return;
+      const cs = getComputedStyle(html);
+      for (const prop of [
+        'padding-top',
+        'padding-right',
+        'padding-bottom',
+        'padding-left',
+        'margin-top',
+        'margin-right',
+        'margin-bottom',
+        'margin-left',
+        'row-gap',
+        'column-gap',
+      ] as const) {
+        const value = cs.getPropertyValue(prop);
+        const v = parseFloat(value);
+        if (v === 6 || v === 10)
+          bad.push(`${html.className || html.tagName}:${prop}=${value}`);
+      }
+    });
+    return bad.slice(0, 10);
+  });
+  expect(folded).toEqual([]);
+  await page.setViewportSize({ width: 390, height: 900 });
+  await expect(page.locator('.app-header')).toHaveCSS('padding-left', '20px');
+  await expect(page.locator('main')).toHaveCSS('padding-left', '20px');
+  await expect(page.locator('.builder-section')).toHaveCSS(
+    'padding-top',
+    '20px',
+  );
+});

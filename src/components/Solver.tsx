@@ -163,7 +163,7 @@ function SolverCard({
           ))}
         </tbody>
       </table>
-      <div className="toolbar" style={{ marginTop: 12 }}>
+      <div className="toolbar solver-actions">
         {status === 'solving' ? (
           <button type="button" className="secondary" onClick={cancel}>
             {t('solver.cancel')}
