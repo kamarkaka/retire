@@ -23,6 +23,9 @@ results change; saved configs keep loading.
   an explicit resident status for a non-citizen still blocks Run.
 - Run manifests report `retire-model-v6` and `retire-draws-v4` and drop
   the stale `cny_cash_policy` field.
+- Run manifests rename the aggregate `yearly_alive_not_depleted` to
+  `yearly_success_probability`, the share of paths not yet depleted in
+  each year; nobody dies in the model, so "alive" meant nothing.
 - The Assumptions page drops its Cash CNY card, and net-worth text and the
   ledger CSV comment no longer mention CNY cash.
 - The year-detail NRA tax table shows pension/annuity income in its own

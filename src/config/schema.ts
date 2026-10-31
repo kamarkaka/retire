@@ -51,10 +51,6 @@ function leaf(type: string): z.ZodType {
       .finite()
       .int()
       .refine(Number.isSafeInteger, 'Must be a safe integer');
-  if (type === 'string[]') return z.array(z.string());
-  if (type === 'number[]') return z.array(z.number().finite());
-  if (type === '[number,number][]')
-    return z.array(z.tuple([z.number().finite(), z.number().finite()]));
   return z.number().finite();
 }
 function build(node: SchemaNode): z.ZodType {

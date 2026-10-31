@@ -147,7 +147,7 @@ export function summarizeResults(
       summaries.integers[id * INT_FIELDS.length + II[field]],
     flag = (id: number, field: string) =>
       summaries.flags[id * FLAG_FIELDS.length + BI[field]];
-  const yearly_alive_not_depleted = new Float64Array(T),
+  const yearly_success_probability = new Float64Array(T),
     bands = () => new Float32Array(T * 3).fill(NaN);
   const net_worth_bands = bands(),
     liquid_bands = bands(),
@@ -172,7 +172,7 @@ export function summarizeResults(
       const depletion = integer(id, 'first_depletion_t');
       if (depletion < 0 || depletion > t) healthy++;
     }
-    yearly_alive_not_depleted[t] = healthy / N;
+    yearly_success_probability[t] = healthy / N;
     for (const [field, target] of [
       ['net_worth_cny_real', net_worth_bands],
       ['liquid_cny_real', liquid_bands],
@@ -237,7 +237,7 @@ export function summarizeResults(
     n_paths: N,
     success_probability: 1 - counts('depleted') / N,
     forced_sale_probability: counts('forced_sale') / N,
-    yearly_alive_not_depleted,
+    yearly_success_probability,
     net_worth_bands,
     liquid_bands,
     net_worth_usd_bands,

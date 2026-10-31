@@ -646,29 +646,6 @@ h1 {
   margin: var(--space-md) 0;
   font-size: var(--fs-caption);
 }
-.list-field {
-  grid-column: 1/-1;
-}
-.list-field > label {
-  font-size: var(--fs-caption);
-  font-weight: 500;
-}
-.list-field > label > span {
-  font-weight: 400;
-  font-size: var(--fs-caption);
-  color: var(--muted);
-}
-.primitive-row {
-  display: flex;
-  gap: var(--space-sm);
-}
-.primitive-row input {
-  flex: 1;
-  min-width: 0;
-}
-.list-field > .small {
-  align-self: flex-start;
-}
 .list-editor .muted {
   margin-bottom: var(--space-md);
 }
@@ -1328,26 +1305,6 @@ pre {
   white-space: nowrap;
   border: 0;
 }
-.list-field-title {
-  font-size: var(--fs-caption);
-  font-weight: 500;
-}
-.list-field-title span {
-  font-weight: 400;
-  font-size: var(--fs-caption);
-  color: var(--muted);
-}
-.primitive-row {
-  align-items: flex-end;
-}
-.primitive-row .field {
-  flex: 1;
-  min-width: 0;
-}
-.primitive-row > .danger {
-  flex: none;
-  min-height: 36px;
-}
 
 .toml-panel > .field {
   margin-top: 12px;
@@ -1356,12 +1313,6 @@ pre {
   .field-label small {
     max-width: 52%;
     overflow-wrap: anywhere;
-  }
-  .primitive-row .field-heading {
-    gap: var(--space-xs);
-  }
-  .primitive-row .field-label {
-    font-size: var(--fs-caption);
   }
 }
 .modal-overlay {
@@ -1928,25 +1879,6 @@ pre {
   flex: 1 1 200px;
   min-width: 0;
   height: 44px;
-  font-size: var(--fs-control);
-}
-.modal-dialog.wide .wizard-body .field.list-field,
-.modal-dialog.wide .wizard-body .primitive-row .field,
-.builder-section .field.list-field,
-.builder-section .primitive-row .field {
-  flex-direction: column;
-  align-items: stretch;
-}
-.modal-dialog.wide
-  .wizard-body
-  .primitive-row
-  .field
-  input:not([type='checkbox']),
-.modal-dialog.wide .wizard-body .primitive-row .field select,
-.builder-section .primitive-row .field input:not([type='checkbox']),
-.builder-section .primitive-row .field select {
-  flex: none;
-  height: 36px;
   font-size: var(--fs-control);
 }
 .modal-dialog.wide .wizard-body .seed-control,

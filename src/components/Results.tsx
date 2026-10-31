@@ -112,7 +112,7 @@ export default function Results({ run }: { run: CompletedRun }) {
         {
           name: t('chart.funded'),
           type: 'line',
-          data: Array.from(a.yearly_alive_not_depleted),
+          data: Array.from(a.yearly_success_probability),
           symbol: 'none',
           lineStyle: { color: '#1f6259', width: 2 },
         },

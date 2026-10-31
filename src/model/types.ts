@@ -440,7 +440,7 @@ export interface AggregateSummary {
   n_paths: number;
   success_probability: number;
   forced_sale_probability: number;
-  yearly_alive_not_depleted: Float64Array;
+  yearly_success_probability: Float64Array;
   net_worth_bands: Float32Array;
   liquid_bands: Float32Array;
   market_bands: Record<'fx' | 'home_cpi' | 'usd_cpi', Float64Array>;

@@ -114,7 +114,9 @@ it('M08 M09: exhausted paths contribute zero to later wealth percentiles and rem
   expect(Array.from(aggregate.nominal_bands)).toEqual([
     50, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ]);
-  expect(Array.from(aggregate.yearly_alive_not_depleted)).toEqual([1, 0, 0, 0]);
+  expect(Array.from(aggregate.yearly_success_probability)).toEqual([
+    1, 0, 0, 0,
+  ]);
 });
 
 it('M08: zero liquid assets alone do not end a path that still has positive property equity', () => {

@@ -1,7 +1,7 @@
 # Retirement Monte Carlo Simulator: Design Spec
 
 - **Date:** 2026-10-18
-- **Status:** Browser web app with server-managed public market data, implemented through the M00–M11 software steps and extended by releases 0.1.0–0.6.0 ([changelog](../CHANGELOG.md)). Human milestone sign-offs are retired by user instruction; `npm run check` is the automated gate, comparing applicable cases with the independent M00 oracles while superseded cases stay explicitly retired. Financial corrections, common input validation and source status remain explicit (§6.9, §9.2, §13). The revision log records decisions as they were made; the sections after it describe the code as of revision 46.
+- **Status:** Browser web app with server-managed public market data, implemented through the M00–M11 software steps and extended by releases 0.1.0–0.6.0 ([changelog](../CHANGELOG.md)). Human milestone sign-offs are retired by user instruction; `npm run check` is the automated gate, comparing applicable cases with the independent M00 oracles while superseded cases stay explicitly retired. Financial corrections, common input validation and source status remain explicit (§6.9, §9.2, §13). The revision log records decisions as they were made; the sections after it describe the code as of revision 47.
 - **Implementation plan:** [Milestones and automated verification](2026-10-18-retirement-sim.md)
 - **Project root:** `/Users/mengcao/development/retire` ([app usage and test commands](../README.md)); bundled US market rows are observed NYU/FRED history; independent source receipts and calibration are recorded.
 - **Review record:** [Review request](2026-10-18-retirement-sim-design-review-request.md) and [independent decisions](2026-10-18-retirement-sim-design-review-decisions.md).
@@ -69,6 +69,7 @@
    - **Strict legacy handling:** retired fields are rejected as unknown keys or invalid values; only `properties[].proceeds_account` is dropped (supersedes the discard/mapping wording in items 37 and 42; §9.2).
    - **Guided setup and languages:** Easy/Power guided setup and an English/Chinese UI; the default path count is 5,000 (§8.1).
 46. **Non-citizens are NRA; code consistency fixes (2026-10-30).** By user decision, every non-US citizen, including a green-card holder, is taxed as a US nonresident alien for now. An explicit noncitizen/resident status still blocks Run because the resident-alien branch is not implemented (§1.2, §6.3). Manifests move to `retire-model-v6` and `retire-draws-v4`, covering the post-v5.1 features and the `spend_flex` stream, and drop `cny_cash_policy`. The Assumptions page loses its Cash CNY card, the ledger CSV comment no longer mentions CNY cash, and the year-detail NRA tax table splits retirement distributions from pension income.
+47. **Dead list editor removed; funded-share aggregate renamed (2026-10-30).** No configuration field has ever used the `string[]`, `number[]` or `[number,number][]` types, so their validation rules and the primitive-list/tax-bracket editor, with its strings and styles, are removed. The aggregate `yearly_alive_not_depleted` becomes `yearly_success_probability`: the share of paths not yet depleted in each year, whose final value equals `success_probability`. No results change.
 
 
 ---
@@ -798,7 +799,7 @@ People contain Person A (required) and Person B (optional, added with a `+` butt
 
 Numeric inputs preserve decimal text during typing, including `0.003` and signed values; finite-number/integer/range validation still controls Run. External config changes synchronize the editors.
 
-Mouse-wheel gestures cannot step a focused numeric field or change its value; keyboard focus and edits remain intact. Each input has a plain-English explanation shared with the inventory, accessible through hover, focus or its info button. Popups remain inside the viewport, can be hovered and dismissed with Escape or an outside click, and do not mutate the draft. Editing a value closes help. Primitive lists provide help per input; Run Paths/Seed and the TOML editor also have help.
+Mouse-wheel gestures cannot step a focused numeric field or change its value; keyboard focus and edits remain intact. Each input has a plain-English explanation shared with the inventory, accessible through hover, focus or its info button. Popups remain inside the viewport, can be hovered and dismissed with Escape or an outside click, and do not mutate the draft. Editing a value closes help. Run Paths/Seed and the TOML editor also have help.
 
 Accounts show the balance and allocation of each fixed account plus the pre-tax access flags (`rule_of_55`, `allow_early_trad`). There are no holding settings, basis or interest-rate fields.
 

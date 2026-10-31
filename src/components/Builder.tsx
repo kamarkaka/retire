@@ -5,7 +5,7 @@ import type { DraftScenario } from '../model/types';
 import { FIXED_ACCOUNT_ORDER } from '../model/types';
 import RandomSeedButton from './RandomSeedButton';
 import NumberInput from './NumberInput';
-import ConfigField, { GuideModeContext, useGuideMode } from './ConfigField';
+import ConfigField, { GuideModeContext } from './ConfigField';
 import { useI18n } from '../i18n/context';
 import type { MessageKey } from '../i18n/en';
 import { enumLabel, fieldText, labelFor, unitFor } from '../i18n/core';
@@ -240,7 +240,6 @@ export function Editor({
   onChange: (d: DraftScenario) => void;
 }) {
   const { t, lang } = useI18n();
-  const guide = useGuideMode();
   const value = read(draft, keys),
     path = pathText(keys),
     terminal = String(keys.at(-1) ?? ''),
@@ -493,116 +492,6 @@ export function Editor({
     omission = help.omission ?? f.omission,
     constraints = help.constraints ?? f.constraints,
     unit = unitFor(lang, f.unit);
-  if (type.endsWith('[]')) {
-    const values = (value ?? []) as unknown[],
-      pairs = type === '[number,number][]';
-    return (
-      <div className="field list-field">
-        <div className="list-field-title">
-          {label} {!guide && <span>{unit}</span>}
-        </div>
-        {values.map((v, i) => (
-          <div className="primitive-row" key={i}>
-            {pairs ? (
-              (v as number[]).map((n, j) => (
-                <ConfigField
-                  key={j}
-                  path={`${path}[${i}][${j}]`}
-                  label={t('field.bracket', {
-                    index: i + 1,
-                    part: t(
-                      j === 0 ? 'field.bracketLower' : 'field.bracketRate',
-                    ),
-                  })}
-                  unit={j === 0 ? 'CNY' : t('field.bracketUnitRate')}
-                  description={t('field.bracketDesc', {
-                    description,
-                    part: t(
-                      j === 0
-                        ? 'field.bracketDescLower'
-                        : 'field.bracketDescRate',
-                    ),
-                    index: i + 1,
-                  })}
-                >
-                  {(attributes) => (
-                    <NumberInput
-                      {...attributes}
-                      aria-label={`${path}[${i}][${j}]`}
-                      step="any"
-                      value={n}
-                      onChange={(number) => {
-                        const next = structuredClone(values) as unknown[][];
-                        next[i][j] = number;
-                        update(next);
-                      }}
-                    />
-                  )}
-                </ConfigField>
-              ))
-            ) : (
-              <ConfigField
-                path={`${path}[${i}]`}
-                label={t('list.item', { label, index: i + 1 })}
-                unit={unit}
-                description={t('field.entryDesc', {
-                  description,
-                  index: i + 1,
-                })}
-              >
-                {(attributes) =>
-                  type === 'number[]' ? (
-                    <NumberInput
-                      {...attributes}
-                      aria-label={`${path}[${i}]`}
-                      step="any"
-                      value={v as number | undefined}
-                      onChange={(number) => {
-                        const next = [...values];
-                        next[i] = number;
-                        update(next);
-                      }}
-                    />
-                  ) : (
-                    <input
-                      {...attributes}
-                      aria-label={`${path}[${i}]`}
-                      type="text"
-                      value={String(v ?? '')}
-                      onChange={(e) => {
-                        const next = [...values];
-                        next[i] = e.target.value;
-                        update(next);
-                      }}
-                    />
-                  )
-                }
-              </ConfigField>
-            )}
-            <button
-              className="small danger"
-              type="button"
-              aria-label={t('list.removeItem', { path: `${path}[${i}]` })}
-              onClick={() => update(values.filter((_, j) => j !== i))}
-            >
-              ×
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          className="small"
-          aria-label={t('list.addItem', { path })}
-          onClick={() =>
-            update([...values, pairs ? [0, 0] : type === 'number[]' ? 0 : ''])
-          }
-        >
-          {t('list.addShort')}
-        </button>
-        <small>{constraints}</small>
-      </div>
-    );
-  }
   const placeholder =
     f.default === null
       ? t('field.required')

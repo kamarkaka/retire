@@ -61,7 +61,7 @@ it('M09 Type7, whole-cohort denominators and stable ranking match frozen example
     r.summaries.flags[id * FLAG_FIELDS.length + BI.depleted] = id === 3 ? 1 : 0;
   }
   const a = summarizeResults(copy, r.charts, r.summaries, r.market_samples);
-  expect(a.yearly_alive_not_depleted[0]).toBe(0.8);
+  expect(a.yearly_success_probability[0]).toBe(0.8);
   expect(a.success_probability).toBe(0.8);
 });
 it('M09 chunk size/order and path-count changes preserve every path and scalar', () => {

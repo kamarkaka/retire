@@ -1302,8 +1302,6 @@ test('M02 M10: power-mode Steps 2-8 share Step 1 one-row field styling', async (
       )) {
         const r = el.getBoundingClientRect();
         if (r.width === 0 || r.height === 0) continue;
-        if (el.closest('.primitive-row')) continue;
-        if (el.classList.contains('list-field')) continue;
         const path = el.getAttribute('data-config-field') ?? '?';
         const cs = getComputedStyle(el);
         const input = el.querySelector('input, select, textarea');
