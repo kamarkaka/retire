@@ -322,7 +322,10 @@ function YearModal({
         {members.map((id) => {
           const status = scenario.people[id]!.us_income_tax_status,
             d = (detail.tax_detail[id] ?? {}) as Record<string, unknown>,
-            income = detail.income[id];
+            income = detail.income[id],
+            ownPension = income.trad_own + income.pension,
+            pensionShare = (base: number) =>
+              ownPension > 0 ? (num(d.pension_tax) * base) / ownPension : 0;
           return (
             <div key={id}>
               <h4>
@@ -414,7 +417,18 @@ function YearModal({
                           income.dividends,
                           num(d.dividend_tax),
                         ],
-                        ['modal.pension', income.trad_own, num(d.pension_tax)],
+                        // One flat NRA rate taxes distributions and pension
+                        // income together; split its tax by base.
+                        [
+                          'modal.pension',
+                          income.trad_own,
+                          pensionShare(income.trad_own),
+                        ],
+                        [
+                          'modal.pensionIncome',
+                          income.pension,
+                          pensionShare(income.pension),
+                        ],
                         [
                           'modal.securities',
                           Math.max(0, income.cap_gain),

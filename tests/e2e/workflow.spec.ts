@@ -459,6 +459,32 @@ test('M09: one-person US ledger shows USD columns and hides second-person and Ch
   ])
     await expect(table.locator(`[data-field=${field}]`)).toHaveCount(0);
 });
+test('M09: a non-citizen is an NRA and the NRA tax table shows pension income', async ({
+  page,
+}) => {
+  const d = createControlDraft();
+  delete d.people!.B;
+  d.people!.domicile = 'US';
+  d.people!.A!.us_citizen = false;
+  delete d.people!.A!.us_income_tax_status;
+  d.people!.A!.pension = { annual: 60000, start_age: 40, cola: false };
+  d.simulation!.n_paths = 1;
+  d.simulation!.max_age = 41;
+  await page.goto('/');
+  await uploadDraft(page, d);
+  await complete(page, 1);
+  await page.getByRole('button', { name: 'Year ledger', exact: true }).click();
+  await page
+    .getByRole('table', { name: 'Year ledger', exact: true })
+    .locator('tbody tr')
+    .first()
+    .click();
+  const modal = page.getByTestId('year-modal');
+  await expect(modal).toContainText('Nonresident alien');
+  await expect(
+    modal.locator('tr', { hasText: 'Pension / annuity' }),
+  ).toContainText('60,000');
+});
 test('M09: flexible spending shows a bounded multiplier column only when enabled', async ({
   page,
 }) => {
@@ -1104,7 +1130,6 @@ test('M02 M10: decimal rate typing survives edits, export and a run', async ({
     export_and_run_precision: 'Float64',
     external_config_updates_input: true,
     social_security_removed: true,
-    cny_cash_interest: 'intentionally omitted',
     cny_cash_inputs_removed: true,
   });
 });

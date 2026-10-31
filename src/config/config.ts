@@ -70,7 +70,8 @@ export function normalizeScenario(draft: DraftScenario): Result<DraftScenario> {
     for (const p of pre.properties) if (p.share_A === undefined) p.share_A = 1;
   const normalized = defaultNode(fieldTree, pre, '') as DraftScenario;
   // Tax status derives after defaults so an unchecked citizenship box (which
-  // defaults to non-citizen) still resolves to nonresident treatment.
+  // defaults to non-citizen) still resolves to nonresident treatment. Every
+  // non-citizen, green-card holders included, is modeled as an NRA for now.
   for (const id of ['A', 'B'] as const) {
     const p = normalized.people?.[id];
     if (p && p.us_income_tax_status === undefined) {
@@ -273,7 +274,7 @@ export function validateScenario(
     if (!p.us_citizen && p.us_income_tax_status === 'resident')
       add(
         path,
-        'Resident alien income-tax branch is not implemented; retained green card does not imply NRA',
+        'Non-US citizens, including green-card holders, use the nonresident (NRA) branch; the resident-alien branch is not implemented',
         'unsupported_status',
       );
   }
@@ -412,11 +413,10 @@ export function makeRunRequest(
       manifest_version: 'retire-manifest-v1',
       canonical_version: 'retire-canonical-v1',
       schema_version: 1,
-      model_version: 'retire-model-v5.1',
+      model_version: 'retire-model-v6',
       rng_version: 'retire-rng-v1',
-      draw_version: 'retire-draws-v3',
+      draw_version: 'retire-draws-v4',
       longevity_policy: 'both-alive-to-younger-max-age',
-      cny_cash_policy: 'no-interest',
       stopping_policy: 'younger-max-age-or-nonpositive-net-worth',
       result_layout_version: 'retire-results-v2',
       ledger_report_version: LEDGER_REPORT_VERSION,

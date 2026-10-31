@@ -464,12 +464,12 @@
     "omission": "unchecked means non-citizen; explicit answer not required",
     "default": false,
     "default_kind": "documented",
-    "constraints": "Citizens are US tax residents; non-citizens use NRA branch.",
+    "constraints": "Citizens use the resident branch; non-citizens, including green-card holders, use the NRA branch.",
     "gates": [
       "H-STATUS",
       "L-RESIDENCY"
     ],
-    "description": "Whether person A is a US citizen. Citizenship is checked against the chosen US income-tax status. A citizen must use Resident treatment; a noncitizen must explicitly resolve their tax-residency status."
+    "description": "Whether person A is a US citizen; unchecked means non-citizen. Citizens use the US resident tax rules. For now every non-citizen, including a green-card holder, is taxed as a US nonresident alien (NRA)."
   },
   {
     "path": "people.A.us_income_tax_status",
@@ -483,12 +483,12 @@
     "omission": "derived from us_citizen when omitted; explicit contradictions still block Run",
     "default": null,
     "default_kind": "none",
-    "constraints": "Citizen/resident or noncitizen/nonresident supported; resident alien cannot use NRA.",
+    "constraints": "Citizen → resident; non-citizen → nonresident (NRA), including green-card holders. The resident-alien branch is not implemented.",
     "gates": [
       "H-STATUS",
       "L-RESIDENCY"
     ],
-    "description": "The US income-tax treatment for person A. Resident applies the model’s US resident income and investment tax rules; Nonresident uses its supported nonresident categories. Unresolved blocks a run. Citizenship alone does not establish a noncitizen’s income-tax residency."
+    "description": "Person A’s US income-tax treatment, derived from citizenship when omitted: citizens are Resident and non-citizens, including green-card holders, are Nonresident (NRA). An explicit value must follow that rule; Unresolved blocks a run."
   },
   {
     "path": "people.A.pension.annual",
@@ -590,12 +590,12 @@
     "omission": "unchecked means non-citizen; explicit answer not required",
     "default": false,
     "default_kind": "documented",
-    "constraints": "Citizens are US tax residents; non-citizens use NRA branch.",
+    "constraints": "Citizens use the resident branch; non-citizens, including green-card holders, use the NRA branch.",
     "gates": [
       "H-STATUS",
       "L-RESIDENCY"
     ],
-    "description": "Whether person B is a US citizen. Citizenship is checked against the chosen US income-tax status. A citizen must use Resident treatment; a noncitizen must explicitly resolve their tax-residency status."
+    "description": "Whether person B is a US citizen; unchecked means non-citizen. Citizens use the US resident tax rules. For now every non-citizen, including a green-card holder, is taxed as a US nonresident alien (NRA)."
   },
   {
     "path": "people.B.us_income_tax_status",
@@ -609,12 +609,12 @@
     "omission": "derived from us_citizen when omitted; explicit contradictions still block Run",
     "default": null,
     "default_kind": "none",
-    "constraints": "Citizen/resident or noncitizen/nonresident supported; resident alien cannot use NRA.",
+    "constraints": "Citizen → resident; non-citizen → nonresident (NRA), including green-card holders. The resident-alien branch is not implemented.",
     "gates": [
       "H-STATUS",
       "L-RESIDENCY"
     ],
-    "description": "The US income-tax treatment for person B. Resident applies the model’s US resident income and investment tax rules; Nonresident uses its supported nonresident categories. Unresolved blocks a run. Citizenship alone does not establish a noncitizen’s income-tax residency."
+    "description": "Person B’s US income-tax treatment, derived from citizenship when omitted: citizens are Resident and non-citizens, including green-card holders, are Nonresident (NRA). An explicit value must follow that rule; Unresolved blocks a run."
   },
   {
     "path": "people.B.pension.annual",
@@ -1140,7 +1140,7 @@
     "gates": [
       "H-PROPERTY"
     ],
-    "description": "Allow the model to attempt a property sale when account withdrawals cannot meet a cash need, including properties otherwise marked Hold. Turning this off keeps property from being sold solely to cover a shortage. A sale may fail if closing costs, the mortgage and withholding require unaffordable extra cash."
+    "description": "Allow the model to attempt a property sale when account withdrawals cannot meet a cash need, including properties otherwise marked Hold. Turning this off keeps property from being sold solely to cover a shortage. A sale may fail if closing costs and the mortgage require unaffordable extra cash."
   },
   {
     "path": "properties[].label",

@@ -236,9 +236,8 @@ export interface ScientificManifest {
   schema_version: 1;
   model_version: string;
   rng_version: 'retire-rng-v1';
-  draw_version: 'retire-draws-v3';
+  draw_version: 'retire-draws-v4';
   longevity_policy: 'both-alive-to-younger-max-age';
-  cny_cash_policy: 'no-interest';
   stopping_policy: 'younger-max-age-or-nonpositive-net-worth';
   result_layout_version: 'retire-results-v2';
   ledger_report_version: 'retire-ledger-report-v1';

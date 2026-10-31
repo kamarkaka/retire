@@ -10,4 +10,4 @@ Public CSVs retrieved 2026-10-19 UTC. [Metadata and raw SHA-256 hashes](source-m
 
 [Independent Python reader](../../reference/read-fred-source.py) uses CSV/statistics/math from the standard library and never imports product code. The JS verifier separately reproduces every annual extraction, population moment, correlation and AR(1)/FX calculation. Missing/nonfinite data fail explicitly.
 
-China CPI and FX histories are calibration references. Future paths continue to use the user's configured AR(1), drift/PPP, volatility and stress parameters. Later partial-year observations in the raw files are excluded from the annual reference windows.
+China CPI and FX histories are calibration references. Future paths continue to use the user's configured AR(1), drift/PPP and volatility parameters. Later partial-year observations in the raw files are excluded from the annual reference windows.

@@ -6,8 +6,8 @@ adds an entry here, newest first.
 
 ## Unreleased
 
-Dead result fields removed. No simulation or tax results change; saved
-configs keep loading.
+Dead result fields removed, plus consistency fixes. No simulation or tax
+results change; saved configs keep loading.
 
 - Ledger CSV drops five columns that were always constant or duplicated:
   `alive_A`, `alive_B`, `spend_plan_cny` (same as `spend_cny`),
@@ -18,6 +18,15 @@ configs keep loading.
   the key dropped, and new downloads omit it.
 - Each run keeps about 28% less chart memory, so larger runs fit within
   the 512 MiB budget.
+- Every non-US citizen, including a green-card holder, is taxed as a US
+  nonresident alien (NRA) for now. Assumptions and field help now say so;
+  an explicit resident status for a non-citizen still blocks Run.
+- Run manifests report `retire-model-v6` and `retire-draws-v4` and drop
+  the stale `cny_cash_policy` field.
+- The Assumptions page drops its Cash CNY card, and net-worth text and the
+  ledger CSV comment no longer mention CNY cash.
+- The year-detail NRA tax table shows pension/annuity income in its own
+  row; its base previously left pensions out.
 
 ## 0.6.0 — 2026-10-29
 

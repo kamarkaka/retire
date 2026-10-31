@@ -51,7 +51,7 @@ export function marketDataMiddleware(
       return;
     }
     try {
-      // Concurrent clicks share one bounded fetch; subsequent clicks always fetch fresh sources.
+      // Concurrent requests share one bounded load; later requests load again.
       pending ??= load().finally(() => {
         pending = undefined;
       });

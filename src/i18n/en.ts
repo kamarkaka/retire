@@ -469,7 +469,7 @@ const enUI = {
   'assumptions.rawSha': '· raw SHA-256:',
   'assumptions.stopTitle': 'When a path ends',
   'assumptions.stopBody':
-    'A path stops after the younger person’s Max age year — or the person’s Max age year in a one-person household — or after the first year with nonpositive net worth. Net worth includes investments, Cash CNY and property equity after mortgages; taxes are paid each year and any leftover unpaid tax is deducted once at that stopping point. Nonpositive starting net worth stops before any annual cash flows. Ledgers contain only simulated years; stopped paths contribute zero to subsequent wealth percentiles.',
+    'A path stops after the younger person’s Max age year — or the person’s Max age year in a one-person household — or after the first year with nonpositive net worth. Net worth includes investments and property equity after mortgages; taxes are paid each year and any leftover unpaid tax is deducted once at that stopping point. Nonpositive starting net worth stops before any annual cash flows. Ledgers contain only simulated years; stopped paths contribute zero to subsequent wealth percentiles.',
   'assumptions.healthTitle': 'Health and the budget',
   'assumptions.healthBody':
     'The annual budget provides ordinary spending after Medical expenses is deducted once. Medical expenses is the single base medical amount for both people; the Medical group adds configured shocks and late-life care. Care is always additional and continues from its start age through the horizon; shocks are always additional as well. Every budget uses initial treatment.',
@@ -478,15 +478,12 @@ const enUI = {
   'assumptions.ssTitle': 'Social Security',
   'assumptions.ssBody':
     'Social Security is excluded from the entire simulation: no benefits are ever paid and there are no Social Security inputs, so results never include Social Security income.',
-  'assumptions.cnyTitle': 'Cash CNY',
-  'assumptions.cnyBody':
-    'Cash CNY interest is intentionally omitted and may be added back in the future. Deposits and withdrawals change its nominal balance; inflation and FX still affect purchasing power and USD value.',
   'assumptions.fxTitle': 'FX and purchasing power',
   'assumptions.fxBody':
     'FX is CNY per USD. Transactions use beginning-year FX with the configured spread. Real CNY return equals (1 + USD return) × ending FX / beginning FX / (1 + China inflation). PPP is an assumption linking relative inflation to FX.',
   'assumptions.taxTitle': 'Tax and supported classifications',
   'assumptions.taxBody':
-    'The model supports citizen/resident and noncitizen/nonresident. A retained green card requires the applicable resident branch; it is never silently treated as NRA. Tax stays simple: all-long-term netting with loss carryforward, property gains at LTCG rates, no state tax, and same-year payment with a same-year China credit. Section 1231 loss history and lookback ordering are removed.',
+    'The model supports citizen/resident and noncitizen/nonresident. For now every non-US citizen, including a green-card holder, is taxed as a US nonresident alien (NRA); the resident-alien branch is not implemented. Tax stays simple: all-long-term netting with loss carryforward, property gains at LTCG rates, no state tax, and same-year payment with a same-year China credit. Section 1231 loss history and lookback ordering are removed.',
   'assumptions.pensionTitle': 'Pension and annuity income',
   'assumptions.pensionBody':
     'Each person can receive a yearly pension or annuity from a start age, optionally rising with US inflation. It arrives as spendable USD cash, is taxed as ordinary US income (flat NRA rate for nonresidents), and is never taxed by China. Payments run every year through the planning horizon.',

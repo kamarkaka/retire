@@ -442,4 +442,16 @@ it('M02 derives hidden household facts from citizenship and household size', () 
   expect(v.issues.some((i) => i.path === 'people.A.us_income_tax_status')).toBe(
     true,
   );
+
+  // Non-citizens, green-card holders included, are NRA: explicit resident blocks.
+  const alien = createExampleDraft();
+  alien.people!.B!.us_income_tax_status = 'resident';
+  const r = validateScenario(alien, references);
+  expect(r.ok).toBe(false);
+  if (r.ok) throw new Error('noncitizen/resident should fail');
+  expect(
+    r.issues.some(
+      (i) => i.path === 'people.B' && i.code === 'unsupported_status',
+    ),
+  ).toBe(true);
 });

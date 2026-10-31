@@ -58,7 +58,7 @@ export function ledgerCsv(run: CompletedRun, replay: DetailedReplay) {
     `# scientific_manifest=${JSON.stringify(m)}`,
     '# Starting balances precede all current-year cash flows and use opening FX. Other wealth/FX/index fields value year end. Full Float64 precision; CSV contains only simulated years.',
     "# spend_excluding_medical_cny includes the ordinary annual budget and one-time costs; medical_total_cny includes the single Budget health base, both people's shocks, and late-life care. Care is always additional.",
-    '# annual_investment_return is a decimal, balance-weighted return across USD financial accounts and CNY cash after opening-year cash flows, measured at opening FX before tax and FX changes. CNY cash earns zero interest by design.',
+    '# annual_investment_return is a decimal, balance-weighted return across USD financial accounts after opening-year cash flows, measured at opening FX before tax and FX changes; property is excluded.',
     '# tax_us_A/B and tax_cn_A/B are that year computed bills, paid the same year; China bills are net of the same-year US credit.',
   ];
   const rows = Array.from({ length: replay.years.length }, (_, t) =>

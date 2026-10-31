@@ -73,8 +73,6 @@ export default function Assumptions({
       )}
       <h3>{t('assumptions.ssTitle')}</h3>
       <p>{t('assumptions.ssBody')}</p>
-      <h3>{t('assumptions.cnyTitle')}</h3>
-      <p>{t('assumptions.cnyBody')}</p>
       <h3>{t('assumptions.fxTitle')}</h3>
       <p>{t('assumptions.fxBody')}</p>
       <h3>{t('assumptions.taxTitle')}</h3>
