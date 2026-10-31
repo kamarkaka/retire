@@ -20,5 +20,7 @@ COPY --from=build /app/package.json ./
 ENV PORT=8080 DATA_DIR=/data MARKET_DATA_REFRESH_HOURS=720 BASE_PATH=/
 VOLUME /data
 EXPOSE 8080
-HEALTHCHECK --interval=60s --timeout=5s CMD curl -f http://127.0.0.1:${PORT}/ || exit 1
+# Probe every 2s while starting so the first success marks the container
+# healthy within seconds; afterwards probe once a minute.
+HEALTHCHECK --interval=60s --timeout=5s --start-period=30s --start-interval=2s CMD curl -f http://127.0.0.1:${PORT}/ || exit 1
 CMD ["node_modules/.bin/tsx", "scripts/serve.ts"]

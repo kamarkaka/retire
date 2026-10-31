@@ -8,6 +8,17 @@ adds an entry here, newest first.
 
 (nothing yet)
 
+## 0.7.1 — 2026-10-31
+
+Docker health check only (`linux/amd64`). No simulation, configuration,
+or tax behavior changes; saved configs are unaffected.
+
+- The Docker health check probes every 2 seconds during a 30-second start
+  period, so the container (and `docker compose up --wait`) turns healthy
+  within seconds of starting instead of after the first 60-second probe.
+  Probes still run once a minute after that. Requires Docker Engine 25.0
+  or later, which introduced `--start-interval`.
+
 ## 0.7.0 — 2026-10-31
 
 Dead result fields and the development verification harness removed, plus
