@@ -6,8 +6,13 @@ adds an entry here, newest first.
 
 ## Unreleased
 
-Dead result fields removed, plus consistency fixes. No simulation or tax
-results change; saved configs keep loading.
+(nothing yet)
+
+## 0.7.0 — 2026-10-31
+
+Dead result fields and the development verification harness removed, plus
+consistency fixes (`linux/amd64`). No simulation or tax results change;
+saved configs keep loading.
 
 - Ledger CSV drops five columns that were always constant or duplicated:
   `alive_A`, `alive_B`, `spend_plan_cny` (same as `spend_cny`),
@@ -30,6 +35,15 @@ results change; saved configs keep loading.
   ledger CSV comment no longer mention CNY cash.
 - The year-detail NRA tax table shows pension/annuity income in its own
   row; its base previously left pensions out.
+- The dead primitive-list/tax-bracket editor is removed; no configuration
+  field used its `string[]`, `number[]` or `[number,number][]` types.
+- The development verification harness, milestone records, evidence
+  archive and independent cross-check scripts are retired. The frozen
+  oracles still run inside `npm test`, browser evidence goes to the
+  git-ignored `test-results/` folder, and `npm run check` is the slimmer
+  gate (build, unit tests, `data:verify`, `verify:build`, browser tests).
+  The retired material remains in git history at tag
+  `verification-archive`.
 
 ## 0.6.0 — 2026-10-29
 
